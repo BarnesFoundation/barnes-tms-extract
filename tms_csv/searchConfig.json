@@ -1,0 +1,45 @@
+{
+	"apiURL": "https://emuseum.barnesfoundation.org/",
+	"outputDirectory": "output",
+	"commonFields": {
+		"id": {
+			"primaryKey": true,
+			"required": true
+		},
+		"title": {
+			"required": true
+		},
+		"displayDate": {
+			"required": true
+		},
+		"medium": {
+			"required": true
+		},
+		"dimensions": {
+			"required": true
+		},
+		"invno": {
+			"required": true
+		},
+		"people": {
+			"required": true
+		}
+	},
+	"specialtyFields": {
+		"path": "/collections/377/american-paintings-works-on-paper-and-sculptures/objects",
+		"fields": {
+			"primaryMedia": {
+				"required": true
+			},
+			"currentLocation": {
+				"required": true
+			},
+			"classification": {
+				"required": true
+			}
+		}
+	},
+	"warnings": {
+		"missingFields": true
+	}
+}

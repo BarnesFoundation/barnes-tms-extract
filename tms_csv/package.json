@@ -5,6 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src -d lib",
+    "clean": "rm -rf output/csv_*",
+    "debug": "node debug lib/index.js",
     "start": "node lib/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +24,7 @@
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-preset-env": "^1.1.8",
-    "fast-csv": "^2.3.1"
+    "fast-csv": "^2.3.1",
+    "lodash": "^4.17.4"
   }
 }

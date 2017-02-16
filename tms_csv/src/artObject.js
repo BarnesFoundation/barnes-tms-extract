@@ -1,6 +1,6 @@
 export default class ArtObject {
 	constructor(jsonDescription) {
-		this._jsonObj = JSON.parse(jsonDescription);
+		this._jsonObj = jsonDescription;
 	}
 
 	descriptionWithFields(fields) {
