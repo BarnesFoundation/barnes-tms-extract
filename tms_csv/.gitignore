@@ -1,3 +1,4 @@
 lib
+logs
 node_modules
 output/csv_*

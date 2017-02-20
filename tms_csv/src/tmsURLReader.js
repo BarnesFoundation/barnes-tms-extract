@@ -1,5 +1,6 @@
 import ArtObject from "./artObject.js";
 import TMSReader from "./tmsReader.js";
+import logger from "./logger.js";
 
 import https from "https";
 import url from "url";
@@ -7,7 +8,19 @@ import url from "url";
 export default class TMSURLReader extends TMSReader {
 	constructor() {
 		super();
-		this._currentPageIndex = 0;
+		this._currentPageIndex = -1;
+		this._currentIndexOfObjectInPage = 0;
+		this._numberOfObjectsOnCurrentPage = 0;
+		this._currentPageJSON = null;
+	}
+
+	get path() {
+		return super.path;
+	}
+
+	set path(path) {
+		super.path = path;
+		this._currentPageIndex = -1;
 		this._currentIndexOfObjectInPage = 0;
 		this._numberOfObjectsOnCurrentPage = 0;
 		this._currentPageJSON = null;
@@ -18,11 +31,9 @@ export default class TMSURLReader extends TMSReader {
 	}
 
 	_fetchArtObjectWithId(id) {
-		console.log("Fetching art object with id: " + id);
-
 		const requestURL = url.parse(this.path + "/" + id + "/json");
-		console.log("REQUEST -----------");
-		console.log(requestURL);
+
+		logger.info(`Fething collection object with id: ${id} at url: ${requestURL.href}`);
 		const options = {
 			hostname: requestURL.hostname,
 			port: 443,
@@ -40,10 +51,14 @@ export default class TMSURLReader extends TMSReader {
 				});
 
 				res.on("end", () => {
-					console.log("Object data for id: " + id);
-					console.log(data);
-					const artObjectDescription = JSON.parse(data);
-					resolve(new ArtObject(artObjectDescription));
+					logger.info(`Received data for collection object with id: ${id}`);
+					logger.debug(`Object data: ${data}`);
+					try {
+						const artObjectDescription = JSON.parse(data);
+						resolve(new ArtObject(artObjectDescription));
+					} catch (e) {
+						reject(e);
+					}
 				});
 			});
 
@@ -56,9 +71,11 @@ export default class TMSURLReader extends TMSReader {
 	}
 
 	_fetchNextPage() {
-		console.log("Fetching new page...");
 		this._currentPageIndex++;
 		const requestURL = url.parse(this.path + "/json" + "?page=" + (this._currentPageIndex + 1));
+
+		logger.info(`Requesting collection page with url: ${requestURL.href}`);
+
 		const options = {
 			hostname: requestURL.hostname,
 			port: 443,
@@ -76,8 +93,14 @@ export default class TMSURLReader extends TMSReader {
 				});
 
 				res.on("end", () => {
-					this._updateWithJSONResponse(data);
-					resolve();
+					logger.info(`Received collection page with url: ${requestURL.href}`);
+					logger.debug(data);
+					try {
+						this._updateWithJSONResponse(data);
+						resolve();
+					} catch (e) {
+						reject(e);
+					}
 				});
 			});
 
@@ -104,14 +127,14 @@ export default class TMSURLReader extends TMSReader {
 	}
 
 	hasNext() {
-		console.log("Has next");
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 			if (this._currentPageHasMoreObjects()) {
-				console.log("Has more objects");
 				resolve(true);
 			} else {
 				this._fetchNextPage().then(() => {
 					resolve(this._currentPageHasMoreObjects());
+				}, (e) => {
+					reject(e);
 				});
 			}
 		});
@@ -126,12 +149,14 @@ export default class TMSURLReader extends TMSReader {
 						this._currentIndexOfObjectInPage++;
 						resolve(artObject);
 					}, (error) => {
-						//TODO: Handle the error
-						reject("Error resolving object");
+						this._currentIndexOfObjectInPage++;
+						reject(error);
 					});
 				} else {
-					reject("No more objects");
+					resolve(null);
 				}
+			}, (error) => {
+				reject(error);
 			});
 		})
 	}
