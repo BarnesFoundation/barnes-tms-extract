@@ -1,4 +1,4 @@
-export default class ArtObject {
+module.exports = class ArtObject {
 	constructor(jsonDescription) {
 		this._jsonObj = jsonDescription;
 	}

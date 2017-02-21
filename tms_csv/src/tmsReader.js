@@ -1,4 +1,4 @@
-export default class TMSReader {
+module.exports = class TMSReader {
 
 	constructor() {
 		this._path = null;

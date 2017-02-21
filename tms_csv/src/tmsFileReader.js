@@ -1,9 +1,9 @@
-import ArtObject from "./artObject.js";
-import TMSReader from "./tmsReader.js";
+const ArtObject = require("./artObject.js");
+const TMSReader = require("./tmsReader.js");
 
-import fs from "fs";
+const fs = require("fs");
 
-export default class TMSFileReader extends TMSReader {
+module.exports = class TMSFileReader extends TMSReader {
 	constructor() {
 		super();
 		this._index = 0;

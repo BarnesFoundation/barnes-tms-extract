@@ -2,3 +2,4 @@ lib
 logs
 node_modules
 output/csv_*
+npm-debug.log

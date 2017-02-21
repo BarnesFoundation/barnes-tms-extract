@@ -1,10 +1,10 @@
-import ExportConfig from "./exportConfig.js";
-import CSVWriter from "./csvWriter.js";
-import TMSURLReader from "./tmsURLReader.js";
-import logger from "./logger.js";
+const ExportConfig = require("./exportConfig.js");
+const CSVWriter = require("./csvWriter.js");
+const TMSURLReader = require("./tmsURLReader.js");
+const logger = require("./logger.js");
 
-import fs from 'fs';
-import _ from "lodash";
+const fs = require('fs');
+const _ = require("lodash");
 
 const configFile = "./searchConfig.json";
 
@@ -13,7 +13,6 @@ function exportCSV(configFile) {
 	logger.info("Beginning CSV export");
 
 	const config = new ExportConfig(configFile);
-	const tms = new TMSURLReader();
 
 	const outputFolderName = `csv_${new Date().getTime()}`;
 	const outputPath = config.outputDirectory + "/" + outputFolderName;
@@ -22,10 +21,10 @@ function exportCSV(configFile) {
 
 	logger.info(`Reading TMS API from root URL ${config.apiURL}`);
 
-	processTMS(config, tms, outputPath);
+	processTMS(config, outputPath);
 }
 
-function processTMS(config, tms, csvOutputDir) {
+function processTMS(config, csvOutputDir) {
 
 	for (let i = 0; i < config.collectionsCount; i++) {
 		let processCount = 0;
@@ -41,6 +40,8 @@ function processTMS(config, tms, csvOutputDir) {
 			continue;
 		}
 
+		const tms = new TMSURLReader();
+
 		const csvFilePath = `${csvOutputDir}/${name}.csv`;
 
 		const csv = new CSVWriter(csvFilePath);
@@ -50,8 +51,9 @@ function processTMS(config, tms, csvOutputDir) {
 			logger.info(`Limiting output to ${config.debug.limit} entires`);
 		}
 
-		tms.path = `${config.apiURL}${config.pathForCollectionAtIndex(i)}/objects`;
-		logger.info(`Processing collection {name} with url {tms.path}`);
+		tms.rootURL = config.apiURL;
+		tms.path = `${config.pathForCollectionAtIndex(i)}`;
+		logger.info(`Processing collection ${name} with url ${tms.collectionURL}`);
 
 		const processTMSHelper = () => {
 			tms.next().then((artObject) => {

@@ -1,9 +1,9 @@
-import logger from "./logger.js";
+const logger = require("./logger.js");
 
-import fs from "fs";
-import csv from "fast-csv";
+const fs = require("fs");
+const csv = require("fast-csv");
 
-export default class CSVWriter {
+module.exports = class CSVWriter {
 	constructor(path) {
 		logger.info(`Opening CSV file at ${path}`);
 		this._path = path;

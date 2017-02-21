@@ -1,16 +1,16 @@
-import logger from "./logger.js";
+const logger = require("./logger.js");
 
-import fs from "fs";
-import _ from "lodash";
+const fs = require("fs");
+const _ = require("lodash");
 
-export default class ExportConfig {
+module.exports = class ExportConfig {
 	constructor(configPath) {
 		logger.info(`Loading CSV export config at ${configPath}`);
 		const configFile = fs.readFileSync(configPath, 'utf8');
 
 		const jsonConfig = JSON.parse(configFile);
 
-		this._primaryKey = _.findKey(jsonConfig.commonFields, (entry) => entry.primaryKey === true);
+		this._primaryKey = (_.find(jsonConfig.commonFields, (entry) => entry.primaryKey === true))["name"];
 
 		if (this._primaryKey === undefined) {
 			throw {
@@ -19,7 +19,7 @@ export default class ExportConfig {
 			};
 		}
 
-		const lastKey = _.findLastKey(jsonConfig.commonFields, (entry) => entry.primaryKey === true);
+		const lastKey = _.findLast(jsonConfig.commonFields, (entry) => entry.primaryKey === true)["name"];
 
 		if (this._primaryKey !== lastKey) {
 			throw {
@@ -58,16 +58,16 @@ export default class ExportConfig {
 
 	fieldsForCollectionAtIndex(idx) {
 		if (idx === 0) return this.commonFields;
-		return _.map(this._config.collections[idx].fields, "name");
+		return _.map(this._config.collections[idx - 1].fields, "name");
 	}
 
 	nameForCollectionAtIndex(idx) {
 		if (idx === 0) return "objects";
-		return this._config.collections[idx].name;
+		return this._config.collections[idx - 1].path.split("/").pop();
 	}
 
 	pathForCollectionAtIndex(idx) {
-		if (idx === 0) return "/";
-		return this._config.collections[idx].path;
+		if (idx === 0) return "";
+		return this._config.collections[idx - 1].path;
 	}
 }

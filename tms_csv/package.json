@@ -6,8 +6,8 @@
   "scripts": {
     "build": "babel src -d lib",
     "clean": "rm -rf output/csv_*",
-    "debug": "node debug lib/index.js",
-    "start": "node lib/index.js",
+    "debug": "node debug src/index.js",
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

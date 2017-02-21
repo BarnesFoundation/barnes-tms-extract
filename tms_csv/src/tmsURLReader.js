@@ -1,17 +1,24 @@
-import ArtObject from "./artObject.js";
-import TMSReader from "./tmsReader.js";
-import logger from "./logger.js";
+const ArtObject = require("./artObject.js");
+const TMSReader = require("./tmsReader.js");
+const logger = require("./logger.js");
 
-import https from "https";
-import url from "url";
+const https = require("https");
+const url = require("url");
 
-export default class TMSURLReader extends TMSReader {
+module.exports = class TMSURLReader extends TMSReader {
 	constructor() {
 		super();
 		this._currentPageIndex = -1;
 		this._currentIndexOfObjectInPage = 0;
 		this._numberOfObjectsOnCurrentPage = 0;
 		this._currentPageJSON = null;
+	}
+
+	get collectionURL() {
+		const requestURL = url.parse(this._rootURL);
+
+		requestURL.pathname = this.path;
+		return url.format(requestURL);
 	}
 
 	get path() {
@@ -26,23 +33,28 @@ export default class TMSURLReader extends TMSReader {
 		this._currentPageJSON = null;
 	}
 
+	get rootURL() {
+		return this._rootURL;
+	}
+
+	set rootURL(url) {
+		this._rootURL = url;
+	}
+
 	_currentPageHasMoreObjects() {
 		return this._currentIndexOfObjectInPage < this._numberOfObjectsOnCurrentPage;
 	}
 
 	_fetchArtObjectWithId(id) {
-		const requestURL = url.parse(this.path + "/" + id + "/json");
+		const requestURL = url.parse(this.rootURL);
 
-		logger.info(`Fething collection object with id: ${id} at url: ${requestURL.href}`);
-		const options = {
-			hostname: requestURL.hostname,
-			port: 443,
-			path: requestURL.path,
-			method: "GET"
-		};
+		requestURL.pathname = `objects/${id}/json`;
+		const requestURLString = url.format(requestURL);
+
+		logger.info(`Fething collection object with id: ${id} at url: ${requestURLString}`);
 
 		return new Promise((resolve, reject) => {
-			var req = https.request(options, (res) => {
+			var req = https.request(requestURLString, (res) => {
 
 				let data = "";
 
@@ -52,7 +64,7 @@ export default class TMSURLReader extends TMSReader {
 
 				res.on("end", () => {
 					logger.info(`Received data for collection object with id: ${id}`);
-					logger.debug(`Object data: ${data}`);
+					logger.silly(`Object data: ${data}`);
 					try {
 						const artObjectDescription = JSON.parse(data);
 						resolve(new ArtObject(artObjectDescription));
@@ -72,20 +84,16 @@ export default class TMSURLReader extends TMSReader {
 
 	_fetchNextPage() {
 		this._currentPageIndex++;
-		const requestURL = url.parse(this.path + "/json" + "?page=" + (this._currentPageIndex + 1));
+		const requestURL = url.parse(this.rootURL);
 
-		logger.info(`Requesting collection page with url: ${requestURL.href}`);
+		requestURL.pathname = `${this.path}/objects/json`;
+		requestURL.search = `page=${this._currentPageIndex + 1}`;
+		const requestURLString = url.format(requestURL);
 
-		const options = {
-			hostname: requestURL.hostname,
-			port: 443,
-			path: requestURL.path,
-			method: "GET"
-		};
+		logger.info(`Requesting collection page with url: ${requestURLString}`);
 
 		return new Promise((resolve, reject) => {
-			var req = https.request(options, (res) => {
-
+			var req = https.request(url.format(requestURL), (res) => {
 				let data = "";
 
 				res.on("data", (d) => {
@@ -93,8 +101,8 @@ export default class TMSURLReader extends TMSReader {
 				});
 
 				res.on("end", () => {
-					logger.info(`Received collection page with url: ${requestURL.href}`);
-					logger.debug(data);
+					logger.info(`Received collection page with url: ${requestURLString}`);
+					logger.silly(data);
 					try {
 						this._updateWithJSONResponse(data);
 						resolve();
