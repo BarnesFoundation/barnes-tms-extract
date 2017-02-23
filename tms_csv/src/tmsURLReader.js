@@ -6,9 +6,9 @@ const https = require("https");
 const url = require("url");
 
 module.exports = class TMSURLReader extends TMSReader {
-	constructor(apiKey) {
+	constructor(credentials) {
 		super();
-		this._apiKey = apiKey;
+		this._credentials = credentials;
 		this._currentPageIndex = -1;
 		this._currentIndexOfObjectInPage = 0;
 		this._numberOfObjectsOnCurrentPage = 0;
@@ -132,8 +132,15 @@ module.exports = class TMSURLReader extends TMSReader {
 		const requestURL = url.parse(this.rootURL);
 
 		requestURL.pathname = `${this.path}/objects/json`;
+		if (this._credentials.username) {
+			if (this._credentials.password) {
+				requestURL.auth = `${this._credentials.username}:${this._credentials.password}`;
+			} else {
+				requestURL.auth = this._credentials.username;
+			}
+		}
 		requestURL.query = {page: pageIndex + 1};
-		if (this._apiKey) requestURL.query.key = this._apiKey;
+		if (this._credentials.key) requestURL.query.key = this._credentials.key;
 		return url.format(requestURL);
 	}
 
@@ -141,7 +148,14 @@ module.exports = class TMSURLReader extends TMSReader {
 		const requestURL = url.parse(this.rootURL);
 
 		requestURL.pathname = `objects/${id}/json`;
-		if (this._apiKey) requestURL.query = {key: this._apiKey};
+		if (this._credentials.username) {
+			if (this._credentials.password) {
+				requestURL.auth = `${this._credentials.username}:${this._credentials.password}`;
+			} else {
+				requestURL.auth = this._credentials.username;
+			}
+		}
+		if (this._credentials.key) requestURL.query = {key: this._credentials.key};
 		return url.format(requestURL);
 	}
 

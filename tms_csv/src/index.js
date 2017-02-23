@@ -12,19 +12,19 @@ const configFile = "./searchConfig.json";
 function loadCredentials() {
 	const credsPath = "./credentials.json";
 
+	logger.info(`Loading credentials at ${credsPath}`);
+
 	const creds = fs.readFileSync(credsPath, "utf8");
 
 	if (!creds) {
 		logger.error(`Could not load credentials at ${credsPath}`);
-		logger.info(`Make sure there is a json file at ${credsPath} containing your eMuseum API key`);
+		logger.info(`Make sure there is a json file at ${credsPath} containing your eMuseum API key, and/or your username and passwork`);
 	}
 
-	const credDict = JSON.parse(creds);
-
-	return credDict.key;
+	return JSON.parse(creds);
 }
 
-function exportCSV(apiKey, configFile) {
+function exportCSV(credentials, configFile) {
 
 	logger.info("Beginning CSV export");
 
@@ -37,10 +37,10 @@ function exportCSV(apiKey, configFile) {
 
 	logger.info(`Reading TMS API from root URL ${config.apiURL}`);
 
-	processTMS(apiKey, config, outputPath);
+	processTMS(credentials, config, outputPath);
 }
 
-function processTMS(apiKey, config, csvOutputDir) {
+function processTMS(credentials, config, csvOutputDir) {
 	let processCount = 0;
 
 	let limitOutput = false;
@@ -49,7 +49,7 @@ function processTMS(apiKey, config, csvOutputDir) {
 
 	const collectionFields = config.fields;
 
-	const tms = new TMSURLReader(apiKey);
+	const tms = new TMSURLReader(credentials);
 
 	const csvFilePath = `${csvOutputDir}/${name}.csv`;
 
@@ -110,5 +110,5 @@ function processTMS(apiKey, config, csvOutputDir) {
 	processTMSHelper();
 }
 
-const apiKey = loadCredentials();
-exportCSV(apiKey, configFile);
+const credentials = loadCredentials();
+exportCSV(credentials, configFile);
