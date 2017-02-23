@@ -1,7 +1,9 @@
 {
 	"apiURL": "https://emuseum.barnesfoundation.org",
 	"outputDirectory": "output",
-	"commonFields": [
+	"debug": {
+	},
+	"fields": [
 		{
 			"name": "id",
 			"primaryKey": true,
@@ -21,75 +23,45 @@
 		},
 		{
 			"name": "medium",
-			"required": true
+			"enumerated": true
 		},
 		{
-			"name": "dimensions",
-			"required": true
+			"name": "dimensions"
 		},
 		{
 			"name": "invno",
 			"required": true
-		}
-	],
-	"collections": [
-		{
-			"path": "collections/46917/african-art-2",
-			"title": "African Art",
-			"type": "Collection",
-			"fields": [ ]
 		},
 		{
-			"path": "collections/377/american-paintings-works-on-paper-and-sculptures",
-			"title": "American Paintings, Works on Paper and Sculptures",
-			"type": "Collection",
-			"fields": [
-				{
-					"name": "primaryMedia",
-					"required": true
-				},
-				{
-					"name": "classification",
-					"required": true
-				},
-				{
-					"name": "locations",
-					"required": true
-				}
-			]
+			"name": "primaryMedia",
+			"required": true
 		},
 		{
-			"path": "collections/379/ancient-art",
-			"title": "Ancient Art",
-			"type": "Collection",
-			"fields": [ ]
+			"name": "locations",
+			"required": true,
+			"enumerated": true
 		},
 		{
-			"path": "collections/359/asian-art",
-			"title": "Asian Art",
-			"type": "Collection",
-			"fields": [ ]
+			"name": "description",
+			"required": true
 		},
 		{
-			"path": "collections/394/european-and-american-decorative-arts-in-gallery",
-			"title": "European and American Decorative Arts in Gallery",
-			"type": "Collection",
-			"fields": [ ]
+			"name": "copyright",
+			"required": true,
+			"enumerated": true
 		},
 		{
-			"path": "collections/370/ironwork",
-			"title": "Ironwork",
-			"type": "Collection",
-			"fields": [ ]
+			"name": "classification",
+			"required": true,
+			"enumerated": true
 		},
 		{
-			"path": "collections/378/native-american-and-southwest-art",
-			"title": "Native American and Southwest Art",
-			"type": "Collection",
-			"fields": [ ]
+			"name": "bibliography1",
+			"required": true
 		}
 	],
 	"warnings": {
+		"singletonFields": true,
 		"missingFields": true,
 		"unusedFields": true
 	}

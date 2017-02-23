@@ -1,6 +1,12 @@
+const _ = require("lodash");
+
 module.exports = class ArtObject {
 	constructor(jsonDescription) {
 		this._jsonObj = jsonDescription;
+	}
+
+	get fullDescription() {
+		return _.mapValues(this._jsonObj, 'value');
 	}
 
 	descriptionWithFields(fields) {

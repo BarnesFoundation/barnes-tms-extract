@@ -10,38 +10,40 @@ module.exports = class ExportConfig {
 
 		const jsonConfig = JSON.parse(configFile);
 
-		this._primaryKey = (_.find(jsonConfig.commonFields, (entry) => entry.primaryKey === true))["name"];
+		const primaryKeyObj = _.find(jsonConfig.fields, (entry) => entry.primaryKey === true);
 
-		if (this._primaryKey === undefined) {
+		if (primaryKeyObj === undefined) {
 			throw {
 				name: "InvalidConfig",
 				message: "CSV export config does not specify a primary key"
 			};
+		} else {
+			this._primaryKey = primaryKeyObj.name;
 		}
 
-		const lastKey = _.findLast(jsonConfig.commonFields, (entry) => entry.primaryKey === true)["name"];
+		const lastKeyObj = _.findLast(jsonConfig.fields, (entry) => entry.primaryKey === true);
 
-		if (this._primaryKey !== lastKey) {
+		if (lastKeyObj !== primaryKeyObj) {
 			throw {
 				name: "InvalidConfig",
-				message: `CSV export config designates more than one primary key: (${this._primaryKey}) and (${lastKey})`
+				message: `CSV export config designates more than one primary key: (${this._primaryKey}) and (${lastKey.name})`
 			};
 		}
 
 		this._config = jsonConfig;
+
+		this._fields = {};
+		_.forEach(this._config.fields, (field) => {
+			this._fields[field.name] = field;
+		});
 	}
 
 	get apiURL() {
 		return this._config.apiURL;
 	}
 
-	get collectionsCount() {
-		if (this._config.collections === undefined) return 1;
-		return this._config.collections.length + 1;
-	}
-
-	get commonFields() {
-		return _.map(this._config.commonFields, "name");
+	get fields() {
+		return _.keys(this._fields);
 	}
 
 	get debug() {
@@ -56,18 +58,11 @@ module.exports = class ExportConfig {
 		return this._primaryKey;
 	}
 
-	fieldsForCollectionAtIndex(idx) {
-		if (idx === 0) return this.commonFields;
-		return _.map(this._config.collections[idx - 1].fields, "name");
+	fieldIsEnumerated(field) {
+		return this._fields[field] ? this._fields[field].enumerated === true : false;
 	}
 
-	nameForCollectionAtIndex(idx) {
-		if (idx === 0) return "objects";
-		return this._config.collections[idx - 1].path.split("/").pop();
-	}
-
-	pathForCollectionAtIndex(idx) {
-		if (idx === 0) return "";
-		return this._config.collections[idx - 1].path;
+	fieldIsRequired(field) {
+		return this._fields[field] ? this._fields[field].required === true : false;
 	}
 }

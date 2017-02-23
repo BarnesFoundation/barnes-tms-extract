@@ -6,8 +6,9 @@ const https = require("https");
 const url = require("url");
 
 module.exports = class TMSURLReader extends TMSReader {
-	constructor() {
+	constructor(apiKey) {
 		super();
+		this._apiKey = apiKey;
 		this._currentPageIndex = -1;
 		this._currentIndexOfObjectInPage = 0;
 		this._numberOfObjectsOnCurrentPage = 0;
@@ -46,10 +47,7 @@ module.exports = class TMSURLReader extends TMSReader {
 	}
 
 	_fetchArtObjectWithId(id) {
-		const requestURL = url.parse(this.rootURL);
-
-		requestURL.pathname = `objects/${id}/json`;
-		const requestURLString = url.format(requestURL);
+		const requestURLString = this._urlForObjectWithId(id);
 
 		logger.info(`Fething collection object with id: ${id} at url: ${requestURLString}`);
 
@@ -84,16 +82,12 @@ module.exports = class TMSURLReader extends TMSReader {
 
 	_fetchNextPage() {
 		this._currentPageIndex++;
-		const requestURL = url.parse(this.rootURL);
-
-		requestURL.pathname = `${this.path}/objects/json`;
-		requestURL.search = `page=${this._currentPageIndex + 1}`;
-		const requestURLString = url.format(requestURL);
+		const requestURLString = this._urlForCollectionPageIndex(this._currentPageIndex);
 
 		logger.info(`Requesting collection page with url: ${requestURLString}`);
 
 		return new Promise((resolve, reject) => {
-			var req = https.request(url.format(requestURL), (res) => {
+			var req = https.request(requestURLString, (res) => {
 				let data = "";
 
 				res.on("data", (d) => {
@@ -132,6 +126,23 @@ module.exports = class TMSURLReader extends TMSReader {
 		} else {
 			this._currentPageJSON = null;
 		}
+	}
+
+	_urlForCollectionPageIndex(pageIndex) {
+		const requestURL = url.parse(this.rootURL);
+
+		requestURL.pathname = `${this.path}/objects/json`;
+		requestURL.query = {page: pageIndex + 1};
+		if (this._apiKey) requestURL.query.key = this._apiKey;
+		return url.format(requestURL);
+	}
+
+	_urlForObjectWithId(id) {
+		const requestURL = url.parse(this.rootURL);
+
+		requestURL.pathname = `objects/${id}/json`;
+		if (this._apiKey) requestURL.query = {key: this._apiKey};
+		return url.format(requestURL);
 	}
 
 	hasNext() {
