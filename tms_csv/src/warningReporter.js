@@ -15,6 +15,25 @@ module.exports = class WarningReporter {
 		this._csv = new CSVWriter(warningPath);
 	}
 
+	_checkMissingFields(objectId, fields) {
+		_.forEach(fields, (value, field) => {
+			if (this._searchConfig.fieldIsRequired(field)) {
+
+				if (value === undefined) {
+					const newWarning = {
+						type: "missing",
+						object: objectId,
+						field: field,
+						message: `Object is missing a required field ${field}`
+					};
+
+					logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
+					this._csv.write(newWarning);
+				}
+			}
+		});
+	}
+
 	_checkSingletonFields() {
 		_.forEach(this._enumeratedFieldCounts, (valueCountDict, field) => {
 			_.forEach(valueCountDict, (objectIds, fieldValue) => {
@@ -23,6 +42,7 @@ module.exports = class WarningReporter {
 						const newWarning = {
 							type: "singleton",
 							object: objectId,
+							field: field,
 							message: `Value ${fieldValue} for field ${field} only appears ${objectIds.length} times — maybe a typo`
 						};
 
@@ -34,22 +54,24 @@ module.exports = class WarningReporter {
 		})
 	}
 
-	appendFieldsForObject(objectId, artObject, fields) {
-		debugger;
-		const desc = artObject.fullDescription;
-
+	_checkUnusedFields(desc, objectId, artObject, fields) {
 		_.forEach(desc, (value, key) => {
 			if (!_.has(fields, key)) {
 				const newWarning = {
 					type: "unused",
 					object: objectId,
+					field: key,
 					message: `Object description has field ${key}, but that field was not selected for export`
 				};
 
 				logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
 				this._csv.write(newWarning);
 			}
+		});
+	}
 
+	_countEnumeratedFields(desc, objectId) {
+		_.forEach(desc, (value, key) => {
 			if (this._searchConfig.fieldIsEnumerated(key)) {
 				if (!this._enumeratedFieldCounts[key]) this._enumeratedFieldCounts[key] = {};
 				if (!this._enumeratedFieldCounts[key][value]) this._enumeratedFieldCounts[key][value] = [];
@@ -61,26 +83,26 @@ module.exports = class WarningReporter {
 				}
 			}
 		});
+	}
 
-		_.forEach(fields, (value, field) => {
-			if (this._searchConfig.fieldIsRequired(field)) {
+	appendFieldsForObject(objectId, artObject, fields) {
+		const desc = artObject.fullDescription;
 
-				if (value === undefined) {
-					const newWarning = {
-						type: "missing",
-						object: objectId,
-						message: `Object is missing a required field ${field}`
-					};
+		if (this._searchConfig.warnings.unusedFields) {
+			this._checkUnusedFields(desc, objectId, artObject, fields);
+		}
 
-					logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
-					this._csv.write(newWarning);
-				}
-			}
-		})
+		if (this._searchConfig.warnings.singletonFields) {
+			this._countEnumeratedFields(desc, objectId);
+		}
+
+		if (this._searchConfig.warnings.missingFields) {
+			this._checkMissingFields(objectId, fields);
+		}
 	}
 
 	end() {
-		this._checkSingletonFields();
+		if (this._searchConfig.warnings.singletonFields) this._checkSingletonFields();
 		this._csv.end();
 	}
 }

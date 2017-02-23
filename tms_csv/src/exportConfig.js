@@ -58,6 +58,10 @@ module.exports = class ExportConfig {
 		return this._primaryKey;
 	}
 
+	get warnings() {
+		return this._config.warnings;
+	}
+
 	fieldIsEnumerated(field) {
 		return this._fields[field] ? this._fields[field].enumerated === true : false;
 	}
