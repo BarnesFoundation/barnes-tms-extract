@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Barnes Collection Scripts Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+  <p id="test"></p>
+  <script>
+  $(function() {
+    $.get('/api/test', function(response) {
+      $("#test").text(response.message);
+    });
+  });
+  </script>
+</body>
+</html>
