@@ -21,6 +21,7 @@
     "express": "^4.14.1",
     "seneca": "^3.3.0",
     "seneca-web": "^2.0.0",
-    "seneca-web-adapter-express": "^1.0.2"
+    "seneca-web-adapter-express": "^1.0.2",
+    "shelljs": "^0.7.6"
   }
 }

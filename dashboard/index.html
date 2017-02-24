@@ -10,7 +10,7 @@
   <p id="test"></p>
   <script>
   $(function() {
-    $.get('/api/test', function(response) {
+    $.get('/api/tmstocsv/info', function(response) {
       $("#test").text(response.message);
     });
   });
