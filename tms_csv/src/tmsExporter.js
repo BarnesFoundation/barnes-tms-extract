@@ -28,6 +28,12 @@ module.exports = class TMSExporter {
 		};
 	}
 
+	_finishExport() {
+		this._active = false;
+		this._csv.end();
+		this._warningReporter.end();
+	}
+
 	_loadCredentials(credsPath) {
 		logger.info(`Loading credentials at ${credsPath}`);
 		const creds = fs.readFileSync(credsPath, "utf8");
@@ -38,12 +44,6 @@ module.exports = class TMSExporter {
 		}
 
 		return JSON.parse(creds);
-	}
-
-	_finishExport() {
-		this._active = false;
-		this._csv.end();
-		this._warningReporter.end();
 	}
 
 	_processTMS(credentials, config, csvOutputDir) {
