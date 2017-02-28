@@ -42,6 +42,20 @@ module.exports = class TMSURLReader extends TMSReader {
 		this._rootURL = url;
 	}
 
+	_addCredentialsToURL(url) {
+		if (this._credentials.username) {
+			if (this._credentials.password) {
+				url.auth = `${this._credentials.username}:${this._credentials.password}`;
+			} else {
+				url.auth = this._credentials.username;
+			}
+		}
+		if (this._credentials.key) {
+			if (!url.query) url.query = {};
+			if (this._credentials.key) url.query.key = this._credentials.key;
+		}
+	}
+
 	_currentPageHasMoreObjects() {
 		return this._currentIndexOfObjectInPage < this._numberOfObjectsOnCurrentPage;
 	}
@@ -132,15 +146,8 @@ module.exports = class TMSURLReader extends TMSReader {
 		const requestURL = url.parse(this.rootURL);
 
 		requestURL.pathname = `${this.path}/objects/json`;
-		if (this._credentials.username) {
-			if (this._credentials.password) {
-				requestURL.auth = `${this._credentials.username}:${this._credentials.password}`;
-			} else {
-				requestURL.auth = this._credentials.username;
-			}
-		}
 		requestURL.query = {page: pageIndex + 1};
-		if (this._credentials.key) requestURL.query.key = this._credentials.key;
+		this._addCredentialsToURL(requestURL);
 		return url.format(requestURL);
 	}
 
@@ -148,15 +155,44 @@ module.exports = class TMSURLReader extends TMSReader {
 		const requestURL = url.parse(this.rootURL);
 
 		requestURL.pathname = `objects/${id}/json`;
-		if (this._credentials.username) {
-			if (this._credentials.password) {
-				requestURL.auth = `${this._credentials.username}:${this._credentials.password}`;
-			} else {
-				requestURL.auth = this._credentials.username;
-			}
-		}
-		if (this._credentials.key) requestURL.query = {key: this._credentials.key};
+		this._addCredentialsToURL(requestURL);
 		return url.format(requestURL);
+	}
+
+	getObjectCount() {
+		const requestURL = url.parse(this.rootURL);
+
+		requestURL.pathname = `objects/json`;
+		this._addCredentialsToURL(requestURL);
+		const requestURLString = url.format(requestURL);
+
+		logger.info("Counting collection objects");
+
+		return new Promise((resolve, reject) => {
+			var req = https.request(requestURLString, (res) => {
+				let data = "";
+
+				res.on("data", (d) => {
+					data += d;
+				});
+
+				res.on("end", () => {
+					logger.info(`Received collection page with url: ${requestURLString}`);
+					logger.silly(data);
+					try {
+						resolve(JSON.parse(data).objects.length);
+					} catch (e) {
+						reject(e);
+					}
+				});
+			});
+
+			req.on("error", (e) => {
+				reject(e);
+			});
+
+			req.end();
+		});
 	}
 
 	hasNext() {

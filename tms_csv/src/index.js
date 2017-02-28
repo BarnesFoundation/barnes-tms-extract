@@ -45,6 +45,8 @@ function processTMS(credentials, config, csvOutputDir) {
 
 	let limitOutput = false;
 
+	let totalObjectCount;
+
 	const name = "objects";
 
 	const collectionFields = config.fields;
@@ -81,14 +83,17 @@ function processTMS(credentials, config, csvOutputDir) {
 				warningReporter.appendFieldsForObject(id, artObject, description);
 
 				processCount++;
+				if (processCount % 100 === 0) {
+					logger.info(`Processed ${progressCount} of ${totalObjectCount} collection objects`)
+				}
 				if (limitOutput && processCount >= config.debug.limit) {
-					logger.info(`Reached ${processCount} entries processed, finishing`);
+					logger.info(`Reached ${processCount} collection objects processed, finishing`);
 					finishExport();
 				} else {
 					processTMSHelper();
 				}
 			} else {
-				csv.end();
+				finishExport();
 			}
 		}, (error) => {
 			logger.warn(error);
@@ -107,7 +112,14 @@ function processTMS(credentials, config, csvOutputDir) {
 		});
 	}
 
-	processTMSHelper();
+	tms.getObjectCount().then((res) => {
+		totalObjectCount = res;
+		logger.info(`Processing ${totalObjectCount} collection objects`);
+		processTMSHelper();
+	}, (err) => {
+		logger.error(error);
+		finishExport();
+	});
 }
 
 const credentials = loadCredentials();
