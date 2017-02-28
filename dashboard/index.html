@@ -8,10 +8,17 @@
 </head>
 <body>
   <p id="test"></p>
+  <button id="run">Run Script</button>
   <script>
   $(function() {
     $.get('/api/tmstocsv/info', function(response) {
-      $("#test").text(response.message);
+      $("#test").text(response.time);
+    });
+
+    $("#run").click(function() {
+      $.get('/api/tmstocsv/run', function(response) {
+        $("#test").text(response.time);
+      });
     });
   });
   </script>
