@@ -33,5 +33,4 @@ const seneca = require('seneca')()
       .use(SenecaWeb, senecaWebConfig)
       .use('api')
 // this is where we list the microservices
-      .client({ type: 'tcp', pin: 'role:test' })
       .client({ type: 'tcp', pin: 'role:tmstocsv' });

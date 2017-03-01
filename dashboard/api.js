@@ -3,9 +3,6 @@ function api(options) {
   // var valid_ops = { sum:'sum', product:'product' }
 
 	const valid_commands = { info: 'info', run: 'run', active: 'active' };
-	this.add('role:api,path:test', function (msg, respond) {
-		this.act('role:test', {}, respond);
-	});
 
 	this.add('role:api,path:tmstocsv', function (msg, respond) {
     // do something to msg if necessary
