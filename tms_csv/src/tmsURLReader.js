@@ -1,9 +1,9 @@
-const ArtObject = require("./artObject.js");
-const TMSReader = require("./tmsReader.js");
-const logger = require("./logger.js");
+const ArtObject = require('./artObject.js');
+const TMSReader = require('./tmsReader.js');
+const logger = require('./logger.js');
 
-const https = require("https");
-const url = require("url");
+const https = require('https');
+const url = require('url');
 
 module.exports = class TMSURLReader extends TMSReader {
 	constructor(credentials) {
@@ -66,15 +66,14 @@ module.exports = class TMSURLReader extends TMSReader {
 		logger.info(`Fething collection object with id: ${id} at url: ${requestURLString}`);
 
 		return new Promise((resolve, reject) => {
-			var req = https.request(requestURLString, (res) => {
+			const req = https.request(requestURLString, (res) => {
+				let data = '';
 
-				let data = "";
-
-				res.on("data", (d) => {
+				res.on('data', (d) => {
 					data += d;
 				});
 
-				res.on("end", () => {
+				res.on('end', () => {
 					logger.info(`Received data for collection object with id: ${id}`);
 					logger.silly(`Object data: ${data}`);
 					try {
@@ -86,7 +85,7 @@ module.exports = class TMSURLReader extends TMSReader {
 				});
 			});
 
-			req.on("error", (e) => {
+			req.on('error', (e) => {
 				reject(e);
 			});
 
@@ -101,14 +100,14 @@ module.exports = class TMSURLReader extends TMSReader {
 		logger.info(`Requesting collection page with url: ${requestURLString}`);
 
 		return new Promise((resolve, reject) => {
-			var req = https.request(requestURLString, (res) => {
-				let data = "";
+			const req = https.request(requestURLString, (res) => {
+				let data = '';
 
-				res.on("data", (d) => {
+				res.on('data', (d) => {
 					data += d;
 				});
 
-				res.on("end", () => {
+				res.on('end', () => {
 					logger.info(`Received collection page with url: ${requestURLString}`);
 					logger.silly(data);
 					try {
@@ -120,7 +119,7 @@ module.exports = class TMSURLReader extends TMSReader {
 				});
 			});
 
-			req.on("error", (e) => {
+			req.on('error', (e) => {
 				reject(e);
 			});
 
@@ -146,7 +145,7 @@ module.exports = class TMSURLReader extends TMSReader {
 		const requestURL = url.parse(this.rootURL);
 
 		requestURL.pathname = `${this.path}/objects/json`;
-		requestURL.query = {page: pageIndex + 1};
+		requestURL.query = { page: pageIndex + 1 };
 		this._addCredentialsToURL(requestURL);
 		return url.format(requestURL);
 	}
@@ -162,21 +161,21 @@ module.exports = class TMSURLReader extends TMSReader {
 	getObjectCount() {
 		const requestURL = url.parse(this.rootURL);
 
-		requestURL.pathname = `objects/json`;
+		requestURL.pathname = 'objects/json';
 		this._addCredentialsToURL(requestURL);
 		const requestURLString = url.format(requestURL);
 
-		logger.info("Counting collection objects");
+		logger.info('Counting collection objects');
 
 		return new Promise((resolve, reject) => {
-			var req = https.request(requestURLString, (res) => {
-				let data = "";
+			const req = https.request(requestURLString, (res) => {
+				let data = '';
 
-				res.on("data", (d) => {
+				res.on('data', (d) => {
 					data += d;
 				});
 
-				res.on("end", () => {
+				res.on('end', () => {
 					logger.info(`Received collection page with url: ${requestURLString}`);
 					logger.silly(data);
 					try {
@@ -187,7 +186,7 @@ module.exports = class TMSURLReader extends TMSReader {
 				});
 			});
 
-			req.on("error", (e) => {
+			req.on('error', (e) => {
 				reject(e);
 			});
 
@@ -227,6 +226,6 @@ module.exports = class TMSURLReader extends TMSReader {
 			}, (error) => {
 				reject(error);
 			});
-		})
+		});
 	}
-}
+};

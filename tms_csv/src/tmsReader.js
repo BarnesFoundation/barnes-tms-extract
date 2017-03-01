@@ -15,4 +15,4 @@ module.exports = class TMSReader {
 	hasNext() { return false; }
 
 	next() { return null; }
-}
+};
