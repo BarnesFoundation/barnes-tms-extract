@@ -5,19 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Barnes Collection Scripts Dashboard</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 </head>
 <body>
-  <p id="test"></p>
-  <p id="active"></p>
-  <button id="run">Run Script</button>
+  <h1>Dashboard</h1>
+  <section>
+    <h2>TMS to CSV Exporter</h2>
+    <p>
+      <span>Script last ran: </span>
+      <span id="lastRan"></span>
+    </p>
+    <p>
+      <span>Script running: </span>
+      <span id="active"></span>
+    </p>
+    <p>
+      <span>Progress: </span>
+      <span id="progress"></span>
+    </p>
+    <button id="run">Run Script</button>
+  </section>
   <script>
   $(function() {
     $.get('/api/tmstocsv/info', function(response) {
-      $("#test").text(response.time);
-    });
-
-    $.get('/api/tmstocsv/active', function(response) {
-      $("#active").text(response.active ? "Script already running" : "Script not running");
+      $("#lastRan").text(moment(response.time).toString());
+      $("#active").text(response.active);
+      $("#progress").text(((response.progress.processed / response.progress.total) * 100).toFixed(3) + '%');
     });
 
     $("#run").click(function() {

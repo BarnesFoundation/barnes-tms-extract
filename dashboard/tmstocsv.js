@@ -7,7 +7,7 @@ const tmsExporter = new TMSExporter('../tms_csv/credentials.json');
 const searchConfig = '../tms_csv/searchConfig.json';
 
 function lastRunTime() {
-	const runTimesString = shelljs.grep('Beginning CSV export', '../tms_csv/logs/all-logs.log');
+	const runTimesString = shelljs.grep('Beginning CSV export', './logs/all-logs.log');
 	const lines = runTimesString.split('\n');
 	lines.pop();
 	const lastRunTime = JSON.parse(lines[lines.length - 1]);
@@ -16,7 +16,12 @@ function lastRunTime() {
 
 function tmstocsv(options) {
 	this.add('role:tmstocsv,cmd:info', (msg, respond) => {
-		respond(null, { time: lastRunTime() });
+    const data = {
+      time: lastRunTime(),
+      active: tmsExporter.active,
+      progress: tmsExporter.progress
+    };
+		respond(null, data);
 	});
 
 	this.add('role:tmstocsv,cmd:run', function run(msg, respond) {
