@@ -1,7 +1,7 @@
-require( 'seneca' )()
+require('seneca')()
 
-  .use( 'test' )
+  .use('test')
 
   // listen for role:math messages
   // IMPORTANT: must match client
-  .listen( { type:'tcp', pin:'role:test' } )
+  .listen({ type: 'tcp', pin: 'role:test' });

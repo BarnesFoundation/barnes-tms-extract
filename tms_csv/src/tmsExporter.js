@@ -1,11 +1,11 @@
-const ExportConfig = require("./exportConfig.js");
-const CSVWriter = require("./csvWriter.js");
-const TMSURLReader = require("./tmsURLReader.js");
-const WarningReporter = require("./warningReporter.js");
-const logger = require("./logger.js");
+const ExportConfig = require('./exportConfig.js');
+const CSVWriter = require('./csvWriter.js');
+const TMSURLReader = require('./tmsURLReader.js');
+const WarningReporter = require('./warningReporter.js');
+const logger = require('./logger.js');
 
 const fs = require('fs');
-const _ = require("lodash");
+const _ = require('lodash');
 
 // const configFile = "./searchConfig.json";
 
@@ -24,7 +24,7 @@ module.exports = class TMSExporter {
 	get progress() {
 		return {
 			processed: this._processedObjectCount,
-			total: this._totalObjectCount
+			total: this._totalObjectCount,
 		};
 	}
 
@@ -36,7 +36,7 @@ module.exports = class TMSExporter {
 
 	_loadCredentials(credsPath) {
 		logger.info(`Loading credentials at ${credsPath}`);
-		const creds = fs.readFileSync(credsPath, "utf8");
+		const creds = fs.readFileSync(credsPath, 'utf8');
 
 		if (!creds) {
 			logger.error(`Could not load credentials at ${credsPath}`);
@@ -53,7 +53,7 @@ module.exports = class TMSExporter {
 
 		let limitOutput = false;
 
-		const name = "objects";
+		const name = 'objects';
 
 		const collectionFields = config.fields;
 
@@ -69,7 +69,7 @@ module.exports = class TMSExporter {
 		}
 
 		tms.rootURL = config.apiURL;
-		tms.path = "";
+		tms.path = '';
 		logger.info(`Processing collection ${name} with url ${tms.collectionURL}`);
 
 		const processTMSHelper = () => {
@@ -92,7 +92,19 @@ module.exports = class TMSExporter {
 						return processTMSHelper();
 					}
 				} else {
+					processTMSHelper();
+				}
+			} else {
+				this._finishExport();
+			}
+		}, (error) => {
+			logger.warn(error);
+			logger.info('Error fetching collection object, skipping');
+			tms.hasNext().then((res) => {
+				if (!res) {
 					this._finishExport();
+				} else {
+					processTMSHelper();
 				}
 			}, (error) => {
 				logger.warn(error);
@@ -109,7 +121,7 @@ module.exports = class TMSExporter {
 					this._finishExport();
 				});
 			});
-		}
+		});
 
 		return tms.getObjectCount().then((res) => {
 			this._totalObjectCount = res;
@@ -122,12 +134,12 @@ module.exports = class TMSExporter {
 	}
 
 	exportCSV(configFile) {
-		logger.info("Beginning CSV export");
+		logger.info('Beginning CSV export');
 
 		const config = new ExportConfig(configFile);
 
 		const outputFolderName = `csv_${new Date().getTime()}`;
-		const outputPath = config.outputDirectory + "/" + outputFolderName;
+		const outputPath = `${config.outputDirectory}/${outputFolderName}`;
 		logger.info(`Creating CSV output directory ${outputPath}`);
 		fs.mkdirSync(outputPath);
 
@@ -135,4 +147,4 @@ module.exports = class TMSExporter {
 
 		return this._processTMS(this._credentials, config, outputPath);
 	}
-}
+};

@@ -1,0 +1,2083 @@
+type,object,field,message
+unused,6865,depth,"Object description has field depth, but that field was not selected for export"
+unused,6865,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,6865,copyright,Object is missing a required field copyright
+unused,5748,onview,"Object description has field onview, but that field was not selected for export"
+unused,5748,depth,"Object description has field depth, but that field was not selected for export"
+missing,5748,copyright,Object is missing a required field copyright
+missing,5748,bibliography1,Object is missing a required field bibliography1
+unused,4806,onview,"Object description has field onview, but that field was not selected for export"
+unused,4806,depth,"Object description has field depth, but that field was not selected for export"
+unused,4806,height,"Object description has field height, but that field was not selected for export"
+missing,4806,copyright,Object is missing a required field copyright
+missing,4806,classification,Object is missing a required field classification
+missing,4806,bibliography1,Object is missing a required field bibliography1
+unused,4842,onview,"Object description has field onview, but that field was not selected for export"
+unused,4842,depth,"Object description has field depth, but that field was not selected for export"
+unused,4842,height,"Object description has field height, but that field was not selected for export"
+missing,4842,copyright,Object is missing a required field copyright
+missing,4842,classification,Object is missing a required field classification
+missing,4842,bibliography1,Object is missing a required field bibliography1
+unused,6290,depth,"Object description has field depth, but that field was not selected for export"
+missing,6290,copyright,Object is missing a required field copyright
+unused,9557,depth,"Object description has field depth, but that field was not selected for export"
+missing,9557,copyright,Object is missing a required field copyright
+unused,5508,onview,"Object description has field onview, but that field was not selected for export"
+unused,5508,depth,"Object description has field depth, but that field was not selected for export"
+missing,5508,copyright,Object is missing a required field copyright
+unused,7078,depth,"Object description has field depth, but that field was not selected for export"
+unused,6604,depth,"Object description has field depth, but that field was not selected for export"
+missing,6604,copyright,Object is missing a required field copyright
+unused,5073,onview,"Object description has field onview, but that field was not selected for export"
+unused,5073,depth,"Object description has field depth, but that field was not selected for export"
+missing,5073,copyright,Object is missing a required field copyright
+unused,5789,onview,"Object description has field onview, but that field was not selected for export"
+unused,5789,depth,"Object description has field depth, but that field was not selected for export"
+missing,5789,copyright,Object is missing a required field copyright
+unused,7995,depth,"Object description has field depth, but that field was not selected for export"
+missing,7995,copyright,Object is missing a required field copyright
+unused,5878,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5878,depth,"Object description has field depth, but that field was not selected for export"
+unused,5878,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,5878,copyright,Object is missing a required field copyright
+unused,5881,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5881,depth,"Object description has field depth, but that field was not selected for export"
+missing,5881,copyright,Object is missing a required field copyright
+unused,5829,onview,"Object description has field onview, but that field was not selected for export"
+unused,5829,depth,"Object description has field depth, but that field was not selected for export"
+missing,5829,copyright,Object is missing a required field copyright
+unused,6494,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6494,depth,"Object description has field depth, but that field was not selected for export"
+missing,6494,copyright,Object is missing a required field copyright
+unused,5334,onview,"Object description has field onview, but that field was not selected for export"
+unused,5334,depth,"Object description has field depth, but that field was not selected for export"
+missing,5334,copyright,Object is missing a required field copyright
+unused,5183,depth,"Object description has field depth, but that field was not selected for export"
+missing,5183,copyright,Object is missing a required field copyright
+unused,7344,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,7344,depth,"Object description has field depth, but that field was not selected for export"
+missing,7344,copyright,Object is missing a required field copyright
+unused,3365,depth,"Object description has field depth, but that field was not selected for export"
+missing,3365,copyright,Object is missing a required field copyright
+missing,3365,bibliography1,Object is missing a required field bibliography1
+unused,6418,depth,"Object description has field depth, but that field was not selected for export"
+missing,6418,copyright,Object is missing a required field copyright
+missing,6418,bibliography1,Object is missing a required field bibliography1
+unused,6272,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6272,depth,"Object description has field depth, but that field was not selected for export"
+missing,6272,copyright,Object is missing a required field copyright
+unused,6038,depth,"Object description has field depth, but that field was not selected for export"
+missing,6038,copyright,Object is missing a required field copyright
+unused,5684,onview,"Object description has field onview, but that field was not selected for export"
+unused,5684,depth,"Object description has field depth, but that field was not selected for export"
+unused,5684,height,"Object description has field height, but that field was not selected for export"
+missing,5684,copyright,Object is missing a required field copyright
+missing,5684,bibliography1,Object is missing a required field bibliography1
+unused,5685,onview,"Object description has field onview, but that field was not selected for export"
+unused,5685,depth,"Object description has field depth, but that field was not selected for export"
+unused,5685,height,"Object description has field height, but that field was not selected for export"
+missing,5685,copyright,Object is missing a required field copyright
+missing,5685,bibliography1,Object is missing a required field bibliography1
+unused,6289,depth,"Object description has field depth, but that field was not selected for export"
+missing,6289,copyright,Object is missing a required field copyright
+missing,6289,bibliography1,Object is missing a required field bibliography1
+unused,6621,depth,"Object description has field depth, but that field was not selected for export"
+unused,6621,height,"Object description has field height, but that field was not selected for export"
+missing,6621,copyright,Object is missing a required field copyright
+unused,3399,depth,"Object description has field depth, but that field was not selected for export"
+missing,3399,copyright,Object is missing a required field copyright
+missing,3399,bibliography1,Object is missing a required field bibliography1
+unused,5327,onview,"Object description has field onview, but that field was not selected for export"
+unused,5327,depth,"Object description has field depth, but that field was not selected for export"
+unused,5327,height,"Object description has field height, but that field was not selected for export"
+missing,5327,copyright,Object is missing a required field copyright
+missing,5327,bibliography1,Object is missing a required field bibliography1
+unused,5328,onview,"Object description has field onview, but that field was not selected for export"
+unused,5328,depth,"Object description has field depth, but that field was not selected for export"
+unused,5328,height,"Object description has field height, but that field was not selected for export"
+missing,5328,copyright,Object is missing a required field copyright
+missing,5328,bibliography1,Object is missing a required field bibliography1
+unused,5469,depth,"Object description has field depth, but that field was not selected for export"
+unused,5469,height,"Object description has field height, but that field was not selected for export"
+missing,5469,copyright,Object is missing a required field copyright
+missing,5469,bibliography1,Object is missing a required field bibliography1
+unused,5470,depth,"Object description has field depth, but that field was not selected for export"
+unused,5470,height,"Object description has field height, but that field was not selected for export"
+missing,5470,copyright,Object is missing a required field copyright
+missing,5470,bibliography1,Object is missing a required field bibliography1
+unused,5852,depth,"Object description has field depth, but that field was not selected for export"
+unused,5852,height,"Object description has field height, but that field was not selected for export"
+missing,5852,copyright,Object is missing a required field copyright
+unused,5853,depth,"Object description has field depth, but that field was not selected for export"
+unused,5853,height,"Object description has field height, but that field was not selected for export"
+missing,5853,copyright,Object is missing a required field copyright
+unused,5866,depth,"Object description has field depth, but that field was not selected for export"
+unused,5866,width,"Object description has field width, but that field was not selected for export"
+missing,5866,copyright,Object is missing a required field copyright
+missing,5866,bibliography1,Object is missing a required field bibliography1
+unused,5867,depth,"Object description has field depth, but that field was not selected for export"
+unused,5867,width,"Object description has field width, but that field was not selected for export"
+missing,5867,copyright,Object is missing a required field copyright
+missing,5867,bibliography1,Object is missing a required field bibliography1
+unused,5874,depth,"Object description has field depth, but that field was not selected for export"
+unused,5874,height,"Object description has field height, but that field was not selected for export"
+missing,5874,copyright,Object is missing a required field copyright
+unused,5875,depth,"Object description has field depth, but that field was not selected for export"
+unused,5875,height,"Object description has field height, but that field was not selected for export"
+missing,5875,copyright,Object is missing a required field copyright
+unused,6087,depth,"Object description has field depth, but that field was not selected for export"
+unused,6087,height,"Object description has field height, but that field was not selected for export"
+missing,6087,copyright,Object is missing a required field copyright
+missing,6087,bibliography1,Object is missing a required field bibliography1
+unused,6088,depth,"Object description has field depth, but that field was not selected for export"
+unused,6088,height,"Object description has field height, but that field was not selected for export"
+missing,6088,copyright,Object is missing a required field copyright
+missing,6088,bibliography1,Object is missing a required field bibliography1
+unused,6332,depth,"Object description has field depth, but that field was not selected for export"
+unused,6332,height,"Object description has field height, but that field was not selected for export"
+missing,6332,copyright,Object is missing a required field copyright
+missing,6332,bibliography1,Object is missing a required field bibliography1
+unused,6333,depth,"Object description has field depth, but that field was not selected for export"
+unused,6333,height,"Object description has field height, but that field was not selected for export"
+missing,6333,copyright,Object is missing a required field copyright
+missing,6333,bibliography1,Object is missing a required field bibliography1
+unused,6114,depth,"Object description has field depth, but that field was not selected for export"
+unused,6114,height,"Object description has field height, but that field was not selected for export"
+missing,6114,copyright,Object is missing a required field copyright
+missing,6114,bibliography1,Object is missing a required field bibliography1
+unused,6115,depth,"Object description has field depth, but that field was not selected for export"
+unused,6115,height,"Object description has field height, but that field was not selected for export"
+missing,6115,copyright,Object is missing a required field copyright
+missing,6115,bibliography1,Object is missing a required field bibliography1
+unused,5181,onview,"Object description has field onview, but that field was not selected for export"
+unused,5181,depth,"Object description has field depth, but that field was not selected for export"
+missing,5181,copyright,Object is missing a required field copyright
+unused,5088,onview,"Object description has field onview, but that field was not selected for export"
+unused,5088,depth,"Object description has field depth, but that field was not selected for export"
+missing,5088,copyright,Object is missing a required field copyright
+unused,5060,onview,"Object description has field onview, but that field was not selected for export"
+unused,5060,depth,"Object description has field depth, but that field was not selected for export"
+missing,5060,copyright,Object is missing a required field copyright
+unused,6285,depth,"Object description has field depth, but that field was not selected for export"
+missing,6285,copyright,Object is missing a required field copyright
+unused,4912,onview,"Object description has field onview, but that field was not selected for export"
+unused,4912,depth,"Object description has field depth, but that field was not selected for export"
+missing,4912,copyright,Object is missing a required field copyright
+unused,6508,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6508,depth,"Object description has field depth, but that field was not selected for export"
+unused,6508,width,"Object description has field width, but that field was not selected for export"
+unused,6508,height,"Object description has field height, but that field was not selected for export"
+missing,6508,copyright,Object is missing a required field copyright
+unused,6394,depth,"Object description has field depth, but that field was not selected for export"
+unused,6394,height,"Object description has field height, but that field was not selected for export"
+missing,6394,copyright,Object is missing a required field copyright
+missing,6394,bibliography1,Object is missing a required field bibliography1
+unused,5659,depth,"Object description has field depth, but that field was not selected for export"
+missing,5659,copyright,Object is missing a required field copyright
+unused,6539,depth,"Object description has field depth, but that field was not selected for export"
+missing,6539,copyright,Object is missing a required field copyright
+missing,6539,bibliography1,Object is missing a required field bibliography1
+unused,7918,depth,"Object description has field depth, but that field was not selected for export"
+missing,7918,copyright,Object is missing a required field copyright
+missing,7918,bibliography1,Object is missing a required field bibliography1
+unused,7986,depth,"Object description has field depth, but that field was not selected for export"
+unused,7986,height,"Object description has field height, but that field was not selected for export"
+missing,7986,copyright,Object is missing a required field copyright
+missing,7986,bibliography1,Object is missing a required field bibliography1
+unused,8002,depth,"Object description has field depth, but that field was not selected for export"
+missing,8002,copyright,Object is missing a required field copyright
+missing,8002,bibliography1,Object is missing a required field bibliography1
+unused,8007,depth,"Object description has field depth, but that field was not selected for export"
+missing,8007,copyright,Object is missing a required field copyright
+missing,8007,bibliography1,Object is missing a required field bibliography1
+unused,4764,onview,"Object description has field onview, but that field was not selected for export"
+unused,4764,depth,"Object description has field depth, but that field was not selected for export"
+missing,4764,copyright,Object is missing a required field copyright
+unused,5776,onview,"Object description has field onview, but that field was not selected for export"
+unused,5776,depth,"Object description has field depth, but that field was not selected for export"
+missing,5776,copyright,Object is missing a required field copyright
+unused,5202,onview,"Object description has field onview, but that field was not selected for export"
+unused,5202,depth,"Object description has field depth, but that field was not selected for export"
+missing,5202,copyright,Object is missing a required field copyright
+unused,4733,onview,"Object description has field onview, but that field was not selected for export"
+unused,4733,depth,"Object description has field depth, but that field was not selected for export"
+missing,4733,copyright,Object is missing a required field copyright
+unused,4761,depth,"Object description has field depth, but that field was not selected for export"
+missing,4761,copyright,Object is missing a required field copyright
+unused,5311,depth,"Object description has field depth, but that field was not selected for export"
+missing,5311,copyright,Object is missing a required field copyright
+unused,5325,depth,"Object description has field depth, but that field was not selected for export"
+missing,5325,copyright,Object is missing a required field copyright
+unused,4715,depth,"Object description has field depth, but that field was not selected for export"
+missing,4715,copyright,Object is missing a required field copyright
+unused,6299,depth,"Object description has field depth, but that field was not selected for export"
+missing,6299,copyright,Object is missing a required field copyright
+missing,6299,bibliography1,Object is missing a required field bibliography1
+unused,5139,onview,"Object description has field onview, but that field was not selected for export"
+unused,5139,depth,"Object description has field depth, but that field was not selected for export"
+missing,5139,copyright,Object is missing a required field copyright
+missing,5139,bibliography1,Object is missing a required field bibliography1
+unused,6511,depth,"Object description has field depth, but that field was not selected for export"
+missing,6511,copyright,Object is missing a required field copyright
+missing,6511,bibliography1,Object is missing a required field bibliography1
+unused,5497,onview,"Object description has field onview, but that field was not selected for export"
+unused,5497,depth,"Object description has field depth, but that field was not selected for export"
+missing,5497,copyright,Object is missing a required field copyright
+unused,7416,onview,"Object description has field onview, but that field was not selected for export"
+unused,7416,depth,"Object description has field depth, but that field was not selected for export"
+unused,7416,height,"Object description has field height, but that field was not selected for export"
+missing,7416,copyright,Object is missing a required field copyright
+missing,7416,classification,Object is missing a required field classification
+missing,7416,bibliography1,Object is missing a required field bibliography1
+unused,3459,depth,"Object description has field depth, but that field was not selected for export"
+unused,7098,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,7098,depth,"Object description has field depth, but that field was not selected for export"
+missing,7098,copyright,Object is missing a required field copyright
+unused,6818,depth,"Object description has field depth, but that field was not selected for export"
+missing,6818,copyright,Object is missing a required field copyright
+unused,6561,depth,"Object description has field depth, but that field was not selected for export"
+missing,6561,copyright,Object is missing a required field copyright
+unused,5008,onview,"Object description has field onview, but that field was not selected for export"
+unused,5008,depth,"Object description has field depth, but that field was not selected for export"
+missing,5008,copyright,Object is missing a required field copyright
+unused,5135,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5135,onview,"Object description has field onview, but that field was not selected for export"
+unused,5135,depth,"Object description has field depth, but that field was not selected for export"
+missing,5135,copyright,Object is missing a required field copyright
+unused,5553,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5553,onview,"Object description has field onview, but that field was not selected for export"
+unused,5553,depth,"Object description has field depth, but that field was not selected for export"
+missing,5553,copyright,Object is missing a required field copyright
+unused,5087,depth,"Object description has field depth, but that field was not selected for export"
+missing,5087,copyright,Object is missing a required field copyright
+unused,6061,depth,"Object description has field depth, but that field was not selected for export"
+missing,6061,copyright,Object is missing a required field copyright
+unused,5326,depth,"Object description has field depth, but that field was not selected for export"
+missing,5326,copyright,Object is missing a required field copyright
+unused,4802,onview,"Object description has field onview, but that field was not selected for export"
+unused,4802,depth,"Object description has field depth, but that field was not selected for export"
+unused,4802,height,"Object description has field height, but that field was not selected for export"
+missing,4802,copyright,Object is missing a required field copyright
+missing,4802,classification,Object is missing a required field classification
+missing,4802,bibliography1,Object is missing a required field bibliography1
+unused,6521,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6521,depth,"Object description has field depth, but that field was not selected for export"
+missing,6521,copyright,Object is missing a required field copyright
+unused,3448,depth,"Object description has field depth, but that field was not selected for export"
+missing,3448,copyright,Object is missing a required field copyright
+missing,3448,bibliography1,Object is missing a required field bibliography1
+unused,6311,depth,"Object description has field depth, but that field was not selected for export"
+unused,6311,height,"Object description has field height, but that field was not selected for export"
+missing,6311,copyright,Object is missing a required field copyright
+missing,6311,bibliography1,Object is missing a required field bibliography1
+unused,5250,depth,"Object description has field depth, but that field was not selected for export"
+unused,5250,height,"Object description has field height, but that field was not selected for export"
+missing,5250,copyright,Object is missing a required field copyright
+unused,6574,depth,"Object description has field depth, but that field was not selected for export"
+unused,6574,height,"Object description has field height, but that field was not selected for export"
+missing,6574,copyright,Object is missing a required field copyright
+missing,6574,bibliography1,Object is missing a required field bibliography1
+unused,6575,depth,"Object description has field depth, but that field was not selected for export"
+unused,6575,height,"Object description has field height, but that field was not selected for export"
+missing,6575,copyright,Object is missing a required field copyright
+missing,6575,bibliography1,Object is missing a required field bibliography1
+unused,6441,depth,"Object description has field depth, but that field was not selected for export"
+unused,6441,height,"Object description has field height, but that field was not selected for export"
+missing,6441,copyright,Object is missing a required field copyright
+missing,6441,bibliography1,Object is missing a required field bibliography1
+unused,6469,depth,"Object description has field depth, but that field was not selected for export"
+unused,6469,height,"Object description has field height, but that field was not selected for export"
+missing,6469,copyright,Object is missing a required field copyright
+missing,6469,bibliography1,Object is missing a required field bibliography1
+unused,6052,depth,"Object description has field depth, but that field was not selected for export"
+missing,6052,copyright,Object is missing a required field copyright
+unused,6105,depth,"Object description has field depth, but that field was not selected for export"
+missing,6105,copyright,Object is missing a required field copyright
+missing,6105,bibliography1,Object is missing a required field bibliography1
+unused,7316,depth,"Object description has field depth, but that field was not selected for export"
+unused,8046,onview,"Object description has field onview, but that field was not selected for export"
+unused,8046,width,"Object description has field width, but that field was not selected for export"
+unused,8046,height,"Object description has field height, but that field was not selected for export"
+missing,8046,copyright,Object is missing a required field copyright
+missing,8046,classification,Object is missing a required field classification
+unused,8047,onview,"Object description has field onview, but that field was not selected for export"
+unused,8047,width,"Object description has field width, but that field was not selected for export"
+unused,8047,height,"Object description has field height, but that field was not selected for export"
+missing,8047,copyright,Object is missing a required field copyright
+missing,8047,classification,Object is missing a required field classification
+unused,6544,depth,"Object description has field depth, but that field was not selected for export"
+missing,6544,copyright,Object is missing a required field copyright
+missing,6544,bibliography1,Object is missing a required field bibliography1
+unused,6970,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6970,depth,"Object description has field depth, but that field was not selected for export"
+unused,6970,height,"Object description has field height, but that field was not selected for export"
+missing,6970,copyright,Object is missing a required field copyright
+unused,7876,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,7876,depth,"Object description has field depth, but that field was not selected for export"
+unused,7876,height,"Object description has field height, but that field was not selected for export"
+missing,7876,copyright,Object is missing a required field copyright
+unused,5230,onview,"Object description has field onview, but that field was not selected for export"
+unused,5230,depth,"Object description has field depth, but that field was not selected for export"
+missing,5230,copyright,Object is missing a required field copyright
+unused,5312,depth,"Object description has field depth, but that field was not selected for export"
+missing,5312,copyright,Object is missing a required field copyright
+unused,5320,onview,"Object description has field onview, but that field was not selected for export"
+unused,5320,depth,"Object description has field depth, but that field was not selected for export"
+missing,5320,copyright,Object is missing a required field copyright
+unused,5192,depth,"Object description has field depth, but that field was not selected for export"
+missing,5192,copyright,Object is missing a required field copyright
+unused,7010,depth,"Object description has field depth, but that field was not selected for export"
+missing,7010,copyright,Object is missing a required field copyright
+unused,6354,depth,"Object description has field depth, but that field was not selected for export"
+missing,6354,copyright,Object is missing a required field copyright
+unused,7891,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,7891,depth,"Object description has field depth, but that field was not selected for export"
+unused,7891,height,"Object description has field height, but that field was not selected for export"
+missing,7891,copyright,Object is missing a required field copyright
+unused,4716,depth,"Object description has field depth, but that field was not selected for export"
+missing,4716,copyright,Object is missing a required field copyright
+unused,4819,onview,"Object description has field onview, but that field was not selected for export"
+unused,4819,depth,"Object description has field depth, but that field was not selected for export"
+missing,4819,copyright,Object is missing a required field copyright
+unused,5219,onview,"Object description has field onview, but that field was not selected for export"
+unused,5219,depth,"Object description has field depth, but that field was not selected for export"
+missing,5219,copyright,Object is missing a required field copyright
+unused,5226,onview,"Object description has field onview, but that field was not selected for export"
+unused,5226,depth,"Object description has field depth, but that field was not selected for export"
+unused,5226,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,5226,copyright,Object is missing a required field copyright
+unused,5662,onview,"Object description has field onview, but that field was not selected for export"
+unused,5662,depth,"Object description has field depth, but that field was not selected for export"
+missing,5662,copyright,Object is missing a required field copyright
+unused,5670,depth,"Object description has field depth, but that field was not selected for export"
+missing,5670,copyright,Object is missing a required field copyright
+unused,5003,onview,"Object description has field onview, but that field was not selected for export"
+unused,5003,depth,"Object description has field depth, but that field was not selected for export"
+unused,5003,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,5003,copyright,Object is missing a required field copyright
+unused,5211,depth,"Object description has field depth, but that field was not selected for export"
+missing,5211,copyright,Object is missing a required field copyright
+unused,5461,depth,"Object description has field depth, but that field was not selected for export"
+missing,5461,copyright,Object is missing a required field copyright
+missing,5461,bibliography1,Object is missing a required field bibliography1
+unused,6929,depth,"Object description has field depth, but that field was not selected for export"
+missing,6929,bibliography1,Object is missing a required field bibliography1
+unused,5443,depth,"Object description has field depth, but that field was not selected for export"
+missing,5443,copyright,Object is missing a required field copyright
+unused,5178,onview,"Object description has field onview, but that field was not selected for export"
+unused,5178,depth,"Object description has field depth, but that field was not selected for export"
+missing,5178,copyright,Object is missing a required field copyright
+unused,5552,onview,"Object description has field onview, but that field was not selected for export"
+unused,5552,depth,"Object description has field depth, but that field was not selected for export"
+missing,5552,copyright,Object is missing a required field copyright
+unused,5644,depth,"Object description has field depth, but that field was not selected for export"
+missing,5644,copyright,Object is missing a required field copyright
+unused,5176,onview,"Object description has field onview, but that field was not selected for export"
+unused,5176,depth,"Object description has field depth, but that field was not selected for export"
+missing,5176,copyright,Object is missing a required field copyright
+unused,4765,onview,"Object description has field onview, but that field was not selected for export"
+unused,4765,depth,"Object description has field depth, but that field was not selected for export"
+missing,4765,copyright,Object is missing a required field copyright
+unused,5000,onview,"Object description has field onview, but that field was not selected for export"
+unused,5000,depth,"Object description has field depth, but that field was not selected for export"
+missing,5000,copyright,Object is missing a required field copyright
+unused,5215,onview,"Object description has field onview, but that field was not selected for export"
+unused,5215,depth,"Object description has field depth, but that field was not selected for export"
+unused,4709,onview,"Object description has field onview, but that field was not selected for export"
+unused,4709,depth,"Object description has field depth, but that field was not selected for export"
+unused,7312,width,"Object description has field width, but that field was not selected for export"
+unused,7312,height,"Object description has field height, but that field was not selected for export"
+missing,7312,copyright,Object is missing a required field copyright
+missing,7312,classification,Object is missing a required field classification
+missing,7312,bibliography1,Object is missing a required field bibliography1
+unused,7313,depth,"Object description has field depth, but that field was not selected for export"
+unused,7313,height,"Object description has field height, but that field was not selected for export"
+missing,7313,copyright,Object is missing a required field copyright
+missing,7313,classification,Object is missing a required field classification
+missing,7313,bibliography1,Object is missing a required field bibliography1
+unused,5323,depth,"Object description has field depth, but that field was not selected for export"
+unused,5323,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,5323,copyright,Object is missing a required field copyright
+unused,6921,depth,"Object description has field depth, but that field was not selected for export"
+unused,6921,height,"Object description has field height, but that field was not selected for export"
+missing,6921,copyright,Object is missing a required field copyright
+unused,6483,depth,"Object description has field depth, but that field was not selected for export"
+unused,6483,height,"Object description has field height, but that field was not selected for export"
+missing,6483,copyright,Object is missing a required field copyright
+missing,6483,bibliography1,Object is missing a required field bibliography1
+unused,5713,depth,"Object description has field depth, but that field was not selected for export"
+unused,5713,height,"Object description has field height, but that field was not selected for export"
+missing,5713,copyright,Object is missing a required field copyright
+missing,5713,bibliography1,Object is missing a required field bibliography1
+unused,3193,depth,"Object description has field depth, but that field was not selected for export"
+missing,3193,copyright,Object is missing a required field copyright
+unused,3192,depth,"Object description has field depth, but that field was not selected for export"
+missing,3192,copyright,Object is missing a required field copyright
+unused,6520,depth,"Object description has field depth, but that field was not selected for export"
+missing,6520,copyright,Object is missing a required field copyright
+unused,6907,depth,"Object description has field depth, but that field was not selected for export"
+missing,6907,copyright,Object is missing a required field copyright
+unused,6915,depth,"Object description has field depth, but that field was not selected for export"
+missing,6915,copyright,Object is missing a required field copyright
+unused,6954,depth,"Object description has field depth, but that field was not selected for export"
+missing,6954,copyright,Object is missing a required field copyright
+unused,6952,depth,"Object description has field depth, but that field was not selected for export"
+missing,6952,copyright,Object is missing a required field copyright
+unused,6914,depth,"Object description has field depth, but that field was not selected for export"
+missing,6914,copyright,Object is missing a required field copyright
+unused,7355,depth,"Object description has field depth, but that field was not selected for export"
+missing,7355,copyright,Object is missing a required field copyright
+unused,5541,onview,"Object description has field onview, but that field was not selected for export"
+unused,5541,depth,"Object description has field depth, but that field was not selected for export"
+unused,5541,height,"Object description has field height, but that field was not selected for export"
+missing,5541,copyright,Object is missing a required field copyright
+missing,5541,bibliography1,Object is missing a required field bibliography1
+unused,5542,onview,"Object description has field onview, but that field was not selected for export"
+unused,5542,depth,"Object description has field depth, but that field was not selected for export"
+unused,5542,height,"Object description has field height, but that field was not selected for export"
+missing,5542,copyright,Object is missing a required field copyright
+missing,5542,bibliography1,Object is missing a required field bibliography1
+unused,5544,depth,"Object description has field depth, but that field was not selected for export"
+unused,5544,onview,"Object description has field onview, but that field was not selected for export"
+missing,5544,primaryMedia,Object is missing a required field primaryMedia
+missing,5544,copyright,Object is missing a required field copyright
+missing,5544,bibliography1,Object is missing a required field bibliography1
+unused,5545,onview,"Object description has field onview, but that field was not selected for export"
+unused,5545,depth,"Object description has field depth, but that field was not selected for export"
+missing,5545,copyright,Object is missing a required field copyright
+missing,5545,bibliography1,Object is missing a required field bibliography1
+unused,4820,onview,"Object description has field onview, but that field was not selected for export"
+unused,4820,depth,"Object description has field depth, but that field was not selected for export"
+missing,4820,copyright,Object is missing a required field copyright
+unused,5018,depth,"Object description has field depth, but that field was not selected for export"
+missing,5018,copyright,Object is missing a required field copyright
+unused,6567,depth,"Object description has field depth, but that field was not selected for export"
+missing,6567,copyright,Object is missing a required field copyright
+unused,6570,depth,"Object description has field depth, but that field was not selected for export"
+missing,6570,copyright,Object is missing a required field copyright
+unused,8071,depth,"Object description has field depth, but that field was not selected for export"
+unused,8071,height,"Object description has field height, but that field was not selected for export"
+missing,8071,copyright,Object is missing a required field copyright
+missing,8071,classification,Object is missing a required field classification
+missing,8071,bibliography1,Object is missing a required field bibliography1
+unused,6519,depth,"Object description has field depth, but that field was not selected for export"
+missing,6519,copyright,Object is missing a required field copyright
+unused,6523,depth,"Object description has field depth, but that field was not selected for export"
+missing,6523,copyright,Object is missing a required field copyright
+missing,6523,bibliography1,Object is missing a required field bibliography1
+unused,6618,depth,"Object description has field depth, but that field was not selected for export"
+missing,6618,copyright,Object is missing a required field copyright
+missing,6618,bibliography1,Object is missing a required field bibliography1
+unused,6438,depth,"Object description has field depth, but that field was not selected for export"
+missing,6438,copyright,Object is missing a required field copyright
+unused,6031,depth,"Object description has field depth, but that field was not selected for export"
+missing,6031,copyright,Object is missing a required field copyright
+unused,5459,depth,"Object description has field depth, but that field was not selected for export"
+missing,5459,copyright,Object is missing a required field copyright
+unused,8117,depth,"Object description has field depth, but that field was not selected for export"
+missing,8117,copyright,Object is missing a required field copyright
+missing,8117,bibliography1,Object is missing a required field bibliography1
+unused,5526,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5526,depth,"Object description has field depth, but that field was not selected for export"
+unused,5526,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,5526,copyright,Object is missing a required field copyright
+unused,5097,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5097,onview,"Object description has field onview, but that field was not selected for export"
+unused,5097,depth,"Object description has field depth, but that field was not selected for export"
+missing,5097,copyright,Object is missing a required field copyright
+unused,5529,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5529,onview,"Object description has field onview, but that field was not selected for export"
+unused,5529,depth,"Object description has field depth, but that field was not selected for export"
+missing,5529,copyright,Object is missing a required field copyright
+unused,5199,depth,"Object description has field depth, but that field was not selected for export"
+missing,5199,copyright,Object is missing a required field copyright
+unused,4933,onview,"Object description has field onview, but that field was not selected for export"
+unused,4933,width,"Object description has field width, but that field was not selected for export"
+unused,4933,height,"Object description has field height, but that field was not selected for export"
+missing,4933,copyright,Object is missing a required field copyright
+missing,4933,classification,Object is missing a required field classification
+missing,4933,bibliography1,Object is missing a required field bibliography1
+unused,4941,onview,"Object description has field onview, but that field was not selected for export"
+unused,4941,width,"Object description has field width, but that field was not selected for export"
+unused,4941,height,"Object description has field height, but that field was not selected for export"
+missing,4941,copyright,Object is missing a required field copyright
+missing,4941,classification,Object is missing a required field classification
+missing,4941,bibliography1,Object is missing a required field bibliography1
+unused,6230,depth,"Object description has field depth, but that field was not selected for export"
+unused,6230,height,"Object description has field height, but that field was not selected for export"
+missing,6230,copyright,Object is missing a required field copyright
+missing,6230,classification,Object is missing a required field classification
+unused,7144,width,"Object description has field width, but that field was not selected for export"
+unused,7144,height,"Object description has field height, but that field was not selected for export"
+missing,7144,copyright,Object is missing a required field copyright
+missing,7144,classification,Object is missing a required field classification
+missing,7144,bibliography1,Object is missing a required field bibliography1
+unused,7175,width,"Object description has field width, but that field was not selected for export"
+unused,7175,height,"Object description has field height, but that field was not selected for export"
+missing,7175,copyright,Object is missing a required field copyright
+missing,7175,classification,Object is missing a required field classification
+unused,7559,depth,"Object description has field depth, but that field was not selected for export"
+unused,7559,height,"Object description has field height, but that field was not selected for export"
+missing,7559,copyright,Object is missing a required field copyright
+missing,7559,classification,Object is missing a required field classification
+missing,7559,bibliography1,Object is missing a required field bibliography1
+unused,7939,depth,"Object description has field depth, but that field was not selected for export"
+unused,7939,height,"Object description has field height, but that field was not selected for export"
+missing,7939,copyright,Object is missing a required field copyright
+missing,7939,classification,Object is missing a required field classification
+missing,7939,bibliography1,Object is missing a required field bibliography1
+unused,8386,depth,"Object description has field depth, but that field was not selected for export"
+unused,8386,height,"Object description has field height, but that field was not selected for export"
+missing,8386,copyright,Object is missing a required field copyright
+missing,8386,classification,Object is missing a required field classification
+missing,8386,bibliography1,Object is missing a required field bibliography1
+unused,4838,onview,"Object description has field onview, but that field was not selected for export"
+unused,4838,depth,"Object description has field depth, but that field was not selected for export"
+unused,4838,height,"Object description has field height, but that field was not selected for export"
+missing,4838,copyright,Object is missing a required field copyright
+missing,4838,classification,Object is missing a required field classification
+missing,4838,bibliography1,Object is missing a required field bibliography1
+unused,5962,onview,"Object description has field onview, but that field was not selected for export"
+unused,5962,depth,"Object description has field depth, but that field was not selected for export"
+unused,5962,height,"Object description has field height, but that field was not selected for export"
+missing,5962,copyright,Object is missing a required field copyright
+missing,5962,classification,Object is missing a required field classification
+missing,5962,bibliography1,Object is missing a required field bibliography1
+unused,5963,onview,"Object description has field onview, but that field was not selected for export"
+unused,5963,depth,"Object description has field depth, but that field was not selected for export"
+unused,5963,height,"Object description has field height, but that field was not selected for export"
+missing,5963,copyright,Object is missing a required field copyright
+missing,5963,classification,Object is missing a required field classification
+missing,5963,bibliography1,Object is missing a required field bibliography1
+unused,7675,onview,"Object description has field onview, but that field was not selected for export"
+unused,7675,depth,"Object description has field depth, but that field was not selected for export"
+unused,7675,height,"Object description has field height, but that field was not selected for export"
+missing,7675,copyright,Object is missing a required field copyright
+missing,7675,classification,Object is missing a required field classification
+missing,7675,bibliography1,Object is missing a required field bibliography1
+unused,8144,depth,"Object description has field depth, but that field was not selected for export"
+unused,8144,height,"Object description has field height, but that field was not selected for export"
+missing,8144,copyright,Object is missing a required field copyright
+missing,8144,bibliography1,Object is missing a required field bibliography1
+unused,8145,depth,"Object description has field depth, but that field was not selected for export"
+unused,8145,height,"Object description has field height, but that field was not selected for export"
+missing,8145,copyright,Object is missing a required field copyright
+missing,8145,bibliography1,Object is missing a required field bibliography1
+unused,6995,depth,"Object description has field depth, but that field was not selected for export"
+missing,6995,copyright,Object is missing a required field copyright
+unused,5318,onview,"Object description has field onview, but that field was not selected for export"
+unused,5318,depth,"Object description has field depth, but that field was not selected for export"
+missing,5318,copyright,Object is missing a required field copyright
+unused,5100,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5100,onview,"Object description has field onview, but that field was not selected for export"
+unused,5100,depth,"Object description has field depth, but that field was not selected for export"
+missing,5100,copyright,Object is missing a required field copyright
+unused,5520,onview,"Object description has field onview, but that field was not selected for export"
+unused,5520,depth,"Object description has field depth, but that field was not selected for export"
+missing,5520,copyright,Object is missing a required field copyright
+unused,5884,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5884,depth,"Object description has field depth, but that field was not selected for export"
+missing,5884,copyright,Object is missing a required field copyright
+unused,5530,onview,"Object description has field onview, but that field was not selected for export"
+unused,5530,depth,"Object description has field depth, but that field was not selected for export"
+missing,5530,copyright,Object is missing a required field copyright
+unused,4998,depth,"Object description has field depth, but that field was not selected for export"
+missing,4998,copyright,Object is missing a required field copyright
+unused,5650,onview,"Object description has field onview, but that field was not selected for export"
+unused,5650,depth,"Object description has field depth, but that field was not selected for export"
+missing,5650,copyright,Object is missing a required field copyright
+unused,6423,depth,"Object description has field depth, but that field was not selected for export"
+unused,6423,height,"Object description has field height, but that field was not selected for export"
+missing,6423,copyright,Object is missing a required field copyright
+missing,6423,bibliography1,Object is missing a required field bibliography1
+unused,6428,depth,"Object description has field depth, but that field was not selected for export"
+unused,6428,height,"Object description has field height, but that field was not selected for export"
+missing,6428,copyright,Object is missing a required field copyright
+unused,4705,depth,"Object description has field depth, but that field was not selected for export"
+unused,4705,height,"Object description has field height, but that field was not selected for export"
+missing,4705,copyright,Object is missing a required field copyright
+unused,4674,depth,"Object description has field depth, but that field was not selected for export"
+unused,4674,height,"Object description has field height, but that field was not selected for export"
+missing,4674,copyright,Object is missing a required field copyright
+missing,4674,bibliography1,Object is missing a required field bibliography1
+unused,3068,depth,"Object description has field depth, but that field was not selected for export"
+missing,3068,copyright,Object is missing a required field copyright
+missing,3068,bibliography1,Object is missing a required field bibliography1
+unused,3076,depth,"Object description has field depth, but that field was not selected for export"
+missing,3076,copyright,Object is missing a required field copyright
+missing,3076,bibliography1,Object is missing a required field bibliography1
+unused,3079,depth,"Object description has field depth, but that field was not selected for export"
+missing,3079,copyright,Object is missing a required field copyright
+missing,3079,bibliography1,Object is missing a required field bibliography1
+unused,3083,depth,"Object description has field depth, but that field was not selected for export"
+missing,3083,copyright,Object is missing a required field copyright
+missing,3083,bibliography1,Object is missing a required field bibliography1
+unused,3084,depth,"Object description has field depth, but that field was not selected for export"
+missing,3084,copyright,Object is missing a required field copyright
+missing,3084,bibliography1,Object is missing a required field bibliography1
+unused,3086,depth,"Object description has field depth, but that field was not selected for export"
+missing,3086,copyright,Object is missing a required field copyright
+missing,3086,bibliography1,Object is missing a required field bibliography1
+unused,3171,depth,"Object description has field depth, but that field was not selected for export"
+missing,3171,copyright,Object is missing a required field copyright
+missing,3171,bibliography1,Object is missing a required field bibliography1
+unused,3173,depth,"Object description has field depth, but that field was not selected for export"
+missing,3173,copyright,Object is missing a required field copyright
+missing,3173,bibliography1,Object is missing a required field bibliography1
+unused,4190,depth,"Object description has field depth, but that field was not selected for export"
+missing,4190,copyright,Object is missing a required field copyright
+missing,4190,bibliography1,Object is missing a required field bibliography1
+unused,4191,depth,"Object description has field depth, but that field was not selected for export"
+missing,4191,copyright,Object is missing a required field copyright
+missing,4191,bibliography1,Object is missing a required field bibliography1
+unused,5638,onview,"Object description has field onview, but that field was not selected for export"
+unused,5638,depth,"Object description has field depth, but that field was not selected for export"
+missing,5638,copyright,Object is missing a required field copyright
+missing,5638,bibliography1,Object is missing a required field bibliography1
+unused,5815,depth,"Object description has field depth, but that field was not selected for export"
+missing,5815,copyright,Object is missing a required field copyright
+unused,8122,depth,"Object description has field depth, but that field was not selected for export"
+missing,8122,copyright,Object is missing a required field copyright
+missing,8122,bibliography1,Object is missing a required field bibliography1
+unused,5266,onview,"Object description has field onview, but that field was not selected for export"
+unused,5266,depth,"Object description has field depth, but that field was not selected for export"
+missing,5266,copyright,Object is missing a required field copyright
+unused,7014,depth,"Object description has field depth, but that field was not selected for export"
+missing,7014,copyright,Object is missing a required field copyright
+unused,5050,onview,"Object description has field onview, but that field was not selected for export"
+unused,5050,depth,"Object description has field depth, but that field was not selected for export"
+unused,5050,height,"Object description has field height, but that field was not selected for export"
+missing,5050,copyright,Object is missing a required field copyright
+missing,5050,bibliography1,Object is missing a required field bibliography1
+unused,5704,depth,"Object description has field depth, but that field was not selected for export"
+missing,5704,copyright,Object is missing a required field copyright
+unused,6964,depth,"Object description has field depth, but that field was not selected for export"
+missing,6964,copyright,Object is missing a required field copyright
+unused,6210,onview,"Object description has field onview, but that field was not selected for export"
+unused,6210,width,"Object description has field width, but that field was not selected for export"
+unused,6210,height,"Object description has field height, but that field was not selected for export"
+missing,6210,copyright,Object is missing a required field copyright
+missing,6210,classification,Object is missing a required field classification
+missing,6210,bibliography1,Object is missing a required field bibliography1
+unused,6211,onview,"Object description has field onview, but that field was not selected for export"
+unused,6211,width,"Object description has field width, but that field was not selected for export"
+unused,6211,height,"Object description has field height, but that field was not selected for export"
+missing,6211,copyright,Object is missing a required field copyright
+missing,6211,classification,Object is missing a required field classification
+missing,6211,bibliography1,Object is missing a required field bibliography1
+unused,7152,depth,"Object description has field depth, but that field was not selected for export"
+missing,7152,primaryMedia,Object is missing a required field primaryMedia
+missing,7152,copyright,Object is missing a required field copyright
+missing,7152,classification,Object is missing a required field classification
+unused,7934,depth,"Object description has field depth, but that field was not selected for export"
+unused,7934,height,"Object description has field height, but that field was not selected for export"
+missing,7934,copyright,Object is missing a required field copyright
+missing,7934,classification,Object is missing a required field classification
+missing,7934,bibliography1,Object is missing a required field bibliography1
+unused,4587,depth,"Object description has field depth, but that field was not selected for export"
+unused,4587,height,"Object description has field height, but that field was not selected for export"
+missing,4587,copyright,Object is missing a required field copyright
+missing,4587,bibliography1,Object is missing a required field bibliography1
+unused,4588,depth,"Object description has field depth, but that field was not selected for export"
+unused,4588,height,"Object description has field height, but that field was not selected for export"
+missing,4588,copyright,Object is missing a required field copyright
+missing,4588,bibliography1,Object is missing a required field bibliography1
+unused,4660,depth,"Object description has field depth, but that field was not selected for export"
+unused,4660,height,"Object description has field height, but that field was not selected for export"
+missing,4660,copyright,Object is missing a required field copyright
+missing,4660,bibliography1,Object is missing a required field bibliography1
+unused,4662,depth,"Object description has field depth, but that field was not selected for export"
+unused,4662,height,"Object description has field height, but that field was not selected for export"
+missing,4662,copyright,Object is missing a required field copyright
+missing,4662,bibliography1,Object is missing a required field bibliography1
+unused,4667,depth,"Object description has field depth, but that field was not selected for export"
+unused,4667,height,"Object description has field height, but that field was not selected for export"
+missing,4667,copyright,Object is missing a required field copyright
+missing,4667,bibliography1,Object is missing a required field bibliography1
+unused,6380,depth,"Object description has field depth, but that field was not selected for export"
+unused,6380,height,"Object description has field height, but that field was not selected for export"
+missing,6380,copyright,Object is missing a required field copyright
+missing,6380,bibliography1,Object is missing a required field bibliography1
+unused,6426,depth,"Object description has field depth, but that field was not selected for export"
+unused,6426,height,"Object description has field height, but that field was not selected for export"
+missing,6426,copyright,Object is missing a required field copyright
+missing,6426,bibliography1,Object is missing a required field bibliography1
+unused,6461,depth,"Object description has field depth, but that field was not selected for export"
+unused,6461,height,"Object description has field height, but that field was not selected for export"
+missing,6461,copyright,Object is missing a required field copyright
+missing,6461,bibliography1,Object is missing a required field bibliography1
+unused,6481,depth,"Object description has field depth, but that field was not selected for export"
+unused,6481,height,"Object description has field height, but that field was not selected for export"
+missing,6481,copyright,Object is missing a required field copyright
+missing,6481,bibliography1,Object is missing a required field bibliography1
+unused,6484,depth,"Object description has field depth, but that field was not selected for export"
+unused,6484,height,"Object description has field height, but that field was not selected for export"
+missing,6484,copyright,Object is missing a required field copyright
+missing,6484,bibliography1,Object is missing a required field bibliography1
+unused,6644,depth,"Object description has field depth, but that field was not selected for export"
+unused,6644,height,"Object description has field height, but that field was not selected for export"
+missing,6644,copyright,Object is missing a required field copyright
+missing,6644,bibliography1,Object is missing a required field bibliography1
+unused,6718,depth,"Object description has field depth, but that field was not selected for export"
+unused,6718,height,"Object description has field height, but that field was not selected for export"
+missing,6718,copyright,Object is missing a required field copyright
+missing,6718,bibliography1,Object is missing a required field bibliography1
+unused,6350,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6350,depth,"Object description has field depth, but that field was not selected for export"
+missing,6350,copyright,Object is missing a required field copyright
+unused,5315,onview,"Object description has field onview, but that field was not selected for export"
+unused,5315,depth,"Object description has field depth, but that field was not selected for export"
+missing,5315,copyright,Object is missing a required field copyright
+unused,6888,depth,"Object description has field depth, but that field was not selected for export"
+unused,6888,height,"Object description has field height, but that field was not selected for export"
+missing,6888,copyright,Object is missing a required field copyright
+unused,5785,depth,"Object description has field depth, but that field was not selected for export"
+missing,5785,copyright,Object is missing a required field copyright
+unused,5020,depth,"Object description has field depth, but that field was not selected for export"
+missing,5020,copyright,Object is missing a required field copyright
+unused,6395,width,"Object description has field width, but that field was not selected for export"
+unused,6395,height,"Object description has field height, but that field was not selected for export"
+missing,6395,copyright,Object is missing a required field copyright
+missing,6395,bibliography1,Object is missing a required field bibliography1
+unused,6415,width,"Object description has field width, but that field was not selected for export"
+unused,6415,height,"Object description has field height, but that field was not selected for export"
+missing,6415,copyright,Object is missing a required field copyright
+missing,6415,bibliography1,Object is missing a required field bibliography1
+unused,6420,width,"Object description has field width, but that field was not selected for export"
+unused,6420,height,"Object description has field height, but that field was not selected for export"
+missing,6420,copyright,Object is missing a required field copyright
+missing,6420,bibliography1,Object is missing a required field bibliography1
+unused,49911,width,"Object description has field width, but that field was not selected for export"
+unused,49911,height,"Object description has field height, but that field was not selected for export"
+missing,49911,copyright,Object is missing a required field copyright
+missing,49911,bibliography1,Object is missing a required field bibliography1
+unused,49912,width,"Object description has field width, but that field was not selected for export"
+unused,49912,height,"Object description has field height, but that field was not selected for export"
+missing,49912,copyright,Object is missing a required field copyright
+missing,49912,bibliography1,Object is missing a required field bibliography1
+unused,49913,width,"Object description has field width, but that field was not selected for export"
+unused,49913,height,"Object description has field height, but that field was not selected for export"
+missing,49913,copyright,Object is missing a required field copyright
+missing,49913,bibliography1,Object is missing a required field bibliography1
+unused,4571,depth,"Object description has field depth, but that field was not selected for export"
+unused,4571,height,"Object description has field height, but that field was not selected for export"
+missing,4571,copyright,Object is missing a required field copyright
+missing,4571,bibliography1,Object is missing a required field bibliography1
+unused,6896,depth,"Object description has field depth, but that field was not selected for export"
+unused,6896,height,"Object description has field height, but that field was not selected for export"
+missing,6896,copyright,Object is missing a required field copyright
+unused,5804,depth,"Object description has field depth, but that field was not selected for export"
+unused,5804,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,5804,copyright,Object is missing a required field copyright
+unused,8021,onview,"Object description has field onview, but that field was not selected for export"
+unused,8021,width,"Object description has field width, but that field was not selected for export"
+unused,8021,height,"Object description has field height, but that field was not selected for export"
+missing,8021,copyright,Object is missing a required field copyright
+missing,8021,classification,Object is missing a required field classification
+unused,6536,depth,"Object description has field depth, but that field was not selected for export"
+missing,6536,copyright,Object is missing a required field copyright
+unused,5038,onview,"Object description has field onview, but that field was not selected for export"
+unused,5038,depth,"Object description has field depth, but that field was not selected for export"
+unused,5038,width,"Object description has field width, but that field was not selected for export"
+missing,5038,copyright,Object is missing a required field copyright
+unused,5970,onview,"Object description has field onview, but that field was not selected for export"
+unused,5970,width,"Object description has field width, but that field was not selected for export"
+unused,5970,height,"Object description has field height, but that field was not selected for export"
+missing,5970,copyright,Object is missing a required field copyright
+missing,5970,classification,Object is missing a required field classification
+missing,5970,bibliography1,Object is missing a required field bibliography1
+unused,5971,onview,"Object description has field onview, but that field was not selected for export"
+unused,5971,depth,"Object description has field depth, but that field was not selected for export"
+unused,5971,height,"Object description has field height, but that field was not selected for export"
+missing,5971,copyright,Object is missing a required field copyright
+missing,5971,classification,Object is missing a required field classification
+missing,5971,bibliography1,Object is missing a required field bibliography1
+unused,6186,onview,"Object description has field onview, but that field was not selected for export"
+unused,6186,depth,"Object description has field depth, but that field was not selected for export"
+unused,6186,height,"Object description has field height, but that field was not selected for export"
+missing,6186,copyright,Object is missing a required field copyright
+missing,6186,classification,Object is missing a required field classification
+missing,6186,bibliography1,Object is missing a required field bibliography1
+unused,5471,depth,"Object description has field depth, but that field was not selected for export"
+unused,5471,width,"Object description has field width, but that field was not selected for export"
+missing,5471,copyright,Object is missing a required field copyright
+missing,5471,bibliography1,Object is missing a required field bibliography1
+unused,4981,depth,"Object description has field depth, but that field was not selected for export"
+unused,4981,height,"Object description has field height, but that field was not selected for export"
+missing,4981,copyright,Object is missing a required field copyright
+unused,4982,onview,"Object description has field onview, but that field was not selected for export"
+unused,4982,depth,"Object description has field depth, but that field was not selected for export"
+unused,4982,height,"Object description has field height, but that field was not selected for export"
+missing,4982,copyright,Object is missing a required field copyright
+unused,5462,depth,"Object description has field depth, but that field was not selected for export"
+unused,5462,height,"Object description has field height, but that field was not selected for export"
+missing,5462,copyright,Object is missing a required field copyright
+missing,5462,bibliography1,Object is missing a required field bibliography1
+unused,5501,depth,"Object description has field depth, but that field was not selected for export"
+unused,5501,height,"Object description has field height, but that field was not selected for export"
+missing,5501,copyright,Object is missing a required field copyright
+unused,5534,depth,"Object description has field depth, but that field was not selected for export"
+unused,5534,height,"Object description has field height, but that field was not selected for export"
+missing,5534,copyright,Object is missing a required field copyright
+unused,6334,depth,"Object description has field depth, but that field was not selected for export"
+unused,6334,height,"Object description has field height, but that field was not selected for export"
+missing,6334,copyright,Object is missing a required field copyright
+unused,6401,depth,"Object description has field depth, but that field was not selected for export"
+unused,6401,height,"Object description has field height, but that field was not selected for export"
+missing,6401,copyright,Object is missing a required field copyright
+missing,6401,bibliography1,Object is missing a required field bibliography1
+unused,6409,depth,"Object description has field depth, but that field was not selected for export"
+unused,6409,height,"Object description has field height, but that field was not selected for export"
+missing,6409,copyright,Object is missing a required field copyright
+missing,6409,bibliography1,Object is missing a required field bibliography1
+unused,4670,depth,"Object description has field depth, but that field was not selected for export"
+unused,4670,height,"Object description has field height, but that field was not selected for export"
+missing,4670,displayDate,Object is missing a required field displayDate
+missing,4670,copyright,Object is missing a required field copyright
+unused,4688,depth,"Object description has field depth, but that field was not selected for export"
+missing,4688,copyright,Object is missing a required field copyright
+missing,4688,bibliography1,Object is missing a required field bibliography1
+unused,4689,depth,"Object description has field depth, but that field was not selected for export"
+missing,4689,copyright,Object is missing a required field copyright
+missing,4689,bibliography1,Object is missing a required field bibliography1
+unused,4994,onview,"Object description has field onview, but that field was not selected for export"
+unused,4994,depth,"Object description has field depth, but that field was not selected for export"
+missing,4994,copyright,Object is missing a required field copyright
+missing,4994,bibliography1,Object is missing a required field bibliography1
+unused,4995,onview,"Object description has field onview, but that field was not selected for export"
+unused,4995,depth,"Object description has field depth, but that field was not selected for export"
+missing,4995,copyright,Object is missing a required field copyright
+missing,4995,bibliography1,Object is missing a required field bibliography1
+unused,5686,onview,"Object description has field onview, but that field was not selected for export"
+unused,5686,depth,"Object description has field depth, but that field was not selected for export"
+missing,5686,copyright,Object is missing a required field copyright
+missing,5686,bibliography1,Object is missing a required field bibliography1
+unused,5720,depth,"Object description has field depth, but that field was not selected for export"
+missing,5720,copyright,Object is missing a required field copyright
+missing,5720,bibliography1,Object is missing a required field bibliography1
+unused,5721,depth,"Object description has field depth, but that field was not selected for export"
+missing,5721,copyright,Object is missing a required field copyright
+missing,5721,bibliography1,Object is missing a required field bibliography1
+unused,6096,depth,"Object description has field depth, but that field was not selected for export"
+unused,6096,height,"Object description has field height, but that field was not selected for export"
+missing,6096,copyright,Object is missing a required field copyright
+unused,6097,depth,"Object description has field depth, but that field was not selected for export"
+missing,6097,copyright,Object is missing a required field copyright
+unused,6735,depth,"Object description has field depth, but that field was not selected for export"
+missing,6735,copyright,Object is missing a required field copyright
+missing,6735,bibliography1,Object is missing a required field bibliography1
+unused,6736,depth,"Object description has field depth, but that field was not selected for export"
+missing,6736,copyright,Object is missing a required field copyright
+missing,6736,bibliography1,Object is missing a required field bibliography1
+unused,7889,depth,"Object description has field depth, but that field was not selected for export"
+unused,7889,height,"Object description has field height, but that field was not selected for export"
+missing,7889,copyright,Object is missing a required field copyright
+missing,7889,bibliography1,Object is missing a required field bibliography1
+unused,7890,depth,"Object description has field depth, but that field was not selected for export"
+unused,7890,height,"Object description has field height, but that field was not selected for export"
+missing,7890,copyright,Object is missing a required field copyright
+missing,7890,bibliography1,Object is missing a required field bibliography1
+unused,6065,depth,"Object description has field depth, but that field was not selected for export"
+missing,6065,copyright,Object is missing a required field copyright
+unused,4952,onview,"Object description has field onview, but that field was not selected for export"
+unused,4952,width,"Object description has field width, but that field was not selected for export"
+unused,4952,height,"Object description has field height, but that field was not selected for export"
+missing,4952,copyright,Object is missing a required field copyright
+missing,4952,classification,Object is missing a required field classification
+missing,4952,bibliography1,Object is missing a required field bibliography1
+unused,6950,depth,"Object description has field depth, but that field was not selected for export"
+unused,6950,height,"Object description has field height, but that field was not selected for export"
+missing,6950,copyright,Object is missing a required field copyright
+unused,7371,depth,"Object description has field depth, but that field was not selected for export"
+unused,7371,height,"Object description has field height, but that field was not selected for export"
+missing,7371,copyright,Object is missing a required field copyright
+unused,7012,depth,"Object description has field depth, but that field was not selected for export"
+missing,7012,copyright,Object is missing a required field copyright
+unused,7013,depth,"Object description has field depth, but that field was not selected for export"
+missing,7013,copyright,Object is missing a required field copyright
+unused,6513,depth,"Object description has field depth, but that field was not selected for export"
+missing,6513,copyright,Object is missing a required field copyright
+missing,6513,bibliography1,Object is missing a required field bibliography1
+unused,8142,depth,"Object description has field depth, but that field was not selected for export"
+missing,8142,copyright,Object is missing a required field copyright
+missing,8142,bibliography1,Object is missing a required field bibliography1
+unused,5472,depth,"Object description has field depth, but that field was not selected for export"
+unused,5472,height,"Object description has field height, but that field was not selected for export"
+missing,5472,copyright,Object is missing a required field copyright
+missing,5472,bibliography1,Object is missing a required field bibliography1
+unused,5081,onview,"Object description has field onview, but that field was not selected for export"
+unused,5081,depth,"Object description has field depth, but that field was not selected for export"
+missing,5081,copyright,Object is missing a required field copyright
+unused,5330,onview,"Object description has field onview, but that field was not selected for export"
+unused,5330,depth,"Object description has field depth, but that field was not selected for export"
+missing,5330,copyright,Object is missing a required field copyright
+missing,5330,bibliography1,Object is missing a required field bibliography1
+unused,5331,onview,"Object description has field onview, but that field was not selected for export"
+unused,5331,depth,"Object description has field depth, but that field was not selected for export"
+missing,5331,copyright,Object is missing a required field copyright
+missing,5331,bibliography1,Object is missing a required field bibliography1
+unused,3361,depth,"Object description has field depth, but that field was not selected for export"
+missing,3361,copyright,Object is missing a required field copyright
+missing,3361,bibliography1,Object is missing a required field bibliography1
+unused,4701,depth,"Object description has field depth, but that field was not selected for export"
+unused,4701,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+unused,4701,height,"Object description has field height, but that field was not selected for export"
+missing,4701,copyright,Object is missing a required field copyright
+unused,5040,depth,"Object description has field depth, but that field was not selected for export"
+unused,5040,height,"Object description has field height, but that field was not selected for export"
+missing,5040,copyright,Object is missing a required field copyright
+unused,5464,depth,"Object description has field depth, but that field was not selected for export"
+unused,5464,height,"Object description has field height, but that field was not selected for export"
+missing,5464,copyright,Object is missing a required field copyright
+unused,5479,depth,"Object description has field depth, but that field was not selected for export"
+unused,5479,height,"Object description has field height, but that field was not selected for export"
+missing,5479,copyright,Object is missing a required field copyright
+missing,5479,bibliography1,Object is missing a required field bibliography1
+unused,5847,depth,"Object description has field depth, but that field was not selected for export"
+unused,5847,height,"Object description has field height, but that field was not selected for export"
+missing,5847,copyright,Object is missing a required field copyright
+unused,5871,depth,"Object description has field depth, but that field was not selected for export"
+unused,5871,height,"Object description has field height, but that field was not selected for export"
+missing,5871,copyright,Object is missing a required field copyright
+missing,5871,bibliography1,Object is missing a required field bibliography1
+unused,6082,depth,"Object description has field depth, but that field was not selected for export"
+unused,6082,height,"Object description has field height, but that field was not selected for export"
+missing,6082,copyright,Object is missing a required field copyright
+unused,6099,depth,"Object description has field depth, but that field was not selected for export"
+unused,6099,height,"Object description has field height, but that field was not selected for export"
+missing,6099,copyright,Object is missing a required field copyright
+unused,6319,depth,"Object description has field depth, but that field was not selected for export"
+unused,6319,height,"Object description has field height, but that field was not selected for export"
+missing,6319,copyright,Object is missing a required field copyright
+missing,6319,bibliography1,Object is missing a required field bibliography1
+unused,6407,depth,"Object description has field depth, but that field was not selected for export"
+unused,6407,height,"Object description has field height, but that field was not selected for export"
+missing,6407,copyright,Object is missing a required field copyright
+unused,7318,depth,"Object description has field depth, but that field was not selected for export"
+unused,7318,height,"Object description has field height, but that field was not selected for export"
+missing,7318,copyright,Object is missing a required field copyright
+missing,7318,bibliography1,Object is missing a required field bibliography1
+unused,7319,depth,"Object description has field depth, but that field was not selected for export"
+unused,7319,height,"Object description has field height, but that field was not selected for export"
+missing,7319,copyright,Object is missing a required field copyright
+missing,7319,bibliography1,Object is missing a required field bibliography1
+unused,7191,width,"Object description has field width, but that field was not selected for export"
+unused,7191,height,"Object description has field height, but that field was not selected for export"
+missing,7191,copyright,Object is missing a required field copyright
+missing,7191,classification,Object is missing a required field classification
+missing,7191,bibliography1,Object is missing a required field bibliography1
+unused,7964,depth,"Object description has field depth, but that field was not selected for export"
+unused,7964,height,"Object description has field height, but that field was not selected for export"
+missing,7964,copyright,Object is missing a required field copyright
+missing,7964,classification,Object is missing a required field classification
+unused,5029,depth,"Object description has field depth, but that field was not selected for export"
+unused,5029,height,"Object description has field height, but that field was not selected for export"
+missing,5029,copyright,Object is missing a required field copyright
+unused,5474,depth,"Object description has field depth, but that field was not selected for export"
+unused,5474,height,"Object description has field height, but that field was not selected for export"
+missing,5474,copyright,Object is missing a required field copyright
+missing,5474,bibliography1,Object is missing a required field bibliography1
+unused,5244,depth,"Object description has field depth, but that field was not selected for export"
+unused,5244,height,"Object description has field height, but that field was not selected for export"
+missing,5244,copyright,Object is missing a required field copyright
+unused,5291,depth,"Object description has field depth, but that field was not selected for export"
+unused,5291,height,"Object description has field height, but that field was not selected for export"
+missing,5291,copyright,Object is missing a required field copyright
+unused,5350,depth,"Object description has field depth, but that field was not selected for export"
+unused,5350,height,"Object description has field height, but that field was not selected for export"
+missing,5350,copyright,Object is missing a required field copyright
+unused,5495,depth,"Object description has field depth, but that field was not selected for export"
+unused,5495,height,"Object description has field height, but that field was not selected for export"
+missing,5495,copyright,Object is missing a required field copyright
+missing,5495,bibliography1,Object is missing a required field bibliography1
+unused,5688,depth,"Object description has field depth, but that field was not selected for export"
+unused,5688,height,"Object description has field height, but that field was not selected for export"
+missing,5688,copyright,Object is missing a required field copyright
+unused,6090,depth,"Object description has field depth, but that field was not selected for export"
+unused,6090,height,"Object description has field height, but that field was not selected for export"
+missing,6090,copyright,Object is missing a required field copyright
+unused,6309,depth,"Object description has field depth, but that field was not selected for export"
+unused,6309,height,"Object description has field height, but that field was not selected for export"
+missing,6309,copyright,Object is missing a required field copyright
+missing,6309,bibliography1,Object is missing a required field bibliography1
+unused,6664,depth,"Object description has field depth, but that field was not selected for export"
+unused,6664,height,"Object description has field height, but that field was not selected for export"
+missing,6664,copyright,Object is missing a required field copyright
+missing,6664,bibliography1,Object is missing a required field bibliography1
+unused,7882,depth,"Object description has field depth, but that field was not selected for export"
+unused,7882,height,"Object description has field height, but that field was not selected for export"
+missing,7882,copyright,Object is missing a required field copyright
+unused,7888,depth,"Object description has field depth, but that field was not selected for export"
+unused,7888,height,"Object description has field height, but that field was not selected for export"
+missing,7888,copyright,Object is missing a required field copyright
+missing,7888,bibliography1,Object is missing a required field bibliography1
+unused,5797,onview,"Object description has field onview, but that field was not selected for export"
+unused,5797,depth,"Object description has field depth, but that field was not selected for export"
+missing,5797,copyright,Object is missing a required field copyright
+unused,5524,onview,"Object description has field onview, but that field was not selected for export"
+unused,5524,depth,"Object description has field depth, but that field was not selected for export"
+missing,5524,copyright,Object is missing a required field copyright
+unused,4713,depth,"Object description has field depth, but that field was not selected for export"
+missing,4713,copyright,Object is missing a required field copyright
+unused,5836,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5836,depth,"Object description has field depth, but that field was not selected for export"
+missing,5836,copyright,Object is missing a required field copyright
+unused,5427,depth,"Object description has field depth, but that field was not selected for export"
+missing,5427,copyright,Object is missing a required field copyright
+unused,3191,depth,"Object description has field depth, but that field was not selected for export"
+missing,3191,copyright,Object is missing a required field copyright
+unused,3200,depth,"Object description has field depth, but that field was not selected for export"
+unused,5175,onview,"Object description has field onview, but that field was not selected for export"
+unused,5175,depth,"Object description has field depth, but that field was not selected for export"
+unused,5180,depth,"Object description has field depth, but that field was not selected for export"
+missing,5180,copyright,Object is missing a required field copyright
+unused,5119,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5119,onview,"Object description has field onview, but that field was not selected for export"
+unused,5119,depth,"Object description has field depth, but that field was not selected for export"
+missing,5119,copyright,Object is missing a required field copyright
+unused,7919,depth,"Object description has field depth, but that field was not selected for export"
+missing,7919,copyright,Object is missing a required field copyright
+unused,8003,depth,"Object description has field depth, but that field was not selected for export"
+missing,8003,copyright,Object is missing a required field copyright
+missing,8003,bibliography1,Object is missing a required field bibliography1
+unused,5156,onview,"Object description has field onview, but that field was not selected for export"
+unused,5156,depth,"Object description has field depth, but that field was not selected for export"
+missing,5156,copyright,Object is missing a required field copyright
+unused,6075,depth,"Object description has field depth, but that field was not selected for export"
+missing,6075,copyright,Object is missing a required field copyright
+unused,6601,depth,"Object description has field depth, but that field was not selected for export"
+missing,6601,copyright,Object is missing a required field copyright
+missing,6601,bibliography1,Object is missing a required field bibliography1
+unused,7880,depth,"Object description has field depth, but that field was not selected for export"
+unused,7880,height,"Object description has field height, but that field was not selected for export"
+missing,7880,primaryMedia,Object is missing a required field primaryMedia
+missing,7880,copyright,Object is missing a required field copyright
+missing,7880,bibliography1,Object is missing a required field bibliography1
+unused,6267,depth,"Object description has field depth, but that field was not selected for export"
+missing,6267,copyright,Object is missing a required field copyright
+unused,7529,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,7529,depth,"Object description has field depth, but that field was not selected for export"
+missing,7529,primaryMedia,Object is missing a required field primaryMedia
+missing,7529,copyright,Object is missing a required field copyright
+unused,5840,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5840,depth,"Object description has field depth, but that field was not selected for export"
+missing,5840,primaryMedia,Object is missing a required field primaryMedia
+missing,5840,copyright,Object is missing a required field copyright
+unused,5826,onview,"Object description has field onview, but that field was not selected for export"
+unused,5826,depth,"Object description has field depth, but that field was not selected for export"
+missing,5826,copyright,Object is missing a required field copyright
+unused,5093,onview,"Object description has field onview, but that field was not selected for export"
+unused,5093,depth,"Object description has field depth, but that field was not selected for export"
+missing,5093,copyright,Object is missing a required field copyright
+unused,7092,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,7092,depth,"Object description has field depth, but that field was not selected for export"
+missing,7092,copyright,Object is missing a required field copyright
+missing,7092,bibliography1,Object is missing a required field bibliography1
+unused,4503,depth,"Object description has field depth, but that field was not selected for export"
+unused,4503,height,"Object description has field height, but that field was not selected for export"
+missing,4503,copyright,Object is missing a required field copyright
+missing,4503,bibliography1,Object is missing a required field bibliography1
+unused,6433,depth,"Object description has field depth, but that field was not selected for export"
+unused,6433,height,"Object description has field height, but that field was not selected for export"
+missing,6433,copyright,Object is missing a required field copyright
+missing,6433,bibliography1,Object is missing a required field bibliography1
+unused,5261,onview,"Object description has field onview, but that field was not selected for export"
+unused,5261,depth,"Object description has field depth, but that field was not selected for export"
+unused,5261,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+unused,5261,height,"Object description has field height, but that field was not selected for export"
+missing,5261,copyright,Object is missing a required field copyright
+unused,5294,onview,"Object description has field onview, but that field was not selected for export"
+unused,5294,depth,"Object description has field depth, but that field was not selected for export"
+unused,5294,height,"Object description has field height, but that field was not selected for export"
+missing,5294,copyright,Object is missing a required field copyright
+unused,5476,depth,"Object description has field depth, but that field was not selected for export"
+unused,5476,height,"Object description has field height, but that field was not selected for export"
+missing,5476,copyright,Object is missing a required field copyright
+missing,5476,bibliography1,Object is missing a required field bibliography1
+unused,8169,depth,"Object description has field depth, but that field was not selected for export"
+unused,8169,height,"Object description has field height, but that field was not selected for export"
+missing,8169,copyright,Object is missing a required field copyright
+missing,8169,bibliography1,Object is missing a required field bibliography1
+unused,6535,depth,"Object description has field depth, but that field was not selected for export"
+missing,6535,copyright,Object is missing a required field copyright
+unused,7509,width,"Object description has field width, but that field was not selected for export"
+unused,7509,height,"Object description has field height, but that field was not selected for export"
+missing,7509,copyright,Object is missing a required field copyright
+unused,7475,depth,"Object description has field depth, but that field was not selected for export"
+unused,7475,height,"Object description has field height, but that field was not selected for export"
+missing,7475,copyright,Object is missing a required field copyright
+unused,5272,depth,"Object description has field depth, but that field was not selected for export"
+unused,5272,height,"Object description has field height, but that field was not selected for export"
+missing,5272,copyright,Object is missing a required field copyright
+unused,7440,depth,"Object description has field depth, but that field was not selected for export"
+unused,7440,height,"Object description has field height, but that field was not selected for export"
+missing,7440,copyright,Object is missing a required field copyright
+missing,7440,bibliography1,Object is missing a required field bibliography1
+unused,5883,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5883,depth,"Object description has field depth, but that field was not selected for export"
+missing,5883,copyright,Object is missing a required field copyright
+missing,5883,bibliography1,Object is missing a required field bibliography1
+unused,6944,depth,"Object description has field depth, but that field was not selected for export"
+missing,6944,copyright,Object is missing a required field copyright
+missing,6944,bibliography1,Object is missing a required field bibliography1
+unused,5013,depth,"Object description has field depth, but that field was not selected for export"
+missing,5013,copyright,Object is missing a required field copyright
+unused,6965,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6965,depth,"Object description has field depth, but that field was not selected for export"
+unused,6965,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,6965,copyright,Object is missing a required field copyright
+unused,6453,depth,"Object description has field depth, but that field was not selected for export"
+missing,6453,copyright,Object is missing a required field copyright
+missing,6453,bibliography1,Object is missing a required field bibliography1
+unused,6454,depth,"Object description has field depth, but that field was not selected for export"
+missing,6454,copyright,Object is missing a required field copyright
+missing,6454,bibliography1,Object is missing a required field bibliography1
+unused,4916,onview,"Object description has field onview, but that field was not selected for export"
+unused,4916,depth,"Object description has field depth, but that field was not selected for export"
+unused,4916,height,"Object description has field height, but that field was not selected for export"
+missing,4916,copyright,Object is missing a required field copyright
+missing,4916,classification,Object is missing a required field classification
+missing,4916,bibliography1,Object is missing a required field bibliography1
+unused,4918,onview,"Object description has field onview, but that field was not selected for export"
+unused,4918,width,"Object description has field width, but that field was not selected for export"
+unused,4918,height,"Object description has field height, but that field was not selected for export"
+missing,4918,copyright,Object is missing a required field copyright
+missing,4918,classification,Object is missing a required field classification
+unused,7642,onview,"Object description has field onview, but that field was not selected for export"
+unused,7642,depth,"Object description has field depth, but that field was not selected for export"
+unused,7642,height,"Object description has field height, but that field was not selected for export"
+missing,7642,copyright,Object is missing a required field copyright
+missing,7642,classification,Object is missing a required field classification
+missing,7642,bibliography1,Object is missing a required field bibliography1
+unused,6516,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6516,depth,"Object description has field depth, but that field was not selected for export"
+missing,6516,copyright,Object is missing a required field copyright
+unused,8137,depth,"Object description has field depth, but that field was not selected for export"
+missing,8137,copyright,Object is missing a required field copyright
+missing,8137,bibliography1,Object is missing a required field bibliography1
+unused,6364,depth,"Object description has field depth, but that field was not selected for export"
+missing,6364,copyright,Object is missing a required field copyright
+unused,6176,onview,"Object description has field onview, but that field was not selected for export"
+unused,6176,depth,"Object description has field depth, but that field was not selected for export"
+unused,6176,height,"Object description has field height, but that field was not selected for export"
+missing,6176,copyright,Object is missing a required field copyright
+missing,6176,bibliography1,Object is missing a required field bibliography1
+unused,6134,onview,"Object description has field onview, but that field was not selected for export"
+unused,6134,depth,"Object description has field depth, but that field was not selected for export"
+unused,6134,height,"Object description has field height, but that field was not selected for export"
+missing,6134,copyright,Object is missing a required field copyright
+missing,6134,bibliography1,Object is missing a required field bibliography1
+unused,6947,depth,"Object description has field depth, but that field was not selected for export"
+missing,6947,copyright,Object is missing a required field copyright
+unused,6474,depth,"Object description has field depth, but that field was not selected for export"
+missing,6474,copyright,Object is missing a required field copyright
+unused,6279,depth,"Object description has field depth, but that field was not selected for export"
+unused,6569,depth,"Object description has field depth, but that field was not selected for export"
+unused,5622,onview,"Object description has field onview, but that field was not selected for export"
+unused,5622,width,"Object description has field width, but that field was not selected for export"
+unused,5622,height,"Object description has field height, but that field was not selected for export"
+missing,5622,copyright,Object is missing a required field copyright
+missing,5622,classification,Object is missing a required field classification
+missing,5622,bibliography1,Object is missing a required field bibliography1
+unused,6357,depth,"Object description has field depth, but that field was not selected for export"
+missing,6357,copyright,Object is missing a required field copyright
+unused,5498,onview,"Object description has field onview, but that field was not selected for export"
+unused,5498,depth,"Object description has field depth, but that field was not selected for export"
+unused,5498,height,"Object description has field height, but that field was not selected for export"
+missing,5498,copyright,Object is missing a required field copyright
+missing,5498,bibliography1,Object is missing a required field bibliography1
+unused,5554,onview,"Object description has field onview, but that field was not selected for export"
+unused,5554,depth,"Object description has field depth, but that field was not selected for export"
+unused,5554,height,"Object description has field height, but that field was not selected for export"
+missing,5554,copyright,Object is missing a required field copyright
+missing,5554,bibliography1,Object is missing a required field bibliography1
+unused,3080,depth,"Object description has field depth, but that field was not selected for export"
+missing,3080,copyright,Object is missing a required field copyright
+missing,3080,bibliography1,Object is missing a required field bibliography1
+unused,4188,depth,"Object description has field depth, but that field was not selected for export"
+unused,4188,height,"Object description has field height, but that field was not selected for export"
+missing,4188,copyright,Object is missing a required field copyright
+missing,4188,bibliography1,Object is missing a required field bibliography1
+unused,5041,onview,"Object description has field onview, but that field was not selected for export"
+unused,5041,depth,"Object description has field depth, but that field was not selected for export"
+unused,5041,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,5041,copyright,Object is missing a required field copyright
+missing,5041,bibliography1,Object is missing a required field bibliography1
+unused,5278,depth,"Object description has field depth, but that field was not selected for export"
+missing,5278,copyright,Object is missing a required field copyright
+unused,7862,depth,"Object description has field depth, but that field was not selected for export"
+missing,7862,copyright,Object is missing a required field copyright
+missing,7862,bibliography1,Object is missing a required field bibliography1
+unused,5440,depth,"Object description has field depth, but that field was not selected for export"
+missing,5440,copyright,Object is missing a required field copyright
+unused,5022,onview,"Object description has field onview, but that field was not selected for export"
+unused,5022,depth,"Object description has field depth, but that field was not selected for export"
+missing,5022,copyright,Object is missing a required field copyright
+missing,5022,bibliography1,Object is missing a required field bibliography1
+unused,4727,onview,"Object description has field onview, but that field was not selected for export"
+unused,4727,depth,"Object description has field depth, but that field was not selected for export"
+unused,4727,height,"Object description has field height, but that field was not selected for export"
+missing,4727,copyright,Object is missing a required field copyright
+unused,4739,onview,"Object description has field onview, but that field was not selected for export"
+unused,4739,depth,"Object description has field depth, but that field was not selected for export"
+unused,4739,height,"Object description has field height, but that field was not selected for export"
+missing,4739,copyright,Object is missing a required field copyright
+unused,5454,depth,"Object description has field depth, but that field was not selected for export"
+missing,5454,copyright,Object is missing a required field copyright
+unused,5828,depth,"Object description has field depth, but that field was not selected for export"
+missing,5828,copyright,Object is missing a required field copyright
+missing,5828,bibliography1,Object is missing a required field bibliography1
+unused,5660,depth,"Object description has field depth, but that field was not selected for export"
+missing,5660,primaryMedia,Object is missing a required field primaryMedia
+missing,5660,copyright,Object is missing a required field copyright
+unused,5801,depth,"Object description has field depth, but that field was not selected for export"
+unused,5801,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+missing,5801,copyright,Object is missing a required field copyright
+unused,5216,onview,"Object description has field onview, but that field was not selected for export"
+unused,5216,depth,"Object description has field depth, but that field was not selected for export"
+missing,5216,copyright,Object is missing a required field copyright
+unused,4511,depth,"Object description has field depth, but that field was not selected for export"
+unused,4511,height,"Object description has field height, but that field was not selected for export"
+missing,4511,copyright,Object is missing a required field copyright
+missing,4511,bibliography1,Object is missing a required field bibliography1
+unused,4565,depth,"Object description has field depth, but that field was not selected for export"
+unused,4565,height,"Object description has field height, but that field was not selected for export"
+missing,4565,copyright,Object is missing a required field copyright
+missing,4565,bibliography1,Object is missing a required field bibliography1
+unused,4578,depth,"Object description has field depth, but that field was not selected for export"
+unused,4578,height,"Object description has field height, but that field was not selected for export"
+missing,4578,copyright,Object is missing a required field copyright
+missing,4578,bibliography1,Object is missing a required field bibliography1
+unused,4582,depth,"Object description has field depth, but that field was not selected for export"
+unused,4582,height,"Object description has field height, but that field was not selected for export"
+missing,4582,copyright,Object is missing a required field copyright
+missing,4582,bibliography1,Object is missing a required field bibliography1
+unused,4583,depth,"Object description has field depth, but that field was not selected for export"
+unused,4583,height,"Object description has field height, but that field was not selected for export"
+missing,4583,copyright,Object is missing a required field copyright
+missing,4583,bibliography1,Object is missing a required field bibliography1
+unused,6389,depth,"Object description has field depth, but that field was not selected for export"
+unused,6389,height,"Object description has field height, but that field was not selected for export"
+missing,6389,copyright,Object is missing a required field copyright
+missing,6389,bibliography1,Object is missing a required field bibliography1
+unused,6414,depth,"Object description has field depth, but that field was not selected for export"
+unused,6414,height,"Object description has field height, but that field was not selected for export"
+missing,6414,copyright,Object is missing a required field copyright
+missing,6414,bibliography1,Object is missing a required field bibliography1
+unused,6430,depth,"Object description has field depth, but that field was not selected for export"
+unused,6430,height,"Object description has field height, but that field was not selected for export"
+missing,6430,copyright,Object is missing a required field copyright
+missing,6430,bibliography1,Object is missing a required field bibliography1
+unused,6688,depth,"Object description has field depth, but that field was not selected for export"
+unused,6688,height,"Object description has field height, but that field was not selected for export"
+missing,6688,copyright,Object is missing a required field copyright
+missing,6688,bibliography1,Object is missing a required field bibliography1
+unused,6851,depth,"Object description has field depth, but that field was not selected for export"
+unused,6851,height,"Object description has field height, but that field was not selected for export"
+missing,6851,copyright,Object is missing a required field copyright
+missing,6851,bibliography1,Object is missing a required field bibliography1
+unused,7007,depth,"Object description has field depth, but that field was not selected for export"
+missing,7007,copyright,Object is missing a required field copyright
+unused,5068,depth,"Object description has field depth, but that field was not selected for export"
+missing,5068,copyright,Object is missing a required field copyright
+unused,8170,depth,"Object description has field depth, but that field was not selected for export"
+unused,8170,height,"Object description has field height, but that field was not selected for export"
+missing,8170,copyright,Object is missing a required field copyright
+unused,5781,depth,"Object description has field depth, but that field was not selected for export"
+missing,5781,copyright,Object is missing a required field copyright
+unused,8095,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,8095,depth,"Object description has field depth, but that field was not selected for export"
+unused,8095,height,"Object description has field height, but that field was not selected for export"
+missing,8095,copyright,Object is missing a required field copyright
+missing,8095,bibliography1,Object is missing a required field bibliography1
+unused,3564,depth,"Object description has field depth, but that field was not selected for export"
+missing,3564,copyright,Object is missing a required field copyright
+missing,3564,bibliography1,Object is missing a required field bibliography1
+unused,8159,depth,"Object description has field depth, but that field was not selected for export"
+unused,8159,height,"Object description has field height, but that field was not selected for export"
+missing,8159,copyright,Object is missing a required field copyright
+missing,8159,bibliography1,Object is missing a required field bibliography1
+unused,6376,depth,"Object description has field depth, but that field was not selected for export"
+missing,6376,copyright,Object is missing a required field copyright
+missing,6376,bibliography1,Object is missing a required field bibliography1
+unused,6587,depth,"Object description has field depth, but that field was not selected for export"
+missing,6587,copyright,Object is missing a required field copyright
+unused,7867,depth,"Object description has field depth, but that field was not selected for export"
+missing,7867,copyright,Object is missing a required field copyright
+missing,7867,bibliography1,Object is missing a required field bibliography1
+unused,5421,depth,"Object description has field depth, but that field was not selected for export"
+unused,6185,width,"Object description has field width, but that field was not selected for export"
+unused,6185,height,"Object description has field height, but that field was not selected for export"
+missing,6185,copyright,Object is missing a required field copyright
+missing,6185,classification,Object is missing a required field classification
+missing,6185,bibliography1,Object is missing a required field bibliography1
+unused,7114,depth,"Object description has field depth, but that field was not selected for export"
+unused,7114,height,"Object description has field height, but that field was not selected for export"
+missing,7114,copyright,Object is missing a required field copyright
+missing,7114,classification,Object is missing a required field classification
+missing,7114,bibliography1,Object is missing a required field bibliography1
+unused,4884,onview,"Object description has field onview, but that field was not selected for export"
+unused,4884,height,"Object description has field height, but that field was not selected for export"
+missing,4884,copyright,Object is missing a required field copyright
+missing,4884,classification,Object is missing a required field classification
+missing,4884,bibliography1,Object is missing a required field bibliography1
+unused,7304,depth,"Object description has field depth, but that field was not selected for export"
+unused,7304,height,"Object description has field height, but that field was not selected for export"
+missing,7304,copyright,Object is missing a required field copyright
+missing,7304,classification,Object is missing a required field classification
+unused,7306,width,"Object description has field width, but that field was not selected for export"
+unused,7306,height,"Object description has field height, but that field was not selected for export"
+missing,7306,copyright,Object is missing a required field copyright
+missing,7306,classification,Object is missing a required field classification
+unused,7843,onview,"Object description has field onview, but that field was not selected for export"
+unused,7843,depth,"Object description has field depth, but that field was not selected for export"
+unused,7843,height,"Object description has field height, but that field was not selected for export"
+missing,7843,copyright,Object is missing a required field copyright
+missing,7843,classification,Object is missing a required field classification
+missing,7843,bibliography1,Object is missing a required field bibliography1
+unused,7844,onview,"Object description has field onview, but that field was not selected for export"
+unused,7844,width,"Object description has field width, but that field was not selected for export"
+unused,7844,height,"Object description has field height, but that field was not selected for export"
+missing,7844,copyright,Object is missing a required field copyright
+missing,7844,classification,Object is missing a required field classification
+missing,7844,bibliography1,Object is missing a required field bibliography1
+unused,4962,onview,"Object description has field onview, but that field was not selected for export"
+unused,4962,width,"Object description has field width, but that field was not selected for export"
+unused,4962,height,"Object description has field height, but that field was not selected for export"
+missing,4962,copyright,Object is missing a required field copyright
+missing,4962,classification,Object is missing a required field classification
+missing,4962,bibliography1,Object is missing a required field bibliography1
+unused,8032,onview,"Object description has field onview, but that field was not selected for export"
+unused,8032,depth,"Object description has field depth, but that field was not selected for export"
+missing,8032,copyright,Object is missing a required field copyright
+missing,8032,classification,Object is missing a required field classification
+unused,8074,depth,"Object description has field depth, but that field was not selected for export"
+unused,8074,height,"Object description has field height, but that field was not selected for export"
+missing,8074,copyright,Object is missing a required field copyright
+missing,8074,classification,Object is missing a required field classification
+missing,8074,bibliography1,Object is missing a required field bibliography1
+unused,8075,depth,"Object description has field depth, but that field was not selected for export"
+unused,8075,height,"Object description has field height, but that field was not selected for export"
+missing,8075,copyright,Object is missing a required field copyright
+missing,8075,classification,Object is missing a required field classification
+missing,8075,bibliography1,Object is missing a required field bibliography1
+unused,5984,width,"Object description has field width, but that field was not selected for export"
+unused,5984,onview,"Object description has field onview, but that field was not selected for export"
+missing,5984,copyright,Object is missing a required field copyright
+missing,5984,classification,Object is missing a required field classification
+missing,5984,bibliography1,Object is missing a required field bibliography1
+unused,4955,onview,"Object description has field onview, but that field was not selected for export"
+unused,4955,width,"Object description has field width, but that field was not selected for export"
+unused,4955,height,"Object description has field height, but that field was not selected for export"
+missing,4955,copyright,Object is missing a required field copyright
+missing,4955,classification,Object is missing a required field classification
+missing,4955,bibliography1,Object is missing a required field bibliography1
+unused,6922,depth,"Object description has field depth, but that field was not selected for export"
+missing,6922,copyright,Object is missing a required field copyright
+missing,6922,bibliography1,Object is missing a required field bibliography1
+unused,4790,depth,"Object description has field depth, but that field was not selected for export"
+unused,4790,width,"Object description has field width, but that field was not selected for export"
+missing,4790,copyright,Object is missing a required field copyright
+missing,4790,bibliography1,Object is missing a required field bibliography1
+unused,4792,depth,"Object description has field depth, but that field was not selected for export"
+unused,4792,width,"Object description has field width, but that field was not selected for export"
+missing,4792,copyright,Object is missing a required field copyright
+missing,4792,bibliography1,Object is missing a required field bibliography1
+unused,4794,depth,"Object description has field depth, but that field was not selected for export"
+unused,4794,width,"Object description has field width, but that field was not selected for export"
+missing,4794,copyright,Object is missing a required field copyright
+missing,4794,bibliography1,Object is missing a required field bibliography1
+unused,4690,depth,"Object description has field depth, but that field was not selected for export"
+unused,4690,height,"Object description has field height, but that field was not selected for export"
+missing,4690,copyright,Object is missing a required field copyright
+missing,4690,bibliography1,Object is missing a required field bibliography1
+unused,5033,depth,"Object description has field depth, but that field was not selected for export"
+unused,5033,height,"Object description has field height, but that field was not selected for export"
+missing,5033,copyright,Object is missing a required field copyright
+missing,5033,bibliography1,Object is missing a required field bibliography1
+unused,5263,depth,"Object description has field depth, but that field was not selected for export"
+unused,5263,height,"Object description has field height, but that field was not selected for export"
+missing,5263,copyright,Object is missing a required field copyright
+unused,5429,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5429,depth,"Object description has field depth, but that field was not selected for export"
+missing,5429,copyright,Object is missing a required field copyright
+unused,4762,depth,"Object description has field depth, but that field was not selected for export"
+missing,4762,copyright,Object is missing a required field copyright
+unused,5838,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5838,depth,"Object description has field depth, but that field was not selected for export"
+missing,5838,copyright,Object is missing a required field copyright
+unused,6715,depth,"Object description has field depth, but that field was not selected for export"
+missing,6715,copyright,Object is missing a required field copyright
+missing,6715,bibliography1,Object is missing a required field bibliography1
+unused,27714,depth,"Object description has field depth, but that field was not selected for export"
+missing,27714,primaryMedia,Object is missing a required field primaryMedia
+missing,27714,copyright,Object is missing a required field copyright
+unused,6348,depth,"Object description has field depth, but that field was not selected for export"
+missing,6348,copyright,Object is missing a required field copyright
+missing,6348,bibliography1,Object is missing a required field bibliography1
+unused,5793,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5793,depth,"Object description has field depth, but that field was not selected for export"
+missing,5793,copyright,Object is missing a required field copyright
+unused,8109,depth,"Object description has field depth, but that field was not selected for export"
+unused,8109,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+unused,8109,height,"Object description has field height, but that field was not selected for export"
+missing,8109,copyright,Object is missing a required field copyright
+unused,4843,onview,"Object description has field onview, but that field was not selected for export"
+unused,4843,depth,"Object description has field depth, but that field was not selected for export"
+unused,4843,height,"Object description has field height, but that field was not selected for export"
+missing,4843,copyright,Object is missing a required field copyright
+missing,4843,classification,Object is missing a required field classification
+missing,4843,bibliography1,Object is missing a required field bibliography1
+unused,6155,onview,"Object description has field onview, but that field was not selected for export"
+unused,6155,depth,"Object description has field depth, but that field was not selected for export"
+unused,6155,height,"Object description has field height, but that field was not selected for export"
+missing,6155,copyright,Object is missing a required field copyright
+missing,6155,classification,Object is missing a required field classification
+missing,6155,bibliography1,Object is missing a required field bibliography1
+unused,6175,onview,"Object description has field onview, but that field was not selected for export"
+unused,6175,depth,"Object description has field depth, but that field was not selected for export"
+unused,6175,height,"Object description has field height, but that field was not selected for export"
+missing,6175,copyright,Object is missing a required field copyright
+missing,6175,classification,Object is missing a required field classification
+missing,6175,bibliography1,Object is missing a required field bibliography1
+unused,7411,onview,"Object description has field onview, but that field was not selected for export"
+unused,7411,width,"Object description has field width, but that field was not selected for export"
+unused,7411,height,"Object description has field height, but that field was not selected for export"
+missing,7411,copyright,Object is missing a required field copyright
+missing,7411,classification,Object is missing a required field classification
+unused,7412,onview,"Object description has field onview, but that field was not selected for export"
+unused,7412,depth,"Object description has field depth, but that field was not selected for export"
+unused,7412,height,"Object description has field height, but that field was not selected for export"
+missing,7412,copyright,Object is missing a required field copyright
+missing,7412,classification,Object is missing a required field classification
+unused,4803,onview,"Object description has field onview, but that field was not selected for export"
+unused,4803,depth,"Object description has field depth, but that field was not selected for export"
+unused,4803,height,"Object description has field height, but that field was not selected for export"
+missing,4803,copyright,Object is missing a required field copyright
+missing,4803,classification,Object is missing a required field classification
+missing,4803,bibliography1,Object is missing a required field bibliography1
+unused,4834,onview,"Object description has field onview, but that field was not selected for export"
+unused,4834,width,"Object description has field width, but that field was not selected for export"
+unused,4834,height,"Object description has field height, but that field was not selected for export"
+missing,4834,copyright,Object is missing a required field copyright
+missing,4834,classification,Object is missing a required field classification
+missing,4834,bibliography1,Object is missing a required field bibliography1
+unused,4891,onview,"Object description has field onview, but that field was not selected for export"
+unused,4891,depth,"Object description has field depth, but that field was not selected for export"
+unused,4891,height,"Object description has field height, but that field was not selected for export"
+missing,4891,copyright,Object is missing a required field copyright
+missing,4891,classification,Object is missing a required field classification
+missing,4891,bibliography1,Object is missing a required field bibliography1
+unused,4892,onview,"Object description has field onview, but that field was not selected for export"
+unused,4892,depth,"Object description has field depth, but that field was not selected for export"
+unused,4892,height,"Object description has field height, but that field was not selected for export"
+missing,4892,copyright,Object is missing a required field copyright
+missing,4892,classification,Object is missing a required field classification
+missing,4892,bibliography1,Object is missing a required field bibliography1
+unused,4893,onview,"Object description has field onview, but that field was not selected for export"
+unused,4893,width,"Object description has field width, but that field was not selected for export"
+unused,4893,height,"Object description has field height, but that field was not selected for export"
+missing,4893,copyright,Object is missing a required field copyright
+missing,4893,classification,Object is missing a required field classification
+missing,4893,bibliography1,Object is missing a required field bibliography1
+unused,4935,onview,"Object description has field onview, but that field was not selected for export"
+unused,4935,width,"Object description has field width, but that field was not selected for export"
+unused,4935,height,"Object description has field height, but that field was not selected for export"
+missing,4935,copyright,Object is missing a required field copyright
+missing,4935,classification,Object is missing a required field classification
+missing,4935,bibliography1,Object is missing a required field bibliography1
+unused,4936,onview,"Object description has field onview, but that field was not selected for export"
+unused,4936,width,"Object description has field width, but that field was not selected for export"
+unused,4936,height,"Object description has field height, but that field was not selected for export"
+missing,4936,copyright,Object is missing a required field copyright
+missing,4936,classification,Object is missing a required field classification
+missing,4936,bibliography1,Object is missing a required field bibliography1
+unused,7404,onview,"Object description has field onview, but that field was not selected for export"
+unused,7404,depth,"Object description has field depth, but that field was not selected for export"
+unused,7404,height,"Object description has field height, but that field was not selected for export"
+missing,7404,copyright,Object is missing a required field copyright
+missing,7404,classification,Object is missing a required field classification
+missing,7404,bibliography1,Object is missing a required field bibliography1
+unused,7405,onview,"Object description has field onview, but that field was not selected for export"
+unused,7405,width,"Object description has field width, but that field was not selected for export"
+unused,7405,height,"Object description has field height, but that field was not selected for export"
+missing,7405,copyright,Object is missing a required field copyright
+missing,7405,classification,Object is missing a required field classification
+missing,7405,bibliography1,Object is missing a required field bibliography1
+unused,7408,onview,"Object description has field onview, but that field was not selected for export"
+unused,7408,width,"Object description has field width, but that field was not selected for export"
+unused,7408,height,"Object description has field height, but that field was not selected for export"
+missing,7408,copyright,Object is missing a required field copyright
+missing,7408,classification,Object is missing a required field classification
+missing,7408,bibliography1,Object is missing a required field bibliography1
+unused,7409,onview,"Object description has field onview, but that field was not selected for export"
+unused,7409,width,"Object description has field width, but that field was not selected for export"
+unused,7409,height,"Object description has field height, but that field was not selected for export"
+missing,7409,copyright,Object is missing a required field copyright
+missing,7409,classification,Object is missing a required field classification
+missing,7409,bibliography1,Object is missing a required field bibliography1
+unused,7910,onview,"Object description has field onview, but that field was not selected for export"
+unused,7910,width,"Object description has field width, but that field was not selected for export"
+unused,7910,height,"Object description has field height, but that field was not selected for export"
+missing,7910,copyright,Object is missing a required field copyright
+missing,7910,classification,Object is missing a required field classification
+missing,7910,bibliography1,Object is missing a required field bibliography1
+unused,8014,onview,"Object description has field onview, but that field was not selected for export"
+unused,8014,width,"Object description has field width, but that field was not selected for export"
+unused,8014,height,"Object description has field height, but that field was not selected for export"
+missing,8014,copyright,Object is missing a required field copyright
+missing,8014,classification,Object is missing a required field classification
+unused,8026,onview,"Object description has field onview, but that field was not selected for export"
+unused,8026,width,"Object description has field width, but that field was not selected for export"
+unused,8026,height,"Object description has field height, but that field was not selected for export"
+missing,8026,copyright,Object is missing a required field copyright
+missing,8026,classification,Object is missing a required field classification
+unused,8027,onview,"Object description has field onview, but that field was not selected for export"
+unused,8027,width,"Object description has field width, but that field was not selected for export"
+unused,8027,height,"Object description has field height, but that field was not selected for export"
+missing,8027,copyright,Object is missing a required field copyright
+missing,8027,classification,Object is missing a required field classification
+unused,8036,onview,"Object description has field onview, but that field was not selected for export"
+unused,8036,width,"Object description has field width, but that field was not selected for export"
+unused,8036,height,"Object description has field height, but that field was not selected for export"
+missing,8036,copyright,Object is missing a required field copyright
+missing,8036,classification,Object is missing a required field classification
+unused,8037,onview,"Object description has field onview, but that field was not selected for export"
+unused,8037,width,"Object description has field width, but that field was not selected for export"
+unused,8037,height,"Object description has field height, but that field was not selected for export"
+missing,8037,copyright,Object is missing a required field copyright
+missing,8037,classification,Object is missing a required field classification
+unused,8038,onview,"Object description has field onview, but that field was not selected for export"
+unused,8038,width,"Object description has field width, but that field was not selected for export"
+unused,8038,height,"Object description has field height, but that field was not selected for export"
+missing,8038,copyright,Object is missing a required field copyright
+missing,8038,classification,Object is missing a required field classification
+unused,8048,onview,"Object description has field onview, but that field was not selected for export"
+unused,8048,width,"Object description has field width, but that field was not selected for export"
+unused,8048,height,"Object description has field height, but that field was not selected for export"
+missing,8048,copyright,Object is missing a required field copyright
+missing,8048,classification,Object is missing a required field classification
+missing,8048,bibliography1,Object is missing a required field bibliography1
+unused,8050,onview,"Object description has field onview, but that field was not selected for export"
+unused,8050,width,"Object description has field width, but that field was not selected for export"
+unused,8050,height,"Object description has field height, but that field was not selected for export"
+missing,8050,copyright,Object is missing a required field copyright
+missing,8050,classification,Object is missing a required field classification
+missing,8050,bibliography1,Object is missing a required field bibliography1
+unused,8052,onview,"Object description has field onview, but that field was not selected for export"
+unused,8052,width,"Object description has field width, but that field was not selected for export"
+unused,8052,height,"Object description has field height, but that field was not selected for export"
+missing,8052,copyright,Object is missing a required field copyright
+missing,8052,classification,Object is missing a required field classification
+missing,8052,bibliography1,Object is missing a required field bibliography1
+unused,8053,onview,"Object description has field onview, but that field was not selected for export"
+unused,8053,width,"Object description has field width, but that field was not selected for export"
+unused,8053,height,"Object description has field height, but that field was not selected for export"
+missing,8053,copyright,Object is missing a required field copyright
+missing,8053,classification,Object is missing a required field classification
+missing,8053,bibliography1,Object is missing a required field bibliography1
+unused,8062,onview,"Object description has field onview, but that field was not selected for export"
+unused,8062,width,"Object description has field width, but that field was not selected for export"
+unused,8062,height,"Object description has field height, but that field was not selected for export"
+missing,8062,copyright,Object is missing a required field copyright
+missing,8062,classification,Object is missing a required field classification
+unused,8063,onview,"Object description has field onview, but that field was not selected for export"
+unused,8063,width,"Object description has field width, but that field was not selected for export"
+unused,8063,height,"Object description has field height, but that field was not selected for export"
+missing,8063,copyright,Object is missing a required field copyright
+missing,8063,classification,Object is missing a required field classification
+unused,8067,onview,"Object description has field onview, but that field was not selected for export"
+unused,8067,width,"Object description has field width, but that field was not selected for export"
+unused,8067,height,"Object description has field height, but that field was not selected for export"
+missing,8067,copyright,Object is missing a required field copyright
+missing,8067,classification,Object is missing a required field classification
+unused,8068,onview,"Object description has field onview, but that field was not selected for export"
+unused,8068,width,"Object description has field width, but that field was not selected for export"
+unused,8068,height,"Object description has field height, but that field was not selected for export"
+missing,8068,copyright,Object is missing a required field copyright
+missing,8068,classification,Object is missing a required field classification
+unused,6206,onview,"Object description has field onview, but that field was not selected for export"
+unused,6206,depth,"Object description has field depth, but that field was not selected for export"
+unused,6206,height,"Object description has field height, but that field was not selected for export"
+missing,6206,copyright,Object is missing a required field copyright
+missing,6206,classification,Object is missing a required field classification
+missing,6206,bibliography1,Object is missing a required field bibliography1
+unused,6207,onview,"Object description has field onview, but that field was not selected for export"
+unused,6207,depth,"Object description has field depth, but that field was not selected for export"
+unused,6207,height,"Object description has field height, but that field was not selected for export"
+missing,6207,copyright,Object is missing a required field copyright
+missing,6207,classification,Object is missing a required field classification
+missing,6207,bibliography1,Object is missing a required field bibliography1
+unused,5604,onview,"Object description has field onview, but that field was not selected for export"
+unused,5604,depth,"Object description has field depth, but that field was not selected for export"
+unused,5604,height,"Object description has field height, but that field was not selected for export"
+missing,5604,copyright,Object is missing a required field copyright
+missing,5604,classification,Object is missing a required field classification
+missing,5604,bibliography1,Object is missing a required field bibliography1
+unused,5897,onview,"Object description has field onview, but that field was not selected for export"
+unused,5897,width,"Object description has field width, but that field was not selected for export"
+unused,5897,height,"Object description has field height, but that field was not selected for export"
+missing,5897,copyright,Object is missing a required field copyright
+missing,5897,classification,Object is missing a required field classification
+unused,7387,onview,"Object description has field onview, but that field was not selected for export"
+unused,7387,width,"Object description has field width, but that field was not selected for export"
+unused,7387,height,"Object description has field height, but that field was not selected for export"
+missing,7387,copyright,Object is missing a required field copyright
+missing,7387,classification,Object is missing a required field classification
+missing,7387,bibliography1,Object is missing a required field bibliography1
+unused,7388,onview,"Object description has field onview, but that field was not selected for export"
+unused,7388,width,"Object description has field width, but that field was not selected for export"
+unused,7388,height,"Object description has field height, but that field was not selected for export"
+missing,7388,copyright,Object is missing a required field copyright
+missing,7388,classification,Object is missing a required field classification
+missing,7388,bibliography1,Object is missing a required field bibliography1
+unused,10474,onview,"Object description has field onview, but that field was not selected for export"
+unused,10474,depth,"Object description has field depth, but that field was not selected for export"
+unused,10474,height,"Object description has field height, but that field was not selected for export"
+missing,10474,copyright,Object is missing a required field copyright
+missing,10474,classification,Object is missing a required field classification
+unused,8057,onview,"Object description has field onview, but that field was not selected for export"
+unused,8057,depth,"Object description has field depth, but that field was not selected for export"
+unused,8057,height,"Object description has field height, but that field was not selected for export"
+missing,8057,copyright,Object is missing a required field copyright
+missing,8057,classification,Object is missing a required field classification
+unused,5964,onview,"Object description has field onview, but that field was not selected for export"
+unused,5964,depth,"Object description has field depth, but that field was not selected for export"
+unused,5964,height,"Object description has field height, but that field was not selected for export"
+missing,5964,copyright,Object is missing a required field copyright
+missing,5964,classification,Object is missing a required field classification
+missing,5964,bibliography1,Object is missing a required field bibliography1
+unused,5966,onview,"Object description has field onview, but that field was not selected for export"
+unused,5966,width,"Object description has field width, but that field was not selected for export"
+unused,5966,height,"Object description has field height, but that field was not selected for export"
+missing,5966,copyright,Object is missing a required field copyright
+missing,5966,classification,Object is missing a required field classification
+missing,5966,bibliography1,Object is missing a required field bibliography1
+unused,6234,depth,"Object description has field depth, but that field was not selected for export"
+unused,6234,height,"Object description has field height, but that field was not selected for export"
+missing,6234,copyright,Object is missing a required field copyright
+missing,6234,classification,Object is missing a required field classification
+unused,7391,onview,"Object description has field onview, but that field was not selected for export"
+unused,7391,width,"Object description has field width, but that field was not selected for export"
+unused,7391,height,"Object description has field height, but that field was not selected for export"
+missing,7391,copyright,Object is missing a required field copyright
+missing,7391,classification,Object is missing a required field classification
+missing,7391,bibliography1,Object is missing a required field bibliography1
+unused,4805,onview,"Object description has field onview, but that field was not selected for export"
+unused,4805,depth,"Object description has field depth, but that field was not selected for export"
+unused,4805,height,"Object description has field height, but that field was not selected for export"
+missing,4805,copyright,Object is missing a required field copyright
+missing,4805,classification,Object is missing a required field classification
+missing,4805,bibliography1,Object is missing a required field bibliography1
+unused,4841,onview,"Object description has field onview, but that field was not selected for export"
+unused,4841,depth,"Object description has field depth, but that field was not selected for export"
+unused,4841,height,"Object description has field height, but that field was not selected for export"
+missing,4841,copyright,Object is missing a required field copyright
+missing,4841,classification,Object is missing a required field classification
+missing,4841,bibliography1,Object is missing a required field bibliography1
+unused,4897,onview,"Object description has field onview, but that field was not selected for export"
+unused,4897,depth,"Object description has field depth, but that field was not selected for export"
+unused,4897,height,"Object description has field height, but that field was not selected for export"
+missing,4897,copyright,Object is missing a required field copyright
+missing,4897,classification,Object is missing a required field classification
+missing,4897,bibliography1,Object is missing a required field bibliography1
+unused,4898,onview,"Object description has field onview, but that field was not selected for export"
+unused,4898,depth,"Object description has field depth, but that field was not selected for export"
+unused,4898,height,"Object description has field height, but that field was not selected for export"
+missing,4898,copyright,Object is missing a required field copyright
+missing,4898,classification,Object is missing a required field classification
+missing,4898,bibliography1,Object is missing a required field bibliography1
+unused,5599,onview,"Object description has field onview, but that field was not selected for export"
+unused,5599,depth,"Object description has field depth, but that field was not selected for export"
+unused,5599,height,"Object description has field height, but that field was not selected for export"
+missing,5599,copyright,Object is missing a required field copyright
+missing,5599,classification,Object is missing a required field classification
+missing,5599,bibliography1,Object is missing a required field bibliography1
+unused,5611,onview,"Object description has field onview, but that field was not selected for export"
+unused,5611,depth,"Object description has field depth, but that field was not selected for export"
+unused,5611,height,"Object description has field height, but that field was not selected for export"
+missing,5611,copyright,Object is missing a required field copyright
+missing,5611,classification,Object is missing a required field classification
+missing,5611,bibliography1,Object is missing a required field bibliography1
+unused,6214,onview,"Object description has field onview, but that field was not selected for export"
+unused,6214,width,"Object description has field width, but that field was not selected for export"
+unused,6214,height,"Object description has field height, but that field was not selected for export"
+missing,6214,copyright,Object is missing a required field copyright
+missing,6214,classification,Object is missing a required field classification
+missing,6214,bibliography1,Object is missing a required field bibliography1
+unused,7051,depth,"Object description has field depth, but that field was not selected for export"
+unused,7051,height,"Object description has field height, but that field was not selected for export"
+missing,7051,copyright,Object is missing a required field copyright
+missing,7051,classification,Object is missing a required field classification
+missing,7051,bibliography1,Object is missing a required field bibliography1
+unused,7110,depth,"Object description has field depth, but that field was not selected for export"
+unused,7110,height,"Object description has field height, but that field was not selected for export"
+missing,7110,copyright,Object is missing a required field copyright
+missing,7110,classification,Object is missing a required field classification
+missing,7110,bibliography1,Object is missing a required field bibliography1
+unused,7309,depth,"Object description has field depth, but that field was not selected for export"
+unused,7309,height,"Object description has field height, but that field was not selected for export"
+missing,7309,copyright,Object is missing a required field copyright
+missing,7309,classification,Object is missing a required field classification
+missing,7309,bibliography1,Object is missing a required field bibliography1
+unused,7406,onview,"Object description has field onview, but that field was not selected for export"
+unused,7406,width,"Object description has field width, but that field was not selected for export"
+unused,7406,height,"Object description has field height, but that field was not selected for export"
+missing,7406,copyright,Object is missing a required field copyright
+missing,7406,classification,Object is missing a required field classification
+missing,7406,bibliography1,Object is missing a required field bibliography1
+unused,7407,onview,"Object description has field onview, but that field was not selected for export"
+unused,7407,depth,"Object description has field depth, but that field was not selected for export"
+unused,7407,height,"Object description has field height, but that field was not selected for export"
+missing,7407,copyright,Object is missing a required field copyright
+missing,7407,classification,Object is missing a required field classification
+missing,7407,bibliography1,Object is missing a required field bibliography1
+unused,7437,depth,"Object description has field depth, but that field was not selected for export"
+unused,7437,height,"Object description has field height, but that field was not selected for export"
+missing,7437,copyright,Object is missing a required field copyright
+missing,7437,classification,Object is missing a required field classification
+missing,7437,bibliography1,Object is missing a required field bibliography1
+unused,7442,depth,"Object description has field depth, but that field was not selected for export"
+unused,7442,height,"Object description has field height, but that field was not selected for export"
+missing,7442,copyright,Object is missing a required field copyright
+missing,7442,classification,Object is missing a required field classification
+missing,7442,bibliography1,Object is missing a required field bibliography1
+unused,7634,onview,"Object description has field onview, but that field was not selected for export"
+unused,7634,depth,"Object description has field depth, but that field was not selected for export"
+unused,7634,height,"Object description has field height, but that field was not selected for export"
+missing,7634,copyright,Object is missing a required field copyright
+missing,7634,classification,Object is missing a required field classification
+missing,7634,bibliography1,Object is missing a required field bibliography1
+unused,7847,onview,"Object description has field onview, but that field was not selected for export"
+unused,7847,width,"Object description has field width, but that field was not selected for export"
+unused,7847,height,"Object description has field height, but that field was not selected for export"
+missing,7847,copyright,Object is missing a required field copyright
+missing,7847,classification,Object is missing a required field classification
+missing,7847,bibliography1,Object is missing a required field bibliography1
+unused,7931,depth,"Object description has field depth, but that field was not selected for export"
+unused,7931,height,"Object description has field height, but that field was not selected for export"
+missing,7931,copyright,Object is missing a required field copyright
+missing,7931,classification,Object is missing a required field classification
+missing,7931,bibliography1,Object is missing a required field bibliography1
+unused,7967,depth,"Object description has field depth, but that field was not selected for export"
+unused,7967,height,"Object description has field height, but that field was not selected for export"
+missing,7967,copyright,Object is missing a required field copyright
+missing,7967,classification,Object is missing a required field classification
+unused,7968,depth,"Object description has field depth, but that field was not selected for export"
+unused,7968,width,"Object description has field width, but that field was not selected for export"
+unused,7968,height,"Object description has field height, but that field was not selected for export"
+missing,7968,copyright,Object is missing a required field copyright
+missing,7968,classification,Object is missing a required field classification
+unused,5493,depth,"Object description has field depth, but that field was not selected for export"
+unused,5493,height,"Object description has field height, but that field was not selected for export"
+missing,5493,copyright,Object is missing a required field copyright
+missing,5493,bibliography1,Object is missing a required field bibliography1
+unused,4930,onview,"Object description has field onview, but that field was not selected for export"
+unused,4930,width,"Object description has field width, but that field was not selected for export"
+unused,4930,height,"Object description has field height, but that field was not selected for export"
+missing,4930,copyright,Object is missing a required field copyright
+missing,4930,classification,Object is missing a required field classification
+missing,4930,bibliography1,Object is missing a required field bibliography1
+unused,4931,onview,"Object description has field onview, but that field was not selected for export"
+unused,4931,width,"Object description has field width, but that field was not selected for export"
+unused,4931,height,"Object description has field height, but that field was not selected for export"
+missing,4931,copyright,Object is missing a required field copyright
+missing,4931,classification,Object is missing a required field classification
+missing,4931,bibliography1,Object is missing a required field bibliography1
+unused,5985,depth,"Object description has field depth, but that field was not selected for export"
+unused,5985,height,"Object description has field height, but that field was not selected for export"
+missing,5985,copyright,Object is missing a required field copyright
+missing,5985,classification,Object is missing a required field classification
+missing,5985,bibliography1,Object is missing a required field bibliography1
+unused,5986,depth,"Object description has field depth, but that field was not selected for export"
+unused,5986,height,"Object description has field height, but that field was not selected for export"
+missing,5986,copyright,Object is missing a required field copyright
+missing,5986,classification,Object is missing a required field classification
+missing,5986,bibliography1,Object is missing a required field bibliography1
+unused,6198,onview,"Object description has field onview, but that field was not selected for export"
+unused,6198,width,"Object description has field width, but that field was not selected for export"
+unused,6198,height,"Object description has field height, but that field was not selected for export"
+missing,6198,copyright,Object is missing a required field copyright
+missing,6198,classification,Object is missing a required field classification
+missing,6198,bibliography1,Object is missing a required field bibliography1
+unused,6235,depth,"Object description has field depth, but that field was not selected for export"
+unused,6235,height,"Object description has field height, but that field was not selected for export"
+missing,6235,copyright,Object is missing a required field copyright
+missing,6235,classification,Object is missing a required field classification
+unused,6236,width,"Object description has field width, but that field was not selected for export"
+unused,6236,height,"Object description has field height, but that field was not selected for export"
+missing,6236,copyright,Object is missing a required field copyright
+missing,6236,classification,Object is missing a required field classification
+unused,6246,width,"Object description has field width, but that field was not selected for export"
+unused,6246,height,"Object description has field height, but that field was not selected for export"
+missing,6246,copyright,Object is missing a required field copyright
+missing,6246,classification,Object is missing a required field classification
+missing,6246,bibliography1,Object is missing a required field bibliography1
+unused,6247,depth,"Object description has field depth, but that field was not selected for export"
+unused,6247,height,"Object description has field height, but that field was not selected for export"
+missing,6247,copyright,Object is missing a required field copyright
+missing,6247,classification,Object is missing a required field classification
+unused,7195,depth,"Object description has field depth, but that field was not selected for export"
+unused,7195,height,"Object description has field height, but that field was not selected for export"
+missing,7195,copyright,Object is missing a required field copyright
+missing,7195,classification,Object is missing a required field classification
+missing,7195,bibliography1,Object is missing a required field bibliography1
+unused,7673,onview,"Object description has field onview, but that field was not selected for export"
+unused,7673,depth,"Object description has field depth, but that field was not selected for export"
+unused,7673,height,"Object description has field height, but that field was not selected for export"
+missing,7673,copyright,Object is missing a required field copyright
+missing,7673,classification,Object is missing a required field classification
+missing,7673,bibliography1,Object is missing a required field bibliography1
+unused,7978,depth,"Object description has field depth, but that field was not selected for export"
+unused,7978,height,"Object description has field height, but that field was not selected for export"
+missing,7978,copyright,Object is missing a required field copyright
+missing,7978,classification,Object is missing a required field classification
+missing,7978,bibliography1,Object is missing a required field bibliography1
+unused,8064,onview,"Object description has field onview, but that field was not selected for export"
+unused,8064,width,"Object description has field width, but that field was not selected for export"
+unused,8064,height,"Object description has field height, but that field was not selected for export"
+missing,8064,copyright,Object is missing a required field copyright
+missing,8064,classification,Object is missing a required field classification
+unused,8065,onview,"Object description has field onview, but that field was not selected for export"
+unused,8065,width,"Object description has field width, but that field was not selected for export"
+unused,8065,height,"Object description has field height, but that field was not selected for export"
+missing,8065,copyright,Object is missing a required field copyright
+missing,8065,classification,Object is missing a required field classification
+unused,6254,width,"Object description has field width, but that field was not selected for export"
+unused,6254,height,"Object description has field height, but that field was not selected for export"
+missing,6254,copyright,Object is missing a required field copyright
+missing,6254,classification,Object is missing a required field classification
+missing,6254,bibliography1,Object is missing a required field bibliography1
+unused,6255,width,"Object description has field width, but that field was not selected for export"
+unused,6255,height,"Object description has field height, but that field was not selected for export"
+missing,6255,copyright,Object is missing a required field copyright
+missing,6255,classification,Object is missing a required field classification
+missing,6255,bibliography1,Object is missing a required field bibliography1
+unused,6260,depth,"Object description has field depth, but that field was not selected for export"
+unused,6260,height,"Object description has field height, but that field was not selected for export"
+missing,6260,copyright,Object is missing a required field copyright
+missing,6260,classification,Object is missing a required field classification
+missing,6260,bibliography1,Object is missing a required field bibliography1
+unused,6261,depth,"Object description has field depth, but that field was not selected for export"
+unused,6261,height,"Object description has field height, but that field was not selected for export"
+missing,6261,copyright,Object is missing a required field copyright
+missing,6261,classification,Object is missing a required field classification
+missing,6261,bibliography1,Object is missing a required field bibliography1
+unused,4988,onview,"Object description has field onview, but that field was not selected for export"
+unused,4988,depth,"Object description has field depth, but that field was not selected for export"
+unused,4988,height,"Object description has field height, but that field was not selected for export"
+missing,4988,copyright,Object is missing a required field copyright
+missing,4988,bibliography1,Object is missing a required field bibliography1
+unused,4691,onview,"Object description has field onview, but that field was not selected for export"
+unused,4691,depth,"Object description has field depth, but that field was not selected for export"
+missing,4691,copyright,Object is missing a required field copyright
+unused,3046,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,3046,depth,"Object description has field depth, but that field was not selected for export"
+missing,3046,copyright,Object is missing a required field copyright
+unused,3248,depth,"Object description has field depth, but that field was not selected for export"
+missing,3248,copyright,Object is missing a required field copyright
+missing,3248,bibliography1,Object is missing a required field bibliography1
+unused,4755,depth,"Object description has field depth, but that field was not selected for export"
+missing,4755,copyright,Object is missing a required field copyright
+unused,8092,depth,"Object description has field depth, but that field was not selected for export"
+unused,8092,height,"Object description has field height, but that field was not selected for export"
+missing,8092,copyright,Object is missing a required field copyright
+missing,8092,classification,Object is missing a required field classification
+missing,8092,bibliography1,Object is missing a required field bibliography1
+unused,5056,depth,"Object description has field depth, but that field was not selected for export"
+unused,5056,width,"Object description has field width, but that field was not selected for export"
+unused,5056,height,"Object description has field height, but that field was not selected for export"
+missing,5056,copyright,Object is missing a required field copyright
+missing,5056,bibliography1,Object is missing a required field bibliography1
+unused,5489,depth,"Object description has field depth, but that field was not selected for export"
+unused,5489,height,"Object description has field height, but that field was not selected for export"
+missing,5489,copyright,Object is missing a required field copyright
+unused,5716,depth,"Object description has field depth, but that field was not selected for export"
+unused,5716,height,"Object description has field height, but that field was not selected for export"
+missing,5716,copyright,Object is missing a required field copyright
+unused,6813,depth,"Object description has field depth, but that field was not selected for export"
+missing,6813,copyright,Object is missing a required field copyright
+missing,6813,bibliography1,Object is missing a required field bibliography1
+unused,6448,depth,"Object description has field depth, but that field was not selected for export"
+unused,6448,height,"Object description has field height, but that field was not selected for export"
+missing,6448,copyright,Object is missing a required field copyright
+missing,6448,bibliography1,Object is missing a required field bibliography1
+unused,6449,depth,"Object description has field depth, but that field was not selected for export"
+unused,6449,height,"Object description has field height, but that field was not selected for export"
+missing,6449,copyright,Object is missing a required field copyright
+missing,6449,bibliography1,Object is missing a required field bibliography1
+unused,6444,depth,"Object description has field depth, but that field was not selected for export"
+unused,6444,height,"Object description has field height, but that field was not selected for export"
+missing,6444,copyright,Object is missing a required field copyright
+missing,6444,bibliography1,Object is missing a required field bibliography1
+unused,7990,depth,"Object description has field depth, but that field was not selected for export"
+unused,4723,onview,"Object description has field onview, but that field was not selected for export"
+unused,4723,depth,"Object description has field depth, but that field was not selected for export"
+missing,4723,copyright,Object is missing a required field copyright
+unused,7415,onview,"Object description has field onview, but that field was not selected for export"
+unused,7415,depth,"Object description has field depth, but that field was not selected for export"
+unused,7415,height,"Object description has field height, but that field was not selected for export"
+missing,7415,copyright,Object is missing a required field copyright
+missing,7415,classification,Object is missing a required field classification
+missing,7415,bibliography1,Object is missing a required field bibliography1
+unused,6063,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,6063,depth,"Object description has field depth, but that field was not selected for export"
+missing,6063,copyright,Object is missing a required field copyright
+unused,7877,depth,"Object description has field depth, but that field was not selected for export"
+unused,7877,height,"Object description has field height, but that field was not selected for export"
+missing,7877,copyright,Object is missing a required field copyright
+unused,6595,depth,"Object description has field depth, but that field was not selected for export"
+missing,6595,copyright,Object is missing a required field copyright
+missing,6595,bibliography1,Object is missing a required field bibliography1
+unused,6596,depth,"Object description has field depth, but that field was not selected for export"
+missing,6596,copyright,Object is missing a required field copyright
+missing,6596,bibliography1,Object is missing a required field bibliography1
+unused,7896,depth,"Object description has field depth, but that field was not selected for export"
+unused,7896,height,"Object description has field height, but that field was not selected for export"
+missing,7896,copyright,Object is missing a required field copyright
+unused,5833,onview,"Object description has field onview, but that field was not selected for export"
+unused,5833,depth,"Object description has field depth, but that field was not selected for export"
+missing,5833,copyright,Object is missing a required field copyright
+missing,5833,bibliography1,Object is missing a required field bibliography1
+unused,5796,onview,"Object description has field onview, but that field was not selected for export"
+unused,5796,depth,"Object description has field depth, but that field was not selected for export"
+missing,5796,copyright,Object is missing a required field copyright
+unused,6981,depth,"Object description has field depth, but that field was not selected for export"
+missing,6981,copyright,Object is missing a required field copyright
+unused,5775,depth,"Object description has field depth, but that field was not selected for export"
+missing,5775,copyright,Object is missing a required field copyright
+unused,6528,depth,"Object description has field depth, but that field was not selected for export"
+missing,6528,copyright,Object is missing a required field copyright
+unused,4807,onview,"Object description has field onview, but that field was not selected for export"
+unused,4807,depth,"Object description has field depth, but that field was not selected for export"
+unused,4807,height,"Object description has field height, but that field was not selected for export"
+missing,4807,copyright,Object is missing a required field copyright
+missing,4807,classification,Object is missing a required field classification
+missing,4807,bibliography1,Object is missing a required field bibliography1
+unused,7661,onview,"Object description has field onview, but that field was not selected for export"
+unused,7661,depth,"Object description has field depth, but that field was not selected for export"
+unused,7661,height,"Object description has field height, but that field was not selected for export"
+missing,7661,copyright,Object is missing a required field copyright
+missing,7661,classification,Object is missing a required field classification
+unused,4972,onview,"Object description has field onview, but that field was not selected for export"
+unused,4972,depth,"Object description has field depth, but that field was not selected for export"
+unused,4972,height,"Object description has field height, but that field was not selected for export"
+missing,4972,copyright,Object is missing a required field copyright
+missing,4972,classification,Object is missing a required field classification
+unused,7070,width,"Object description has field width, but that field was not selected for export"
+unused,7070,height,"Object description has field height, but that field was not selected for export"
+missing,7070,copyright,Object is missing a required field copyright
+missing,7070,classification,Object is missing a required field classification
+missing,7070,bibliography1,Object is missing a required field bibliography1
+unused,7417,onview,"Object description has field onview, but that field was not selected for export"
+unused,7417,width,"Object description has field width, but that field was not selected for export"
+unused,7417,height,"Object description has field height, but that field was not selected for export"
+missing,7417,copyright,Object is missing a required field copyright
+missing,7417,classification,Object is missing a required field classification
+missing,7417,bibliography1,Object is missing a required field bibliography1
+unused,7419,onview,"Object description has field onview, but that field was not selected for export"
+unused,7419,width,"Object description has field width, but that field was not selected for export"
+unused,7419,height,"Object description has field height, but that field was not selected for export"
+missing,7419,copyright,Object is missing a required field copyright
+missing,7419,classification,Object is missing a required field classification
+missing,7419,bibliography1,Object is missing a required field bibliography1
+unused,4934,onview,"Object description has field onview, but that field was not selected for export"
+unused,4934,width,"Object description has field width, but that field was not selected for export"
+unused,4934,height,"Object description has field height, but that field was not selected for export"
+missing,4934,copyright,Object is missing a required field copyright
+missing,4934,classification,Object is missing a required field classification
+missing,4934,bibliography1,Object is missing a required field bibliography1
+unused,8010,onview,"Object description has field onview, but that field was not selected for export"
+unused,8010,depth,"Object description has field depth, but that field was not selected for export"
+unused,8010,height,"Object description has field height, but that field was not selected for export"
+missing,8010,copyright,Object is missing a required field copyright
+missing,8010,classification,Object is missing a required field classification
+unused,8020,onview,"Object description has field onview, but that field was not selected for export"
+unused,8020,width,"Object description has field width, but that field was not selected for export"
+unused,8020,height,"Object description has field height, but that field was not selected for export"
+missing,8020,copyright,Object is missing a required field copyright
+missing,8020,classification,Object is missing a required field classification
+missing,8020,bibliography1,Object is missing a required field bibliography1
+unused,5110,creditline,"Object description has field creditline, but that field was not selected for export"
+unused,5110,depth,"Object description has field depth, but that field was not selected for export"
+missing,5110,copyright,Object is missing a required field copyright
+unused,6726,depth,"Object description has field depth, but that field was not selected for export"
+unused,6726,height,"Object description has field height, but that field was not selected for export"
+missing,6726,copyright,Object is missing a required field copyright
+unused,6728,depth,"Object description has field depth, but that field was not selected for export"
+unused,6728,height,"Object description has field height, but that field was not selected for export"
+missing,6728,copyright,Object is missing a required field copyright
+unused,6882,depth,"Object description has field depth, but that field was not selected for export"
+unused,6882,height,"Object description has field height, but that field was not selected for export"
+missing,6882,copyright,Object is missing a required field copyright
+unused,6885,depth,"Object description has field depth, but that field was not selected for export"
+unused,6885,height,"Object description has field height, but that field was not selected for export"
+missing,6885,copyright,Object is missing a required field copyright
+unused,7328,depth,"Object description has field depth, but that field was not selected for export"
+unused,7328,height,"Object description has field height, but that field was not selected for export"
+missing,7328,copyright,Object is missing a required field copyright
+unused,7329,depth,"Object description has field depth, but that field was not selected for export"
+unused,7329,height,"Object description has field height, but that field was not selected for export"
+missing,7329,copyright,Object is missing a required field copyright
+unused,7336,depth,"Object description has field depth, but that field was not selected for export"
+unused,7336,height,"Object description has field height, but that field was not selected for export"
+missing,7336,copyright,Object is missing a required field copyright
+unused,7337,depth,"Object description has field depth, but that field was not selected for export"
+unused,7337,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+unused,7337,height,"Object description has field height, but that field was not selected for export"
+missing,7337,copyright,Object is missing a required field copyright
+unused,7350,depth,"Object description has field depth, but that field was not selected for export"
+unused,7350,audioTourEntries,"Object description has field audioTourEntries, but that field was not selected for export"
+unused,7350,height,"Object description has field height, but that field was not selected for export"
+missing,7350,copyright,Object is missing a required field copyright
+unused,7511,depth,"Object description has field depth, but that field was not selected for export"
+unused,7511,height,"Object description has field height, but that field was not selected for export"
+missing,7511,copyright,Object is missing a required field copyright
+unused,6879,depth,"Object description has field depth, but that field was not selected for export"
+unused,6879,height,"Object description has field height, but that field was not selected for export"
+missing,6879,copyright,Object is missing a required field copyright
+unused,7327,depth,"Object description has field depth, but that field was not selected for export"
+unused,7327,height,"Object description has field height, but that field was not selected for export"
+missing,7327,copyright,Object is missing a required field copyright
+unused,7357,depth,"Object description has field depth, but that field was not selected for export"
+unused,7357,height,"Object description has field height, but that field was not selected for export"
+missing,7357,copyright,Object is missing a required field copyright
+unused,7303,depth,"Object description has field depth, but that field was not selected for export"
+unused,7303,height,"Object description has field height, but that field was not selected for export"
+missing,7303,copyright,Object is missing a required field copyright
+unused,6359,depth,"Object description has field depth, but that field was not selected for export"
+missing,6359,copyright,Object is missing a required field copyright
+missing,6359,bibliography1,Object is missing a required field bibliography1
+unused,6863,depth,"Object description has field depth, but that field was not selected for export"
+missing,6863,copyright,Object is missing a required field copyright
+unused,7008,depth,"Object description has field depth, but that field was not selected for export"
+missing,7008,copyright,Object is missing a required field copyright
+unused,6533,depth,"Object description has field depth, but that field was not selected for export"
+missing,6533,copyright,Object is missing a required field copyright
+unused,7369,depth,"Object description has field depth, but that field was not selected for export"
+unused,7369,height,"Object description has field height, but that field was not selected for export"
+missing,7369,copyright,Object is missing a required field copyright
+unused,6721,depth,"Object description has field depth, but that field was not selected for export"
+unused,6721,height,"Object description has field height, but that field was not selected for export"
+missing,6721,copyright,Object is missing a required field copyright
+unused,6724,depth,"Object description has field depth, but that field was not selected for export"
+unused,6724,height,"Object description has field height, but that field was not selected for export"
+missing,6724,copyright,Object is missing a required field copyright
+unused,6877,depth,"Object description has field depth, but that field was not selected for export"
+unused,6877,height,"Object description has field height, but that field was not selected for export"
+missing,6877,copyright,Object is missing a required field copyright
+unused,6884,depth,"Object description has field depth, but that field was not selected for export"
+unused,6884,height,"Object description has field height, but that field was not selected for export"
+missing,6884,copyright,Object is missing a required field copyright
+unused,6900,depth,"Object description has field depth, but that field was not selected for export"
+unused,6900,height,"Object description has field height, but that field was not selected for export"
+missing,6900,copyright,Object is missing a required field copyright
+unused,6928,depth,"Object description has field depth, but that field was not selected for export"
+unused,6928,height,"Object description has field height, but that field was not selected for export"
+missing,6928,copyright,Object is missing a required field copyright
+unused,7330,depth,"Object description has field depth, but that field was not selected for export"
+unused,7330,height,"Object description has field height, but that field was not selected for export"
+missing,7330,copyright,Object is missing a required field copyright
+unused,7348,depth,"Object description has field depth, but that field was not selected for export"
+unused,7348,height,"Object description has field height, but that field was not selected for export"
+missing,7348,copyright,Object is missing a required field copyright

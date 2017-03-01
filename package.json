@@ -10,7 +10,8 @@
     "eslint-plugin-import": "^2.2.0"
   },
   "scripts": {
-    "lint": "eslint dashboard tms_csv"
+    "lint": "eslint dashboard tms_csv",
+    "lint-fix": "eslint dashboard tms_csv --fix"
   },
   "repository": {
     "type": "git",

@@ -1,7 +1,7 @@
-const ArtObject = require("./artObject.js");
-const TMSReader = require("./tmsReader.js");
+const ArtObject = require('./artObject.js');
+const TMSReader = require('./tmsReader.js');
 
-const fs = require("fs");
+const fs = require('fs');
 
 module.exports = class TMSFileReader extends TMSReader {
 	constructor() {
@@ -22,19 +22,19 @@ module.exports = class TMSFileReader extends TMSReader {
 	}
 
 	hasNext() {
-		return new Promise((resolve) => resolve(this._index < this._files.length));
+		return new Promise(resolve => resolve(this._index < this._files.length));
 	}
 
 	next() {
 		return new Promise((resolve, reject) => {
 			if (this._index >= this._files.length) {
-				reject("No more objects");
+				reject('No more objects');
 			} else {
-				const artObjectPath = this.path + "/" + this._files[this._index];
+				const artObjectPath = `${this.path}/${this._files[this._index]}`;
 				const description = fs.readFileSync(artObjectPath, 'utf8');
 				this._index++;
 				resolve(new ArtObject(description));
 			}
 		});
 	}
-}
+};

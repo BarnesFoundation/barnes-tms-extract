@@ -1,4 +1,4 @@
-const _ = require("lodash");
+const _ = require('lodash');
 
 module.exports = class ArtObject {
 	constructor(jsonDescription) {
@@ -16,4 +16,4 @@ module.exports = class ArtObject {
 		}
 		return ret;
 	}
-}
+};

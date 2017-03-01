@@ -1,0 +1,42 @@
+{
+  "_index": [
+    "id"
+  ], 
+  "added": [], 
+  "changed": [
+    {
+      "fields": {
+        "locations": {
+          "from": "Barnes Foundation (Philadelphia), Parkway, Conservation Lab", 
+          "to": "Barnes Foundation (Philadelphia), Collection Gallery, Room 06, East Wall"
+        }
+      }, 
+      "key": [
+        "5662"
+      ]
+    }, 
+    {
+      "fields": {
+        "locations": {
+          "from": "Barnes Foundation (Philadelphia), Parkway, Conservation Lab", 
+          "to": "Barnes Foundation (Philadelphia), Collection Gallery, Room 05, South Wall"
+        }
+      }, 
+      "key": [
+        "5803"
+      ]
+    }, 
+    {
+      "fields": {
+        "locations": {
+          "from": "Barnes Foundation (Philadelphia), Parkway, Conservation Lab", 
+          "to": "Barnes Foundation (Philadelphia), Collection Gallery, Main Room, North Wall"
+        }
+      }, 
+      "key": [
+        "6963"
+      ]
+    }
+  ], 
+  "removed": []
+}

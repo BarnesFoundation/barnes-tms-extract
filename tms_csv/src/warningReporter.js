@@ -1,7 +1,7 @@
-const CSVWriter = require("./csvWriter.js");
-const logger = require("./logger.js");
+const CSVWriter = require('./csvWriter.js');
+const logger = require('./logger.js');
 
-const _ = require("lodash");
+const _ = require('lodash');
 
 module.exports = class WarningReporter {
 	constructor(outputDirectory, searchConfig) {
@@ -18,13 +18,12 @@ module.exports = class WarningReporter {
 	_checkMissingFields(objectId, fields) {
 		_.forEach(fields, (value, field) => {
 			if (this._searchConfig.fieldIsRequired(field)) {
-
 				if (value === undefined) {
 					const newWarning = {
-						type: "missing",
+						type: 'missing',
 						object: objectId,
-						field: field,
-						message: `Object is missing a required field ${field}`
+						field,
+						message: `Object is missing a required field ${field}`,
 					};
 
 					logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
@@ -40,28 +39,28 @@ module.exports = class WarningReporter {
 				if (objectIds.length < this._singletonCap) {
 					_.forEach(objectIds, (objectId) => {
 						const newWarning = {
-							type: "singleton",
+							type: 'singleton',
 							object: objectId,
-							field: field,
-							message: `Value ${fieldValue} for field ${field} only appears ${objectIds.length} times — maybe a typo`
+							field,
+							message: `Value ${fieldValue} for field ${field} only appears ${objectIds.length} times — maybe a typo`,
 						};
 
 						logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
 						this._csv.write(newWarning);
 					});
 				}
-			})
-		})
+			});
+		});
 	}
 
 	_checkUnusedFields(desc, objectId, artObject, fields) {
 		_.forEach(desc, (value, key) => {
 			if (!_.has(fields, key)) {
 				const newWarning = {
-					type: "unused",
+					type: 'unused',
 					object: objectId,
 					field: key,
-					message: `Object description has field ${key}, but that field was not selected for export`
+					message: `Object description has field ${key}, but that field was not selected for export`,
 				};
 
 				logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
@@ -105,4 +104,4 @@ module.exports = class WarningReporter {
 		if (this._searchConfig.warnings.singletonFields) this._checkSingletonFields();
 		this._csv.end();
 	}
-}
+};
