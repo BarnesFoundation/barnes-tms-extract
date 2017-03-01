@@ -3,7 +3,7 @@ function api(options) {
   //an example of configuring a path to a microservice
   // var valid_ops = { sum:'sum', product:'product' }
 
-  var valid_commands = {info:'info', run:'run'};
+  var valid_commands = {info:'info', run:'run', active:'active'};
   this.add('role:api,path:test', function( msg, respond ) {
     this.act( 'role:test', {}, respond )
   });

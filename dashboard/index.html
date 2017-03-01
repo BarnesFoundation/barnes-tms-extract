@@ -8,11 +8,16 @@
 </head>
 <body>
   <p id="test"></p>
+  <p id="active"></p>
   <button id="run">Run Script</button>
   <script>
   $(function() {
     $.get('/api/tmstocsv/info', function(response) {
       $("#test").text(response.time);
+    });
+
+    $.get('/api/tmstocsv/active', function(response) {
+      $("#active").text(response.active ? "Script already running" : "Script not running");
     });
 
     $("#run").click(function() {
