@@ -75,7 +75,7 @@ module.exports = class TMSExporter {
 		logger.info(`Processing collection ${name} with url ${tms.collectionURL}`);
 
 		const processTMSHelper = () => {
-			tms.next().then((artObject) => {
+			return tms.next().then((artObject) => {
 				if (artObject) {
 					let id = artObject.descriptionWithFields([config.primaryKey])[config.primaryKey];
 					let description = artObject.descriptionWithFields(config.fields);
@@ -113,10 +113,11 @@ module.exports = class TMSExporter {
 			});
 		}
 
-		tms.getObjectCount().then((res) => {
+		return tms.getObjectCount().then((res) => {
 			this._totalObjectCount = res;
 			logger.info(`Processing ${this._totalObjectCount} collection objects`);
-			processTMSHelper();
+			return new Promise((resolve) => resolve("Done"));
+			// return processTMSHelper();
 		}, (err) => {
 			logger.error(error);
 			this._finishExport();
@@ -135,6 +136,6 @@ module.exports = class TMSExporter {
 
 		logger.info(`Reading TMS API from root URL ${config.apiURL}`);
 
-		this._processTMS(this._credentials, config, outputPath);
+		return this._processTMS(this._credentials, config, outputPath);
 	}
 }

@@ -5,4 +5,4 @@ const credfile = "./credentials.json";
 
 const tmsExporter = new TMSExporter(credfile);
 
-tmsExporter.exportCSV(configFile);
+tmsExporter.exportCSV(configFile).done();
