@@ -1,7 +1,7 @@
-const logger = require("./logger.js");
+const logger = require('./logger.js');
 
-const fs = require("fs");
-const _ = require("lodash");
+const fs = require('fs');
+const _ = require('lodash');
 
 module.exports = class ExportConfig {
 	constructor(configPath) {
@@ -10,23 +10,23 @@ module.exports = class ExportConfig {
 
 		const jsonConfig = JSON.parse(configFile);
 
-		const primaryKeyObj = _.find(jsonConfig.fields, (entry) => entry.primaryKey === true);
+		const primaryKeyObj = _.find(jsonConfig.fields, entry => entry.primaryKey === true);
 
 		if (primaryKeyObj === undefined) {
 			throw {
-				name: "InvalidConfig",
-				message: "CSV export config does not specify a primary key"
+				name: 'InvalidConfig',
+				message: 'CSV export config does not specify a primary key',
 			};
 		} else {
 			this._primaryKey = primaryKeyObj.name;
 		}
 
-		const lastKeyObj = _.findLast(jsonConfig.fields, (entry) => entry.primaryKey === true);
+		const lastKeyObj = _.findLast(jsonConfig.fields, entry => entry.primaryKey === true);
 
 		if (lastKeyObj !== primaryKeyObj) {
 			throw {
-				name: "InvalidConfig",
-				message: `CSV export config designates more than one primary key: (${this._primaryKey}) and (${lastKey.name})`
+				name: 'InvalidConfig',
+				message: `CSV export config designates more than one primary key: (${this._primaryKey}) and (${lastKey.name})`,
 			};
 		}
 
@@ -69,4 +69,4 @@ module.exports = class ExportConfig {
 	fieldIsRequired(field) {
 		return this._fields[field] ? this._fields[field].required === true : false;
 	}
-}
+};

@@ -1,7 +1,7 @@
-require( 'seneca' )()
+require('seneca')()
 
-  .use( 'tmstocsv' )
+  .use('tmstocsv')
 
   // listen for role:math messages
   // IMPORTANT: must match client
-  .listen( { type:'tcp', pin:'role:tmstocsv' } )
+  .listen({ type: 'tcp', pin: 'role:tmstocsv' });

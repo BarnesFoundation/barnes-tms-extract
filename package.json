@@ -1,0 +1,30 @@
+{
+  "name": "collection-website",
+  "version": "0.0.1",
+  "description": "Collection website for the Barnes Foundation and all related scripts",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0"
+  },
+  "scripts": {
+    "lint": "eslint dashboard tms_csv",
+    "lint-fix": "eslint dashboard tms_csv --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BarnesFoundation/CollectionWebsite.git"
+  },
+  "author": "Barnes Foundation",
+  "contributors": [
+    "Sam Tarakajian <sam@girlfriends.site>",
+    "Cassie Tarakajian <cassie@girlfriends.site>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BarnesFoundation/CollectionWebsite/issues"
+  },
+  "homepage": "https://github.com/BarnesFoundation/CollectionWebsite#readme"
+}
