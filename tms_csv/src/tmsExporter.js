@@ -61,10 +61,8 @@ module.exports = class TMSExporter {
 
 		const csvFilePath = `${csvOutputDir}/${name}.csv`;
 
-		const csv = new CSVWriter(csvFilePath);
-
-		const warningReporter = new WarningReporter(csvOutputDir, config);
-
+		this._csv = new CSVWriter(csvFilePath);
+		this._warningReporter = new WarningReporter(csvOutputDir, config);
 		if (config.debug && config.debug.limit) {
 			limitOutput = true;
 			logger.info(`Limiting output to ${config.debug.limit} entires`);
@@ -80,8 +78,8 @@ module.exports = class TMSExporter {
 					let id = artObject.descriptionWithFields([config.primaryKey])[config.primaryKey];
 					let description = artObject.descriptionWithFields(config.fields);
 					logger.debug(description);
-					csv.write(description);
-					warningReporter.appendFieldsForObject(id, artObject, description);
+					this._csv.write(description);
+					this._warningReporter.appendFieldsForObject(id, artObject, description);
 
 					this._processedObjectCount++;
 					if (this._processedObjectCount % 100 === 0) {
@@ -91,7 +89,7 @@ module.exports = class TMSExporter {
 						logger.info(`Reached ${this._processedObjectCount} collection objects processed, finishing`);
 						this._finishExport();
 					} else {
-						processTMSHelper();
+						return processTMSHelper();
 					}
 				} else {
 					this._finishExport();
@@ -103,7 +101,7 @@ module.exports = class TMSExporter {
 					if (!res) {
 						this._finishExport();
 					} else {
-						processTMSHelper();
+						return processTMSHelper();
 					}
 				}, (error) => {
 					logger.error(error);
@@ -116,8 +114,7 @@ module.exports = class TMSExporter {
 		return tms.getObjectCount().then((res) => {
 			this._totalObjectCount = res;
 			logger.info(`Processing ${this._totalObjectCount} collection objects`);
-			return new Promise((resolve) => resolve("Done"));
-			// return processTMSHelper();
+			return processTMSHelper();
 		}, (err) => {
 			logger.error(error);
 			this._finishExport();
