@@ -4,10 +4,10 @@
   "description": "Transform an eMuseum TMS API into a CSV output for further processing",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src -d lib",
     "clean": "rm -rf output/csv_*",
-    "debug": "node debug src/index.js",
-    "start": "node src/index.js",
+    "debug": "node debug src/script/index.js --config searchConfig.json --creds credentials.json",
+    "script": "node src/script/index.js --config searchConfig.json --creds credentials.json",
+    "service": "node src/service/tmstocsv-pin-service.js --config searchConfig.json --creds credentials.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,6 +28,11 @@
     "lodash": "^4.17.4"
   },
   "dependencies": {
+    "dotenv": "^4.0.0",
+    "minimist": "^1.2.0",
+    "seneca": "^3.3.0",
+    "shelljs": "^0.7.6",
+    "socket.io": "^1.7.3",
     "winston": "^2.3.1"
   }
 }

@@ -21,14 +21,6 @@ app.get('/', (req, res) => {
 	res.sendFile(path.join(`${__dirname}/index.html`));
 });
 
-app.get('/last-run', (req, res) => {
-	const runTimesString = shelljs.grep('Beginning CSV export', '../tms_csv/logs/all-logs.log');
-	const lines = runTimesString.split('\n');
-	lines.pop();
-	const lastRunTime = JSON.parse(lines[lines.length - 1]);
-	res.json({ time: lastRunTime.timestamp });
-});
-
 const seneca = require('seneca')()
       .use(SenecaWeb, senecaWebConfig)
       .use('api')

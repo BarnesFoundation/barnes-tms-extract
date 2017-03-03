@@ -1,24 +1,29 @@
 const io = require('socket.io');
-const TMSExporter = require('../tms_csv/src/tmsExporter.js');
+const TMSExporter = require('../script/tmsExporter.js');
 const TMSWebsocketUpdater = require('./tmsWebsocketUpdater.js');
 const {
 	lastStartTime,
 	lastCompleteTime
 } = require("./tmsLog.js");
 
-const tmsExporter = new TMSExporter('../tms_csv/credentials.json');
-
-const exportProcessPort = 8001;
-
-const searchConfig = '../tms_csv/searchConfig.json';
-
-const tmsWebsocketUpdater = new TMSWebsocketUpdater(exportProcessPort, tmsExporter);
-
 function tmstocsv(options) {
+
+	const searchConfig = options.config;
+
+	const credentials = options.creds;
+
+	const logfile = options.log || './logs/all-logs.log';
+
+	const exportProcessPort = options.port || 8001;
+
+	const tmsExporter = new TMSExporter(credentials);
+
+	const tmsWebsocketUpdater = new TMSWebsocketUpdater(exportProcessPort, tmsExporter);
+
 	this.add('role:tmstocsv,cmd:info', (msg, respond) => {
     const data = {
-      startTime: lastStartTime(),
-      completeTime: lastCompleteTime(),
+      startTime: lastStartTime(logfile),
+      completeTime: lastCompleteTime(logfile),
       active: tmsExporter.active,
       progress: tmsExporter.progress,
       updatePort: exportProcessPort
@@ -28,19 +33,19 @@ function tmstocsv(options) {
 
 	this.add('role:tmstocsv,cmd:run', function run(msg, respond) {
 		if (tmsExporter.active) {
-			respond(null, { time: lastStartTime() });
+			respond(null, { time: lastStartTime(logfile) });
 		} else {
 			tmsExporter.exportCSV(searchConfig);
-			respond(null, { time: lastStartTime() });
+			respond(null, { time: lastStartTime(logfile) });
 		}
 	});
 
 	this.add('role:tmstocsv,cmd:cancel', function cancel(msg, respond) {
 		if (tmsExporter.active) {
 			tmsExporter.cancelExport();
-			respond(null, { time: lastStartTime() });
+			respond(null, { time: lastStartTime(logfile) });
 		} else {
-			respond(null, { time: lastStartTime() });
+			respond(null, { time: lastStartTime(logfile) });
 		}
 	});
 
