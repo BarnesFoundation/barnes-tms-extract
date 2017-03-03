@@ -22,6 +22,8 @@
     "seneca": "^3.3.0",
     "seneca-web": "^2.0.0",
     "seneca-web-adapter-express": "^1.0.2",
-    "shelljs": "^0.7.6"
+    "shelljs": "^0.7.6",
+    "socket.io": "^1.7.3",
+    "winston": "^2.3.1"
   }
 }

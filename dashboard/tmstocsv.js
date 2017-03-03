@@ -1,38 +1,48 @@
-const shelljs = require('shelljs');
-const exec = require('child_process').exec;
+const io = require('socket.io');
 const TMSExporter = require('../tms_csv/src/tmsExporter.js');
+const TMSWebsocketUpdater = require('./tmsWebsocketUpdater.js');
+const {
+	lastStartTime,
+	lastCompleteTime
+} = require("./tmsLog.js");
 
 const tmsExporter = new TMSExporter('../tms_csv/credentials.json');
 
+const exportProcessPort = 8001;
+
 const searchConfig = '../tms_csv/searchConfig.json';
 
-function lastRunTime() {
-	const runTimesString = shelljs.grep('Beginning CSV export', './logs/all-logs.log');
-	const lines = runTimesString.split('\n');
-	lines.pop();
-	const lastRunTime = JSON.parse(lines[lines.length - 1]);
-	return lastRunTime.timestamp;
-}
+const tmsWebsocketUpdater = new TMSWebsocketUpdater(exportProcessPort, tmsExporter);
 
 function tmstocsv(options) {
 	this.add('role:tmstocsv,cmd:info', (msg, respond) => {
     const data = {
-      time: lastRunTime(),
+      startTime: lastStartTime(),
+      completeTime: lastCompleteTime(),
       active: tmsExporter.active,
-      progress: tmsExporter.progress
+      progress: tmsExporter.progress,
+      updatePort: exportProcessPort
     };
 		respond(null, data);
 	});
 
-  this.add('role:tmstocsv,cmd:run', (msg, respond) => {
-    if (tmsExporter.active) {
-      console.log("Already running");
-      respond(null, {time: lastRunTime()});
-    } else {
-      tmsExporter.exportCSV(searchConfig);
-      respond(null, {time: lastRunTime()});
-    }
-  });
+	this.add('role:tmstocsv,cmd:run', function run(msg, respond) {
+		if (tmsExporter.active) {
+			respond(null, { time: lastStartTime() });
+		} else {
+			tmsExporter.exportCSV(searchConfig);
+			respond(null, { time: lastStartTime() });
+		}
+	});
+
+	this.add('role:tmstocsv,cmd:cancel', function cancel(msg, respond) {
+		if (tmsExporter.active) {
+			tmsExporter.cancelExport();
+			respond(null, { time: lastStartTime() });
+		} else {
+			respond(null, { time: lastStartTime() });
+		}
+	});
 
   this.add('role:tmstocsv,cmd:active', function run(msg, respond) {
     respond(null, {active: tmsExporter.active});
