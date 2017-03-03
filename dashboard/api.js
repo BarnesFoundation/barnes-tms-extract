@@ -2,7 +2,12 @@ function api(options) {
   // an example of configuring a path to a microservice
   // var valid_ops = { sum:'sum', product:'product' }
 
-	const valid_commands = { info: 'info', run: 'run', active: 'active' };
+	const valid_commands = {
+		info: 'info',
+		run: 'run',
+		cancel: 'cancel',
+		active: 'active'
+	};
 
 	this.add('role:api,path:tmstocsv', function (msg, respond) {
     // do something to msg if necessary

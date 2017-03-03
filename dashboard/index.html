@@ -6,6 +6,7 @@
   <title>Barnes Collection Scripts Dashboard</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
 </head>
 <body>
   <h1>Dashboard</h1>
@@ -16,6 +17,10 @@
       <span id="lastRan"></span>
     </p>
     <p>
+      <span>Script last completed: </span>
+      <span id="lastCompleted"></span>
+    </p>
+    <p>
       <span>Script running: </span>
       <span id="active"></span>
     </p>
@@ -23,20 +28,44 @@
       <span>Progress: </span>
       <span id="progress"></span>
     </p>
+    <p>
+      <span>Listening for updates on port: </span>
+      <span id="port"></span>
+    </p>
     <button id="run">Run Script</button>
+    <button id="cancel">Cancel Script</button>
   </section>
   <script>
   $(function() {
+    var socket;
+
+    function connectUpdateSocket(port) {
+      $("#port").text(port);
+      socket = io('http://localhost:' + port);
+      socket.on('active', function(data){
+        $("#active").text(data);
+      });
+      socket.on('progress', function(data){
+        $("#progress").text(`${data.processed} of ${data.total} objects processed`);
+      });
+    }
+
     $.get('/api/tmstocsv/info', function(response) {
-      $("#lastRan").text(moment(response.time).toString());
+      $("#lastRan").text(moment(response.startTime).toString());
+      $("#lastCompleted").text(moment(response.completeTime).toString());
       $("#active").text(response.active);
       $("#progress").text(((response.progress.processed / response.progress.total) * 100).toFixed(3) + '%');
+      connectUpdateSocket(response.updatePort);
     });
 
     $("#run").click(function() {
       $.get('/api/tmstocsv/run', function(response) {
         $("#test").text(response.time);
       });
+    });
+
+    $("#cancel").click(function() {
+      $.get('/api/tmstocsv/cancel');
     });
   });
   </script>

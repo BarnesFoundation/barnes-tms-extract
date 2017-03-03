@@ -6,11 +6,11 @@ const logger = require("./logger.js");
 
 const fs = require('fs');
 const _ = require("lodash");
+const EventEmitter = require('events');
 
-// const configFile = "./searchConfig.json";
-
-module.exports = class TMSExporter {
+module.exports = class TMSExporter extends EventEmitter {
 	constructor(credentials) {
+		super();
 		this._credentials = this._loadCredentials(credentials);
 		this._processedObjectCount = 0;
 		this._totalObjectCount = 0;
@@ -32,6 +32,8 @@ module.exports = class TMSExporter {
 		this._active = false;
 		this._csv.end();
 		this._warningReporter.end();
+		this.emit("completed");
+		logger.info("CSV export completed", { tag: "tag:complete" })
 	}
 
 	_loadCredentials(credsPath) {
@@ -48,6 +50,7 @@ module.exports = class TMSExporter {
 
 	_processTMS(credentials, config, csvOutputDir) {
 		this._active = true;
+		this.emit("started");
 		this._processedObjectCount = 0;
 		this._totalObjectCount = 0;
 
@@ -74,6 +77,11 @@ module.exports = class TMSExporter {
 
 		const processTMSHelper = () => {
 			return tms.next().then((artObject) => {
+				if (!this._active) {
+					this._finishExport();
+					return;
+				}
+
 				if (artObject) {
 					let id = artObject.descriptionWithFields([config.primaryKey])[config.primaryKey];
 					let description = artObject.descriptionWithFields(config.fields);
@@ -82,6 +90,7 @@ module.exports = class TMSExporter {
 					this._warningReporter.appendFieldsForObject(id, artObject, description);
 
 					this._processedObjectCount++;
+					this.emit('progress');
 					if (this._processedObjectCount % 100 === 0) {
 						logger.info(`Processed ${this._processedObjectCount} of ${this._totalObjectCount} collection objects`)
 					}
@@ -121,8 +130,13 @@ module.exports = class TMSExporter {
 		});
 	}
 
+	cancelExport() {
+		logger.info("Cancelling CSV export", { tag: "tag:cancel" });
+		this._active = false;
+	}
+
 	exportCSV(configFile) {
-		logger.info("Beginning CSV export");
+		logger.info("Beginning CSV export", { tag: "tag:start" });
 
 		const config = new ExportConfig(configFile);
 
