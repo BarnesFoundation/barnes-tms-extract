@@ -1,10 +1,9 @@
 const shelljs = require("shelljs");
 
 exports.lastStartTime = function(logfile) {
-	const runTimesString = shelljs.grep('tag:start', logfile);
+	const runTimesString = shelljs.grep('tag:start', logfile).trim();
 	const lines = runTimesString.split('\n');
-	if (lines.length) {
-		lines.pop();
+	if (runTimesString.length && lines.length) {
 		const lastRunTime = JSON.parse(lines[lines.length - 1]);
 		return lastRunTime.timestamp;
 	} else {
@@ -13,11 +12,9 @@ exports.lastStartTime = function(logfile) {
 }
 
 exports.lastCompleteTime = function(logfile) {
-	return 10;
-	const runTimesString = shelljs.grep('tag:complete', logfile);
+	const runTimesString = shelljs.grep('tag:complete', logfile).trim();
 	const lines = runTimesString.split('\n');
-	if (lines.length) {
-		lines.pop();
+	if (runTimesString.length && lines.length) {
 		const lastRunTime = JSON.parse(lines[lines.length - 1]);
 		return lastRunTime.timestamp;
 	} else {
