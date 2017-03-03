@@ -1,0 +1,24 @@
+{
+  "name": "csv_viewer",
+  "version": "0.0.1",
+  "description": "service for viewing CSV files",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/csv-pin-service.js -d ../tms_csv/output",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/BarnesFoundation/CollectionWebsite.git"
+  },
+  "author": "Sam Tarakajian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BarnesFoundation/CollectionWebsite/issues"
+  },
+  "homepage": "https://github.com/BarnesFoundation/CollectionWebsite#readme",
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "seneca": "^3.3.0"
+  }
+}

@@ -35,6 +35,11 @@
     <button id="run">Run Script</button>
     <button id="cancel">Cancel Script</button>
   </section>
+  <section>
+    <h2>Exported CSV files</h2>
+    <ul id="csvFiles">
+    </ul>
+  </section>
   <script>
   $(function() {
     var socket;
@@ -56,6 +61,14 @@
       $("#active").text(response.active);
       $("#progress").text(((response.progress.processed / response.progress.total) * 100).toFixed(3) + '%');
       connectUpdateSocket(response.updatePort);
+    });
+
+    $.get('api/csv/list', function(response) {
+      $("#csvFiles").empty();
+      for (var i=0; i<response.files.length; i++) {
+        var newFile = $("<li></li>").text(response.files[i]);
+        $("#csvFiles").append(newFile);
+      }
     });
 
     $("#run").click(function() {
