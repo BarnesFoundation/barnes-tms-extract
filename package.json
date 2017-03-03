@@ -7,11 +7,16 @@
   "devDependencies": {
     "eslint": "^3.16.1",
     "eslint-config-airbnb-base": "^11.1.0",
-    "eslint-plugin-import": "^2.2.0"
+    "eslint-plugin-import": "^2.2.0",
+    "npm-run-all": "^4.0.2"
   },
   "scripts": {
+    "csv-pin": "cd csv_viewer && npm run start",
+    "dashboard": "cd dashboard && npm run start",
     "lint": "eslint dashboard tms_csv",
-    "lint-fix": "eslint dashboard tms_csv --fix"
+    "lint-fix": "eslint dashboard tms_csv --fix",
+    "serve": "npm-run-all -p -r csv-pin tmstocsv-pin dashboard",
+    "tmstocsv-pin": "cd tms_csv && npm run service"
   },
   "repository": {
     "type": "git",
