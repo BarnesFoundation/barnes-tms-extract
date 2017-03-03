@@ -59,7 +59,7 @@
       $("#lastRan").text(moment(response.startTime).toString());
       $("#lastCompleted").text(moment(response.completeTime).toString());
       $("#active").text(response.active);
-      $("#progress").text(((response.progress.processed / response.progress.total) * 100).toFixed(3) + '%');
+      $("#progress").text(`${response.progress.processed} of ${response.progress.total} objects processed`);
       connectUpdateSocket(response.updatePort);
     });
 
