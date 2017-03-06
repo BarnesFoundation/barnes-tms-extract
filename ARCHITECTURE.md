@@ -3,11 +3,12 @@
 The collection-spelunker consists of the following layers, or separation of concerns:
 
 * source of truth (TMS)
-* export tools (TMS-API)
-* data model
-* import tools
+* export tools (TMS-API microservice)
+* data model (CSV)
+* import tools (CSV-ES microservice)
 * datastore (Elasticsearch)
-* web application (Flask)
+* dashboard (Node.js and Express.js, connects to microservices with Seneca.js)
+* web application (Node.js and Express.js)
 
 Wherever possible each layer is only aware of the layers immediately following or proceeding them.
 
@@ -21,7 +22,7 @@ The TMS API is considered to be the primary or default means of exporting data f
 
 It should be possible to write a suitable export tool in any programming language as all communications will happen via HTTP requests and all output will be plain text formats such as CSV or JSON. 
 
-The collection-spelunker should provide export tools written in the Python and Go languages. The former to provide a working utility for easy introspection, experimentation and extending. The latter to provide a working utility that can be pre-compiled to operating system specific binaries in order to minimize the burden of installing tool-specific dependencies.
+The collection-spelunker export tools are written in JavaScript/Node.js. This was chosen to provide a working utility for easy introspection, experimentation and extending. JavaScript is also one of the most popular programming languages of today and has a huge ecosystem of libraries.
 
 ## Data model
 
@@ -48,7 +49,7 @@ The data model itself is limited by design and will consist of the following "fi
 
 The scope of the import tools is limited to communicating with the data-model compliant static files and the datastore (Elasticsearch).
 
-The collection-spelunker should provide import tools written in the Python and Go languages. The former to provide a working utility for easy introspection, experimentation and extending. The latter to provide a working utility that can be pre-compiled to operating system specific binaries in order to minimize the burden of installing tool-specific dependencies.
+The collection-spelunker import tools are written in Python and JavaScript. Python has a fantastic library called csvdiff which makes it easy to find changes in the exported csv's. The JavaScript portion is a Seneca.js microservice which communicates with the dashboard.
 
 ## Datastore
 
@@ -64,9 +65,13 @@ Elasticsearch (ES) has been chosen because:
 * Query results can be easily cached (using a variety of in-memory or on-disk or third-party caching providers).
 * ES can be hosted locally for development purposes, on an institution's own dedicated hardware or using virtualized hardware like Amazon Web Services (AWS) or via a dedicated third-party service. Ultimately, in the eyes of the web application (discussed below) the datastore is simply an "addressable" service and can live anywhere on the Internet.
 
+## Dashboard
+
+The dashboard provides a web interface to run the import/export scripts, view log files and exported CSV's, and see the status of the scripts. It is written in Node.js/Express.js and uses Seneca.js to communicate with the various microservices. 
+
 ## Web application
 
-The Flask web framework will be the primary, or default, tool for developing a web application for the collection-spelunker. Like the datastore an abstract model for the web application may be defined and be implemented in another framework or programming environment but this is also outside the scope of the current work.
+The  will be the primary, or default, tool for developing a web application for the collection-spelunker. Like the datastore an abstract model for the web application may be defined and be implemented in another framework or programming environment but this is also outside the scope of the current work.
 
 Flask has been chosen because:
 
