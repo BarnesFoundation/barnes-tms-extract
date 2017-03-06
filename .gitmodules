@@ -1,0 +1,3 @@
+[submodule "csv_table_viewer/csv-to-html-table"]
+	path = csv_table_viewer/csv-to-html-table
+	url = git@github.com:Girlfriends/csv-to-html-table.git
