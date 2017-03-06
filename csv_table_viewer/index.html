@@ -10,8 +10,8 @@
     <meta content="Display any CSV file as a searchable, filterable, pretty HTML table" />
 
     <!-- Bootstrap core CSS -->
-    <link href="csv-to-html-table/css/bootstrap.min.css" rel="stylesheet">
-    <link href="csv-to-html-table/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/css/dataTables.bootstrap.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -43,12 +43,12 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="csv-to-html-table/js/jquery.min.js"></script>
-    <script type="text/javascript" src="csv-to-html-table/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="csv-to-html-table/js/jquery.csv.min.js"></script>
-    <script type="text/javascript" src="csv-to-html-table/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="csv-to-html-table/js/dataTables.bootstrap.js"></script>
-    <script type="text/javascript" src="csv-to-html-table/js/csv_to_html_table.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="./csv_to_html_table.js"></script>
 
 
     <script type="text/javascript">
@@ -59,7 +59,7 @@
       }
 
       CsvToHtmlTable.init({
-        csv_path: '../tms_csv/output/csv_1487871236006/objects.csv',
+        csv_path: '../tms_csv/output/csv_1488567349688/objects.csv',
         element: 'table-container',
         allow_download: true,
         filter_columns: true,

@@ -18,8 +18,7 @@
     "lint": "eslint dashboard tms_csv",
     "lint-fix": "eslint dashboard tms_csv --fix",
     "serve": "npm-run-all -p -r csv-pin tmstocsv-pin dashboard",
-    "tmstocsv-pin": "cd tms_csv && npm run service",
-    "postinstall": "git submodule update --remote --recursive"
+    "tmstocsv-pin": "cd tms_csv && npm run service"
   },
   "repository": {
     "type": "git",
