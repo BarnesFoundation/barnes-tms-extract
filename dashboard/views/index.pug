@@ -1,0 +1,62 @@
+doctype html
+html
+	head
+		meta( charset='UTF-8')
+		meta( name='viewport', content='maximum-scale=1,width=device-width,initial-scale=1,user-scalable=0')
+		title Barnes Collection Scripts Dashboard
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js")
+	body
+		h1 Dashboard
+		section
+			h2 TMS to CSV Exporter
+			p
+				span Script last ran: 
+				span#lastRan= moment(info.startTime).toString()
+			p
+				span Script last completed: 
+				span#lastCompleted= moment(info.completeTime).toString()
+			p
+				span Script running: 
+				span#active= info.active
+			p
+				span Progress: 
+				span#progress= `${info.progress.processed} of ${info.progress.total} objects processed`
+			p
+				span Listening for updates on port: 
+				span#port= info.updatePort
+			button#run Run Script
+			button#cancel Cancel Script
+		section
+			h2 Exported CSV files
+			ul#csvFiles
+				each file in list.files
+					li= file
+	script.
+		$(function() {
+			var socket;
+
+			function connectUpdateSocket(port) {
+				$("#port").text(port);
+				socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port + window.location.pathname);
+				socket.on('active', function(data){
+					$("#active").text(data);
+				});
+				socket.on('progress', function(data){
+					$("#progress").text(`${data.processed} of ${data.total} objects processed`);
+				});
+			}
+
+			connectUpdateSocket(parseInt($('#port').text()));	
+
+			$("#run").click(function() {
+				$.get('/api/tmstocsv/run', function(response) {
+					$("#test").text(response.time);
+				});
+			});
+
+			$("#cancel").click(function() {
+				$.get('/api/tmstocsv/cancel');
+			});
+		});

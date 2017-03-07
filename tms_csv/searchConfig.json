@@ -1,6 +1,6 @@
 {
 	"apiURL": "https://emuseum.barnesfoundation.org",
-	"outputDirectory": "output",
+	"outputDirectory": "../dashboard/public/output",
 	"debug": {
 	},
 	"fields": [

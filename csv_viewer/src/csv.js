@@ -5,7 +5,7 @@ function csv(options) {
 
 	console.dir(options);
 
-	const csvDir = options.d || './tms_csv/output';
+	const csvDir = options.d || './dashboard/public/output';
 
 	this.add('role:csv,cmd:list', (msg, respond) => {
 		fs.readdir(csvDir, (err, files) => {
