@@ -7,6 +7,14 @@ const logger = require("./logger.js");
 const fs = require('fs');
 const _ = require("lodash");
 const EventEmitter = require('events');
+const iconv = require('iconv-lite');
+
+function decodeUTF8InterpretedAsWin(str) {
+	if (typeof str !== "string") return str;
+	var buf = new Buffer(str);
+	var newnewbuf = iconv.encode(buf, 'win-1252');
+	return newnewbuf.toString();
+}
 
 module.exports = class TMSExporter extends EventEmitter {
 	constructor(credentials) {
@@ -85,6 +93,9 @@ module.exports = class TMSExporter extends EventEmitter {
 				if (artObject) {
 					let id = artObject.descriptionWithFields([config.primaryKey])[config.primaryKey];
 					let description = artObject.descriptionWithFields(config.fields);
+					_.forOwn(description, function(value, key) {
+						description[key] = decodeUTF8InterpretedAsWin(value);
+					});
 					logger.debug(description);
 					this._csv.write(description);
 					this._warningReporter.appendFieldsForObject(id, artObject, description);

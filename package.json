@@ -4,6 +4,7 @@
   "description": "Collection website for the Barnes Foundation and all related scripts",
   "main": "index.js",
   "dependencies": {
+    "iconv-lite": "^0.4.15",
     "pm2": "^2.4.2"
   },
   "devDependencies": {
