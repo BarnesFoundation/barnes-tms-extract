@@ -1,0 +1,38 @@
+doctype html
+html
+	head
+		meta( charset='UTF-8')
+		meta( name='viewport', content='maximum-scale=1,width=device-width,initial-scale=1,user-scalable=0')
+		title Objects in Barnes Collection
+		link(href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet")
+		link( href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/css/dataTables.bootstrap.css", rel="stylesheet")
+	body
+		.container-fluid
+			h2 Objects in Barnes Collection, CSV
+			div#table-container
+
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/jquery.dataTables.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap.min.js")
+		script(src="/scripts/csv_to_html_table.js")
+
+		script.
+			var csvId = "#{csvId}";
+			var csvType = "#{csvType}";
+			function ellipses_format(text){
+				if (typeof text !== "string") return text;
+				var maxlen = 60;
+				if (text.length < maxlen) return text;
+				return text.slice(0, maxlen - 3) + "...";
+			}
+			CsvToHtmlTable.init({
+				csv_path: '/output/' + csvId + '/' + csvType + '.csv',
+				element: 'table-container',
+				allow_download: true,
+				filter_columns: true,
+				csv_options: {separator: ',', delimiter: '"'},
+				datatables_options: {"paging": true},
+				custom_formatting: [["description", ellipses_format], ["bibliography1", ellipses_format]]
+			});
