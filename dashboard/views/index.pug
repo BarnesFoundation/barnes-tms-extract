@@ -4,6 +4,8 @@ html
 		meta( charset='UTF-8')
 		meta( name='viewport', content='maximum-scale=1,width=device-width,initial-scale=1,user-scalable=0')
 		title Barnes Collection Scripts Dashboard
+		link(href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet")
+		link( href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/css/dataTables.bootstrap.css", rel="stylesheet")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js")
@@ -30,18 +32,30 @@ html
 			button#cancel Cancel Script
 		section
 			h2 Exported CSV files
-			ul#csvFiles
+			table#csvFiles.table.table-striped.table-condensed.dataTable
+				thead
+					tr
+						th name
+						th time ran
+						th status
+						th view online
+						th download
+						th new warnings online
+						th download warnings
+				tbody
 				each file in list.files
-					li
-						span= file
-						| &nbsp; 
-						a(href= "/" + file + "/objects") View Online 
-						| &nbsp;
-						a(href="/output/" + file + "/objects.csv") Download 
-						| &nbsp; 
-						a(href= "/" + file + "/warnings") View Warnings Online
-						| &nbsp;
-						a(href="/output/" + file + "/warnings.csv") Download Warnings
+					tr
+						td= file.name
+						td= file.createdAt
+						td= file.status
+						td
+							a(href= "/" + file.name + "/objects") View Online 
+						td
+							a(href="/output/" + file.name + "/objects.csv") Download 
+						td
+							a(href= "/" + file.name + "/warnings") View Warnings Online
+						td
+							a(href="/output/" + file.name + "/warnings.csv") Download Warnings
 	script.
 		$(function() {
 			var socket;
