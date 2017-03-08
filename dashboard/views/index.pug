@@ -32,7 +32,16 @@ html
 			h2 Exported CSV files
 			ul#csvFiles
 				each file in list.files
-					li= file
+					li
+						span= file
+						| &nbsp; 
+						a(href= "/" + file + "/objects") View Online 
+						| &nbsp;
+						a(href="/output/" + file + "/objects.csv") Download 
+						| &nbsp; 
+						a(href= "/" + file + "/warnings") View Warnings Online
+						| &nbsp;
+						a(href="/output/" + file + "/warnings.csv") Download Warnings
 	script.
 		$(function() {
 			var socket;

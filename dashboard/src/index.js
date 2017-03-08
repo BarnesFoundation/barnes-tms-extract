@@ -16,7 +16,6 @@ const senecaWebConfig = {
 const app = Express();
 app.use(require('body-parser').json());
 app.use(context);
-console.log(path.resolve(`${__dirname}/../public`));
 app.use(Express.static(path.resolve(`${__dirname}/../public`)));
 app.set('view engine', 'pug');
 app.set('views', path.resolve(`${__dirname}/../views`));
@@ -41,3 +40,10 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/:csv_id/objects', (req, res) => {
+  res.render('csv', { csvId: req.params.csv_id, csvType: 'objects'});
+});
+
+app.get('/:csv_id/warnings', (req, res) => {
+  res.render('csv', { csvId: req.params.csv_id, csvType: 'warnings'});
+});
