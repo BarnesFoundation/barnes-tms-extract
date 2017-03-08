@@ -11,7 +11,12 @@ function csv(options) {
 		fs.readdir(csvDir, (err, files) => {
 			const data = { files: [] };
 			files.forEach(file => {
-				if (path.basename(file).startsWith("csv_")) data.files.push(file);
+				if (path.basename(file).startsWith("csv_")) {
+					const metaString = fs.readFileSync(csvDir + "/" + file + "/meta.json")
+					const metadata = JSON.parse(metaString);
+					metadata.name = file;
+					data.files.push(metadata);
+				}
 			});
 			respond(err, data);
 		});
