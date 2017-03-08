@@ -1,4 +1,8 @@
 const ExportConfig = require("./exportConfig.js");
+const {
+	ExportMetadata,
+	ExportStatus
+} = require("./exportMetadata.js");
 const CSVWriter = require("./csvWriter.js");
 const TMSURLReader = require("./tmsURLReader.js");
 const WarningReporter = require("./warningReporter.js");
@@ -36,8 +40,9 @@ module.exports = class TMSExporter extends EventEmitter {
 		};
 	}
 
-	_finishExport() {
+	_finishExport(status) {
 		this._active = false;
+		if (status !== undefined) this._exportMeta.status = status;
 		this._csv.end();
 		this._warningReporter.end();
 		this.emit("completed");
@@ -72,6 +77,8 @@ module.exports = class TMSExporter extends EventEmitter {
 
 		const csvFilePath = `${csvOutputDir}/${name}.csv`;
 
+		this._exportMeta = new ExportMetadata(`${csvOutputDir}/meta.json`);
+		this._exportMeta.status = ExportStatus.INCOMPLETE;
 		this._csv = new CSVWriter(csvFilePath);
 		this._warningReporter = new WarningReporter(csvOutputDir, config);
 		if (config.debug && config.debug.limit) {
@@ -107,26 +114,26 @@ module.exports = class TMSExporter extends EventEmitter {
 					}
 					if (limitOutput && this._processedObjectCount >= config.debug.limit) {
 						logger.info(`Reached ${this._processedObjectCount} collection objects processed, finishing`);
-						this._finishExport();
+						this._finishExport(ExportStatus.COMPLETED);
 					} else {
 						return processTMSHelper();
 					}
 				} else {
-					this._finishExport();
+					this._finishExport(ExportStatus.COMPLETED);
 				}
 			}, (error) => {
 				logger.warn(error);
 				logger.info(`Error fetching collection object, skipping`);
 				tms.hasNext().then((res) => {
 					if (!res) {
-						this._finishExport();
+						this._finishExport(ExportStatus.COMPLETED);
 					} else {
 						return processTMSHelper();
 					}
 				}, (error) => {
 					logger.error(error);
 					logger.info(`Error fetching collection data, finishing`);
-					this._finishExport();
+					this._finishExport(ExportStatus.ERROR);
 				});
 			});
 		}
@@ -137,13 +144,14 @@ module.exports = class TMSExporter extends EventEmitter {
 			return processTMSHelper();
 		}, (err) => {
 			logger.error(error);
-			this._finishExport();
+			this._finishExport(ExportStatus.ERROR);
 		});
 	}
 
 	cancelExport() {
 		logger.info("Cancelling CSV export", { tag: "tag:cancel" });
 		this._active = false;
+		this._exportMeta.status = ExportStatus.CANCELLED;
 	}
 
 	exportCSV(configFile) {
