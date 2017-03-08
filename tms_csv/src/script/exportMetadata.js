@@ -12,7 +12,7 @@ class ExportMetadata {
 		this._outputFilePath = jsonExportPath;
 		const fd = fs.openSync(this._outputFilePath, 'w+');
 		fs.closeSync(fd);
-		fs.accessSync(this._outputFilePath, fs.constants.W_OK);
+		fs.accessSync(this._outputFilePath, 'W_OK');
 		this._status = ExportStatus.INCOMPLETE;
 		this._createdAt = `${new Date()}`;
 		this._updateOutput();
