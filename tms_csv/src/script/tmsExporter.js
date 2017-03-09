@@ -65,6 +65,7 @@ module.exports = class TMSExporter extends EventEmitter {
 		this.emit("completed");
 		logger.info("CSV export completed", { tag: "tag:complete" });
 		this._diffCSV(config);
+		this._exportMeta.status = status;
 	}
 
 	_loadCredentials(credsPath) {
