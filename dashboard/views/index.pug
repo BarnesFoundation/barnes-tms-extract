@@ -42,6 +42,7 @@ html
 						th download
 						th new warnings online
 						th download warnings
+						th diff (from last run)
 				tbody
 				each file in list.files
 					tr
@@ -56,6 +57,8 @@ html
 							a(href= "/" + file.name + "/warnings") View Warnings Online
 						td
 							a(href="/output/" + file.name + "/warnings.csv") Download Warnings
+						td
+							a(href="/output/" + file.name + "/diff.json") Diff
 	script.
 		$(function() {
 			var socket;
