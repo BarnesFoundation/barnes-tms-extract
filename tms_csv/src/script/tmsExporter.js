@@ -9,15 +9,25 @@ const WarningReporter = require("./warningReporter.js");
 const logger = require("./logger.js");
 
 const fs = require('fs');
+const path = require('path');
 const _ = require("lodash");
 const EventEmitter = require('events');
 const iconv = require('iconv-lite');
+const shell = require('shelljs');
 
 function decodeUTF8InterpretedAsWin(str) {
 	if (typeof str !== "string") return str;
 	var buf = new Buffer(str);
 	var newnewbuf = iconv.encode(buf, 'win-1252');
 	return newnewbuf.toString();
+}
+
+function logShellOutput(op) {
+	if (op.code === 0) {
+		logger.info(op.stdout);
+	} else {
+		logger.error(op.sterr);
+	}
 }
 
 module.exports = class TMSExporter extends EventEmitter {
@@ -40,13 +50,21 @@ module.exports = class TMSExporter extends EventEmitter {
 		};
 	}
 
-	_finishExport(status) {
+	_diffCSV(config) {
+		const pyDiff = path.resolve(__dirname, "../../../py_csv_diff/py_csv_diff.py");
+		logger.info(`Running CSV diff python script on ${config.outputDirectory}`);
+		logShellOutput(shell.exec("source activate tmsdiff"));
+		logShellOutput(shell.exec(`python ${pyDiff} ${config.outputDirectory}`));
+		logShellOutput(shell.exec("source deactivate"));
+	}
+
+	_finishExport(config, status) {
 		this._active = false;
-		if (status !== undefined) this._exportMeta.status = status;
 		this._csv.end();
 		this._warningReporter.end();
 		this.emit("completed");
-		logger.info("CSV export completed", { tag: "tag:complete" })
+		logger.info("CSV export completed", { tag: "tag:complete" });
+		this._diffCSV(config);
 	}
 
 	_loadCredentials(credsPath) {
@@ -93,7 +111,7 @@ module.exports = class TMSExporter extends EventEmitter {
 		const processTMSHelper = () => {
 			return tms.next().then((artObject) => {
 				if (!this._active) {
-					this._finishExport();
+					this._finishExport(config, ExportStatus.CANCELLED);
 					return;
 				}
 
@@ -114,26 +132,26 @@ module.exports = class TMSExporter extends EventEmitter {
 					}
 					if (limitOutput && this._processedObjectCount >= config.debug.limit) {
 						logger.info(`Reached ${this._processedObjectCount} collection objects processed, finishing`);
-						this._finishExport(ExportStatus.COMPLETED);
+						this._finishExport(config, ExportStatus.COMPLETED);
 					} else {
 						return processTMSHelper();
 					}
 				} else {
-					this._finishExport(ExportStatus.COMPLETED);
+					this._finishExport(config, ExportStatus.COMPLETED);
 				}
 			}, (error) => {
 				logger.warn(error);
 				logger.info(`Error fetching collection object, skipping`);
 				tms.hasNext().then((res) => {
 					if (!res) {
-						this._finishExport(ExportStatus.COMPLETED);
+						this._finishExport(config, ExportStatus.COMPLETED);
 					} else {
 						return processTMSHelper();
 					}
 				}, (error) => {
 					logger.error(error);
 					logger.info(`Error fetching collection data, finishing`);
-					this._finishExport(ExportStatus.ERROR);
+					this._finishExport(config, ExportStatus.ERROR);
 				});
 			});
 		}
@@ -144,7 +162,7 @@ module.exports = class TMSExporter extends EventEmitter {
 			return processTMSHelper();
 		}, (err) => {
 			logger.error(error);
-			this._finishExport(ExportStatus.ERROR);
+			this._finishExport(config, ExportStatus.ERROR);
 		});
 	}
 

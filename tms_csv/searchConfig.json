@@ -22,8 +22,7 @@
 			"required": true
 		},
 		{
-			"name": "medium",
-			"enumerated": true
+			"name": "medium"
 		},
 		{
 			"name": "dimensions"
@@ -38,8 +37,7 @@
 		},
 		{
 			"name": "locations",
-			"required": true,
-			"enumerated": true
+			"required": true
 		},
 		{
 			"name": "description",

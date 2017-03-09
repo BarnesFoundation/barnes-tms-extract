@@ -19,6 +19,7 @@
     "dashboard": "cd dashboard && npm run start",
     "lint": "eslint dashboard tms_csv",
     "lint-fix": "eslint dashboard tms_csv --fix",
+    "postinstall": "node scripts/pythonenv.js",
     "serve": "npm-run-all -p -r csv-pin tmstocsv-pin dashboard",
     "tmstocsv-pin": "cd tms_csv && npm run service"
   },
