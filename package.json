@@ -9,10 +9,26 @@
     "pug": "^2.0.0-beta11"
   },
   "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-preset-env": "^1.1.8",
     "eslint": "^3.16.1",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-plugin-import": "^2.2.0",
     "npm-run-all": "^4.0.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "fast-csv": "^2.3.1",
+    "lodash": "^4.17.4",
+    "minimist": "^1.2.0",
+    "seneca": "^3.3.0",
+    "seneca-web": "^2.0.0",
+    "seneca-web-adapter-express": "^1.0.2",
+    "shelljs": "^0.7.6",
+    "socket.io": "^1.7.3",
+    "winston": "^2.3.1"
   },
   "scripts": {
     "csv-pin": "cd csv_viewer && npm run start",

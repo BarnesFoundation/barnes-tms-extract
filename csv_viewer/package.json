@@ -16,9 +16,5 @@
   "bugs": {
     "url": "https://github.com/BarnesFoundation/CollectionWebsite/issues"
   },
-  "homepage": "https://github.com/BarnesFoundation/CollectionWebsite#readme",
-  "dependencies": {
-    "minimist": "^1.2.0",
-    "seneca": "^3.3.0"
-  }
+  "homepage": "https://github.com/BarnesFoundation/CollectionWebsite#readme"
 }
