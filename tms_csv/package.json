@@ -19,19 +19,5 @@
     "csv"
   ],
   "author": "Girlfriends Labs LLC",
-  "license": "ISC",
-  "devDependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-preset-env": "^1.1.8",
-    "fast-csv": "^2.3.1",
-    "lodash": "^4.17.4"
-  },
-  "dependencies": {
-    "dotenv": "^4.0.0",
-    "minimist": "^1.2.0",
-    "seneca": "^3.3.0",
-    "shelljs": "^0.7.6",
-    "socket.io": "^1.7.3",
-    "winston": "^2.3.1"
-  }
+  "license": "ISC"
 }
