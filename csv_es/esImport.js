@@ -79,20 +79,22 @@ function writeCSVToES(csvFilePath, client) {
 // 	}
 // });
 
-client.deleteByQuery({
-	index: 'collection',
-	type: 'object',
-	body: {
-		query: {
-		   match_all: {}
-	  }
-	}
-}, function(error, res) {
-	if (error) {
-		console.error(error);
-	} else {
-		const csvRootDir = '../dashboard/public/output';
-		const cp = getLastCompletedCSV(csvRootDir);
-		writeCSVToES(path.join(csvRootDir, cp, 'objects.csv'), client);
-	}
-});
+function doEverything() {
+	client.deleteByQuery({
+		index: 'collection',
+		type: 'object',
+		body: {
+			query: {
+			   match_all: {}
+		  }
+		}
+	}, function(error, res) {
+		if (error) {
+			console.error(error);
+		} else {
+			const csvRootDir = '../dashboard/public/output';
+			const cp = getLastCompletedCSV(csvRootDir);
+			writeCSVToES(path.join(csvRootDir, cp, 'objects.csv'), client);
+		}
+	});
+}
