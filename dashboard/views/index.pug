@@ -12,53 +12,73 @@ html
 	body
 		h1 Dashboard
 		section
-			h2 TMS to CSV Exporter
-			p
-				span Script last ran: 
-				span#lastRan= moment(info.startTime).toString()
-			p
-				span Script last completed: 
-				span#lastCompleted= moment(info.completeTime).toString()
-			p
-				span Script running: 
-				span#active= info.active
-			p
-				span Progress: 
-				span#progress= `${info.progress.processed} of ${info.progress.total} objects processed`
-			p
-				span Listening for updates on port: 
-				span#port= info.updatePort
-			button#run Run Script
-			button#cancel Cancel Script
+			div.panel.panel-default
+				div.panel-heading
+					h2.panel-title TMS to CSV Exporter
+				div.panel-body
+					p
+						span Script last ran: 
+						span#lastRan= moment(info.startTime).toString()
+					p
+						span Script last completed: 
+						span#lastCompleted= moment(info.completeTime).toString()
+					p
+						span Script running: 
+						span#active= info.active
+					p
+						span Progress: 
+						span#progress= `${info.progress.processed} of ${info.progress.total} objects processed`
+					p
+						span Listening for updates on port: 
+						span#port= info.updatePort
+					button#run Run Script
+					button#cancel Cancel Script
 		section
-			h2 Exported CSV files
-			table#csvFiles.table.table-striped.table-condensed.dataTable
-				thead
-					tr
-						th name
-						th time ran
-						th status
-						th view online
-						th download
-						th new warnings online
-						th download warnings
-						th diff (from last run)
-				tbody
-				each file in list.files
-					tr
-						td= file.name
-						td= file.createdAt
-						td= file.status
-						td
-							a(href= "/" + file.name + "/objects") View Online 
-						td
-							a(href="/output/" + file.name + "/objects.csv") Download 
-						td
-							a(href= "/" + file.name + "/warnings") View Warnings Online
-						td
-							a(href="/output/" + file.name + "/warnings.csv") Download Warnings
-						td
-							a(href="/output/" + file.name + "/diff.json") Diff
+			div.panel.panel-default
+				div.panel-heading
+					h2.panel-title Exported CSV files
+				div.panel-body
+					table#csvFiles.table.table-striped.table-condensed.dataTable
+						thead
+							tr
+								th name
+								th time ran
+								th status
+								th view online
+								th download
+								th new warnings online
+								th download warnings
+								th diff (from last run)
+						tbody
+						each file in list.files
+							tr
+								td= file.name
+								td= file.createdAt
+								td= file.status
+								td
+									a(href= "/" + file.name + "/objects") View Online 
+								td
+									a(href="/output/" + file.name + "/objects.csv") Download 
+								td
+									a(href= "/" + file.name + "/warnings") View Warnings Online
+								td
+									a(href="/output/" + file.name + "/warnings.csv") Download Warnings
+								td
+									a(href="/output/" + file.name + "/diff.json") Diff
+		section
+			div.panel.panel-default
+				div.panel-heading
+					h2.panel-title Elasticsearch
+				div.panel-body
+					div.row
+						div.col-lg-6
+							div.input-group
+								input#query.form-control(type="text" name="es_query" placeholder="Search for...")
+								span.input-group-btn
+									button#query_button.btn.btn-default(type="button") Search
+					div.row
+						div.col-lg-12
+							text#search_results
 	script.
 		$(function() {
 			var socket;
@@ -74,7 +94,18 @@ html
 				});
 			}
 
-			connectUpdateSocket(parseInt($('#port').text()));	
+			function doSearchQuery() {
+				var query = $("#query")[0].value;
+				var port = 9200;
+				console.log("Searching for: " + query);
+				$.get(window.location.protocol + "//" + window.location.hostname + ":" + port + "/_search?pretty&q=" + query, updateSearchResults);
+			}
+
+			function updateSearchResults(data) {
+				$("#search_results").text(JSON.stringify(data));
+			}
+
+			connectUpdateSocket(parseInt($('#port').text()));
 
 			$("#run").click(function() {
 				$.get('/api/tmstocsv/run', function(response) {
@@ -84,5 +115,14 @@ html
 
 			$("#cancel").click(function() {
 				$.get('/api/tmstocsv/cancel');
+			});
+
+			$("#query_button").click(doSearchQuery);
+
+			$("#query").keypress(function(e, a) {
+				if (e.which == 13) {
+					doSearchQuery();
+					return false;    //<---- Add this line
+				}
 			});
 		});
