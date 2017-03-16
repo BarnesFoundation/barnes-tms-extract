@@ -18,8 +18,14 @@
 			"required": true
 		},
 		{
+			"name": "culture"
+		},
+		{
 			"name": "displayDate",
 			"required": true
+		},
+		{
+			"name": "period"
 		},
 		{
 			"name": "medium"
@@ -44,9 +50,24 @@
 			"required": true
 		},
 		{
+			"name": "shortDescription",
+			"required": true
+		},
+		{
+			"name": "longDescription",
+			"required": true
+		},
+		{
+			"name": "visualDescription",
+			"required": true
+		}, 
+		{
 			"name": "copyright",
 			"required": true,
 			"enumerated": true
+		},
+		{
+			"name": "exhHistory"
 		},
 		{
 			"name": "classification",
@@ -54,8 +75,11 @@
 			"enumerated": true
 		},
 		{
-			"name": "bibliography1",
+			"name": "bibliography",
 			"required": true
+		},
+		{
+			"name": "provenance"
 		}
 	],
 	"warnings": {
