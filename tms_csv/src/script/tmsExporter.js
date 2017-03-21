@@ -22,14 +22,6 @@ function decodeUTF8InterpretedAsWin(str) {
 	return newnewbuf.toString();
 }
 
-function logShellOutput(op) {
-	if (op.code === 0) {
-		logger.info(op.stdout);
-	} else {
-		logger.error(op.sterr);
-	}
-}
-
 module.exports = class TMSExporter extends EventEmitter {
 	constructor(credentials) {
 		super();
@@ -50,21 +42,12 @@ module.exports = class TMSExporter extends EventEmitter {
 		};
 	}
 
-	_diffCSV(config) {
-		const pyDiff = path.resolve(__dirname, "../../../py_csv_diff/py_csv_diff.py");
-		logger.info(`Running CSV diff python script on ${config.outputDirectory}`);
-		logShellOutput(shell.exec("source activate tmsdiff"));
-		logShellOutput(shell.exec(`python ${pyDiff} ${config.outputDirectory}`));
-		logShellOutput(shell.exec("source deactivate"));
-	}
-
 	_finishExport(config, status) {
 		this._active = false;
 		this._csv.end();
 		this._warningReporter.end();
 		this.emit("completed");
 		logger.info("CSV export completed", { tag: "tag:complete" });
-		this._diffCSV(config);
 		this._exportMeta.status = status;
 	}
 

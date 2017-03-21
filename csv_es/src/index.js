@@ -13,6 +13,12 @@ const esCollection = new ESCollection(esHost);
 
 const csvRootDir = argv._[0];
 
+const targetCSV = argv._[1];
+
+// const targetCSV = "csv_1490116277839";
+// const targetCSV = "csv_1490116308362";
+// const targetCSV = "csv_1490117985331";
+
 function csvCompleted(csvDirPath) {
 	const metapath = path.join(csvDirPath, 'meta.json');
 	try {
@@ -31,9 +37,15 @@ function getLastCompletedCSV(csvRootDir) {
 	return null;
 }
 
+// esCollection.init().then(() => {
+// 	return esCollection.clearCollectionObjects();
+// }).then(() => {
+// 	const cp = targetCSV;
+// 	return esCollection.syncESWithCSV(path.join(csvRootDir, cp, 'objects.csv'));
+// });
+
 esCollection.init().then(() => {
-	return esCollection.clearCollectionObjects();
+	return esCollection.syncESToCSV(path.join(csvRootDir, targetCSV, "objects.csv"));
 }).then(() => {
-	const cp = getLastCompletedCSV(csvRootDir);
-	return esCollection.syncESWithCSV(path.join(csvRootDir, cp, 'objects.csv'));
+	logger.info("Updated to csv " + targetCSV);
 });
