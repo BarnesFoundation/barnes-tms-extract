@@ -1,7 +1,7 @@
 var shell = require('shelljs');
 
 var output = shell.exec("which bash");
-var bashPath = output.stdout;
+var bashPath = output.stdout.trim();
 
 shell.echo("Creating tmsdiff Python environment");
 shell.exec("conda create -n tmsdiff -yq", { shell: bashPath });
