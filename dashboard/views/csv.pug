@@ -16,7 +16,7 @@ html
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/jquery.dataTables.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap.min.js")
-		script(src="/scripts/csv_to_html_table.js")
+		script(src="../scripts/csv_to_html_table.js")
 
 		script.
 			var csvId = "#{csvId}";
@@ -28,7 +28,7 @@ html
 				return text.slice(0, maxlen - 3) + "...";
 			}
 			CsvToHtmlTable.init({
-				csv_path: '/output/' + csvId + '/' + csvType + '.csv',
+				csv_path: '../output/' + csvId + '/' + csvType + '.csv',
 				element: 'table-container',
 				allow_download: true,
 				filter_columns: true,
