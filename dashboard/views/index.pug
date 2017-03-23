@@ -56,9 +56,9 @@ html
 								td= file.createdAt
 								td= file.status
 								td
-									a(href= "/" + file.name + "/objects") View Online 
+									a(href= "/" + file.name + "/objects") View Online
 								td
-									a(href="/output/" + file.name + "/objects.csv") Download 
+									a(href="/output/" + file.name + "/objects.csv") Download
 								td
 									a(href= "/" + file.name + "/warnings") View Warnings Online
 								td
@@ -83,6 +83,8 @@ html
 								input#query.form-control(type="text" name="es_query" placeholder="Search for...")
 								span.input-group-btn
 									button#query_button.btn.btn-default(type="button") Search
+						div.col-lg-6
+							a(href="app/kibana") View on Kibana
 					div.row
 						div.col-lg-12
 							text#search_results
