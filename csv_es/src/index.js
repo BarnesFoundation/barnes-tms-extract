@@ -33,7 +33,7 @@ function getLastCompletedCSV(csvRootDir) {
 	return null;
 }
 
-esCollection.init().then(() => {
+esCollection.init().then(() => return esCollection.clearCollectionObjects).then(() => {
 	return esCollection.syncESToCSV(path.join(csvRootDir, targetCSV, "objects.csv"));
 }).then(() => {
 	logger.info("Updated to csv " + targetCSV);

@@ -112,8 +112,12 @@ module.exports = class ESCollection {
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	_createDocumentWithData(data) {
-		const dataCopy = Object.assign({}, data);
+		let dataCopy = Object.assign({}, data);
 		dataCopy.id = parseInt(dataCopy.id);
+		dataCopy = _.mapValues(dataCopy, (v, k) => {
+			if (v === "") return null;
+			return v;
+		});
 		return new Promise((resolve, reject) => {
 			this._client.create({
 				index: 'collection',
