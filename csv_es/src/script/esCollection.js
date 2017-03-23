@@ -11,6 +11,7 @@ const shell = require('shelljs');
 const tmp = require('tmp');
 const _ = require('lodash');
 
+const output = shell.exec("which bash");
 const bashPath = output.stdout.trim();
 
 function ESCollectionException(message) {
