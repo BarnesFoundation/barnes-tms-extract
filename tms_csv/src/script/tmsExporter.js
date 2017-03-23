@@ -13,7 +13,6 @@ const path = require('path');
 const _ = require("lodash");
 const EventEmitter = require('events');
 const iconv = require('iconv-lite');
-const shell = require('shelljs');
 
 function decodeUTF8InterpretedAsWin(str) {
 	if (typeof str !== "string") return str;
@@ -35,10 +34,21 @@ module.exports = class TMSExporter extends EventEmitter {
 		return this._active;
 	}
 
+	get csvFilePath() {
+		return this._csvFilePath;
+	}
+
 	get progress() {
 		return {
 			processed: this._processedObjectCount,
 			total: this._totalObjectCount
+		};
+	}
+
+	get status() {
+		return {
+			csv: this._csvFilePath,
+			status: this._exportMeta.status
 		};
 	}
 
@@ -78,6 +88,7 @@ module.exports = class TMSExporter extends EventEmitter {
 		const tms = new TMSURLReader(credentials);
 
 		const csvFilePath = `${csvOutputDir}/${name}.csv`;
+		this._csvFilePath = csvFilePath;
 
 		this._exportMeta = new ExportMetadata(`${csvOutputDir}/meta.json`);
 		this._exportMeta.status = ExportStatus.INCOMPLETE;
@@ -96,7 +107,6 @@ module.exports = class TMSExporter extends EventEmitter {
 			return tms.next().then((artObject) => {
 				if (!this._active) {
 					this._finishExport(config, ExportStatus.CANCELLED);
-					return;
 				}
 
 				if (artObject) {
@@ -168,6 +178,8 @@ module.exports = class TMSExporter extends EventEmitter {
 
 		logger.info(`Reading TMS API from root URL ${config.apiURL}`);
 
-		return this._processTMS(this._credentials, config, outputPath);
+		return this._processTMS(this._credentials, config, outputPath).then((res) => {
+			return this.status;
+		});
 	}
 }

@@ -20,7 +20,7 @@ function es(options) {
 	});
 
 	this.add('role:es,cmd:sync', (msg, respond) => {
-		const csvPath = path.join(csvDir, msg.csv);
+		const csvPath = msg.csv;
 		const esCollection = new ESCollection(host);
 		esCollection.init().then(() => {
 			return esCollection.syncESToCSV(csvPath);

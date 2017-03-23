@@ -11,6 +11,8 @@ const shell = require('shelljs');
 const tmp = require('tmp');
 const _ = require('lodash');
 
+const bashPath = output.stdout.trim();
+
 function ESCollectionException(message) {
 	this.message = message;
 	this.name = "ESCollectionException";
@@ -113,15 +115,15 @@ module.exports = class ESCollection {
 	}
 
 	_diffCSV(old_csv_path, new_csv_path) {
-		const pyDiff = path.resolve(__dirname, "../../py_csv_diff/py_csv_diff.py");
+		const pyDiff = path.resolve(__dirname, "../../../py_csv_diff/py_csv_diff.py");
 		const resolvedOldPath = path.relative(".", old_csv_path);
 		const resolvedNewPath = path.relative(".", new_csv_path);
 		const tmpDir = tmp.dirSync();
 		const outputJsonFile = path.join(tmpDir.name, "diff.json");
 		logger.info(`Running CSV diff python script on ${old_csv_path} ${new_csv_path}`);
-		logShellOutput(shell.exec("source activate tmsdiff"));
-		logShellOutput(shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`));
-		logShellOutput(shell.exec("source deactivate"));
+		logShellOutput(shell.exec("source activate tmsdiff", { shell: bashPath }));
+		logShellOutput(shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
+		logShellOutput(shell.exec("source deactivate", { shell: bashPath }));
 		return JSON.parse(fs.readFileSync(outputJsonFile));
 	}
 

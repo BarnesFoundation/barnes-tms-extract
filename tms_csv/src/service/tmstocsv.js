@@ -1,4 +1,6 @@
 const io = require('socket.io');
+const path = require('path');
+const seneca = require('seneca');
 const TMSExporter = require('../script/tmsExporter.js');
 const TMSWebsocketUpdater = require('./tmsWebsocketUpdater.js');
 const {
@@ -35,7 +37,14 @@ function tmstocsv(options) {
 		if (tmsExporter.active) {
 			respond(null, { time: lastStartTime(logfile) });
 		} else {
-			tmsExporter.exportCSV(searchConfig);
+			tmsExporter.exportCSV(searchConfig).then((res) => {
+				if (res.status === "COMPLETED") {
+					this.act('role:es,cmd:sync', { csv: res.csv }, function(err, result) {
+						console.log("ES Sync completed");
+						console.log(result);
+					});
+				}
+			});
 			respond(null, { time: lastStartTime(logfile) });
 		}
 	});

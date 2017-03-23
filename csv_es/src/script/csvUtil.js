@@ -54,8 +54,8 @@ module.exports.csvCompleted = function(csvDirPath) {
  */
 module.exports.doCSVKeysMatch = function(csvFilePathA, csvFilePathB, delim = ",") {
 	const proms = [];
-	proms.push(readFirstLine(csvFilePathA));
-	proms.push(readFirstLine(csvFilePathB));
+	proms.push(_readFirstLine(csvFilePathA));
+	proms.push(_readFirstLine(csvFilePathB));
 	const all = Promise.all(proms);
 	return all.then((res) => {
 		const keysA = res[0].split(delim);
