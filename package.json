@@ -32,10 +32,11 @@
   "scripts": {
     "csv-pin": "cd csv_viewer && npm run start",
     "dashboard": "cd dashboard && npm run start",
+    "es-pin": "cd csv_es && npm run service",
     "lint": "eslint dashboard tms_csv",
     "lint-fix": "eslint dashboard tms_csv --fix",
     "postinstall": "node scripts/pythonenv.js",
-    "serve": "npm-run-all -p -r csv-pin tmstocsv-pin dashboard",
+    "serve": "npm-run-all -p -r csv-pin tmstocsv-pin dashboard es-pin",
     "tmstocsv-pin": "cd tms_csv && npm run service"
   },
   "repository": {

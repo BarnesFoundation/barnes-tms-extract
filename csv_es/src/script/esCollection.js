@@ -1,4 +1,7 @@
 const logger = require('./esLogger.js');
+const {
+	doCSVKeysMatch
+} = require('./csvUtil.js');
 
 const csv = require('fast-csv');
 const elasticsearch = require('elasticsearch');
@@ -13,47 +16,12 @@ function ESCollectionException(message) {
 	this.name = "ESCollectionException";
 }
 
-function doCSVKeysMatch(csvFilePathA, csvFilePathB, delim = ",") {
-	const proms = [];
-	proms.push(readFirstLine(csvFilePathA));
-	proms.push(readFirstLine(csvFilePathB));
-	const all = Promise.all(proms);
-	return all.then((res) => {
-		const keysA = res[0].split(delim);
-		const keysB = res[1].split(delim);
-		return _.difference(keysA, keysB).length === 0 && _.difference(keysB, keysA).length === 0;
-	}, (err) => {
-		throw err;
-	});
-}
-
 function logShellOutput(op) {
 	if (op.code === 0) {
 		logger.info(op.stdout);
 	} else {
 		logger.error(op.sterr);
 	}
-}
-
-function readFirstLine (path) {
-	return new Promise(function (resolve, reject) {
-		const rs = fs.createReadStream(path, {encoding: 'utf8'});
-		let acc = '';
-		let pos = 0;
-		let index;
-		rs
-			.on('data', function (chunk) {
-				index = chunk.indexOf('\n');
-				acc += chunk;
-				index !== -1 ? rs.close() : pos += chunk.length;
-			})
-			.on('close', function () {
-				resolve(acc.slice(0, pos + index));
-			})
-			.on('error', function (err) {
-				reject(err);
-			})
-	});
 }
 
 module.exports = class ESCollection {
@@ -297,6 +265,30 @@ module.exports = class ESCollection {
 				}, (error, response) => {
 					if (error) reject(error);
 					resolve(response);
+				});
+			});
+		});
+	}
+
+	/**
+	 * Returns a description of the Elasticsearch index.
+	 * @return {Promise} Resolves to a description of the Elasticsearch index
+	 */
+	description() {
+		if (!this._didInit) {
+			throw new ESCollectionException("Must call init() before interacting with ESCollection object");
+		}
+		return new Promise((resolve, reject) => {
+			this._client.get({
+				index: 'collection',
+				type: 'meta',
+				id: 1
+			}, function(error, response) {
+				if (error) reject(error);
+				resolve({
+					hasImportedCSV: response._source.hasImportedCSV,
+					lastCSVImportTimestamp: response._source.lastCSVImportTimestamp,
+					lastImportedCSV: response._source.hasImportedCSV ? "csv_" + response._source.lastCSVImportTimestamp : null
 				});
 			});
 		});

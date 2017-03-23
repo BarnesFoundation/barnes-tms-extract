@@ -1,10 +1,6 @@
 const ESCollection = require('./esCollection.js');
 const logger = require('./esLogger.js');
 
-const fs = require('fs');
-const _ = require('lodash');
-const path = require('path');
-
 const esHost = 'localhost:9200';
 
 const argv = require('minimist')(process.argv.slice(2));
@@ -14,24 +10,6 @@ const esCollection = new ESCollection(esHost);
 const csvRootDir = argv._[0];
 
 const targetCSV = argv._[1];
-
-function csvCompleted(csvDirPath) {
-	const metapath = path.join(csvDirPath, 'meta.json');
-	try {
-		const status = JSON.parse(fs.readFileSync(metapath, 'utf8')).status;
-		return status.toLowerCase() === 'completed';
-	} catch (e) {
-		return false;
-	}
-}
-
-function getLastCompletedCSV(csvRootDir) {
-	let dirs = fs.readdirSync(csvRootDir);
-	dirs = _.filter(dirs, (d) => d.startsWith("csv_")).sort();
-	dirs = _.filter(dirs, (d) => csvCompleted(path.join(csvRootDir, d)));
-	if (dirs.length > 0) return dirs.pop();
-	return null;
-}
 
 esCollection.init().then(() => return esCollection.clearCollectionObjects).then(() => {
 	return esCollection.syncESToCSV(path.join(csvRootDir, targetCSV, "objects.csv"));

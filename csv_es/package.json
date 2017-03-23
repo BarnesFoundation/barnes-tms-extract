@@ -1,0 +1,20 @@
+{
+  "name": "csv_es",
+  "version": "0.0.1",
+  "description": "service for managing the elasticsearch index for the collection",
+  "main": "src/script/index.js",
+  "scripts": {
+    "service": "node src/service/es-pin-service.js --host localhost:9200",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/BarnesFoundation/CollectionWebsite.git"
+  },
+  "author": "Sam Tarakajian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BarnesFoundation/CollectionWebsite/issues"
+  },
+  "homepage": "https://github.com/BarnesFoundation/CollectionWebsite#readme"
+}
