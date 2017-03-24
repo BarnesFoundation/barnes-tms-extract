@@ -1,0 +1,15 @@
+{
+  "name": "iiif-image-processor",
+  "version": "0.0.1",
+  "description": "a script to upload images from the barnes image repository to s3, iiif tiled",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Girlfriends Labs, LLC",
+  "license": "MIT",
+  "dependencies": {
+    "phantomjs-prebuilt": "^2.1.14",
+    "s3": "^4.4.0"
+  }
+}
