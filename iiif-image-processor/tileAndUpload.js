@@ -17,7 +17,6 @@ csv.fromStream(stream, {headers : true})
 			return element.name === data.primaryMedia
 		});
 		if (found) {
-			const file = fs.createWriteStream(found.name);
 			const cmd = `./go-iiif/bin/iiif-tile-seed -config config.json -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${found.name}`;
 			execSync(cmd, (error, stdout, stderr) => {
 			  if (error) {
