@@ -84,7 +84,7 @@ html
 								span.input-group-btn
 									button#query_button.btn.btn-default(type="button") Search
 						div.col-lg-6
-							a(href="app/kibana") View on Kibana
+							a(href="/app/kibana") View on Kibana
 					div.row
 						div.col-lg-12
 							text#search_results
@@ -94,7 +94,7 @@ html
 
 			function connectUpdateSocket(port) {
 				$("#port").text(port);
-				socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port + window.location.pathname);
+				socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port);
 				socket.on('active', function(data){
 					$("#active").text(data);
 				});
@@ -117,13 +117,13 @@ html
 			connectUpdateSocket(parseInt($('#port').text()));
 
 			$("#run").click(function() {
-				$.get('/api/tmstocsv/run', function(response) {
+				$.get('api/tmstocsv/run', function(response) {
 					$("#test").text(response.time);
 				});
 			});
 
 			$("#cancel").click(function() {
-				$.get('/api/tmstocsv/cancel');
+				$.get('api/tmstocsv/cancel');
 			});
 
 			$("#query_button").click(doSearchQuery);
