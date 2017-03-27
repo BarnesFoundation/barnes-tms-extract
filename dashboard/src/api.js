@@ -4,7 +4,7 @@ function api(options) {
 
 	this.add('role:api,path:csv', function (msg, respond) {
 		const valid_commands = {
-			list: 'list'
+			list: 'list',
 		};
 
     // do something to msg if necessary
@@ -16,7 +16,7 @@ function api(options) {
 	this.add('role:api,path:es', function (msg, respond) {
 		const valid_commands = {
 			desc: 'desc',
-			sync: 'sync'
+			sync: 'sync',
 		};
 
 		const command = msg.args.params.cmd;
@@ -29,7 +29,7 @@ function api(options) {
 			info: 'info',
 			run: 'run',
 			cancel: 'cancel',
-			active: 'active'
+			active: 'active',
 		};
 
     // do something to msg if necessary
@@ -46,7 +46,7 @@ function api(options) {
 			map: {
 				csv: { GET: true, suffix: '/:cmd' },
 				es: { GET: true, suffix: '/:cmd' },
-				tmstocsv: { GET: true, suffix: '/:cmd' }
+				tmstocsv: { GET: true, suffix: '/:cmd' },
 			},
 		} }, respond);
 	});

@@ -5,11 +5,10 @@ const TMSExporter = require('../script/tmsExporter.js');
 const TMSWebsocketUpdater = require('./tmsWebsocketUpdater.js');
 const {
 	lastStartTime,
-	lastCompleteTime
-} = require("./tmsLog.js");
+	lastCompleteTime,
+} = require('./tmsLog.js');
 
 function tmstocsv(options) {
-
 	const searchConfig = options.config;
 
 	const credentials = options.creds;
@@ -23,13 +22,13 @@ function tmstocsv(options) {
 	const tmsWebsocketUpdater = new TMSWebsocketUpdater(exportProcessPort, tmsExporter);
 
 	this.add('role:tmstocsv,cmd:info', (msg, respond) => {
-    const data = {
-      startTime: lastStartTime(logfile),
-      completeTime: lastCompleteTime(logfile),
-      active: tmsExporter.active,
-      progress: tmsExporter.progress,
-      updatePort: exportProcessPort
-    };
+		const data = {
+			startTime: lastStartTime(logfile),
+			completeTime: lastCompleteTime(logfile),
+			active: tmsExporter.active,
+			progress: tmsExporter.progress,
+			updatePort: exportProcessPort,
+		};
 		respond(null, data);
 	});
 
@@ -38,9 +37,9 @@ function tmstocsv(options) {
 			respond(null, { time: lastStartTime(logfile) });
 		} else {
 			tmsExporter.exportCSV(searchConfig).then((res) => {
-				if (res.status === "COMPLETED") {
-					this.act('role:es,cmd:sync', { csv: res.csv }, function(err, result) {
-						console.log("ES Sync completed");
+				if (res.status === 'COMPLETED') {
+					this.act('role:es,cmd:sync', { csv: res.csv }, (err, result) => {
+						console.log('ES Sync completed');
 						console.log(result);
 					});
 				}
@@ -49,7 +48,7 @@ function tmstocsv(options) {
 		}
 	});
 
-	this.add('role:tmstocsv,cmd:cancel', function cancel(msg, respond) {
+	this.add('role:tmstocsv,cmd:cancel', (msg, respond) => {
 		if (tmsExporter.active) {
 			tmsExporter.cancelExport();
 			respond(null, { time: lastStartTime(logfile) });
@@ -58,7 +57,7 @@ function tmstocsv(options) {
 		}
 	});
 
-	this.add('role:tmstocsv,cmd:active', function run(msg, respond) {
+	this.add('role:tmstocsv,cmd:active', (msg, respond) => {
 		respond(null, { active: tmsExporter.active });
 	});
 }

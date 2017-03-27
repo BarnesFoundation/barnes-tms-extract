@@ -17,4 +17,4 @@ module.exports = class TMSWebsocketUpdater {
 			this._socket.emit('progress', this._tmsExporter.progress);
 		}
 	}
-}
+};

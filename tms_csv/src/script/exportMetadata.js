@@ -1,10 +1,10 @@
 const fs = require('fs');
 
 const ExportStatus = Object.freeze({
-	INCOMPLETE: "INCOMPLETE",
-	CANCELLED: "CANCELLED",
-	COMPLETED: "COMPLETED",
-	ERROR: "ERROR"
+	INCOMPLETE: 'INCOMPLETE',
+	CANCELLED: 'CANCELLED',
+	COMPLETED: 'COMPLETED',
+	ERROR: 'ERROR',
 });
 
 class ExportMetadata {
@@ -48,6 +48,6 @@ class ExportMetadata {
 }
 
 module.exports = {
-	ExportMetadata: ExportMetadata,
-	ExportStatus: ExportStatus
+	ExportMetadata,
+	ExportStatus,
 };

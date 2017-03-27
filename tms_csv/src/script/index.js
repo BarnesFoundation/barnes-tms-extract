@@ -7,6 +7,6 @@ const credfile = argv.creds;
 
 const tmsExporter = new TMSExporter(credfile);
 
-tmsExporter.exportCSV(configFile).then( () => {
-	console.log("All done!!");
+tmsExporter.exportCSV(configFile).then(() => {
+	console.log('All done!!');
 });

@@ -5,7 +5,7 @@ const credfile = argv.creds;
 
 require('seneca')()
 
-  .use('tmstocsv', {config: configFile, creds: credfile})
+  .use('tmstocsv', { config: configFile, creds: credfile })
 
   .client({ type: 'tcp', pin: 'role:es', port: 10203 })
 

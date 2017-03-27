@@ -30,25 +30,25 @@ const seneca = require('seneca')()
       .client({ type: 'tcp', pin: 'role:es', port: 10203 });
 
 app.get('/', (req, res) => {
-  let desc;
-  let info;
-  let list;
-  seneca.act('role:es,cmd:desc', function(err, result) {
-    desc = result;
-    seneca.act('role:tmstocsv,cmd:info', function(err, result) {
-      info = result;
-      seneca.act('role:csv,cmd:list', function(err, result) {
-        list = result;
-        res.render('index', {desc: desc, info: info, list: list, moment: moment});
-      });
-    });
-  });
+	let desc;
+	let info;
+	let list;
+	seneca.act('role:es,cmd:desc', (err, result) => {
+		desc = result;
+		seneca.act('role:tmstocsv,cmd:info', (err, result) => {
+			info = result;
+			seneca.act('role:csv,cmd:list', (err, result) => {
+				list = result;
+				res.render('index', { desc, info, list, moment });
+			});
+		});
+	});
 });
 
 app.get('/:csv_id/objects', (req, res) => {
-  res.render('csv', { csvId: req.params.csv_id, csvType: 'objects'});
+	res.render('csv', { csvId: req.params.csv_id, csvType: 'objects' });
 });
 
 app.get('/:csv_id/warnings', (req, res) => {
-  res.render('csv', { csvId: req.params.csv_id, csvType: 'warnings'});
+	res.render('csv', { csvId: req.params.csv_id, csvType: 'warnings' });
 });
