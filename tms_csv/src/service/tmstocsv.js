@@ -7,6 +7,7 @@ const {
 	lastStartTime,
 	lastCompleteTime,
 } = require('./tmsLog.js');
+const logger = require('./logger.js');
 
 function tmstocsv(options) {
 	const searchConfig = options.config;
@@ -39,8 +40,8 @@ function tmstocsv(options) {
 			tmsExporter.exportCSV(searchConfig).then((res) => {
 				if (res.status === 'COMPLETED') {
 					this.act('role:es,cmd:sync', { csv: res.csv }, (err, result) => {
-						console.log('ES Sync completed');
-						console.log(result);
+						logger.info('ES Sync completed');
+						logger.info(result);
 					});
 				}
 			});

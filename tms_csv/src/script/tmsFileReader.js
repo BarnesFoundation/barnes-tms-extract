@@ -32,7 +32,7 @@ module.exports = class TMSFileReader extends TMSReader {
 			} else {
 				const artObjectPath = `${this.path}/${this._files[this._index]}`;
 				const description = fs.readFileSync(artObjectPath, 'utf8');
-				this._index++;
+				this._index += 1;
 				resolve(new ArtObject(description));
 			}
 		});

@@ -38,21 +38,21 @@ module.exports = class TMSURLReader extends TMSReader {
 		return this._rootURL;
 	}
 
-	set rootURL(url) {
-		this._rootURL = url;
+	set rootURL(rootUrl) {
+		this._rootURL = rootUrl;
 	}
 
-	_addCredentialsToURL(url) {
+	_addCredentialsToURL(rootUrl) {
 		if (this._credentials.username) {
 			if (this._credentials.password) {
-				url.auth = `${this._credentials.username}:${this._credentials.password}`;
+				rootUrl.auth = `${this._credentials.username}:${this._credentials.password}`;
 			} else {
-				url.auth = this._credentials.username;
+				rootUrl.auth = this._credentials.username;
 			}
 		}
 		if (this._credentials.key) {
-			if (!url.query) url.query = {};
-			if (this._credentials.key) url.query.key = this._credentials.key;
+			if (!rootUrl.query) rootUrl.query = {};
+			if (this._credentials.key) rootUrl.query.key = this._credentials.key;
 		}
 	}
 
@@ -94,7 +94,7 @@ module.exports = class TMSURLReader extends TMSReader {
 	}
 
 	_fetchNextPage() {
-		this._currentPageIndex++;
+		this._currentPageIndex += 1;
 		const requestURLString = this._urlForCollectionPageIndex(this._currentPageIndex);
 
 		logger.info(`Requesting collection page with url: ${requestURLString}`);
@@ -214,10 +214,10 @@ module.exports = class TMSURLReader extends TMSReader {
 				if (hasNext) {
 					const objectId = this._currentPageJSON.objects[this._currentIndexOfObjectInPage].id.value;
 					this._fetchArtObjectWithId(objectId).then((artObject) => {
-						this._currentIndexOfObjectInPage++;
+						this._currentIndexOfObjectInPage += 1;
 						resolve(artObject);
 					}, (error) => {
-						this._currentIndexOfObjectInPage++;
+						this._currentIndexOfObjectInPage += 1;
 						reject(error);
 					});
 				} else {
