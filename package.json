@@ -12,6 +12,8 @@
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
+    "phantomjs-prebuilt": "^2.1.14",
+    "s3": "^4.4.0",
     "seneca": "^3.3.0",
     "seneca-web": "^2.0.0",
     "seneca-web-adapter-express": "^1.0.2",
