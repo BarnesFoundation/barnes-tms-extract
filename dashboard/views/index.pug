@@ -94,7 +94,7 @@ html
 
 			function connectUpdateSocket(port) {
 				$("#port").text(port);
-				socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port + window.location.pathname);
+				socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port);
 				socket.on('active', function(data){
 					$("#active").text(data);
 				});
