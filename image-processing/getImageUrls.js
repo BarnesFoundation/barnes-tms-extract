@@ -3,6 +3,10 @@ const credentials = require('./credentials.json');
 const url = credentials.barnesImagesUrl;
 const fs = require('fs');
 
+page.onConsoleMessage = function(msg, lineNum, sourceId) {
+  console.log('CONSOLE: ' + msg + ' (from line #' + lineNum + ' in "' + sourceId + '")');
+};
+
 page.open(url, function (status) {
   page.includeJs("http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js", function() {
     var imageNames = page.evaluate(function() {
