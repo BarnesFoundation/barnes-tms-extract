@@ -117,13 +117,13 @@ html
 			connectUpdateSocket(parseInt($('#port').text()));
 
 			$("#run").click(function() {
-				$.get('/api/tmstocsv/run', function(response) {
+				$.get('api/tmstocsv/run', function(response) {
 					$("#test").text(response.time);
 				});
 			});
 
 			$("#cancel").click(function() {
-				$.get('/api/tmstocsv/cancel');
+				$.get('api/tmstocsv/cancel');
 			});
 
 			$("#query_button").click(doSearchQuery);
