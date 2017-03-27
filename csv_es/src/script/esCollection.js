@@ -258,6 +258,7 @@ module.exports = class ESCollection {
 			}, (error, response) => {
 				if (error) reject(error);
 				this._client.deleteByQuery({
+					conflicts: 'proceed',
 					index: 'collection',
 					type: 'object',
 					body: {

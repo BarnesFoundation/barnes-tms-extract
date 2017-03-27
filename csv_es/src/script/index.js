@@ -2,6 +2,8 @@ const ESCollection = require('./esCollection.js');
 const logger = require('./esLogger.js');
 const { getLastCompletedCSV } = require('./csvUtil.js');
 
+const path = require('path');
+
 const esHost = 'localhost:9200';
 
 const argv = require('minimist')(process.argv.slice(2));
@@ -16,7 +18,7 @@ if (targetCSV === 'latest') {
 	targetCSV = getLastCompletedCSV(csvRootDir);
 }
 
-esCollection.init().then(() => return esCollection.clearCollectionObjects).then(() => {
+esCollection.init().then(() => {return esCollection.clearCollectionObjects()}).then(() => {
 	return esCollection.syncESToCSV(path.join(csvRootDir, targetCSV, "objects.csv"));
 }).then(() => {
 	logger.info("Updated to csv " + targetCSV);
