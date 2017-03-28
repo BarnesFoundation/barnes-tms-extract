@@ -3,27 +3,20 @@ const csv = require('fast-csv');
 
 // const serviceMeta = require('../../meta.json');
 const ImageUploader = require('../script/imageUploader.js');
+const WebsocketUpdater = require('../../../util/websocketUpdater.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
 const csvDir = '../../../dashboard/public/output';
 const logger = require('../script/imageLogger.js');
 const path = require('path');
+const PORT = 8002;
 
 function images(options) {
+  const imageUploader = new ImageUploader(path.resolve(__dirname, csvDir));
+  const websocketUpdater = new WebsocketUpdater(PORT, imageUploader);
   this.add('role:images,cmd:tile', (msg, respond) => {
-    // get available images
-    const imageUploader = new ImageUploader();
-    imageUploader.init();
-    logger.info('images directory polled successfully.');
+    imageUploader.process();
 
-    const lastCSV = getLastCompletedCSV(path.resolve(__dirname, csvDir));
-    const csvPath = path.resolve(__dirname, path.join(csvDir, lastCSV, 'objects.csv'));
-    csvForEach(csvPath, (row) => {
-      logger.info('iterating through csv row');
-      if (imageUploader.imageNeedsUpload(row.primaryMedia)) {
-        imageUploader.tileAndUpload(row.primaryMedia);
-      }
-    });
-    respond(null, null);
+    respond(null, { success: true });
 
     // // if a csv has already been processed
     // if (serviceMeta) {
@@ -34,6 +27,10 @@ function images(options) {
     //   // get latest csv
     //   // do tile and upload
     // }
+  });
+
+  this.add('role:images,cmd:info', (msg, respond) => {
+    respond(null, Object.assign({}, imageUploader.status, { updatePort: PORT }));
   });
 }
 

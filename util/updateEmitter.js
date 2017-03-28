@@ -17,3 +17,5 @@ class UpdateEmitter extends EventEmitter {
     this.emit('completed', this.status);
   }
 }
+
+module.exports = UpdateEmitter;

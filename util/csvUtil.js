@@ -47,10 +47,11 @@ _readFirstLine = function(path) {
  * @param {string} csvPath - Path to the csv file
  * @param {function} cb - Function to call on each row
  */
-module.exports.csvForEach = function(csvPath, cb) {
+module.exports.csvForEach = function(csvPath, cb, completedCb) {
 	const stream = fs.createReadStream(csvPath);
 	csv.fromStream(stream, {headers : true})
-		.on("data", cb);
+		.on("data", cb)
+		.on("end", completedCb);
 }
 
 /**

@@ -27,20 +27,25 @@ const seneca = require('seneca')()
 // this is where we list the microservices
       .client({ type: 'tcp', pin: 'role:tmstocsv' })
       .client({ type: 'tcp', pin: 'role:csv', port: 10202 })
-      .client({ type: 'tcp', pin: 'role:es', port: 10203 });
+      .client({ type: 'tcp', pin: 'role:es', port: 10203 })
+      .client({ type: 'tcp', pin: 'role:images', port: 10204 });
 
 app.get('/', (req, res) => {
 	let desc;
 	let info;
 	let list;
+  let imageInfo;
 	seneca.act('role:es,cmd:desc', (err, result) => {
 		desc = result;
 		seneca.act('role:tmstocsv,cmd:info', (err, result) => {
 			info = result;
-			seneca.act('role:csv,cmd:list', (err, result) => {
-				list = result;
-				res.render('index', { desc, info, list, moment });
-			});
+      seneca.act('role:images,cmd:info', (err, result) => {
+        imageInfo = result;
+  			seneca.act('role:csv,cmd:list', (err, result) => {
+  				list = result;
+  				res.render('index', { desc, info, list, imageInfo, moment });
+  			});
+      });
 		});
 	});
 });

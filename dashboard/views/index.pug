@@ -88,20 +88,47 @@ html
 					div.row
 						div.col-lg-12
 							text#search_results
+		section
+			div.panel.panel-default
+				div.panel-heading
+					h2.panel-title IIIF Image Processing
+				div.panel-body
+					p
+						span Listening for updates on port: 
+						span#image-port= imageInfo.updatePort
+					button#run-images Run
+					p
+						span Is Running: 
+						span#images-running
+					p
+						span Images to Process:
+						span#images-to-process
+					p
+						span Images Processed: 
+						span#images-processed
+
 	script.
 		$(function() {
-			var socket;
 
-			function connectUpdateSocket(port) {
-				$("#port").text(port);
-				socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port);
-				socket.on('active', function(data){
-					$("#active").text(data);
-				});
-				socket.on('progress', function(data){
-					$("#progress").text(`${data.processed} of ${data.total} objects processed`);
-				});
+			function createUpdateSocket(port) {
+				var socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port);
+				return socket;
 			}
+
+			var socket = createUpdateSocket(parseInt($('#port').text()));
+			socket.on('active', function(data){
+				$("#active").text(data);
+			});
+			socket.on('progress', function(data){
+				$("#progress").text(`${data.processed} of ${data.total} objects processed`);
+			});
+
+			var imageSocket = createUpdateSocket(parseInt($('#image-port').text()));
+			imageSocket.on('status', function(data) {
+				$("#images-running").text(data.isRunning);
+				$("#images-to-process").text(data.totalImagesToUpload);
+				$("#images-processed").text(data.numImagesUploaded);
+			});
 
 			function doSearchQuery() {
 				var query = $("#query")[0].value;
@@ -114,11 +141,15 @@ html
 				$("#search_results").text(JSON.stringify(data));
 			}
 
-			connectUpdateSocket(parseInt($('#port').text()));
-
 			$("#run").click(function() {
 				$.get('api/tmstocsv/run', function(response) {
 					$("#test").text(response.time);
+				});
+			});
+
+			$("#run-images").click(function() {
+				$.get('api/images/tile', function(response) {
+					
 				});
 			});
 
