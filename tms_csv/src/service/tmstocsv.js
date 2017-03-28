@@ -7,7 +7,7 @@ const {
 	lastStartTime,
 	lastCompleteTime,
 } = require('./tmsLog.js');
-const logger = require('./logger.js');
+const logger = require('../script/logger.js');
 
 function tmstocsv(options) {
 	const searchConfig = options.config;

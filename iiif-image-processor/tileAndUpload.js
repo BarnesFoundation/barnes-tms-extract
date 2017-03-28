@@ -3,7 +3,7 @@ const csv = require('fast-csv');
 const execSync = require('child_process').execSync;
 
 const credentials = require('./credentials.json');
-const { getLastCompletedCSV } = require('../csv_es/src/script/csvUtil.js');
+const { getLastCompletedCSV } = require('../util/csvUtil.js');
 
 const csvDir = '../dashboard/public/output';
 

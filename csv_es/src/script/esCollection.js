@@ -1,7 +1,8 @@
 const logger = require('./esLogger.js');
 const {
-	doCSVKeysMatch
-} = require('./csvUtil.js');
+	doCSVKeysMatch,
+	diffCSV
+} = require('../../../util/csvUtil.js');
 
 const csv = require('fast-csv');
 const elasticsearch = require('elasticsearch');
@@ -17,14 +18,6 @@ const bashPath = output.stdout.trim();
 function ESCollectionException(message) {
 	this.message = message;
 	this.name = "ESCollectionException";
-}
-
-function logShellOutput(op) {
-	if (op.code === 0) {
-		logger.info(op.stdout);
-	} else {
-		logger.error(op.sterr);
-	}
 }
 
 module.exports = class ESCollection {
@@ -115,19 +108,6 @@ module.exports = class ESCollection {
 		});
 	}
 
-	_diffCSV(old_csv_path, new_csv_path) {
-		const pyDiff = path.resolve(__dirname, "../../../py_csv_diff/py_csv_diff.py");
-		const resolvedOldPath = path.relative(".", old_csv_path);
-		const resolvedNewPath = path.relative(".", new_csv_path);
-		const tmpDir = tmp.dirSync();
-		const outputJsonFile = path.join(tmpDir.name, "diff.json");
-		logger.info(`Running CSV diff python script on ${old_csv_path} ${new_csv_path}`);
-		logShellOutput(shell.exec("source activate tmsdiff", { shell: bashPath }));
-		logShellOutput(shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
-		logShellOutput(shell.exec("source deactivate", { shell: bashPath }));
-		return JSON.parse(fs.readFileSync(outputJsonFile));
-	}
-
 	_getLastCSVName() {
 		return new Promise((resolve, reject) => {
 			this._client.get({
@@ -182,7 +162,7 @@ module.exports = class ESCollection {
 		return this._getLastCSVName().then((oldCsvName) => {
 			logger.info(`Previously imported csv ${oldCsvName}`);
 			const oldCsvPath = path.join(csvDir, oldCsvName, "objects.csv");
-			const res = this._diffCSV(oldCsvPath, csvFilePath);
+			const res = diffCSV(oldCsvPath, csvFilePath);
 			return this._updateESWithDiffJSON(res);
 		}).then(() => {
 			logger.info(`Finished import, updating index metadata`);

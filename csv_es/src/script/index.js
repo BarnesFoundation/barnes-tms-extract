@@ -1,6 +1,6 @@
 const ESCollection = require('./esCollection.js');
 const logger = require('./esLogger.js');
-const { getLastCompletedCSV } = require('./csvUtil.js');
+const { getLastCompletedCSV } = require('../../../util/csvUtil.js');
 
 const path = require('path');
 

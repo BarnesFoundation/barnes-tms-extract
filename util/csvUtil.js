@@ -1,6 +1,17 @@
 const fs = require('fs');
 const _ = require('lodash');
 const path = require('path');
+const tmp = require('tmp');
+const shell = require('shelljs');
+const logger = require('./logger.js')
+
+function logShellOutput(op) {
+	if (op.code === 0) {
+		logger.info(op.stdout);
+	} else {
+		logger.error(op.sterr);
+	}
+}
 
 /**
  * Read just the first line of a file (up to the first newline character)
@@ -78,4 +89,24 @@ module.exports.getLastCompletedCSV = function(csvRootDir) {
 	dirs = _.filter(dirs, (d) => module.exports.csvCompleted(path.join(csvRootDir, d)));
 	if (dirs.length > 0) return dirs.pop();
 	return null;
+}
+
+/**
+ * Diffs two csvs and returns a JSON object of all fields changed, added, or removed
+ * using the python library csvdiff.
+ * @param {string} oldCSVPath - Path to the old CSV file
+ * @param {string} newCSVPath - Path to the new CSV file
+ * @return {object} the diff in JSON form
+ */
+module.exports.diffCSV = function(oldCSVPath, newCSVPath) {
+	const pyDiff = path.resolve(__dirname, "../py_csv_diff/py_csv_diff.py");
+	const resolvedOldPath = path.relative(".", oldCSVPath);
+	const resolvedNewPath = path.relative(".", newCSVPath);
+	const tmpDir = tmp.dirSync();
+	const outputJsonFile = path.join(tmpDir.name, "diff.json");
+	logger.info(`Running CSV diff python script on ${oldCSVPath} ${newCSVPath}`);
+	logShellOutput(shell.exec("source activate tmsdiff", { shell: bashPath }));
+	logShellOutput(shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
+	logShellOutput(shell.exec("source deactivate", { shell: bashPath }));
+	return JSON.parse(fs.readFileSync(outputJsonFile));
 }
