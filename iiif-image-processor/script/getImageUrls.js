@@ -15,6 +15,21 @@ phantom.onError = function(msg, trace) {
   phantom.exit(1);
 }
 
+page.onError = function(msg, trace) {
+
+  var msgStack = ['ERROR: ' + msg];
+
+  if (trace && trace.length) {
+    msgStack.push('TRACE:');
+    trace.forEach(function(t) {
+      msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function +'")' : ''));
+    });
+  }
+
+  console.error(msgStack.join('\n'));
+
+};
+
 page.onConsoleMessage = function(msg, lineNum, sourceId) {
   console.log('CONSOLE: ' + msg + ' (from line #' + lineNum + ' in "' + sourceId + '")');
 };
