@@ -1,0 +1,10 @@
+{"level":"info","message":"creating image logger","timestamp":"2017-03-28T19:50:03.851Z"}
+{"level":"info","message":"starting fetch available images","timestamp":"2017-03-28T19:50:03.853Z"}
+{"level":"info","message":"images script path: /Users/ctarakajian/Development/projects/CollectionWebsite/iiif-image-processor/src/script/getImageUrls.js","timestamp":"2017-03-28T19:50:03.853Z"}
+{"level":"info","message":"phantomjs script finished","timestamp":"2017-03-28T19:51:10.139Z"}
+{"level":"info","message":"images directory polled successfully.","timestamp":"2017-03-28T19:51:10.144Z"}
+{"level":"info","message":"iterating through csv row","timestamp":"2017-03-28T19:51:10.159Z"}
+{"level":"info","message":"iterating through csv row","timestamp":"2017-03-28T19:51:10.160Z"}
+{"level":"info","message":"iterating through csv row","timestamp":"2017-03-28T19:51:11.534Z"}
+{"level":"info","message":"iterating through csv row","timestamp":"2017-03-28T19:51:15.922Z"}
+{"level":"info","message":"iterating through csv row","timestamp":"2017-03-28T19:51:16.906Z"}

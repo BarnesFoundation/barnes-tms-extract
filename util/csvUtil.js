@@ -3,9 +3,9 @@ const _ = require('lodash');
 const path = require('path');
 const tmp = require('tmp');
 const shell = require('shelljs');
-const logger = require('./logger.js')
+const csv = require('fast-csv');
 
-function logShellOutput(op) {
+function logShellOutput(logger, op) {
 	if (op.code === 0) {
 		logger.info(op.stdout);
 	} else {
@@ -38,6 +38,19 @@ _readFirstLine = function(path) {
 				reject(err);
 			})
 	});
+}
+
+/**
+ * Calls a callback function for each row of a CSV on the given CSV path.
+ * First row of the CSV must be headers. Callback function has one argument,
+ * an object whose keys are the header columns.
+ * @param {string} csvPath - Path to the csv file
+ * @param {function} cb - Function to call on each row
+ */
+module.exports.csvForEach = function(csvPath, cb) {
+	const stream = fs.createReadStream(csvPath);
+	csv.fromStream(stream, {headers : true})
+		.on("data", cb);
 }
 
 /**
@@ -96,17 +109,18 @@ module.exports.getLastCompletedCSV = function(csvRootDir) {
  * using the python library csvdiff.
  * @param {string} oldCSVPath - Path to the old CSV file
  * @param {string} newCSVPath - Path to the new CSV file
+ * @param {logger} logger - instance of winston logger, specific to the microservice
  * @return {object} the diff in JSON form
  */
-module.exports.diffCSV = function(oldCSVPath, newCSVPath) {
+module.exports.diffCSV = function(oldCSVPath, newCSVPath, logger) {
 	const pyDiff = path.resolve(__dirname, "../py_csv_diff/py_csv_diff.py");
 	const resolvedOldPath = path.relative(".", oldCSVPath);
 	const resolvedNewPath = path.relative(".", newCSVPath);
 	const tmpDir = tmp.dirSync();
 	const outputJsonFile = path.join(tmpDir.name, "diff.json");
 	logger.info(`Running CSV diff python script on ${oldCSVPath} ${newCSVPath}`);
-	logShellOutput(shell.exec("source activate tmsdiff", { shell: bashPath }));
-	logShellOutput(shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
-	logShellOutput(shell.exec("source deactivate", { shell: bashPath }));
+	logShellOutput(logger, shell.exec("source activate tmsdiff", { shell: bashPath }));
+	logShellOutput(logger, shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
+	logShellOutput(logger, shell.exec("source deactivate", { shell: bashPath }));
 	return JSON.parse(fs.readFileSync(outputJsonFile));
 }

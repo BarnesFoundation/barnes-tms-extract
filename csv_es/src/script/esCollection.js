@@ -162,7 +162,7 @@ module.exports = class ESCollection {
 		return this._getLastCSVName().then((oldCsvName) => {
 			logger.info(`Previously imported csv ${oldCsvName}`);
 			const oldCsvPath = path.join(csvDir, oldCsvName, "objects.csv");
-			const res = diffCSV(oldCsvPath, csvFilePath);
+			const res = diffCSV(oldCsvPath, csvFilePath, logger);
 			return this._updateESWithDiffJSON(res);
 		}).then(() => {
 			logger.info(`Finished import, updating index metadata`);

@@ -1,8 +1,7 @@
 const page = require('webpage').create();
-const credentials = require('../credentials.json');
+const credentials = require('../../credentials.json');
 const url = credentials.barnesImagesUrl;
 const fs = require('fs');
-var cwd = fs.absolute(".");
 
 phantom.onError = function(msg, trace) {
   var msgStack = ['PHANTOM ERROR: ' + msg];
@@ -51,7 +50,7 @@ page.open(url, function (status) {
     var data = {
       images: imageNames
     };
-    fs.write('../names.json', JSON.stringify(data));
+    fs.write('../../names.json', JSON.stringify(data));
     phantom.exit();
   });
   // imageNames = Array.prototype.slice.call(imageNames);
