@@ -3,6 +3,18 @@ const credentials = require('../credentials.json');
 const url = credentials.barnesImagesUrl;
 const fs = require('fs');
 
+phantom.onError = function(msg, trace) {
+  var msgStack = ['PHANTOM ERROR: ' + msg];
+  if (trace && trace.length) {
+    msgStack.push('TRACE:');
+    trace.forEach(function(t) {
+      msgStack.push(' -> ' + (t.file || t.sourceURL) + ': ' + t.line + (t.function ? ' (in function ' + t.function +')' : ''));
+    });
+  }
+  console.error(msgStack.join('\n'));
+  phantom.exit(1);
+}
+
 page.onConsoleMessage = function(msg, lineNum, sourceId) {
   console.log('CONSOLE: ' + msg + ' (from line #' + lineNum + ' in "' + sourceId + '")');
 };
