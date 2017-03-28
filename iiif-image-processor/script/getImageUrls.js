@@ -1,5 +1,5 @@
 const page = require('webpage').create();
-const credentials = require('./credentials.json');
+const credentials = require('../credentials.json');
 const url = credentials.barnesImagesUrl;
 const fs = require('fs');
 
@@ -8,7 +8,7 @@ page.onConsoleMessage = function(msg, lineNum, sourceId) {
 };
 
 page.open(url, function (status) {
-  page.includeJs("http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js", function() {
+  page.includeJs("https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js", function() {
     var imageNames = page.evaluate(function() {
       var imageNames = [];
       $('a').each(function() {
@@ -23,7 +23,7 @@ page.open(url, function (status) {
     var data = {
       images: imageNames
     };
-    fs.write('names.json', JSON.stringify(data));
+    fs.write('./names.json', JSON.stringify(data));
     phantom.exit();
   });
   // imageNames = Array.prototype.slice.call(imageNames);
