@@ -43,6 +43,9 @@ function tmstocsv(options) {
 						logger.info('ES Sync completed');
 						logger.info(result);
 					});
+					this.act('role:images,cmd:tile', (err, result) => {
+						logger.info('Images tile and sync begun.');
+					});
 				}
 			});
 			respond(null, { time: lastStartTime(logfile) });
