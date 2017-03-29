@@ -1,5 +1,16 @@
+const exec = require('child_process').exec;
+const path = require('path');
+
+const argv = require('minimist')(process.argv.slice(2));
+
+const source = argv.d || path.resolve(__dirname, '../dashboard/public/output');
+
+// Cleanup old CSVs
+exec(['node', path.resolve(__dirname, './oldCSVClean.js'), '-d', source].join(" "));
+
+Run the CSV processing script
 const seneca = require('seneca')()
-  .client({ type: 'tcp', pin: 'role:tmstocsv' })
-  .act('role:tmstocsv,cmd:run', function(res) {
-    process.exit(0);
-  });
+	.client({ type: 'tcp', pin: 'role:tmstocsv' })
+	.act('role:tmstocsv,cmd:run', function(res) {
+		process.exit(0);
+	});
