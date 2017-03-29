@@ -116,10 +116,8 @@ html
 			}
 
 			var socket = createUpdateSocket(parseInt($('#port').text()));
-			socket.on('active', function(data){
-				$("#active").text(data);
-			});
-			socket.on('progress', function(data){
+			socket.on('status', function(data){
+				$("#active").text(`${data.active}`);
 				$("#progress").text(`${data.processed} of ${data.total} objects processed`);
 			});
 

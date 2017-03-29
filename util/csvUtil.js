@@ -5,6 +5,9 @@ const tmp = require('tmp');
 const shell = require('shelljs');
 const csv = require('fast-csv');
 
+const output = shell.exec("which bash");
+const bashPath = output.stdout.trim();
+
 function logShellOutput(logger, op) {
 	if (op.code === 0) {
 		logger.info(op.stdout);

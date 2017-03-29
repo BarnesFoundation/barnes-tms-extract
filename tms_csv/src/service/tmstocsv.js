@@ -2,7 +2,7 @@ const io = require('socket.io');
 const path = require('path');
 const seneca = require('seneca');
 const TMSExporter = require('../script/tmsExporter.js');
-const TMSWebsocketUpdater = require('./tmsWebsocketUpdater.js');
+const WebsocketUpdater = require('../../../util/websocketUpdater.js');
 const {
 	lastStartTime,
 	lastCompleteTime,
@@ -20,14 +20,14 @@ function tmstocsv(options) {
 
 	const tmsExporter = new TMSExporter(credentials);
 
-	const tmsWebsocketUpdater = new TMSWebsocketUpdater(exportProcessPort, tmsExporter);
+	const tmsWebsocketUpdater = new WebsocketUpdater(exportProcessPort, tmsExporter);
 
 	this.add('role:tmstocsv,cmd:info', (msg, respond) => {
 		const data = {
 			startTime: lastStartTime(logfile),
 			completeTime: lastCompleteTime(logfile),
-			active: tmsExporter.active,
-			progress: tmsExporter.progress,
+			active: tmsExporter.status.active,
+			progress: tmsExporter.status,
 			updatePort: exportProcessPort,
 		};
 		respond(null, data);

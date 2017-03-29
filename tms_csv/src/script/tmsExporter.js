@@ -6,6 +6,7 @@ const {
 const CSVWriter = require('./csvWriter.js');
 const TMSURLReader = require('./tmsURLReader.js');
 const WarningReporter = require('./warningReporter.js');
+const UpdateEmitter = require('../../../util/updateEmitter.js');
 const logger = require('./logger.js');
 
 const fs = require('fs');
@@ -21,7 +22,7 @@ function decodeUTF8InterpretedAsWin(str) {
 	return newnewbuf.toString();
 }
 
-module.exports = class TMSExporter extends EventEmitter {
+module.exports = class TMSExporter extends UpdateEmitter {
 	constructor(credentials) {
 		super();
 		this._credentials = this._loadCredentials(credentials);
@@ -38,17 +39,13 @@ module.exports = class TMSExporter extends EventEmitter {
 		return this._csvFilePath;
 	}
 
-	get progress() {
-		return {
-			processed: this._processedObjectCount,
-			total: this._totalObjectCount,
-		};
-	}
-
 	get status() {
 		return {
+			active: this._active,
 			csv: this._csvFilePath,
-			status: this._exportMeta.status,
+			processed: this._processedObjectCount,
+			total: this._totalObjectCount,
+			status: (this._exportMeta ? this._exportMeta.status : null)
 		};
 	}
 
@@ -56,7 +53,7 @@ module.exports = class TMSExporter extends EventEmitter {
 		this._active = false;
 		this._csv.end();
 		this._warningReporter.end();
-		this.emit('completed');
+		this.completed();
 		logger.info('CSV export completed', { tag: 'tag:complete' });
 		this._exportMeta.status = status;
 	}
@@ -75,7 +72,6 @@ module.exports = class TMSExporter extends EventEmitter {
 
 	_processTMS(credentials, config, csvOutputDir) {
 		this._active = true;
-		this.emit('started');
 		this._processedObjectCount = 0;
 		this._totalObjectCount = 0;
 
@@ -96,6 +92,7 @@ module.exports = class TMSExporter extends EventEmitter {
 		this._warningReporter = new WarningReporter(csvOutputDir, config);
 		if (config.debug && config.debug.limit) {
 			limitOutput = true;
+			this._totalObjectCount = config.debug.limit;
 			logger.info(`Limiting output to ${config.debug.limit} entires`);
 		}
 
@@ -119,7 +116,7 @@ module.exports = class TMSExporter extends EventEmitter {
 				this._warningReporter.appendFieldsForObject(id, artObject, description);
 
 				this._processedObjectCount++;
-				this.emit('progress');
+				this.progress();
 				if (this._processedObjectCount % 100 === 0) {
 					logger.info(`Processed ${this._processedObjectCount} of ${this._totalObjectCount} collection objects`);
 				}
@@ -148,14 +145,21 @@ module.exports = class TMSExporter extends EventEmitter {
 			});
 		});
 
-		return tms.getObjectCount().then((res) => {
-			this._totalObjectCount = res;
+		this.started();
+
+		if (limitOutput) {
 			logger.info(`Processing ${this._totalObjectCount} collection objects`);
 			return processTMSHelper();
-		}, (err) => {
-			logger.error(error);
-			this._finishExport(config, ExportStatus.ERROR);
-		});
+		} else {
+			return tms.getObjectCount().then((res) => {
+				this._totalObjectCount = res;
+				logger.info(`Processing ${this._totalObjectCount} collection objects`);
+				return processTMSHelper();
+			}, (err) => {
+				logger.error(error);
+				this._finishExport(config, ExportStatus.ERROR);
+			});
+		}
 	}
 
 	cancelExport() {

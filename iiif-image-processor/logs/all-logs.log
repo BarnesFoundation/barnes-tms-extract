@@ -1,7 +1,0 @@
-{"level":"info","message":"creating image logger","timestamp":"2017-03-28T22:09:22.305Z"}
-{"level":"info","message":"Starting process to tile images.","timestamp":"2017-03-28T22:09:28.304Z"}
-{"level":"info","message":"Starting fetch available images.","timestamp":"2017-03-28T22:09:28.305Z"}
-{"level":"info","message":"Pulled list of available images from TMS successfully.","timestamp":"2017-03-28T22:10:29.950Z"}
-{"level":"info","message":"Tiling image: 01-05-31_i1.jpg, 1 of 3","timestamp":"2017-03-28T22:10:29.967Z"}
-{"level":"info","message":"Tiling image: 01-08-29_i2r.jpg, 2 of 3","timestamp":"2017-03-28T22:10:31.557Z"}
-{"level":"info","message":"Tiling image: 01-08-20_i2r.jpg, 3 of 3","timestamp":"2017-03-28T22:10:32.937Z"}

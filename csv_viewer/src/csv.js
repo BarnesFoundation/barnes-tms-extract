@@ -12,10 +12,12 @@ function csv(options) {
 			const data = { files: [] };
 			files.forEach(file => {
 				if (path.basename(file).startsWith("csv_")) {
-					const metaString = fs.readFileSync(csvDir + "/" + file + "/meta.json")
-					const metadata = JSON.parse(metaString);
-					metadata.name = file;
-					data.files.push(metadata);
+					try {
+						const metaString = fs.readFileSync(csvDir + "/" + file + "/meta.json")
+						const metadata = JSON.parse(metaString);
+						metadata.name = file;
+						data.files.push(metadata);
+					} catch (e) { }
 				}
 			});
 			respond(err, data);
