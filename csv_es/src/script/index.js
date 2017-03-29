@@ -18,7 +18,7 @@ if (targetCSV === 'latest') {
 	targetCSV = getLastCompletedCSV(csvRootDir);
 }
 
-esCollection.init().then(() => {return esCollection.clearCollectionObjects()}).then(() => {
+esCollection.init().then(() => {
 	return esCollection.syncESToCSV(path.join(csvRootDir, targetCSV, "objects.csv"));
 }).then(() => {
 	logger.info("Updated to csv " + targetCSV);

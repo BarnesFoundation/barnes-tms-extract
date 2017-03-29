@@ -301,6 +301,11 @@ module.exports = class ESCollection {
 			if (canDiff) {
 				const csvDir = path.resolve(path.dirname(csvFilePath), "..");
 				const lastCSVFilePath = path.join(csvDir, res, "objects.csv");
+				if (!fs.existsSync(lastCSVFilePath)) {
+					logger.info("Can't find previously imported CSV --- initializing new ES index");
+					return false;
+				}
+
 				return doCSVKeysMatch(lastCSVFilePath, csvFilePath).then((res) => {
 					if (res) {
 						logger.info("CSV keys match");
