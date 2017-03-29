@@ -62,14 +62,16 @@ class ImageUploader extends UpdateEmitter {
 	_fetchAvailableImages() {
 		logger.info('Starting fetch available images.');
 		const getImageUrlPath = path.resolve(__dirname, './getImageUrls.js');
-		// const cmd = `phantomjs --ignore-ssl-errors=true --ssl-protocol=tlsv1 --web-security=false ${getImageUrlPath}`;
-		const cmd = `echo Hello`;
+		const outputPath = path.resolve(__dirname, '../../names.json');
+		const cmd = `phantomjs --ignore-ssl-errors=true --ssl-protocol=tlsv1 --web-security=false ${getImageUrlPath} ${outputPath}`;
+		// const cmd = `echo Hello`;
 		return new Promise((resolve) => {
-			exec(cmd, () => {
+			const phantom = exec(cmd, () => {
 				this._isInitialized = true;
 				this._availableImages = require('../../names.json').images;
 				resolve();
 			});
+			phantom.stdout.pipe(process.stdout);
 		});
 	}
 
