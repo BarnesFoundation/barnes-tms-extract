@@ -46,9 +46,9 @@ page.open(url, function (status) {
             var tds = $(this).children('td');
             if (tds.length === 3) {
               var data = {
-                name: $($(tds[0]).children('a')).children('tt').text(),
-                size: $(tds[1]).children('tt').text(),
-                modified: $(tds[2]).children('tt').text()
+                name: $($(tds[0]).children('a')).children('tt').text().trim(),
+                size: $(tds[1]).children('tt').text().trim(),
+                modified: $(tds[2]).children('tt').text().trim()
               };
               retVal.push(data);
             }
