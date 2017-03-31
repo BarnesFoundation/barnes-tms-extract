@@ -47,8 +47,8 @@ class ImageUploader extends UpdateEmitter {
 				const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
 				const imagesToProcess = [];
 				csvForEach(csvPath, (row) => {
-					if (this._imageNeedsUpload(row.primaryMedia)) {
-						imagesToProcess.push(row.primaryMedia);
+					if (this._imageNeedsUpload(`${row.invno}.jpg`)) {
+						imagesToProcess.push(`${row.invno}.jpg`);
 					}
 				},
 				() => {
@@ -80,41 +80,44 @@ class ImageUploader extends UpdateEmitter {
 		logger.info('Starting to fetch images already tiled.');
 		this._tiledImages = [];
 		return new Promise((resolve) => {
-			this._s3Client.listObjects({
+			this._s3Client.downloadFile({
 				s3Params: {
 					Bucket: credentials.awsBucket,
-					Prefix: 'tiles/',
-					Delimiter: '/',
-					MaxKeys: 10000
-				}
+					Key: 'tiled.csv'
+				},
+				localFile: path.resolve(__dirname, '../../tiled.json');
 			})
-			.on('data', (data) => {
-				this._tiledImages = this._tiledImages.concat(data.CommonPrefixes.map((prefix) => {
-					return prefix.Prefix.split('/')[1];
-				}));
+			.on('error' (err) => {
+				console.log(err);
 			})
 			.on('end', () => {
-				resolve();
-			});
+				csvForEach(path.resolve(__dirname, '../../tiled.csv'), (data) => {
+					this._tiledImages.push({name: data.name, size: data.size, lastModified: data.lastModified});
+				}, () => {
+					resolve();
+				});
+			})
 		});
 	}
 
-	_imageNeedsUpload(primaryMedia) {
-		if (!primaryMedia || primaryMedia.length === 0) return false;
+	_imageNeedsUpload(imgName) {
+		const s3Found = this._tiledImages.find((element) => element.name === imgName);
+		const tmsFound = this._availableImages.find((element) => element.name === imgName);
 
-		const s3Found = this._tiledImages.find((element) => element === primaryMedia);
-		if (s3Found) {
-			logger.info(`Primary media ${primaryMedia} already on S3, skipping.`);
+		// if the picture is on TMS
+		// 		if the picture is on S3 but has changed
+		//    or if the picture is not on S3
+		//		then it needs upload
+		// else it does not
+		if (tmsFound) {
+			if (s3Found && (s3Found.size !== tmsFound.size || s3Found.lastModified !== tmsFound.lastModified)) {
+				return tmsFound;
+			} else if (!s3Found) {
+				return tmsFound;
+			}
 			return false;
 		}
-
-		const found = this._availableImages.find((element) => {
-			return element.name === primaryMedia
-		});
-		if (!found) {
-			logger.info(`Primary media ${primaryMedia} exists but is not on TMS.`);
-		}
-		return found || false;
+		return false;
 	}
 
 	_tileAndUpload(imageNames) {
