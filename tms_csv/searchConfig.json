@@ -2,7 +2,7 @@
 	"apiURL": "https://emuseum.barnesfoundation.org",
 	"outputDirectory": "../dashboard/public/output",
 	"debug": {
-		"limit": 100
+		"limit": 10
 	},
 	"fields": [
 		{
@@ -39,16 +39,11 @@
 			"required": true
 		},
 		{
-			"name": "primaryMedia",
-			"required": true
-		},
-		{
 			"name": "locations",
 			"required": true
 		},
 		{
-			"name": "description",
-			"required": true
+			"name": "description"
 		},
 		{
 			"name": "shortDescription",

@@ -47,8 +47,9 @@ class ImageUploader extends UpdateEmitter {
 				const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
 				const imagesToProcess = [];
 				csvForEach(csvPath, (row) => {
+					const img = this._imageNeedsUpload(`${row.invno}.jpg`);
 					if (this._imageNeedsUpload(`${row.invno}.jpg`)) {
-						imagesToProcess.push(`${row.invno}.jpg`);
+						imagesToProcess.push(img.name);
 					}
 				},
 				() => {
@@ -85,14 +86,19 @@ class ImageUploader extends UpdateEmitter {
 					Bucket: credentials.awsBucket,
 					Key: 'tiled.csv'
 				},
-				localFile: path.resolve(__dirname, '../../tiled.json');
+				localFile: path.resolve(__dirname, '../../tiled.csv')
 			})
-			.on('error' (err) => {
-				console.log(err);
+			.on('error', (err) => {
+				if (err.message === "http status code 404") {
+					logger.info('Can\'t fetch list of tiled images--hasn\'t been created yet.');
+					this._tiledImages = [];
+					resolve();
+				}
 			})
 			.on('end', () => {
+				logger.info('tiles.csv has been downloaded--loading into memory.');
 				csvForEach(path.resolve(__dirname, '../../tiled.csv'), (data) => {
-					this._tiledImages.push({name: data.name, size: data.size, lastModified: data.lastModified});
+					this._tiledImages.push({name: data.name, size: data.size, modified: data.modified});
 				}, () => {
 					resolve();
 				});
@@ -101,8 +107,9 @@ class ImageUploader extends UpdateEmitter {
 	}
 
 	_imageNeedsUpload(imgName) {
-		const s3Found = this._tiledImages.find((element) => element.name === imgName);
-		const tmsFound = this._availableImages.find((element) => element.name === imgName);
+		logger.info(`Checking if image ${imgName} needs upload`);
+		const s3Found = this._tiledImages.find((element) => element.name.toLowerCase() === imgName.toLowerCase());
+		const tmsFound = this._availableImages.find((element) => element.name.toLowerCase() === imgName.toLowerCase());
 
 		// if the picture is on TMS
 		// 		if the picture is on S3 but has changed
@@ -110,13 +117,17 @@ class ImageUploader extends UpdateEmitter {
 		//		then it needs upload
 		// else it does not
 		if (tmsFound) {
-			if (s3Found && (s3Found.size !== tmsFound.size || s3Found.lastModified !== tmsFound.lastModified)) {
+			if (s3Found && (s3Found.size !== tmsFound.size || s3Found.modified !== tmsFound.modified)) {
+				logger.info(`${imgName} is available on TMS, has already been tiled, but has changed.`);
 				return tmsFound;
 			} else if (!s3Found) {
+				logger.info(`${imgName} is available on TMS, but never has been tiled.`);
 				return tmsFound;
 			}
+			logger.info(`${imgName} is available on TMS, has been tiled, and has not changed.`);
 			return false;
 		}
+		logger.info(`${imgName} is not available on TMS.`);
 		return false;
 	}
 
