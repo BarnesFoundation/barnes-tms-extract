@@ -1,10 +1,11 @@
-const { exec, execSync }  = require('child_process');
-const path = require('path');
-const s3 = require('s3');
 const logger = require('../script/imageLogger.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
 const credentials = require('../../credentials.json');
+
+const { exec, execSync }  = require('child_process');
+const path = require('path');
+const s3 = require('s3');
 
 class ImageUploader extends UpdateEmitter {
 	constructor(csvDir) {
@@ -41,7 +42,7 @@ class ImageUploader extends UpdateEmitter {
 		const imageDirPromise = this._fetchAvailableImages();
 		imageDirPromise.then(() => {
 			logger.info('Pulled list of available images from TMS successfully.');
-			this._fetchTiledImages().then(() => {					
+			this._fetchTiledImages().then(() => {
 				const lastCSV = getLastCompletedCSV(this._csvDir);
 				const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
 				const imagesToProcess = [];
@@ -63,8 +64,8 @@ class ImageUploader extends UpdateEmitter {
 		logger.info('Starting fetch available images.');
 		const getImageUrlPath = path.resolve(__dirname, './getImageUrls.js');
 		const outputPath = path.resolve(__dirname, '../../names.json');
-		const cmd = `phantomjs --ignore-ssl-errors=true --ssl-protocol=tlsv1 --web-security=false ${getImageUrlPath} ${outputPath}`;
-		// const cmd = `echo Hello`;
+		const url = credentials.barnesImagesUrl;
+		const cmd = `phantomjs --ignore-ssl-errors=true --ssl-protocol=tlsv1 --web-security=false ${getImageUrlPath} ${url} ${outputPath}`;
 		return new Promise((resolve) => {
 			const phantom = exec(cmd, () => {
 				this._isInitialized = true;
@@ -94,7 +95,7 @@ class ImageUploader extends UpdateEmitter {
 			})
 			.on('end', () => {
 				resolve();
-			})
+			});
 		});
 	}
 

@@ -1,10 +1,9 @@
 const page = require('webpage').create();
-const credentials = require('../../credentials.json');
-const url = credentials.barnesImagesUrl;
 const fs = require('fs');
 const system = require('system');
 const args = system.args;
-const outputPath = system.args[1];
+const url = system.args[1];
+const outputPath = system.args[2];
 
 phantom.onError = function(msg, trace) {
   var msgStack = ['PHANTOM ERROR: ' + msg];
@@ -40,16 +39,25 @@ page.onConsoleMessage = function(msg, lineNum, sourceId) {
 page.open(url, function (status) {
   page.includeJs("https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js", function() {
     var imageNames = page.evaluate(function() {
-      var imageNames = [];
-      $('a').each(function() {
-        // console.log($(this).text());
-        var data = {
-          name: $(this).children('tt').text()
+      var retVal = [];
+      $('tr').each(function(idx) {
+        if (idx > 0) {
+          try {
+            var tds = $(this).children('td');
+            if (tds.length === 3) {
+              var data = {
+                name: $($(tds[0]).children('a')).children('tt').text(),
+                size: $(tds[1]).children('tt').text(),
+                modified: $(tds[2]).children('tt').text()
+              };
+              retVal.push(data);
+            }
+          } catch (e) { }
         }
-        imageNames.push(data);
       });
-      return imageNames;
+      return retVal;
     });
+
     var data = {
       images: imageNames
     };
