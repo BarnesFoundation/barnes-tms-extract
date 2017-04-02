@@ -6,6 +6,8 @@ const credentials = require('../../credentials.json');
 const { exec, execSync }  = require('child_process');
 const path = require('path');
 const s3 = require('s3');
+const csv = require('fast-csv');
+const fs = require('fs');
 
 class ImageUploader extends UpdateEmitter {
 	constructor(csvDir) {
@@ -48,16 +50,44 @@ class ImageUploader extends UpdateEmitter {
 				const imagesToProcess = [];
 				csvForEach(csvPath, (row) => {
 					const img = this._imageNeedsUpload(`${row.invno}.jpg`);
-					if (this._imageNeedsUpload(`${row.invno}.jpg`)) {
-						imagesToProcess.push(img.name);
+					if (img) {
+						imagesToProcess.push(img);
 					}
 				},
 				() => {
 					this._tileAndUpload(imagesToProcess);
-					this._isRunning = false;
-					this.completed();
+					this._updateTiledList(imagesToProcess).then(() => {
+						this.completed();
+						this._isRunning = false;
+					});
 				});
 			});
+		});
+	}
+
+	_updateTiledList(images) {
+		const csvStream = csv.createWriteStream({headers: true});
+    const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../tiled.csv'));
+
+    return new Promise((resolve) => {
+	    writableStream.on("finish", () => {
+		  	this._s3Client.uploadFile({
+		  		localFile: path.resolve(__dirname, '../../tiled.csv'),
+		  		s3Params: {
+						Bucket: credentials.awsBucket,
+						Key: 'tiled.csv'
+					}
+		  	})
+		  	.on('end', () => {
+		  		resolve();
+		  	});
+		  });
+
+			csvStream.pipe(writableStream);
+			this._tiledImages.concat(images).forEach((img) => {
+				csvStream.write(img);
+			});
+			csvStream.end();
 		});
 	}
 
@@ -131,12 +161,12 @@ class ImageUploader extends UpdateEmitter {
 		return false;
 	}
 
-	_tileAndUpload(imageNames) {
-		this._numImagesToProcess = imageNames.length;
+	_tileAndUpload(images) {
+		this._numImagesToProcess = images.length;
 		this.progress();
-		imageNames.forEach((imageName, index) => {
-			logger.info(`Tiling image: ${imageName}, ${index + 1} of ${this._numImagesToProcess}`);
-			const cmd = `./go-iiif/bin/iiif-tile-seed -config config.json -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${imageName}`;
+		images.forEach((image, index) => {
+			logger.info(`Tiling image: ${image.name}, ${index + 1} of ${this._numImagesToProcess}`);
+			const cmd = `./go-iiif/bin/iiif-tile-seed -config config.json -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.name}`;
 			execSync(cmd, (error, stdout, stderr) => {
 				if (error) {
 					logger.error(`exec error: ${error}`);
