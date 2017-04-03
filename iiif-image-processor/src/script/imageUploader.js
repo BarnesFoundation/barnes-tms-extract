@@ -52,8 +52,9 @@ class ImageUploader extends UpdateEmitter {
 				const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
 				const imagesToProcess = [];
 				csvForEach(csvPath, (row) => {
-					if (this._imageNeedsUpload(`${row.invno}.jpg`)) {
-						imagesToProcess.push(`${row.invno}.jpg`);
+					const img = this._imageNeedsUpload(`${row.invno}.jpg`);
+					if (img) {
+						imagesToProcess.push(img);
 					}
 				},
 				() => {

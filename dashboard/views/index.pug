@@ -121,6 +121,7 @@ html
 			socket.on('status', function(data){
 				$("#active").text(`${data.active}`);
 				$("#progress").text(`${data.processed} of ${data.total} objects processed`);
+				$("#images-total-object").text(data.total);
 			});
 
 			var imageSocket = createUpdateSocket(parseInt($('#image-port').text()));
