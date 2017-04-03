@@ -98,14 +98,16 @@ html
 						span#image-port= imageInfo.updatePort
 					button#run-images Run
 					p
-						span Is Running: 
+						span Processing images: 
 						span#images-running
 					p
-						span Images to Process:
-						span#images-to-process
-					p
-						span Images Processed: 
-						span#images-processed
+						span Progress: 
+						span#images-progress
+					p 
+						span Images Tiled: 
+						span#images-tiled= 0
+						span , Total Objects: 
+						span#images-total-objects= info.progress.total 
 
 	script.
 		$(function() {
@@ -119,13 +121,14 @@ html
 			socket.on('status', function(data){
 				$("#active").text(`${data.active}`);
 				$("#progress").text(`${data.processed} of ${data.total} objects processed`);
+				$("#images-total-object").text(data.total);
 			});
 
 			var imageSocket = createUpdateSocket(parseInt($('#image-port').text()));
 			imageSocket.on('status', function(data) {
 				$("#images-running").text(data.isRunning);
-				$("#images-to-process").text(data.totalImagesToUpload);
-				$("#images-processed").text(data.numImagesUploaded);
+				$("#images-progress").text(`${data.numImagesUploaded} of ${data.totalImagesToUpload} images processed.`);
+				$("#images-tiled").text(data.numTiledImages);
 			});
 
 			function doSearchQuery() {

@@ -33,7 +33,9 @@ class ImageUploader extends UpdateEmitter {
 			type: "imageUploader",
 			totalImagesToUpload: this._numImagesToProcess,
 			numImagesUploaded: this._numImagesProcessed,
-			isRunning: this._isRunning
+			isRunning: this._isRunning,
+			currentStep: this._currentStep,
+			numTiledImages: this._tiledImages ? this._tiledImages.length : 0,
 		};
 	}
 
@@ -42,6 +44,7 @@ class ImageUploader extends UpdateEmitter {
 		this.started();
 		logger.info('Starting process to tile images.');
 		const imageDirPromise = this._fetchAvailableImages();
+		this._currentStep = "Fetching available images from TMS.";
 		imageDirPromise.then(() => {
 			logger.info('Pulled list of available images from TMS successfully.');
 			this._fetchTiledImages().then(() => {
@@ -49,8 +52,9 @@ class ImageUploader extends UpdateEmitter {
 				const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
 				const imagesToProcess = [];
 				csvForEach(csvPath, (row) => {
-					if (this._imageNeedsUpload(`${row.invno}.jpg`)) {
-						imagesToProcess.push(`${row.invno}.jpg`);
+					const img = this._imageNeedsUpload(`${row.invno}.jpg`);
+					if (img) {
+						imagesToProcess.push(img);
 					}
 				},
 				() => {
