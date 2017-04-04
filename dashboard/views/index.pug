@@ -1,5 +1,6 @@
 doctype html
 html
+	include csvFilesMixin.pug
 	head
 		meta( charset='UTF-8')
 		meta( name='viewport', content='maximum-scale=1,width=device-width,initial-scale=1,user-scalable=0')
@@ -37,38 +38,8 @@ html
 			div.panel.panel-default
 				div.panel-heading
 					h2.panel-title Exported CSV files
-				div.panel-body
-					table#csvFiles.table.table-striped.table-condensed.dataTable
-						thead
-							tr
-								th name
-								th time ran
-								th status
-								th view online
-								th download
-								th view warnings online
-								th download warnings
-								th sync
-						tbody
-						each file in list.files
-							tr
-								td= file.name
-								td= file.createdAt
-								td= file.status
-								td
-									a(href= "/" + file.name + "/objects") View Online
-								td
-									a(href="/output/" + file.name + "/objects.csv") Download
-								td
-									a(href= "/" + file.name + "/warnings") View Warnings Online
-								td
-									a(href="/output/" + file.name + "/warnings.csv") Download Warnings
-								td
-									- var completed = (file.status === "COMPLETED")
-									if completed
-										- var synced = (file.name === desc.lastImportedCSV)
-										if (synced)
-											strong= "Synced"
+				div#csvFilesPanelBody.panel-body
+					+csvFilesMixin(list, desc)
 		section
 			div.panel.panel-default
 				div.panel-heading
@@ -117,11 +88,37 @@ html
 				return socket;
 			}
 
+			var lastCSVData = {
+				active: null,
+				csv: null,
+				status: null
+			};
+
+			function fetchCSVFileInfo() {
+				$.ajax("./csvFiles").done(function(data) {
+					$("#csvFilesPanelBody").empty();
+					$("#csvFilesPanelBody").append(data);
+				});
+
+				console.log("Fetching fresh CSV data");
+				if (lastCSVData.active) setTimeout(fetchCSVFileInfo, 5000);
+			}
+
 			var socket = createUpdateSocket(parseInt($('#port').text()));
 			socket.on('status', function(data){
 				$("#active").text(`${data.active}`);
 				$("#progress").text(`${data.processed} of ${data.total} objects processed`);
 				$("#images-total-object").text(data.total);
+
+				var needsFetch = false;
+				needsFetch |= (data.active !== lastCSVData.active && data.active);
+				needsFetch |= (data.status !== lastCSVData.status);
+
+				lastCSVData.active = data.active;
+				lastCSVData.csv = data.csv;
+				lastCSVData.status = data.status;
+
+				if (needsFetch) fetchCSVFileInfo();
 			});
 
 			var imageSocket = createUpdateSocket(parseInt($('#image-port').text()));
