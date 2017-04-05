@@ -12,7 +12,9 @@ module.exports = class WebsocketUpdater {
 
 	_broadcastProgress(status) {
 		if (this._socket) {
-			this._socket.emit('status', this._name, status, this._updateEmitter.status);
+			Promise.resolve(this._updateEmitter.status).then((res) => {
+				this._socket.emit('status', this._name, status, res);
+			});
 		}
 	}
 };
