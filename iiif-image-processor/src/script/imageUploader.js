@@ -34,6 +34,7 @@ class ImageUploader extends UpdateEmitter {
 		this._s3Client = s3.createClient({
 			s3Client: awss3
 		});
+		this._fetchRawImages();
 		this._fetchTiledImages();
 	}
 
@@ -178,6 +179,8 @@ class ImageUploader extends UpdateEmitter {
 					logger.info('Can\'t fetch list of tiled images--hasn\'t been created yet.');
 					this._tiledImages = [];
 					resolve();
+				} else {
+					throw err;
 				}
 			})
 			.on('end', () => {
@@ -208,6 +211,8 @@ class ImageUploader extends UpdateEmitter {
 					logger.info('Can\'t fetch list of raw images--hasn\'t been created yet.');
 					this._rawImages = [];
 					resolve();
+				} else {
+					throw err;
 				}
 			})
 			.on('end', () => {
@@ -215,6 +220,7 @@ class ImageUploader extends UpdateEmitter {
 				csvForEach(path.resolve(__dirname, '../../raw.csv'), (data) => {
 					this._rawImages.push({name: data.name, size: data.size, modified: data.modified});
 				}, () => {
+					this.progress();
 					resolve();
 				});
 			})

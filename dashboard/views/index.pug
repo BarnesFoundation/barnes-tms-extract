@@ -81,11 +81,11 @@ html
 						span#images-progress
 					p 
 						span Images Tiled: 
-						span#images-tiled= 0
+						span#images-tiled= imageInfo.numTiledImages
 						span , Raw Images Uploaded: 
-						span#images-uploaded= 0
+						span#images-uploaded= imageInfo.numRawImages
 						span , Total Objects: 
-						span#images-total-objects= info.progress.total 
+						span#images-total-objects= desc.count
 
 	script.
 		$(function() {
@@ -120,6 +120,7 @@ html
 				$("#images-running").text(data.isRunning);
 				$("#images-progress").text(`${data.numImagesUploaded} of ${data.totalImagesToUpload} images processed.`);
 				$("#images-tiled").text(data.numTiledImages);
+				$("#images-uploaded").text(data.numRawImages);
 			}
 
 			function handleTMSServiceUpdate(name, status, data) {
