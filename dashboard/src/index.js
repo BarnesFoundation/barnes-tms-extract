@@ -1,4 +1,3 @@
-
 const SenecaWeb = require('seneca-web');
 const Express = require('express');
 const Router = Express.Router;
@@ -19,7 +18,6 @@ app.use(context);
 app.use(Express.static(path.resolve(`${__dirname}/../public`)));
 app.set('view engine', 'pug');
 app.set('views', path.resolve(`${__dirname}/../views`));
-app.listen(3000);
 
 const seneca = require('seneca')()
 			.use(SenecaWeb, senecaWebConfig)
@@ -69,3 +67,13 @@ app.get('/:csv_id/objects', (req, res) => {
 app.get('/:csv_id/warnings', (req, res) => {
 	res.render('csv', { csvId: req.params.csv_id, csvType: 'warnings' });
 });
+
+// Start the server
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+io.on('connection', (socket) => {
+	socket.on('status', (name, status, data) => {
+		socket.broadcast.emit('status', name, status, data);
+	});
+});
+server.listen(3000);

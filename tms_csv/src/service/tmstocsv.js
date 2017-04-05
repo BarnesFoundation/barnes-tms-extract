@@ -16,11 +16,11 @@ function tmstocsv(options) {
 
 	const logfile = options.log || './logs/all-logs.log';
 
-	const exportProcessPort = options.port || 8001;
+	const exportProcessPort = options.port || 3000;
 
 	const tmsExporter = new TMSExporter(credentials);
 
-	const tmsWebsocketUpdater = new WebsocketUpdater(exportProcessPort, tmsExporter);
+	const tmsWebsocketUpdater = new WebsocketUpdater("tmstocsv", exportProcessPort, tmsExporter);
 
 	this.add('role:tmstocsv,cmd:info', (msg, respond) => {
 		const data = {

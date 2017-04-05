@@ -8,11 +8,11 @@ const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
 const csvDir = '../../../dashboard/public/output';
 const logger = require('../script/imageLogger.js');
 const path = require('path');
-const PORT = 8002;
+const PORT = 3000;
 
 function images(options) {
   const imageUploader = new ImageUploader(path.resolve(__dirname, csvDir));
-  const websocketUpdater = new WebsocketUpdater(PORT, imageUploader);
+  const websocketUpdater = new WebsocketUpdater("images", PORT, imageUploader);
   this.add('role:images,cmd:tile', (msg, respond) => {
     imageUploader.process();
 

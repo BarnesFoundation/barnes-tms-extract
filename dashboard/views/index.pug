@@ -31,7 +31,7 @@ html
 						span#progress= `${info.progress.processed} of ${info.progress.total} objects processed`
 					p
 						span Listening for updates on port: 
-						span#port= info.updatePort
+						span#port= 3000
 					button#run Run Script
 					button#cancel Cancel Script
 		section
@@ -66,7 +66,7 @@ html
 				div.panel-body
 					p
 						span Listening for updates on port: 
-						span#image-port= imageInfo.updatePort
+						span#image-port= 3000
 					button#run-images Run
 					p
 						span Processing images: 
@@ -82,11 +82,6 @@ html
 
 	script.
 		$(function() {
-
-			function createUpdateSocket(port) {
-				var socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port);
-				return socket;
-			}
 
 			var lastCSVData = {
 				active: null,
@@ -104,8 +99,20 @@ html
 				if (lastCSVData.active) setTimeout(fetchCSVFileInfo, 5000);
 			}
 
-			var socket = createUpdateSocket(parseInt($('#port').text()));
-			socket.on('status', function(data){
+			function handleESServiceUpdate(name, status, data) {
+				console.log("ES service update");
+				if (status === "completed") fetchCSVFileInfo();
+			}
+
+			function handleImagesServiceUpdate(name, status, data) {
+				console.log("Images service update");
+				$("#images-running").text(data.isRunning);
+				$("#images-progress").text(`${data.numImagesUploaded} of ${data.totalImagesToUpload} images processed.`);
+				$("#images-tiled").text(data.numTiledImages);
+			}
+
+			function handleTMSServiceUpdate(name, status, data) {
+				console.log("TMS to CSV service update");
 				$("#active").text(`${data.active}`);
 				$("#progress").text(`${data.processed} of ${data.total} objects processed`);
 				$("#images-total-object").text(data.total);
@@ -119,14 +126,29 @@ html
 				lastCSVData.status = data.status;
 
 				if (needsFetch) fetchCSVFileInfo();
-			});
+			}
 
-			var imageSocket = createUpdateSocket(parseInt($('#image-port').text()));
-			imageSocket.on('status', function(data) {
-				$("#images-running").text(data.isRunning);
-				$("#images-progress").text(`${data.numImagesUploaded} of ${data.totalImagesToUpload} images processed.`);
-				$("#images-tiled").text(data.numTiledImages);
-			});
+			var websocketUpdateHandlers = {
+				es: handleESServiceUpdate,
+				images: handleImagesServiceUpdate,
+				tmstocsv: handleTMSServiceUpdate
+			}
+
+			function handleWebsocketServiceUpdate(name, status, data) {
+				if (typeof websocketUpdateHandlers[name] === "function") {
+					websocketUpdateHandlers[name](name, status, data);
+				} else {
+					console.warn("Received update from unrecognized microservice name ", name);
+				}
+			}
+
+			function createUpdateSocket(port) {
+				var socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port);
+				socket.on('status', handleWebsocketServiceUpdate);
+				return socket;
+			}
+
+			var socket = createUpdateSocket(parseInt($('#port').text()));
 
 			function doSearchQuery() {
 				var query = $("#query")[0].value;

@@ -1,0 +1,32 @@
+mixin csvFilesMixin(list, desc)
+	table#csvFiles.table.table-striped.table-condensed.dataTable
+		thead
+			tr
+				th name
+				th time ran
+				th status
+				th view online
+				th download
+				th view warnings online
+				th download warnings
+				th sync
+		tbody
+		each file in list.files
+			tr
+				td= file.name
+				td= file.createdAt
+				td= file.status
+				td
+					a(href= "/" + file.name + "/objects") View Online
+				td
+					a(href="/output/" + file.name + "/objects.csv") Download
+				td
+					a(href= "/" + file.name + "/warnings") View Warnings Online
+				td
+					a(href="/output/" + file.name + "/warnings.csv") Download Warnings
+				td
+					- var completed = (file.status === "COMPLETED")
+					if completed
+						- var synced = (file.name === desc.lastImportedCSV)
+						if (synced)
+							strong= "Synced"

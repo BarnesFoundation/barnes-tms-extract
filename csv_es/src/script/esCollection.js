@@ -3,6 +3,7 @@ const {
 	doCSVKeysMatch,
 	diffCSV
 } = require('../../../util/csvUtil.js');
+const UpdateEmitter = require('../../../util/updateEmitter.js');
 
 const csv = require('fast-csv');
 const elasticsearch = require('elasticsearch');
@@ -17,13 +18,20 @@ function ESCollectionException(message) {
 	this.name = "ESCollectionException";
 }
 
-module.exports = class ESCollection {
+module.exports = class ESCollection extends UpdateEmitter {
 	constructor(esHost) {
+		super();
 		this._didInit = false;
 		this._esHost = esHost;
 		this._client = new elasticsearch.Client({
 			host: this._esHost
 		});
+	}
+
+	get status() {
+		return {
+			host: this._esHost
+		};
 	}
 
 	/**
@@ -87,6 +95,7 @@ module.exports = class ESCollection {
 				body: dataCopy
 			}, (error, response) => {
 				if (error) reject(error);
+				this.progress();
 				resolve(response);
 			});
 		});
@@ -100,6 +109,7 @@ module.exports = class ESCollection {
 				id: docId
 			}, function(error, response) {
 				if (error) reject(error);
+				this.progress();
 				resolve(response);
 			});
 		});
@@ -124,6 +134,7 @@ module.exports = class ESCollection {
 	 * @param {string} Path to the CSV file with which to synchronize
 	 */
 	_syncESWithCSV(csvFilePath) {
+		this.started();
 		csv
 			.fromPath(csvFilePath, { headers: true })
 			.on('data', (data) => {
@@ -132,6 +143,7 @@ module.exports = class ESCollection {
 			.on('end', () => {
 				this._updateMetaForCSVFile(csvFilePath).then(() => {
 					console.log('Finished export');
+					this.completed();
 				});
 			});
 	}
@@ -147,12 +159,14 @@ module.exports = class ESCollection {
 				}
 			}, function(error, response) {
 				if (error) reject(error);
+				this.progress();
 				resolve(response);
 			});
 		});
 	}
 
 	_updateESWithCSV(csvFilePath) {
+		this.started();
 		const csvDir = path.resolve(path.dirname(csvFilePath), "..");
 		const tmpDir = tmp.dirSync();
 		const outputJsonFile = path.join(tmpDir.name, "diff.json");
@@ -163,6 +177,7 @@ module.exports = class ESCollection {
 			return this._updateESWithDiffJSON(res);
 		}).then(() => {
 			logger.info(`Finished import, updating index metadata`);
+			this.completed();
 			return this._updateMetaForCSVFile(csvFilePath);
 		});
 	}
