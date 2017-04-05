@@ -4,6 +4,8 @@
   "description": "Collection website for the Barnes Foundation and all related scripts",
   "main": "index.js",
   "dependencies": {
+    "async": "^2.3.0",
+    "aws-sdk": "^2.38.0",
     "body-parser": "^1.16.1",
     "dotenv": "^4.0.0",
     "elasticsearch": "^12.1.3",
