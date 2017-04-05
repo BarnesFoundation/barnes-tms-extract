@@ -17,7 +17,9 @@ function csv(options) {
 						const metadata = JSON.parse(metaString);
 						metadata.name = file;
 						data.files.push(metadata);
-					} catch (e) { }
+					} catch (e) {
+						// TODO: Consider logging this
+					}
 				}
 			});
 			respond(err, data);

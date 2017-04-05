@@ -33,16 +33,34 @@ class ExportMetadata {
 		return this._createdAt;
 	}
 
+	get processedObjects() {
+		return this._processedObjects;
+	}
+
+	set processedObjects(objects) {
+		this._processedObjects = objects;
+		this._updateOutput();
+	}
+
+	get totalObjects() {
+		return this._totalObjects;
+	}
+
+	set totalObjects(objects) {
+		this._totalObjects = objects;
+		this._updateOutput();
+	}
+
 	_updateOutput() {
-		fs.writeFile(this._outputFilePath, this.description(), 'utf8', (err) => {
-			if (err) throw err;
-		});
+		fs.writeFileSync(this._outputFilePath, this.description(), 'utf8');
 	}
 
 	description() {
 		const desc = {};
 		desc.status = this.status;
 		desc.createdAt = this.createdAt;
+		desc.processedObjects = this.processedObjects;
+		desc.totalObjects = this.totalObjects;
 		return JSON.stringify(desc);
 	}
 }

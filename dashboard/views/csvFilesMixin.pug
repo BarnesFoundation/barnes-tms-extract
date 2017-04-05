@@ -3,8 +3,10 @@ mixin csvFilesMixin(list, desc)
 		thead
 			tr
 				th name
-				th time ran
+				th processed
+				th total
 				th status
+				th time ran
 				th view online
 				th download
 				th view warnings online
@@ -14,8 +16,10 @@ mixin csvFilesMixin(list, desc)
 		each file in list.files
 			tr
 				td= file.name
-				td= file.createdAt
+				td= file.processedObjects
+				td= file.totalObjects
 				td= file.status
+				td= file.createdAt
 				td
 					a(href= "/" + file.name + "/objects") View Online
 				td

@@ -93,6 +93,7 @@ module.exports = class TMSExporter extends UpdateEmitter {
 		if (config.debug && config.debug.limit) {
 			limitOutput = true;
 			this._totalObjectCount = config.debug.limit;
+			this._exportMeta.totalObjects = this._totalObjectCount;
 			logger.info(`Limiting output to ${config.debug.limit} entires`);
 		}
 
@@ -116,6 +117,7 @@ module.exports = class TMSExporter extends UpdateEmitter {
 				this._warningReporter.appendFieldsForObject(id, artObject, description);
 
 				this._processedObjectCount++;
+				this._exportMeta.processedObjects = this._processedObjectCount;
 				this.progress();
 				if (this._processedObjectCount % 100 === 0) {
 					logger.info(`Processed ${this._processedObjectCount} of ${this._totalObjectCount} collection objects`);
@@ -145,6 +147,7 @@ module.exports = class TMSExporter extends UpdateEmitter {
 			});
 		});
 
+		this._exportMeta.processedObjects = 0;
 		this.started();
 
 		if (limitOutput) {
@@ -153,6 +156,7 @@ module.exports = class TMSExporter extends UpdateEmitter {
 		} else {
 			return tms.getObjectCount().then((res) => {
 				this._totalObjectCount = res;
+				this._exportMeta.totalObjects = this._totalObjectCount;
 				logger.info(`Processing ${this._totalObjectCount} collection objects`);
 				return processTMSHelper();
 			}, (err) => {
