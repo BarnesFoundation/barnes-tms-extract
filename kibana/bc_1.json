@@ -1,0 +1,210 @@
+[
+  {
+    "_id": "6f2416b0-0f17-11e7-bfb6-753e391e3b47",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Barnes Collection",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":8,\"id\":\"60952120-0f17-11e7-bfb6-753e391e3b47\",\"panelIndex\":1,\"row\":4,\"size_x\":4,\"size_y\":4,\"type\":\"visualization\"},{\"col\":4,\"id\":\"1abb81d0-0f17-11e7-bfb6-753e391e3b47\",\"panelIndex\":2,\"row\":8,\"size_x\":5,\"size_y\":4,\"type\":\"visualization\"},{\"size_x\":5,\"size_y\":4,\"panelIndex\":3,\"type\":\"visualization\",\"id\":\"4a97fe40-0f1e-11e7-a864-ef06fe9bae16\",\"col\":2,\"row\":4},{\"size_x\":12,\"size_y\":3,\"panelIndex\":4,\"type\":\"visualization\",\"id\":\"9f0a0900-0f1e-11e7-a864-ef06fe9bae16\",\"col\":1,\"row\":1}]",
+      "optionsJSON": "{\"darkTheme\":false}",
+      "uiStateJSON": "{}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "288ecbb0-0f1b-11e7-a542-3f3f3fe7e2cd",
+    "_type": "search",
+    "_source": {
+      "title": "Unidentifed maker or artist",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "id",
+        "title",
+        "classification"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"collection\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"collection\",\"key\":\"people\",\"value\":\"Unidentified\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"people\":{\"query\":\"Unidentified\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "a979b9b0-0f1b-11e7-a542-3f3f3fe7e2cd",
+    "_type": "search",
+    "_source": {
+      "title": "Missing primaryMedia",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "id",
+        "title",
+        "classification"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"collection\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"collection\",\"key\":\"query\",\"value\":\"{\\\"bool\\\":{\\\"must_not\\\":{\\\"exists\\\":{\\\"field\\\":\\\"primaryMedia\\\"}}}}\",\"disabled\":false,\"alias\":null},\"$state\":{\"store\":\"appState\"},\"query\":{\"bool\":{\"must_not\":{\"exists\":{\"field\":\"primaryMedia\"}}}}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "71388580-0f1c-11e7-a542-3f3f3fe7e2cd",
+    "_type": "search",
+    "_source": {
+      "title": "Missing description",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "id",
+        "title",
+        "classification"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"collection\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"collection\",\"key\":\"query\",\"value\":\"{\\\"bool\\\":{\\\"must_not\\\":{\\\"bool\\\":{\\\"should\\\":[{\\\"exists\\\":{\\\"field\\\":\\\"shortDescription\\\"}},{\\\"exists\\\":{\\\"field\\\":\\\"longDescription\\\"}},{\\\"exists\\\":{\\\"field\\\":\\\"visualDescription\\\"}}]}}}}\",\"disabled\":false,\"alias\":null},\"$state\":{\"store\":\"appState\"},\"query\":{\"bool\":{\"must_not\":{\"bool\":{\"should\":[{\"exists\":{\"field\":\"shortDescription\"}},{\"exists\":{\"field\":\"longDescription\"}},{\"exists\":{\"field\":\"visualDescription\"}}]}}}}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "32ea8cf0-0f1d-11e7-a542-3f3f3fe7e2cd",
+    "_type": "search",
+    "_source": {
+      "title": "Not On Display",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "id",
+        "title",
+        "classification",
+        "locations"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"collection\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"collection\",\"key\":\"query\",\"value\":\"{\\\"bool\\\":{\\\"must_not\\\":{\\\"match\\\":{\\\"locations\\\":{\\\"query\\\":\\\"Barnes Foundation (Philadelphia), Collection Gallery\\\",\\\"type\\\":\\\"phrase\\\"}}}}}\",\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"must_not\":{\"match\":{\"locations\":{\"query\":\"Barnes Foundation (Philadelphia), Collection Gallery\",\"type\":\"phrase\"}}}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "10b512e0-0f1d-11e7-a542-3f3f3fe7e2cd",
+    "_type": "search",
+    "_source": {
+      "title": "On Display",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "id",
+        "title",
+        "classification",
+        "locations"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"collection\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"collection\",\"key\":\"locations\",\"value\":\"Barnes Foundation (Philadelphia), Collection Gallery\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"locations\":{\"query\":\"Barnes Foundation (Philadelphia), Collection Gallery\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "1758f1b0-0f1e-11e7-a542-3f3f3fe7e2cd",
+    "_type": "search",
+    "_source": {
+      "title": "Identified maker or artist",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "id",
+        "title",
+        "classification"
+      ],
+      "sort": [
+        "_score",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"collection\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"collection\",\"key\":\"query\",\"value\":\"{\\\"bool\\\":{\\\"must_not\\\":{\\\"match\\\":{\\\"people\\\":{\\\"query\\\":\\\"Unidentified\\\",\\\"type\\\":\\\"phrase\\\"}}}}}\",\"disabled\":false,\"alias\":null},\"query\":{\"bool\":{\"must_not\":{\"match\":{\"people\":{\"query\":\"Unidentified\",\"type\":\"phrase\"}}}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "60952120-0f17-11e7-bfb6-753e391e3b47",
+    "_type": "visualization",
+    "_source": {
+      "title": "Classification",
+      "visState": "{\"title\":\"Classification\",\"type\":\"pie\",\"params\":{\"addLegend\":true,\"addTooltip\":true,\"isDonut\":false,\"legendPosition\":\"right\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"classification.keyword\",\"size\":10,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"collection\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "1abb81d0-0f17-11e7-bfb6-753e391e3b47",
+    "_type": "visualization",
+    "_source": {
+      "title": "Cultures",
+      "visState": "{\"title\":\"Cultures\",\"type\":\"pie\",\"params\":{\"addLegend\":true,\"addTooltip\":true,\"isDonut\":false,\"legendPosition\":\"right\"},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"culture.keyword\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"collection\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "4a97fe40-0f1e-11e7-a864-ef06fe9bae16",
+    "_type": "visualization",
+    "_source": {
+      "title": "Makers and Artists",
+      "visState": "{\"title\":\"Makers and Artists\",\"type\":\"pie\",\"params\":{\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"isDonut\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"people.keyword\",\"size\":20,\"order\":\"desc\",\"orderBy\":\"1\"}}],\"listeners\":{}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "savedSearchId": "1758f1b0-0f1e-11e7-a542-3f3f3fe7e2cd",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "9f0a0900-0f1e-11e7-a864-ef06fe9bae16",
+    "_type": "visualization",
+    "_source": {
+      "title": "Media",
+      "visState": "{\n  \"title\": \"Mediums\",\n  \"type\": \"tagcloud\",\n  \"params\": {\n    \"scale\": \"linear\",\n    \"orientation\": \"single\",\n    \"minFontSize\": 18,\n    \"maxFontSize\": 72\n  },\n  \"aggs\": [\n    {\n      \"id\": \"1\",\n      \"enabled\": true,\n      \"type\": \"count\",\n      \"schema\": \"metric\",\n      \"params\": {}\n    },\n    {\n      \"id\": \"2\",\n      \"enabled\": true,\n      \"type\": \"terms\",\n      \"schema\": \"segment\",\n      \"params\": {\n        \"field\": \"medium.keyword\",\n        \"size\": 20,\n        \"order\": \"desc\",\n        \"orderBy\": \"1\"\n      }\n    }\n  ],\n  \"listeners\": {}\n}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\n  \"index\": \"collection\",\n  \"query\": {\n    \"query_string\": {\n      \"query\": \"*\",\n      \"analyze_wildcard\": true\n    }\n  },\n  \"filter\": []\n}"
+      }
+    }
+  }
+]
