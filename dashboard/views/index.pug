@@ -48,6 +48,8 @@ html
 					div.row
 						div.col-lg-6
 							text#es_status= `ES synchronized with ${desc.lastImportedCSV}`
+						div.col-lg-6
+							text#es_count= `Total objects in ES: ${desc.count}`
 					div.row
 						div.col-lg-6
 							div.input-group
@@ -94,25 +96,26 @@ html
 					$("#csvFilesPanelBody").empty();
 					$("#csvFilesPanelBody").append(data);
 				});
-
-				console.log("Fetching fresh CSV data");
 				if (lastCSVData.active) setTimeout(fetchCSVFileInfo, 5000);
 			}
 
 			function handleESServiceUpdate(name, status, data) {
-				console.log("ES service update");
+				if (data.hasImportedCSV === false) {
+					$("#es_status").text("Elasticsearch not yet synced with a CSV");
+				} else {
+					$("#es_status").text(`ES synchronized with ${data.lastImportedCSV}`);
+					$("#es_count").text(`Total objects in ES: ${data.count}`);
+				}
 				if (status === "completed") fetchCSVFileInfo();
 			}
 
 			function handleImagesServiceUpdate(name, status, data) {
-				console.log("Images service update");
 				$("#images-running").text(data.isRunning);
 				$("#images-progress").text(`${data.numImagesUploaded} of ${data.totalImagesToUpload} images processed.`);
 				$("#images-tiled").text(data.numTiledImages);
 			}
 
 			function handleTMSServiceUpdate(name, status, data) {
-				console.log("TMS to CSV service update");
 				$("#active").text(`${data.active}`);
 				$("#progress").text(`${data.processed} of ${data.total} objects processed`);
 				$("#images-total-object").text(data.total);

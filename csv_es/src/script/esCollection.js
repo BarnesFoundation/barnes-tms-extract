@@ -29,9 +29,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 	}
 
 	get status() {
-		return {
-			host: this._esHost
-		};
+		return this.description();
 	}
 
 	/**
@@ -95,7 +93,6 @@ module.exports = class ESCollection extends UpdateEmitter {
 				body: dataCopy
 			}, (error, response) => {
 				if (error) reject(error);
-				this.progress();
 				resolve(response);
 			});
 		});
@@ -109,7 +106,6 @@ module.exports = class ESCollection extends UpdateEmitter {
 				id: docId
 			}, function(error, response) {
 				if (error) reject(error);
-				this.progress();
 				resolve(response);
 			});
 		});
@@ -159,7 +155,6 @@ module.exports = class ESCollection extends UpdateEmitter {
 				}
 			}, function(error, response) {
 				if (error) reject(error);
-				this.progress();
 				resolve(response);
 			});
 		});
@@ -177,8 +172,10 @@ module.exports = class ESCollection extends UpdateEmitter {
 			return this._updateESWithDiffJSON(res);
 		}).then(() => {
 			logger.info(`Finished import, updating index metadata`);
-			this.completed();
-			return this._updateMetaForCSVFile(csvFilePath);
+			return this._updateMetaForCSVFile(csvFilePath).then(() => {
+				logger.info(`Index metadata updated`);
+				this.completed();
+			});
 		});
 	}
 
@@ -274,7 +271,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 		if (!this._didInit) {
 			throw new ESCollectionException("Must call init() before interacting with ESCollection object");
 		}
-		return new Promise((resolve, reject) => {
+		const metaGetter =  new Promise((resolve, reject) => {
 			this._client.get({
 				index: 'collection',
 				type: 'meta',
@@ -287,6 +284,23 @@ module.exports = class ESCollection extends UpdateEmitter {
 					lastImportedCSV: response._source.hasImportedCSV ? "csv_" + response._source.lastCSVImportTimestamp : null
 				});
 			});
+		});
+
+		const countGetter = new Promise((resolve, reject) => {
+			this._client.count({
+				index: 'collection',
+				type: 'object'
+			}, function(error, response) {
+				if (error) reject(error);
+				resolve({
+					count: response.count || 0
+				});
+			});
+		});
+
+		return Promise.all([metaGetter, countGetter]).then((res) => {
+			const [meta, count] = res;
+			return Object.assign({}, meta, count);
 		});
 	}
 
