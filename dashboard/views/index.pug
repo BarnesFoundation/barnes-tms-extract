@@ -66,21 +66,24 @@ html
 				div.panel-heading
 					h2.panel-title IIIF Image Processing
 				div.panel-body
-					p
-						span Listening for updates on port: 
-						span#image-port= 3000
-					button#run-images Run
-					p
-						span Processing images: 
-						span#images-running
-					p
-						span Progress: 
-						span#images-progress
-					p 
-						span Images Tiled: 
-						span#images-tiled= 0
-						span , Total Objects: 
-						span#images-total-objects= info.progress.total 
+					div.row
+						div.col-lg-6
+							p
+								span Listening for updates on port: 
+								span#image-port= 3000
+							button#run-images Run
+							p
+								span Processing images: 
+								span#images-running
+							p
+								span Progress: 
+								span#images-progress
+						div.col-lg-6
+							p 
+								span Images Tiled: 
+								span#images-tiled= imageInfo.numTiledImages
+								span , Total Objects in ES: 
+								span#images-total-objects= desc.count
 
 	script.
 		$(function() {
@@ -105,11 +108,13 @@ html
 				} else {
 					$("#es_status").text(`ES synchronized with ${data.lastImportedCSV}`);
 					$("#es_count").text(`Total objects in ES: ${data.count}`);
+					$("#images-total-objects").text(data.count);
 				}
 				if (status === "completed") fetchCSVFileInfo();
 			}
 
 			function handleImagesServiceUpdate(name, status, data) {
+				console.dir(data);
 				$("#images-running").text(data.isRunning);
 				$("#images-progress").text(`${data.numImagesUploaded} of ${data.totalImagesToUpload} images processed.`);
 				$("#images-tiled").text(data.numTiledImages);

@@ -26,6 +26,7 @@ class ImageUploader extends UpdateEmitter {
 				region: credentials.awsRegion
 			}
 		});
+		this._fetchTiledImages();
 	}
 
 	get status() {
@@ -133,6 +134,7 @@ class ImageUploader extends UpdateEmitter {
 				csvForEach(path.resolve(__dirname, '../../tiled.csv'), (data) => {
 					this._tiledImages.push({name: data.name, size: data.size, modified: data.modified});
 				}, () => {
+					this.progress();
 					resolve();
 				});
 			})
