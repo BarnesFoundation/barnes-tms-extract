@@ -85,8 +85,8 @@ class ImageUploader extends UpdateEmitter {
 						this._uploadRaw(imagesToUpload);
 						this._updateRawList(imagesToUpload).then(() => {
 							this._currentStep = "Finished.";
-							this.completed();
 							this._isRunning = false;
+							this.completed();
 						});
 					});
 				});

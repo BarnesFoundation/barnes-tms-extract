@@ -20,7 +20,7 @@ if (targetCSV === 'latest') {
 
 esCollection.init().then(() => {
 	esCollection.description().then((res) => {
-		console.log(res);
+		logger.debug(res);
 	});
 	return esCollection.syncESToCSV(path.join(csvRootDir, targetCSV, "objects.csv"));
 }).then(() => {

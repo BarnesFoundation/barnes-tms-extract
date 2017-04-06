@@ -4,9 +4,9 @@
   "description": "Transform an eMuseum TMS API into a CSV output for further processing",
   "main": "lib/index.js",
   "scripts": {
-    "debug": "node debug src/script/index.js --config searchConfig.json --creds credentials.json",
-    "script": "node src/script/index.js --config searchConfig.json --creds credentials.json",
-    "service": "node src/service/tmstocsv-pin-service.js --config searchConfig.json --creds credentials.json",
+    "debug": "node debug src/script/index.js --config config.json --creds credentials.json",
+    "script": "node src/script/index.js --config config.json --creds credentials.json",
+    "service": "node src/service/tmstocsv-pin-service.js --config config.json --creds credentials.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

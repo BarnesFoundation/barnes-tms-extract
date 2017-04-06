@@ -138,7 +138,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 			})
 			.on('end', () => {
 				this._updateMetaForCSVFile(csvFilePath).then(() => {
-					console.log('Finished export');
+					logger.info('Finished export');
 					this.completed();
 				});
 			});
