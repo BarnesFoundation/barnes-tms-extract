@@ -26,7 +26,7 @@ function decodeUTF8InterpretedAsWin(str) {
 module.exports = class TMSExporter extends UpdateEmitter {
 	constructor(credentials) {
 		super();
-		this._credentials = this._loadCredentials(credentials);
+		this._credentials = credentials;
 		this._processedObjectCount = 0;
 		this._totalObjectCount = 0;
 		this._active = false;
@@ -57,18 +57,6 @@ module.exports = class TMSExporter extends UpdateEmitter {
 		this.completed();
 		logger.info('CSV export completed', { tag: 'tag:complete' });
 		this._exportMeta.status = status;
-	}
-
-	_loadCredentials(credsPath) {
-		logger.info(`Loading credentials at ${credsPath}`);
-		const creds = fs.readFileSync(credsPath, 'utf8');
-
-		if (!creds) {
-			logger.error(`Could not load credentials at ${credsPath}`);
-			logger.info(`Make sure there is a json file at ${credsPath} containing your eMuseum API key, and/or your username and passwork`);
-		}
-
-		return JSON.parse(creds);
 	}
 
 	_processTMS(credentials, exportConfig, csvOutputDir) {

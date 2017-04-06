@@ -1,7 +1,6 @@
 const logger = require('../script/imageLogger.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
-const credentials = require('../../credentials.json');
 
 const { exec, execSync }  = require('child_process');
 const config = require('config');
@@ -13,6 +12,8 @@ const fs = require('fs');
 const https = require('https');
 const tmp = require('tmp');
 const eachSeries = require('async/eachSeries');
+
+const credentials = config.Credentials.aws;
 
 class ImageUploader extends UpdateEmitter {
 	constructor(csvDir) {
@@ -255,7 +256,7 @@ class ImageUploader extends UpdateEmitter {
 	}
 
 	_tempConfigPath() {
-		const tmpDir = tmp.dirSync();
+		const tmpDir = tmp.dirSync().name;
 		const iiifConfig = config.IIIF;
 		const outPath = path.join(tmpDir, 'config.json');
 		fs.writeFileSync(outPath, JSON.stringify(iiifConfig));

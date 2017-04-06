@@ -13,4 +13,4 @@
 // });
 
 const config = require('config');
-console.log(config.Images.IIIF.images);
+console.dir(config);

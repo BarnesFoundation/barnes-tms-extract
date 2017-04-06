@@ -13,7 +13,7 @@ const logger = require('../script/logger.js');
 function tmstocsv(options) {
 	const exportConfig = config.TMS.export;
 
-	const credentials = options.creds;
+	const credentials = config.Credentials.tms;
 
 	const logfile = options.log || config.TMS.log;
 
