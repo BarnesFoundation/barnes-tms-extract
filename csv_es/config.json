@@ -1,0 +1,4 @@
+{
+	"elasticsearchHost": "localhost:9200",
+	"log": "logs/all-logs.log"
+}
