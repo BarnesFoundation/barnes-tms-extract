@@ -1,5 +1,9 @@
 const sharedLogger = require('../../../util/logger.js');
 
+const config = require('config');
 const path = require('path');
 
-module.exports = sharedLogger(path.resolve(`${__dirname}/../../logs/all-logs.log`));
+const logPath = path.resolve(process.cwd(), config.TMS.log);
+
+module.exports = sharedLogger(logPath);
+

@@ -1,7 +1,8 @@
 const sharedLogger = require('../../../util/logger.js');
 
+const config = require('config');
 const path = require('path');
 
-const config = require(path.resolve(__dirname, '../../config.json'));
+const logPath = path.resolve(process.cwd(), config.Elasticsearch.log);
 
-module.exports = sharedLogger(path.resolve(__dirname + '/../../', config.log));
+module.exports = sharedLogger(logPath);

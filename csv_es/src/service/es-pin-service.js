@@ -1,11 +1,11 @@
 const argv = require('minimist')(process.argv.slice(2));
 const path = require('path');
 
-const config = require(path.relative(__dirname, path.resolve(process.cwd(), argv.config)));
+const config = require('config');
 
 require('seneca')()
 
-  .use('es', { host: config.elasticsearchHost })
+  .use('es', { host: config.Elasticsearch.host })
 
   // listen for role:math messages
   // IMPORTANT: must match client

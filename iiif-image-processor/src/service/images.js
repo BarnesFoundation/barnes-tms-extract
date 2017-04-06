@@ -1,18 +1,19 @@
-const execSync = require('child_process').execSync;
-const csv = require('fast-csv');
-
-// const serviceMeta = require('../../meta.json');
 const ImageUploader = require('../script/imageUploader.js');
 const WebsocketUpdater = require('../../../util/websocketUpdater.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
-const csvDir = '../../../dashboard/public/output';
 const logger = require('../script/imageLogger.js');
+
+const config = require('config');
+const csv = require('fast-csv');
+const execSync = require('child_process').execSync;
 const path = require('path');
-const PORT = 3000;
+
+const csvDir = config.CSV.path;
+const port = config.Server.port;
 
 function images(options) {
   const imageUploader = new ImageUploader(path.resolve(__dirname, csvDir));
-  const websocketUpdater = new WebsocketUpdater("images", PORT, imageUploader);
+  const websocketUpdater = new WebsocketUpdater("images", port, imageUploader);
   this.add('role:images,cmd:tile', (msg, respond) => {
     imageUploader.process();
 
@@ -30,7 +31,7 @@ function images(options) {
   });
 
   this.add('role:images,cmd:info', (msg, respond) => {
-    respond(null, Object.assign({}, imageUploader.status, { updatePort: PORT }));
+    respond(null, Object.assign({}, imageUploader.status, { updatePort: port }));
   });
 }
 

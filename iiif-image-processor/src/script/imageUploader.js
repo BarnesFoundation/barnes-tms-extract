@@ -4,12 +4,14 @@ const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
 const credentials = require('../../credentials.json');
 
 const { exec, execSync }  = require('child_process');
+const config = require('config');
 const path = require('path');
 const s3 = require('s3');
 const AWS = require('aws-sdk');
 const csv = require('fast-csv');
 const fs = require('fs');
 const https = require('https');
+const tmp = require('tmp');
 const eachSeries = require('async/eachSeries');
 
 class ImageUploader extends UpdateEmitter {
@@ -252,14 +254,24 @@ class ImageUploader extends UpdateEmitter {
 		return false;
 	}
 
+	_tempConfigPath() {
+		const tmpDir = tmp.dirSync();
+		const iiifConfig = config.IIIF;
+		const outPath = path.join(tmpDir, 'config.json');
+		fs.writeFileSync(outPath, JSON.stringify(iiifConfig));
+		return outPath;
+	}
+
 	_tileAndUpload(images) {
+		const configPath = this._tempConfigPath();
+		const goPath = path.relative(process.cwd(), path.resolve(__dirname, './go-iiif/bin/iiif-tile-seed'));
 		this._numImagesToProcess = images.length;
 		this.progress();
 		images.forEach((image, index) => {
 			this._currentStep = `Tiling image: ${image.name}`;
 			this.progress();
 			logger.info(`Tiling image: ${image.name}, ${index + 1} of ${this._numImagesToProcess}`);
-			const cmd = `./go-iiif/bin/iiif-tile-seed -config config.json -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.name}`;
+			const cmd = `${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.name}`;
 			execSync(cmd, (error, stdout, stderr) => {
 				if (error) {
 					logger.error(`exec error: ${error}`);

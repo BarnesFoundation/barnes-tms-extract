@@ -1,3 +1,4 @@
+const config = require('config');
 const io = require('socket.io');
 const path = require('path');
 const seneca = require('seneca');
@@ -10,11 +11,11 @@ const {
 const logger = require('../script/logger.js');
 
 function tmstocsv(options) {
-	const searchConfig = options.config;
+	const exportConfig = config.TMS.export;
 
 	const credentials = options.creds;
 
-	const logfile = options.log || './logs/all-logs.log';
+	const logfile = options.log || config.TMS.log;
 
 	const exportProcessPort = options.port || 3000;
 
@@ -37,7 +38,7 @@ function tmstocsv(options) {
 		if (tmsExporter.active) {
 			respond(null, { time: lastStartTime(logfile) });
 		} else {
-			tmsExporter.exportCSV(searchConfig).then((res) => {
+			tmsExporter.exportCSV(exportConfig).then((res) => {
 				if (res.status === 'COMPLETED') {
 					this.act('role:es,cmd:sync', { csv: res.csv }, (err, result) => {
 						logger.info('ES Sync completed');

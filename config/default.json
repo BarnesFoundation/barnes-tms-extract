@@ -1,0 +1,130 @@
+{
+	"CSV": {
+		"path": "dashboard/public/output"
+	},
+	"Elasticsearch": {
+		"host": "localhost:9200",
+		"log": "csv_es/logs/all-logs.log"
+	},
+	"Images": {
+		"IIIF": {
+			"level": {
+				"compliance": "2"
+			},
+			"graphics": {
+			 "source": { "name": "VIPS" }
+			},
+			"features": {
+				"enable": {
+					"size": [ "max" ],
+					"format": [ "jpg" ]
+				},
+				"disable": {
+					"size": [ "sizeByDistortedWh" ],
+					"rotation": [ "rotationArbitrary" ],
+					"quality": [ "bitonal" ],
+					"format": [ "png" ]
+				}
+			},
+			"images": {
+				"cache": { "name": "Memory", "ttl": 300, "limit": 100 }
+			},
+			"derivatives": {
+				"cache": { "name": "S3", "path": "barnes-image-repository", "region": "us-east-1", "credentials": "barnes", "prefix": "tiles" }
+			}
+		},
+		"log": "iiif-image-processor/logs/all-logs.log"
+	},
+	"Server": {
+		"port": 3000
+	},
+	"TMS": {
+		"export": {
+			"apiURL": "https://emuseum.barnesfoundation.org",
+			"outputDirectory": "dashboard/public/output",
+			"debug": {
+				"limit": 10
+			},
+			"fields": [
+				{
+					"name": "id",
+					"primaryKey": true,
+					"required": true
+				},
+				{
+					"name": "title",
+					"required": true
+				},
+				{
+					"name": "people",
+					"required": true
+				},
+				{
+					"name": "culture"
+				},
+				{
+					"name": "displayDate",
+					"required": true
+				},
+				{
+					"name": "period"
+				},
+				{
+					"name": "medium"
+				},
+				{
+					"name": "dimensions"
+				},
+				{
+					"name": "invno",
+					"required": true
+				},
+				{
+					"name": "locations",
+					"required": true
+				},
+				{
+					"name": "description"
+				},
+				{
+					"name": "shortDescription",
+					"required": true
+				},
+				{
+					"name": "longDescription",
+					"required": true
+				},
+				{
+					"name": "visualDescription",
+					"required": true
+				},
+				{
+					"name": "copyright",
+					"required": true,
+					"enumerated": true
+				},
+				{
+					"name": "exhHistory"
+				},
+				{
+					"name": "classification",
+					"required": true,
+					"enumerated": true
+				},
+				{
+					"name": "bibliography",
+					"required": true
+				},
+				{
+					"name": "provenance"
+				}
+			],
+			"warnings": {
+				"singletonFields": true,
+				"missingFields": true,
+				"unusedFields": true
+			}
+		},
+		"log": "tms_csv/logs/all-logs.log"
+	}
+}

@@ -4,11 +4,8 @@ const fs = require('fs');
 const _ = require('lodash');
 
 module.exports = class ExportConfig {
-	constructor(configPath) {
-		logger.info(`Loading CSV export config at ${configPath}`);
-		const configFile = fs.readFileSync(configPath, 'utf8');
-
-		const jsonConfig = JSON.parse(configFile);
+	constructor(config) {
+		const jsonConfig = config;
 
 		const primaryKeyObj = _.find(jsonConfig.fields, entry => entry.primaryKey === true);
 

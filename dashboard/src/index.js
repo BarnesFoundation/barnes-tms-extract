@@ -1,12 +1,14 @@
-const SenecaWeb = require('seneca-web');
-const Express = require('express');
-const Router = Express.Router;
-const context = new Router();
-const path = require('path');
-const shelljs = require('shelljs');
+const config = require('config');
 const moment = require('moment');
+const Express = require('express');
+const path = require('path');
 const Promise = require('bluebird');
+const Router = Express.Router;
+const shelljs = require('shelljs');
+const SenecaWeb = require('seneca-web');
 const _ = require('lodash');
+
+const context = new Router();
 
 const senecaWebConfig = {
 	context,
@@ -72,4 +74,4 @@ io.on('connection', (socket) => {
 		socket.broadcast.emit('status', name, status, data);
 	});
 });
-server.listen(3000);
+server.listen(config.Server.port);
