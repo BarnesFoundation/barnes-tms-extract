@@ -5,6 +5,8 @@ const context = new Router();
 const path = require('path');
 const shelljs = require('shelljs');
 const moment = require('moment');
+const Promise = require('bluebird');
+const _ = require('lodash');
 
 const senecaWebConfig = {
 	context,
@@ -22,41 +24,35 @@ app.set('views', path.resolve(`${__dirname}/../views`));
 const seneca = require('seneca')()
 			.use(SenecaWeb, senecaWebConfig)
 			.use('api')
-// this is where we list the microservices
 			.client({ type: 'tcp', pin: 'role:tmstocsv' })
 			.client({ type: 'tcp', pin: 'role:csv', port: 10202 })
 			.client({ type: 'tcp', pin: 'role:es', port: 10203 })
 			.client({ type: 'tcp', pin: 'role:images', port: 10204 });
 
+// Promisify Seneca.act
+const act = Promise.promisify(seneca.act, { context: seneca });
+
 app.get('/', (req, res) => {
-	let desc;
-	let info;
-	let list;
-	let imageInfo;
-	seneca.act('role:es,cmd:desc', (err, result) => {
-		desc = result;
-		seneca.act('role:tmstocsv,cmd:info', (err, result) => {
-			info = result;
-			seneca.act('role:images,cmd:info', (err, result) => {
-				imageInfo = result;
-				seneca.act('role:csv,cmd:list', (err, result) => {
-					list = result;
-					res.render('index', { desc, info, list, imageInfo, moment });
-				});
-			});
-		});
+	const infos = [
+		act('role:es,cmd:desc'),
+		act('role:tmstocsv,cmd:info'),
+		act('role:csv,cmd:list'),
+		act('role:images,cmd:info')
+	];
+	Promise.all(infos).then((resArray) => {
+		const args = _.zipObject(['desc', 'info', 'list', 'imageInfo'], resArray);
+		args.moment = moment;
+		res.render('index', args);
 	});
 });
 
 app.get('/csvFiles', (req, res) => {
-	let desc;
-	let list;
-	seneca.act('role:es,cmd:desc', (err, result) => {
-		desc = result;
-		seneca.act('role:csv,cmd:list', (err, result) => {
-			list = result;
-			res.render('csvFiles', { list, desc });
-		});
+	const infos = [
+		act('role:es,cmd:desc'),
+		act('role:csv,cmd:list')
+	];
+	Promise.all(infos).then((resArray) => {
+		res.render('csvFiles', _.zipObject(['desc', 'list'], resArray));
 	});
 });
 
