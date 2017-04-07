@@ -199,7 +199,7 @@ class ESCollection extends UpdateEmitter {
 			`Updating to new CSV. 
 			${diffJson.added.length} new documents, 
 			${diffJson.changed.length} changed documents, 
-			${diffJson.removed.length} removed documents.`
+			${diffJson.removed.length} removed documents.`,
 		);
 		_.forEach(diffJson.added, (added) => {
 			todos.push(this._createDocumentWithData(added));

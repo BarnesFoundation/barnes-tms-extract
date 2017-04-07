@@ -10,7 +10,6 @@ const UpdateEmitter = require('../../../util/updateEmitter.js');
 const logger = require('./logger.js');
 
 const config = require('config');
-const EventEmitter = require('events');
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
@@ -105,7 +104,7 @@ module.exports = class TMSExporter extends UpdateEmitter {
 				this._csv.write(description);
 				this._warningReporter.appendFieldsForObject(id, artObject, description);
 
-				this._processedObjectCount++;
+				this._processedObjectCount += 1;
 				this._exportMeta.processedObjects = this._processedObjectCount;
 				this.progress();
 				if (this._processedObjectCount % 100 === 0) {
@@ -149,7 +148,7 @@ module.exports = class TMSExporter extends UpdateEmitter {
 			logger.info(`Processing ${this._totalObjectCount} collection objects`);
 			return processTMSHelper();
 		}, (err) => {
-			logger.error(error);
+			logger.error(err);
 			this._finishExport(exportConfig, ExportStatus.ERROR);
 		});
 	}
@@ -172,6 +171,6 @@ module.exports = class TMSExporter extends UpdateEmitter {
 
 		logger.info(`Reading TMS API from root URL ${exportConfig.apiURL}`);
 
-		return this._processTMS(this._credentials, exportConfig, outputPath).then(res => this.status);
+		return this._processTMS(this._credentials, exportConfig, outputPath).then(() => this.status);
 	}
 };

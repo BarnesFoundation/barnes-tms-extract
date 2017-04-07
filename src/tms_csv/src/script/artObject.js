@@ -11,7 +11,7 @@ module.exports = class ArtObject {
 
 	descriptionWithFields(fields) {
 		const ret = {};
-		for (let i = 0; i < fields.length; i++) {
+		for (let i = 0; i < fields.length; i += 1) {
 			ret[fields[i]] = this._jsonObj[fields[i]] !== undefined ? this._jsonObj[fields[i]].value : undefined;
 		}
 		return ret;
