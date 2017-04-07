@@ -21,7 +21,7 @@ function tmstocsv(options) {
 
 	const tmsExporter = new TMSExporter(credentials);
 
-	const tmsWebsocketUpdater = new WebsocketUpdater("tmstocsv", exportProcessPort, tmsExporter);
+	const tmsWebsocketUpdater = new WebsocketUpdater('tmstocsv', exportProcessPort, tmsExporter);
 
 	this.add('role:tmstocsv,cmd:info', (msg, respond) => {
 		const data = {

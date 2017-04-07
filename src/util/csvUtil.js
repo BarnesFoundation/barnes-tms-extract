@@ -5,7 +5,7 @@ const tmp = require('tmp');
 const shell = require('shelljs');
 const csv = require('fast-csv');
 
-const output = shell.exec("which bash");
+const output = shell.exec('which bash');
 const bashPath = output.stdout.trim();
 
 function logShellOutput(logger, op) {
@@ -22,26 +22,26 @@ function logShellOutput(logger, op) {
  * @param {string} path - File path
  * @return {Promise} Resolves to the first line of the file
  */
-_readFirstLine = function(path) {
-	return new Promise(function (resolve, reject) {
-		const rs = fs.createReadStream(path, {encoding: 'utf8'});
+_readFirstLine = function (path) {
+	return new Promise((resolve, reject) => {
+		const rs = fs.createReadStream(path, { encoding: 'utf8' });
 		let acc = '';
 		let pos = 0;
 		let index;
 		rs
-			.on('data', function (chunk) {
+			.on('data', (chunk) => {
 				index = chunk.indexOf('\n');
 				acc += chunk;
 				index !== -1 ? rs.close() : pos += chunk.length;
 			})
-			.on('close', function () {
+			.on('close', () => {
 				resolve(acc.slice(0, pos + index));
 			})
-			.on('error', function (err) {
+			.on('error', (err) => {
 				reject(err);
-			})
+			});
 	});
-}
+};
 
 /**
  * Calls a callback function for each row of a CSV on the given CSV path.
@@ -50,12 +50,12 @@ _readFirstLine = function(path) {
  * @param {string} csvPath - Path to the csv file
  * @param {function} cb - Function to call on each row
  */
-module.exports.csvForEach = function(csvPath, cb, completedCb) {
+module.exports.csvForEach = function (csvPath, cb, completedCb) {
 	const stream = fs.createReadStream(csvPath);
-	csv.fromStream(stream, {headers : true})
-		.on("data", cb)
-		.on("end", completedCb);
-}
+	csv.fromStream(stream, { headers: true })
+		.on('data', cb)
+		.on('end', completedCb);
+};
 
 /**
  * Whether or not the csv export contained in the given directory ran to completion or not
@@ -63,7 +63,7 @@ module.exports.csvForEach = function(csvPath, cb, completedCb) {
  *  CSV export script
  * @return {bool} True if the CSV export script ran to completion, false otherwise
  */
-module.exports.csvCompleted = function(csvDirPath) {
+module.exports.csvCompleted = function (csvDirPath) {
 	const metapath = path.join(csvDirPath, 'meta.json');
 	try {
 		const status = JSON.parse(fs.readFileSync(metapath, 'utf8')).status;
@@ -71,7 +71,7 @@ module.exports.csvCompleted = function(csvDirPath) {
 	} catch (e) {
 		return false;
 	}
-}
+};
 
 /**
  * Whether or not the header keys for two CSV files are the same or different
@@ -80,7 +80,7 @@ module.exports.csvCompleted = function(csvDirPath) {
  * @param {string} csvFilePathB - Path to the second objects.csv file
  * @return {Promise} Resolves to true if the headers match, false otherwires
  */
-module.exports.doCSVKeysMatch = function(csvFilePathA, csvFilePathB, delim = ",") {
+module.exports.doCSVKeysMatch = function (csvFilePathA, csvFilePathB, delim = ',') {
 	const proms = [];
 	proms.push(_readFirstLine(csvFilePathA));
 	proms.push(_readFirstLine(csvFilePathB));
@@ -92,7 +92,7 @@ module.exports.doCSVKeysMatch = function(csvFilePathA, csvFilePathB, delim = ","
 	}, (err) => {
 		throw err;
 	});
-}
+};
 
 /**
  * Name of the most recent CSV directory, given the directory containing CSV directories
@@ -100,13 +100,13 @@ module.exports.doCSVKeysMatch = function(csvFilePathA, csvFilePathB, delim = ","
  *  as output by the CSV export script
  * @return {string} Name of the most recent CSV directory
  */
-module.exports.getLastCompletedCSV = function(csvRootDir) {
+module.exports.getLastCompletedCSV = function (csvRootDir) {
 	let dirs = fs.readdirSync(csvRootDir);
-	dirs = _.filter(dirs, (d) => d.startsWith("csv_")).sort();
-	dirs = _.filter(dirs, (d) => module.exports.csvCompleted(path.join(csvRootDir, d)));
+	dirs = _.filter(dirs, d => d.startsWith('csv_')).sort();
+	dirs = _.filter(dirs, d => module.exports.csvCompleted(path.join(csvRootDir, d)));
 	if (dirs.length > 0) return dirs.pop();
 	return null;
-}
+};
 
 /**
  * Diffs two csvs and returns a JSON object of all fields changed, added, or removed
@@ -116,15 +116,15 @@ module.exports.getLastCompletedCSV = function(csvRootDir) {
  * @param {logger} logger - instance of winston logger, specific to the microservice
  * @return {object} the diff in JSON form
  */
-module.exports.diffCSV = function(oldCSVPath, newCSVPath, logger) {
-	const pyDiff = path.resolve(__dirname, "../py_csv_diff/py_csv_diff.py");
-	const resolvedOldPath = path.relative(".", oldCSVPath);
-	const resolvedNewPath = path.relative(".", newCSVPath);
+module.exports.diffCSV = function (oldCSVPath, newCSVPath, logger) {
+	const pyDiff = path.resolve(__dirname, '../py_csv_diff/py_csv_diff.py');
+	const resolvedOldPath = path.relative('.', oldCSVPath);
+	const resolvedNewPath = path.relative('.', newCSVPath);
 	const tmpDir = tmp.dirSync();
-	const outputJsonFile = path.join(tmpDir.name, "diff.json");
+	const outputJsonFile = path.join(tmpDir.name, 'diff.json');
 	logger.info(`Running CSV diff python script on ${oldCSVPath} ${newCSVPath}`);
-	logShellOutput(logger, shell.exec("source activate tmsdiff", { shell: bashPath }));
+	logShellOutput(logger, shell.exec('source activate tmsdiff', { shell: bashPath }));
 	logShellOutput(logger, shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
-	logShellOutput(logger, shell.exec("source deactivate", { shell: bashPath }));
+	logShellOutput(logger, shell.exec('source deactivate', { shell: bashPath }));
 	return JSON.parse(fs.readFileSync(outputJsonFile));
-}
+};

@@ -22,7 +22,7 @@ esCollection.init().then(() => {
 	esCollection.description().then((res) => {
 		logger.debug(res);
 	});
-	return esCollection.syncESToCSV(path.join(csvRootDir, targetCSV, "objects.csv"));
+	return esCollection.syncESToCSV(path.join(csvRootDir, targetCSV, 'objects.csv'));
 }).then(() => {
-	logger.info("Updated to csv " + targetCSV);
+	logger.info(`Updated to csv ${targetCSV}`);
 });

@@ -2,7 +2,7 @@ const logger = require('../script/imageLogger.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
 
-const { exec, execSync }  = require('child_process');
+const { exec, execSync } = require('child_process');
 const config = require('config');
 const path = require('path');
 const s3 = require('s3');
@@ -25,17 +25,17 @@ class ImageUploader extends UpdateEmitter {
 		this._rawImages = null;
 		this._numImagesProcessed = 0;
 		this._numImagesToProcess = 0;
-		this._currentStep = "Not started.";
+		this._currentStep = 'Not started.';
 		logger.info('creating image logger');
-		const cred = new AWS. SharedIniFileCredentials({
-		  profile: "barnes"
+		const cred = new AWS.SharedIniFileCredentials({
+		  profile: 'barnes',
 		});
 		const awss3 = new AWS.S3({
 		  credentials: cred,
-		  region: credentials.awsRegion
+		  region: credentials.awsRegion,
 		});
 		this._s3Client = s3.createClient({
-			s3Client: awss3
+			s3Client: awss3,
 		});
 		this._fetchRawImages();
 		this._fetchTiledImages();
@@ -43,7 +43,7 @@ class ImageUploader extends UpdateEmitter {
 
 	get status() {
 		return {
-			type: "imageUploader",
+			type: 'imageUploader',
 			totalImagesToUpload: this._numImagesToProcess,
 			numImagesUploaded: this._numImagesProcessed,
 			isRunning: this._isRunning,
@@ -58,15 +58,15 @@ class ImageUploader extends UpdateEmitter {
 		this.started();
 		logger.info('Starting process to tile images.');
 		const imageDirPromise = this._fetchAvailableImages();
-		this._currentStep = "Fetching available images from TMS.";
+		this._currentStep = 'Fetching available images from TMS.';
 		this.progress();
 		imageDirPromise.then(() => {
 			logger.info('Pulled list of available images from TMS successfully.');
-			this._currentStep = "Fetching list of images uploaded to S3.";
+			this._currentStep = 'Fetching list of images uploaded to S3.';
 			this.progress();
 			this._fetchTiledImages().then(() => {
 				this._fetchRawImages().then(() => {
-					this._currentStep = "Determining which images need to be uploaded or tiled.";
+					this._currentStep = 'Determining which images need to be uploaded or tiled.';
 					this.progress();
 					const lastCSV = getLastCompletedCSV(this._csvDir);
 					const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
@@ -87,7 +87,7 @@ class ImageUploader extends UpdateEmitter {
 						this._updateTiledList(imagesToProcess);
 						this._uploadRaw(imagesToUpload);
 						this._updateRawList(imagesToUpload).then(() => {
-							this._currentStep = "Finished.";
+							this._currentStep = 'Finished.';
 							this._isRunning = false;
 							this.completed();
 						});
@@ -98,17 +98,17 @@ class ImageUploader extends UpdateEmitter {
 	}
 
 	_updateTiledList(images) {
-		const csvStream = csv.createWriteStream({headers: true});
-    const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../tiled.csv'));
+		const csvStream = csv.createWriteStream({ headers: true });
+		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../tiled.csv'));
 
-    return new Promise((resolve) => {
-	    writableStream.on("finish", () => {
+		return new Promise((resolve) => {
+	    writableStream.on('finish', () => {
 		  	this._s3Client.uploadFile({
 		  		localFile: path.resolve(__dirname, '../../tiled.csv'),
 		  		s3Params: {
-						Bucket: credentials.awsBucket,
-						Key: 'tiled.csv'
-					}
+					Bucket: credentials.awsBucket,
+					Key: 'tiled.csv',
+				},
 		  	})
 		  	.on('end', () => {
 		  		resolve();
@@ -124,17 +124,17 @@ class ImageUploader extends UpdateEmitter {
 	}
 
 	_updateRawList(images) {
-		const csvStream = csv.createWriteStream({headers: true});
-    const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../raw.csv'));
+		const csvStream = csv.createWriteStream({ headers: true });
+		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../raw.csv'));
 
-    return new Promise((resolve) => {
-	    writableStream.on("finish", () => {
+		return new Promise((resolve) => {
+	    writableStream.on('finish', () => {
 		  	this._s3Client.uploadFile({
 		  		localFile: path.resolve(__dirname, '../../raw.csv'),
 		  		s3Params: {
-						Bucket: credentials.awsBucket,
-						Key: 'raw.csv'
-					}
+					Bucket: credentials.awsBucket,
+					Key: 'raw.csv',
+				},
 		  	})
 		  	.on('end', () => {
 		  		resolve();
@@ -173,12 +173,12 @@ class ImageUploader extends UpdateEmitter {
 			this._s3Client.downloadFile({
 				s3Params: {
 					Bucket: credentials.awsBucket,
-					Key: 'tiled.csv'
+					Key: 'tiled.csv',
 				},
-				localFile: path.resolve(__dirname, '../../tiled.csv')
+				localFile: path.resolve(__dirname, '../../tiled.csv'),
 			})
 			.on('error', (err) => {
-				if (err.message === "http status code 404") {
+				if (err.message === 'http status code 404') {
 					logger.info('Can\'t fetch list of tiled images--hasn\'t been created yet.');
 					this._tiledImages = [];
 					resolve();
@@ -189,12 +189,12 @@ class ImageUploader extends UpdateEmitter {
 			.on('end', () => {
 				logger.info('tiles.csv has been downloaded--loading into memory.');
 				csvForEach(path.resolve(__dirname, '../../tiled.csv'), (data) => {
-					this._tiledImages.push({name: data.name, size: data.size, modified: data.modified});
+					this._tiledImages.push({ name: data.name, size: data.size, modified: data.modified });
 				}, () => {
 					this.progress();
 					resolve();
 				});
-			})
+			});
 		});
 	}
 
@@ -205,12 +205,12 @@ class ImageUploader extends UpdateEmitter {
 			this._s3Client.downloadFile({
 				s3Params: {
 					Bucket: credentials.awsBucket,
-					Key: 'raw.csv'
+					Key: 'raw.csv',
 				},
-				localFile: path.resolve(__dirname, '../../raw.csv')
+				localFile: path.resolve(__dirname, '../../raw.csv'),
 			})
 			.on('error', (err) => {
-				if (err.message === "http status code 404") {
+				if (err.message === 'http status code 404') {
 					logger.info('Can\'t fetch list of raw images--hasn\'t been created yet.');
 					this._rawImages = [];
 					resolve();
@@ -221,19 +221,19 @@ class ImageUploader extends UpdateEmitter {
 			.on('end', () => {
 				logger.info('raw.csv has been downloaded--loading into memory.');
 				csvForEach(path.resolve(__dirname, '../../raw.csv'), (data) => {
-					this._rawImages.push({name: data.name, size: data.size, modified: data.modified});
+					this._rawImages.push({ name: data.name, size: data.size, modified: data.modified });
 				}, () => {
 					this.progress();
 					resolve();
 				});
-			})
+			});
 		});
 	}
 
 	_imageNeedsUpload(imgName) {
 		logger.info(`Checking if image ${imgName} needs upload.`);
-		const s3Found = this._tiledImages.find((element) => element.name.toLowerCase() === imgName.toLowerCase());
-		const tmsFound = this._availableImages.find((element) => element.name.toLowerCase() === imgName.toLowerCase());
+		const s3Found = this._tiledImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
+		const tmsFound = this._availableImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
 
 		// if the picture is on TMS
 		// 		if the picture is on S3 but has changed
@@ -288,8 +288,8 @@ class ImageUploader extends UpdateEmitter {
 
 	_rawImageNeedsUpload(imgName) {
 		logger.info(`Checking if raw image ${imgName} needs upload.`);
-		const s3Found = this._rawImages.find((element) => element.name.toLowerCase() === imgName.toLowerCase());
-		const tmsFound = this._availableImages.find((element) => element.name.toLowerCase() === imgName.toLowerCase());
+		const s3Found = this._rawImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
+		const tmsFound = this._availableImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
 
 		// if the picture is on TMS
 		// 		if the picture is on S3 but has changed
@@ -322,22 +322,21 @@ class ImageUploader extends UpdateEmitter {
 			https.get(`${credentials.barnesImagesUrl}${image.name}`, (response) => {
 			  response.pipe(file);
 			  file.on('finish', () => {
-
-					logger.info(`Uploading raw image ${image.name}.`);
-					this._s3Client.uploadFile({
-						s3Params: {
-							Bucket: credentials.awsBucket,
-							Key: `raw/${image.name}`
-						},
-						localFile: path.resolve(__dirname, `./${image.name}`)
-					})
+				logger.info(`Uploading raw image ${image.name}.`);
+				this._s3Client.uploadFile({
+					s3Params: {
+						Bucket: credentials.awsBucket,
+						Key: `raw/${image.name}`,
+					},
+					localFile: path.resolve(__dirname, `./${image.name}`),
+				})
 					.on('err', (err) => {
 						cb(err);
 					})
 					.on('end', () => {
 						index += 1;
 						fs.unlink(path.resolve(__dirname, `./${image.name}`), cb);
-					})
+					});
 			  });
 			});
 		}, (err) => {

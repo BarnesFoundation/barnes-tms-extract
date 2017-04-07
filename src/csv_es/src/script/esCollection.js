@@ -1,7 +1,7 @@
 const logger = require('./esLogger.js');
 const {
 	doCSVKeysMatch,
-	diffCSV
+	diffCSV,
 } = require('../../../util/csvUtil.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 
@@ -15,7 +15,7 @@ const _ = require('lodash');
 
 function ESCollectionException(message) {
 	this.message = message;
-	this.name = "ESCollectionException";
+	this.name = 'ESCollectionException';
 }
 
 module.exports = class ESCollection extends UpdateEmitter {
@@ -24,7 +24,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 		this._didInit = false;
 		this._esHost = esHost;
 		this._client = new elasticsearch.Client({
-			host: this._esHost
+			host: this._esHost,
 		});
 	}
 
@@ -42,7 +42,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 			this._client.exists({
 				index: 'collection',
 				type: 'meta',
-				id: 1
+				id: 1,
 			}, (error, exists) => {
 				if (error) reject(error);
 				resolve(exists);
@@ -63,8 +63,8 @@ module.exports = class ESCollection extends UpdateEmitter {
 				id: 1,
 				body: {
 					hasImportedCSV: false,
-					lastCSVImportTimestamp: 0
-				}
+					lastCSVImportTimestamp: 0,
+				},
 			}, (error, response) => {
 				if (error) reject(error);
 				resolve(error);
@@ -82,7 +82,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 		let dataCopy = Object.assign({}, data);
 		dataCopy.id = parseInt(dataCopy.id);
 		dataCopy = _.mapValues(dataCopy, (v, k) => {
-			if (v === "") return null;
+			if (v === '') return null;
 			return v;
 		});
 		return new Promise((resolve, reject) => {
@@ -90,7 +90,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 				index: 'collection',
 				type: 'object',
 				id: dataCopy.id,
-				body: dataCopy
+				body: dataCopy,
 			}, (error, response) => {
 				if (error) reject(error);
 				resolve(response);
@@ -103,8 +103,8 @@ module.exports = class ESCollection extends UpdateEmitter {
 			this._client.delete({
 				index: 'collection',
 				type: 'object',
-				id: docId
-			}, function(error, response) {
+				id: docId,
+			}, (error, response) => {
 				if (error) reject(error);
 				resolve(response);
 			});
@@ -116,11 +116,11 @@ module.exports = class ESCollection extends UpdateEmitter {
 			this._client.get({
 				index: 'collection',
 				type: 'meta',
-				id: 1
-			}, function(error, response) {
+				id: 1,
+			}, (error, response) => {
 				if (error) reject(error);
 				if (response._source.hasImportedCSV === false) resolve(null);
-				resolve("csv_" + response._source.lastCSVImportTimestamp);
+				resolve(`csv_${response._source.lastCSVImportTimestamp}`);
 			});
 		});
 	}
@@ -151,9 +151,9 @@ module.exports = class ESCollection extends UpdateEmitter {
 				type: 'object',
 				id: docId,
 				body: {
-					doc: data
-				}
-			}, function(error, response) {
+					doc: data,
+				},
+			}, (error, response) => {
 				if (error) reject(error);
 				resolve(response);
 			});
@@ -162,18 +162,18 @@ module.exports = class ESCollection extends UpdateEmitter {
 
 	_updateESWithCSV(csvFilePath) {
 		this.started();
-		const csvDir = path.resolve(path.dirname(csvFilePath), "..");
+		const csvDir = path.resolve(path.dirname(csvFilePath), '..');
 		const tmpDir = tmp.dirSync();
-		const outputJsonFile = path.join(tmpDir.name, "diff.json");
+		const outputJsonFile = path.join(tmpDir.name, 'diff.json');
 		return this._getLastCSVName().then((oldCsvName) => {
 			logger.info(`Previously imported csv ${oldCsvName}`);
-			const oldCsvPath = path.join(csvDir, oldCsvName, "objects.csv");
+			const oldCsvPath = path.join(csvDir, oldCsvName, 'objects.csv');
 			const res = diffCSV(oldCsvPath, csvFilePath, logger);
 			return this._updateESWithDiffJSON(res);
 		}).then(() => {
-			logger.info(`Finished import, updating index metadata`);
+			logger.info('Finished import, updating index metadata');
 			return this._updateMetaForCSVFile(csvFilePath).then(() => {
-				logger.info(`Index metadata updated`);
+				logger.info('Index metadata updated');
 				this.completed();
 			});
 		});
@@ -206,7 +206,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 
 	_updateMetaForCSVFile(csvFilePath) {
 		const bn = path.dirname(csvFilePath).split(path.sep).pop();
-		const timestamp = parseInt(bn.split("_")[1]);
+		const timestamp = parseInt(bn.split('_')[1]);
 		return new Promise((resolve, reject) => {
 			this._client.update({
 				index: 'collection',
@@ -215,9 +215,9 @@ module.exports = class ESCollection extends UpdateEmitter {
 				body: {
 					doc: {
 						hasImportedCSV: true,
-						lastCSVImportTimestamp: timestamp
-					}
-				}
+						lastCSVImportTimestamp: timestamp,
+					},
+				},
 			}, (error, response) => {
 				if (error) reject(error);
 				resolve(response);
@@ -231,7 +231,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 	 */
 	clearCollectionObjects() {
 		if (!this._didInit) {
-			throw new ESCollectionException("Must call init() before interacting with ESCollection object");
+			throw new ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
 		return new Promise((resolve, reject) => {
 			this._client.update({
@@ -241,9 +241,9 @@ module.exports = class ESCollection extends UpdateEmitter {
 				body: {
 					doc: {
 						hasImportedCSV: false,
-						lastCSVImportTimestamp: 0
-					}
-				}
+						lastCSVImportTimestamp: 0,
+					},
+				},
 			}, (error, response) => {
 				if (error) reject(error);
 				this._client.deleteByQuery({
@@ -252,9 +252,9 @@ module.exports = class ESCollection extends UpdateEmitter {
 					type: 'object',
 					body: {
 						query: {
-							match_all: {}
-						}
-					}
+							match_all: {},
+						},
+					},
 				}, (error, response) => {
 					if (error) reject(error);
 					resolve(response);
@@ -269,19 +269,19 @@ module.exports = class ESCollection extends UpdateEmitter {
 	 */
 	description() {
 		if (!this._didInit) {
-			throw new ESCollectionException("Must call init() before interacting with ESCollection object");
+			throw new ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
-		const metaGetter =  new Promise((resolve, reject) => {
+		const metaGetter = new Promise((resolve, reject) => {
 			this._client.get({
 				index: 'collection',
 				type: 'meta',
-				id: 1
-			}, function(error, response) {
+				id: 1,
+			}, (error, response) => {
 				if (error) reject(error);
 				resolve({
 					hasImportedCSV: response._source.hasImportedCSV,
 					lastCSVImportTimestamp: response._source.lastCSVImportTimestamp,
-					lastImportedCSV: response._source.hasImportedCSV ? "csv_" + response._source.lastCSVImportTimestamp : null
+					lastImportedCSV: response._source.hasImportedCSV ? `csv_${response._source.lastCSVImportTimestamp}` : null,
 				});
 			});
 		});
@@ -289,11 +289,11 @@ module.exports = class ESCollection extends UpdateEmitter {
 		const countGetter = new Promise((resolve, reject) => {
 			this._client.count({
 				index: 'collection',
-				type: 'object'
-			}, function(error, response) {
+				type: 'object',
+			}, (error, response) => {
 				if (error) reject(error);
 				resolve({
-					count: response.count || 0
+					count: response.count || 0,
 				});
 			});
 		});
@@ -322,14 +322,14 @@ module.exports = class ESCollection extends UpdateEmitter {
 
 	syncESToCSV(csvFilePath) {
 		if (!this._didInit) {
-			throw new ESCollectionException("Must call init() before interacting with ESCollection object");
+			throw new ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
 		// TODO: Throw an error if you can't find this CSV
 		this._getLastCSVName().then((res) => {
 			const canDiff = (res !== null);
 			if (canDiff) {
-				const csvDir = path.resolve(path.dirname(csvFilePath), "..");
-				const lastCSVFilePath = path.join(csvDir, res, "objects.csv");
+				const csvDir = path.resolve(path.dirname(csvFilePath), '..');
+				const lastCSVFilePath = path.join(csvDir, res, 'objects.csv');
 				if (!fs.existsSync(lastCSVFilePath)) {
 					logger.info("Can't find previously imported CSV --- initializing new ES index");
 					return false;
@@ -337,24 +337,22 @@ module.exports = class ESCollection extends UpdateEmitter {
 
 				return doCSVKeysMatch(lastCSVFilePath, csvFilePath).then((res) => {
 					if (res) {
-						logger.info("CSV keys match");
+						logger.info('CSV keys match');
 					} else {
-						logger.info("CSV keys do not match");
+						logger.info('CSV keys do not match');
 					}
 					return res;
 				});
-			} else {
-				logger.info("No previous CSV file has been imported --- initializing new ES index");
-				return false;
 			}
+			logger.info('No previous CSV file has been imported --- initializing new ES index');
+			return false;
 		}).then((tryToDiff) => {
 			if (tryToDiff) {
-				logger.info("Updating from previously imported CSV");
+				logger.info('Updating from previously imported CSV');
 				return this._updateESWithCSV(csvFilePath);
-			} else {
-				logger.info(`Initializing with CSV ${csvFilePath}`);
-				return this.clearCollectionObjects().then((res) => this._syncESWithCSV(csvFilePath));
 			}
+			logger.info(`Initializing with CSV ${csvFilePath}`);
+			return this.clearCollectionObjects().then(res => this._syncESWithCSV(csvFilePath));
 		});
 	}
-}
+};

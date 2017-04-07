@@ -1,5 +1,4 @@
 function api(options) {
-
 	this.add('role:api,path:csv', function (msg, respond) {
 		const valid_commands = {
 			list: 'list',
@@ -32,9 +31,9 @@ function api(options) {
 		this.act('role:tmstocsv', { cmd: valid_commands[command] }, respond);
 	});
 
-	this.add('role:api,path:images', function(msg, respond) {
+	this.add('role:api,path:images', function (msg, respond) {
 		const valid_commands = {
-			tile: 'tile'
+			tile: 'tile',
 		};
 
 		const command = msg.args.params.cmd;
