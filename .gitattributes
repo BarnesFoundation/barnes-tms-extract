@@ -1,2 +1,3 @@
 config/credentials.json filter=git-crypt diff=git-crypt
+config/iiif.json filter=git-crypt diff=git-crypt
 config/images.json filter=git-crypt diff=git-crypt
