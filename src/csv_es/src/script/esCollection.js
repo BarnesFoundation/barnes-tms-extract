@@ -13,12 +13,24 @@ const shell = require('shelljs');
 const tmp = require('tmp');
 const _ = require('lodash');
 
+/**
+ * Exceptions thrown by the ESCollection class
+ * @name ESCollectionException
+ */
 function ESCollectionException(message) {
 	this.message = message;
 	this.name = "ESCollectionException";
 }
 
-module.exports = class ESCollection extends UpdateEmitter {
+/**
+ * Manages the process of importing a CSV file into Elasticsearch. The `collection` index has two types,
+ * `meta` and `object`. The `meta` type stores information about the import process itself, including the
+ * timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
+ * currently synchronized with a CSV file (hasImportedCSV). The `object` type stores the collection objects
+ * themselves, and will have different fields depending on the headers of the imported CSV file
+ * @class
+ */
+class ESCollection extends UpdateEmitter {
 	constructor(esHost) {
 		super();
 		this._didInit = false;
@@ -28,6 +40,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 		});
 	}
 
+	// @ignore
 	get status() {
 		return this.description();
 	}
@@ -329,6 +342,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 	 * headers, then the Elasticsearch index will be cleared before updating.
 	 * @param {string} csvFilePath - Path to the CSV file to synchronize with ES
 	 * @return {Promise} Resolved when the synchronization is complete
+	 * @throws {ESCollectionException}
 	 */
 	syncESToCSV(csvFilePath) {
 		if (!this._didInit) {
@@ -368,3 +382,5 @@ module.exports = class ESCollection extends UpdateEmitter {
 		});
 	}
 }
+
+module.exports = ESCollection;

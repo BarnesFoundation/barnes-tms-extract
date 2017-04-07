@@ -8,7 +8,7 @@ const source = argv.d || path.resolve(__dirname, '../dashboard/public/output');
 // Cleanup old CSVs
 exec(['node', path.resolve(__dirname, './oldCSVClean.js'), '-d', source].join(" "));
 
-Run the CSV processing script
+// Run the CSV processing script
 const seneca = require('seneca')()
 	.client({ type: 'tcp', pin: 'role:tmstocsv' })
 	.act('role:tmstocsv,cmd:run', function(res) {

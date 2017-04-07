@@ -42,6 +42,7 @@
 	"scripts": {
 		"csv-pin": "node src/csv_viewer/src/csv-pin-service.js",
 		"dashboard": "node src/dashboard/src/index.js",
+		"docs": "jsdoc -c docsConf.json",
 		"es-pin": "node src/csv_es/src/service/es-pin-service.js",
 		"images-pin": "node src/iiif-image-processor/src/service/images-pin-service.js",
 		"lint": "eslint src",
