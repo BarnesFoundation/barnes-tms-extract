@@ -1,3 +1,5 @@
+/** @namespace Elasticsearch */
+
 const logger = require('./esLogger.js');
 const {
 	doCSVKeysMatch,
@@ -14,21 +16,12 @@ const tmp = require('tmp');
 const _ = require('lodash');
 
 /**
- * Exceptions thrown by the ESCollection class
- * @name ESCollectionException
- */
-function ESCollectionException(message) {
-	this.message = message;
-	this.name = 'ESCollectionException';
-}
-
-/**
  * Manages the process of importing a CSV file into Elasticsearch. The `collection` index has two types,
  * `meta` and `object`. The `meta` type stores information about the import process itself, including the
  * timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
  * currently synchronized with a CSV file (hasImportedCSV). The `object` type stores the collection objects
  * themselves, and will have different fields depending on the headers of the imported CSV file
- * @class
+ * @memberof Elasticsearch
  */
 class ESCollection extends UpdateEmitter {
 	constructor(esHost) {
@@ -245,7 +238,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	clearCollectionObjects() {
 		if (!this._didInit) {
-			throw new ESCollectionException('Must call init() before interacting with ESCollection object');
+			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
 		return new Promise((resolve, reject) => {
 			this._client.update({
@@ -283,7 +276,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	description() {
 		if (!this._didInit) {
-			throw new ESCollectionException('Must call init() before interacting with ESCollection object');
+			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
 		const metaGetter = new Promise((resolve, reject) => {
 			this._client.get({
@@ -346,7 +339,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	syncESToCSV(csvFilePath) {
 		if (!this._didInit) {
-			throw new ESCollectionException('Must call init() before interacting with ESCollection object');
+			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
 		// TODO: Throw an error if you can't find this CSV
 		return this._getLastCSVName().then((res) => {
@@ -380,5 +373,15 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 };
+
+/**
+ * Exceptions thrown by the {@link ESCollection} class
+ * @constructor ESCollectionException
+ * @static
+ */
+ESCollection.ESCollectionException = function(message) {
+	this.message = message;
+	this.name = 'ESCollectionException';
+}
 
 module.exports = ESCollection;

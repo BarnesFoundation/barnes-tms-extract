@@ -7,9 +7,21 @@ const path = require('path');
 
 const port = config.Server.port;
 
-function es(options) {
-	const host = options.host || 'localhost:9200';
+/**
+ * Seneca plugin for coordinating with the Elasticsearch importer
+ * @constructor
+ * @see {@link ESCollection}
+ * @memberof Elasticsearch
+ */
+function ESPlugin(options) {
+	const host = options.host;
 
+	/**
+	 * Returns a description of the Elasticsearch collection index
+	 * @name desc
+	 * @memberof ESPlugin
+	 * @see {@link ESCollection.description}
+	 */
 	this.add('role:es,cmd:desc', (msg, respond) => {
 		const esCollection = new ESCollection(host);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
@@ -20,6 +32,14 @@ function es(options) {
 		});
 	});
 
+	/**
+	 * Synchronizes the Elasticsearch collection index with a given CSV file
+	 * msg.csv must be a string that is the path to a CSV file
+	 * Returns a description of the Elasticsearch collection index on completion
+	 * @name sync
+	 * @member {function}
+	 * @see {@link ESCollection.syncESToCSV}
+	 */
 	this.add('role:es,cmd:sync', (msg, respond) => {
 		const csvPath = msg.csv;
 		const esCollection = new ESCollection(host);
