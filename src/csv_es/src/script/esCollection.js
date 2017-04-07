@@ -380,3 +380,5 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 };
+
+module.exports = ESCollection;
