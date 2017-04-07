@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 		act('role:es,cmd:desc'),
 		act('role:tmstocsv,cmd:info'),
 		act('role:csv,cmd:list'),
-		act('role:images,cmd:info')
+		act('role:images,cmd:info'),
 	];
 	Promise.all(infos).then((resArray) => {
 		const args = _.zipObject(['desc', 'info', 'list', 'imageInfo'], resArray);
@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
 app.get('/csvFiles', (req, res) => {
 	const infos = [
 		act('role:es,cmd:desc'),
-		act('role:csv,cmd:list')
+		act('role:csv,cmd:list'),
 	];
 	Promise.all(infos).then((resArray) => {
 		res.render('csvFiles', _.zipObject(['desc', 'list'], resArray));

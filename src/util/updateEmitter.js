@@ -1,21 +1,21 @@
 const EventEmitter = require('events');
 
 class UpdateEmitter extends EventEmitter {
-  get status() {
-    return {};
-  }
+	get status() {
+		return {};
+	}
 
-  started() {
-    this.emit('started', this.status);
-  }
+	started() {
+		this.emit('started', this.status);
+	}
 
-  progress() {
-    this.emit('progress', this.status);
-  }
+	progress() {
+		this.emit('progress', this.status);
+	}
 
-  completed() {
-    this.emit('completed', this.status);
-  }
+	completed() {
+		this.emit('completed', this.status);
+	}
 }
 
 module.exports = UpdateEmitter;

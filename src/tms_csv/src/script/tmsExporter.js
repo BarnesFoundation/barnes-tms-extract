@@ -46,7 +46,7 @@ module.exports = class TMSExporter extends UpdateEmitter {
 			csv: this._csvFilePath,
 			processed: this._processedObjectCount,
 			total: this._totalObjectCount,
-			status: (this._exportMeta ? this._exportMeta.status : null)
+			status: (this._exportMeta ? this._exportMeta.status : null),
 		};
 	}
 
@@ -142,17 +142,16 @@ module.exports = class TMSExporter extends UpdateEmitter {
 		if (limitOutput) {
 			logger.info(`Processing ${this._totalObjectCount} collection objects`);
 			return processTMSHelper();
-		} else {
-			return tms.getObjectCount().then((res) => {
-				this._totalObjectCount = res;
-				this._exportMeta.totalObjects = this._totalObjectCount;
-				logger.info(`Processing ${this._totalObjectCount} collection objects`);
-				return processTMSHelper();
-			}, (err) => {
-				logger.error(error);
-				this._finishExport(exportConfig, ExportStatus.ERROR);
-			});
 		}
+		return tms.getObjectCount().then((res) => {
+			this._totalObjectCount = res;
+			this._exportMeta.totalObjects = this._totalObjectCount;
+			logger.info(`Processing ${this._totalObjectCount} collection objects`);
+			return processTMSHelper();
+		}, (err) => {
+			logger.error(error);
+			this._finishExport(exportConfig, ExportStatus.ERROR);
+		});
 	}
 
 	cancelExport() {

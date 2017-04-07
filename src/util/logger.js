@@ -4,14 +4,14 @@ const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
-const logger = function(filename) {
+const logger = function (filename) {
 	mkdirp.sync(path.dirname(filename));
 	fs.closeSync(fs.openSync(filename, 'w+'));
 	const retlog = new winston.Logger({
 		transports: [
 			new winston.transports.File({
 				level: 'info',
-				filename: filename,
+				filename,
 				handleExceptions: true,
 				json: true,
 				maxsize: 5242880, // 5MB
@@ -34,6 +34,6 @@ const logger = function(filename) {
 		},
 	};
 	return retlog;
-}
+};
 
 module.exports = logger;

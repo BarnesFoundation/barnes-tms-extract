@@ -8,10 +8,10 @@ function csv(options) {
 	this.add('role:csv,cmd:list', (msg, respond) => {
 		fs.readdir(csvDir, (err, files) => {
 			const data = { files: [] };
-			files.forEach(file => {
-				if (path.basename(file).startsWith("csv_")) {
+			files.forEach((file) => {
+				if (path.basename(file).startsWith('csv_')) {
 					try {
-						const metaString = fs.readFileSync(csvDir + "/" + file + "/meta.json")
+						const metaString = fs.readFileSync(`${csvDir}/${file}/meta.json`);
 						const metadata = JSON.parse(metaString);
 						metadata.name = file;
 						data.files.push(metadata);
