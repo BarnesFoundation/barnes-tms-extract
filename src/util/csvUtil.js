@@ -22,9 +22,9 @@ function logShellOutput(logger, op) {
  * @param {string} path - File path
  * @return {Promise} Resolves to the first line of the file
  */
-_readFirstLine = function (path) {
+const _readFirstLine = function (filePath) {
 	return new Promise((resolve, reject) => {
-		const rs = fs.createReadStream(path, { encoding: 'utf8' });
+		const rs = fs.createReadStream(filePath, { encoding: 'utf8' });
 		let acc = '';
 		let pos = 0;
 		let index;
@@ -32,7 +32,11 @@ _readFirstLine = function (path) {
 			.on('data', (chunk) => {
 				index = chunk.indexOf('\n');
 				acc += chunk;
-				index !== -1 ? rs.close() : pos += chunk.length;
+				if (index !== -1) {
+					rs.close();
+				} else {
+					pos += chunk.length;
+				}
 			})
 			.on('close', () => {
 				resolve(acc.slice(0, pos + index));

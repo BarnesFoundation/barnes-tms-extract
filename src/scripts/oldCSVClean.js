@@ -15,7 +15,7 @@ const dirsToDelete = [];
 
 dirs.forEach((d) => {
 	if (d.startsWith('csv_')) {
-		const ts = parseInt(d.split('_')[1]);
+		const ts = parseInt(d.split('_')[1], 10);
 
 		const csvTime = moment(ts);
 

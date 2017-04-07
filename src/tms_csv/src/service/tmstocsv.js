@@ -1,7 +1,4 @@
 const config = require('config');
-const io = require('socket.io');
-const path = require('path');
-const seneca = require('seneca');
 const TMSExporter = require('../script/tmsExporter.js');
 const WebsocketUpdater = require('../../../util/websocketUpdater.js');
 const {
@@ -44,7 +41,7 @@ function tmstocsv(options) {
 						logger.info('ES Sync completed');
 						logger.info(result);
 					});
-					this.act('role:images,cmd:tile', (err, result) => {
+					this.act('role:images,cmd:tile', () => {
 						logger.info('Images tile and sync begun.');
 					});
 				}

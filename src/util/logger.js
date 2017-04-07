@@ -1,8 +1,9 @@
 const winston = require('winston');
-winston.emitErrs = true;
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
+
+winston.emitErrs = true;
 
 const logger = function (filename) {
 	mkdirp.sync(path.dirname(filename));
@@ -29,7 +30,7 @@ const logger = function (filename) {
 	});
 
 	retlog.stream = {
-		write(message, encoding) {
+		write(message) {
 			logger.info(message);
 		},
 	};

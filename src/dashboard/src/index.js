@@ -3,21 +3,21 @@ const moment = require('moment');
 const Express = require('express');
 const path = require('path');
 const Promise = require('bluebird');
-const Router = Express.Router;
-const shelljs = require('shelljs');
 const SenecaWeb = require('seneca-web');
 const _ = require('lodash');
+const bodyParser = require('body-parser');
 
+const Router = Express.Router;
 const context = new Router();
 
 const senecaWebConfig = {
 	context,
-	adapter: require('seneca-web-adapter-express'),
+	adapter: require('seneca-web-adapter-express'), // eslint-disable-line
 	options: { parseBody: false },
 };
 
 const app = Express();
-app.use(require('body-parser').json());
+app.use(bodyParser.json());
 app.use(context);
 app.use(Express.static(path.resolve(`${__dirname}/../public`)));
 app.set('view engine', 'pug');

@@ -1,6 +1,3 @@
-const logger = require('./logger.js');
-
-const fs = require('fs');
 const _ = require('lodash');
 
 module.exports = class ExportConfig {
@@ -10,10 +7,11 @@ module.exports = class ExportConfig {
 		const primaryKeyObj = _.find(jsonConfig.fields, entry => entry.primaryKey === true);
 
 		if (primaryKeyObj === undefined) {
-			throw {
+			const errObj = {
 				name: 'InvalidConfig',
 				message: 'CSV export config does not specify a primary key',
 			};
+			throw errObj;
 		} else {
 			this._primaryKey = primaryKeyObj.name;
 		}
@@ -21,10 +19,11 @@ module.exports = class ExportConfig {
 		const lastKeyObj = _.findLast(jsonConfig.fields, entry => entry.primaryKey === true);
 
 		if (lastKeyObj !== primaryKeyObj) {
-			throw {
+			const errObj = {
 				name: 'InvalidConfig',
-				message: `CSV export config designates more than one primary key: (${this._primaryKey}) and (${lastKey.name})`,
+				message: `CSV export config designates more than one primary key: (${this._primaryKey}) and (${lastKeyObj.name})`,
 			};
+			throw errObj;
 		}
 
 		this._config = jsonConfig;
