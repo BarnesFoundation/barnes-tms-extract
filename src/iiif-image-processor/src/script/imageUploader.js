@@ -106,9 +106,9 @@ class ImageUploader extends UpdateEmitter {
 				this._s3Client.uploadFile({
 					localFile: path.resolve(__dirname, '../../tiled.csv'),
 					s3Params: {
-					Bucket: credentials.awsBucket,
-					Key: 'tiled.csv',
-				},
+						Bucket: credentials.awsBucket,
+						Key: 'tiled.csv',
+					},
 				})
 				.on('end', () => {
 					resolve();
@@ -132,9 +132,9 @@ class ImageUploader extends UpdateEmitter {
 				this._s3Client.uploadFile({
 					localFile: path.resolve(__dirname, '../../raw.csv'),
 					s3Params: {
-					Bucket: credentials.awsBucket,
-					Key: 'raw.csv',
-				},
+						Bucket: credentials.awsBucket,
+						Key: 'raw.csv',
+					},
 				})
 				.on('end', () => {
 					resolve();
@@ -154,12 +154,11 @@ class ImageUploader extends UpdateEmitter {
 		const getImageUrlPath = path.resolve(__dirname, './getImageUrls.js');
 		const outputPath = path.resolve(__dirname, '../../names.json');
 		const url = credentials.barnesImagesUrl;
-		// const cmd = `phantomjs --ignore-ssl-errors=true --ssl-protocol=tlsv1 --web-security=false ${getImageUrlPath} ${url} ${outputPath}`;
-		const cmd = 'echo hello';
+		const cmd = `phantomjs --ignore-ssl-errors=true --ssl-protocol=tlsv1 --web-security=false ${getImageUrlPath} ${url} ${outputPath}`;
 		return new Promise((resolve) => {
 			const phantom = exec(cmd, () => {
 				this._isInitialized = true;
-				this._availableImages = require('../../names.json').images;
+				this._availableImages = require('../../names.json').images; // eslint-disable-line
 				resolve();
 			});
 			phantom.stdout.pipe(process.stdout);
@@ -322,14 +321,14 @@ class ImageUploader extends UpdateEmitter {
 			https.get(`${credentials.barnesImagesUrl}${image.name}`, (response) => {
 				response.pipe(file);
 				file.on('finish', () => {
-				logger.info(`Uploading raw image ${image.name}.`);
-				this._s3Client.uploadFile({
-					s3Params: {
-						Bucket: credentials.awsBucket,
-						Key: `raw/${image.name}`,
-					},
-					localFile: path.resolve(__dirname, `./${image.name}`),
-				})
+					logger.info(`Uploading raw image ${image.name}.`);
+					this._s3Client.uploadFile({
+						s3Params: {
+							Bucket: credentials.awsBucket,
+							Key: `raw/${image.name}`,
+						},
+						localFile: path.resolve(__dirname, `./${image.name}`),
+					})
 					.on('err', (err) => {
 						cb(err);
 					})

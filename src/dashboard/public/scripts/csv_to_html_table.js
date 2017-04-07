@@ -1,3 +1,4 @@
+/* eslint-disable */
 var CsvToHtmlTable = CsvToHtmlTable || {};
 
 CsvToHtmlTable = {

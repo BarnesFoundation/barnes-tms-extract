@@ -1,26 +1,26 @@
 function api(options) {
 	this.add('role:api,path:csv', function (msg, respond) {
-		const valid_commands = {
+		const validCommands = {
 			list: 'list',
 		};
 
 		const command = msg.args.params.cmd;
-		this.act('role:csv', { cmd: valid_commands[command] }, respond);
+		this.act('role:csv', { cmd: validCommands[command] }, respond);
 	});
 
 	this.add('role:api,path:es', function (msg, respond) {
-		const valid_commands = {
+		const validCommands = {
 			desc: 'desc',
 			sync: 'sync',
 		};
 
 		const command = msg.args.params.cmd;
 
-		this.act('role:es', { cmd: valid_commands[command] }, respond);
+		this.act('role:es', { cmd: validCommands[command] }, respond);
 	});
 
 	this.add('role:api,path:tmstocsv', function (msg, respond) {
-		const valid_commands = {
+		const validCommands = {
 			info: 'info',
 			run: 'run',
 			cancel: 'cancel',
@@ -28,16 +28,16 @@ function api(options) {
 		};
 
 		const command = msg.args.params.cmd;
-		this.act('role:tmstocsv', { cmd: valid_commands[command] }, respond);
+		this.act('role:tmstocsv', { cmd: validCommands[command] }, respond);
 	});
 
 	this.add('role:api,path:images', function (msg, respond) {
-		const valid_commands = {
+		const validCommands = {
 			tile: 'tile',
 		};
 
 		const command = msg.args.params.cmd;
-		this.act('role:images', { cmd: valid_commands[command] }, respond);
+		this.act('role:images', { cmd: validCommands[command] }, respond);
 	});
 
 	this.add('init:api', function (msg, respond) {
