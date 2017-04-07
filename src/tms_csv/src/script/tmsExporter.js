@@ -167,7 +167,7 @@ module.exports = class TMSExporter extends UpdateEmitter {
 		const exportConfig = new ExportConfig(configJSON);
 
 		const outputFolderName = `csv_${new Date().getTime()}`;
-		const outputPath = `${exportConfig.outputDirectory}/${outputFolderName}`;
+		const outputPath = path.join(exportConfig.outputDirectory, outputFolderName);
 		logger.info(`Creating CSV output directory ${outputPath}`);
 		fs.mkdirSync(outputPath);
 

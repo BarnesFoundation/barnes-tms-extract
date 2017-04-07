@@ -40,15 +40,15 @@
     "npm-run-all": "^4.0.2"
   },
   "scripts": {
-    "csv-pin": "node csv_viewer/src/csv-pin-service.js -d ./dashboard/public/output",
-    "dashboard": "node dashboard/src/index.js",
-    "es-pin": "node csv_es/src/service/es-pin-service.js --config config.json",
-    "images-pin": "node iiif-image-processor/src/service/images-pin-service.js",
-    "lint": "eslint dashboard tms_csv",
-    "lint-fix": "eslint dashboard tms_csv --fix",
+    "csv-pin": "node src/csv_viewer/src/csv-pin-service.js",
+    "dashboard": "node src/dashboard/src/index.js",
+    "es-pin": "node src/csv_es/src/service/es-pin-service.js",
+    "images-pin": "node src/iiif-image-processor/src/service/images-pin-service.js",
+    "lint": "eslint src",
+    "lint-fix": "eslint src --fix",
     "postinstall": "git submodule update --remote --recursive && node src/scripts/pythonenv.js",
     "serve": "npm-run-all -p -r csv-pin tmstocsv-pin dashboard es-pin images-pin",
-    "tmstocsv-pin": "node tms_csv/src/service/tmstocsv-pin-service.js --creds tms_csv/credentials.json"
+    "tmstocsv-pin": "node src/tms_csv/src/service/tmstocsv-pin-service.js"
   },
   "repository": {
     "type": "git",

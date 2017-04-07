@@ -1,12 +1,10 @@
+const config = require('config');
 const fs = require('fs');
 const path = require('path');
 
+const csvDir = config.CSV.path;
+
 function csv(options) {
-
-	console.dir(options);
-
-	const csvDir = options.d || './dashboard/public/output';
-
 	this.add('role:csv,cmd:list', (msg, respond) => {
 		fs.readdir(csvDir, (err, files) => {
 			const data = { files: [] };

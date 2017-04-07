@@ -5,12 +5,9 @@ const config = require('config');
 const fs = require('fs');
 const path = require('path');
 
-const csvDir = config.CSV.path;
 const port = config.Server.port;
 
 function es(options) {
-
-	console.dir(options);
 
 	const host = options.host || 'localhost:9200';
 

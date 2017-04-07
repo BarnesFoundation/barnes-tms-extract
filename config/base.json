@@ -1,10 +1,10 @@
 {
 	"CSV": {
-		"path": "dashboard/public/output"
+		"path": "src/dashboard/public/output"
 	},
 	"Elasticsearch": {
 		"host": "localhost:9200",
-		"log": "csv_es/logs/all-logs.log"
+		"log": "src/csv_es/logs/all-logs.log"
 	},
 	"Images": {
 		"IIIF": {
@@ -33,7 +33,7 @@
 				"cache": { "name": "S3", "path": "barnes-image-repository", "region": "us-east-1", "credentials": "barnes", "prefix": "tiles" }
 			}
 		},
-		"log": "iiif-image-processor/logs/all-logs.log"
+		"log": "src/iiif-image-processor/logs/all-logs.log"
 	},
 	"Server": {
 		"port": 3000
@@ -41,7 +41,7 @@
 	"TMS": {
 		"export": {
 			"apiURL": "https://emuseum.barnesfoundation.org",
-			"outputDirectory": "dashboard/public/output",
+			"outputDirectory": "src/dashboard/public/output",
 			"debug": {
 				"limit": 10
 			},
@@ -125,6 +125,6 @@
 				"unusedFields": true
 			}
 		},
-		"log": "tms_csv/logs/all-logs.log"
+		"log": "src/tms_csv/logs/all-logs.log"
 	}
 }
