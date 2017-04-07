@@ -1,0 +1,54 @@
+{
+		"tags": {
+				"allowUnknownTags": true,
+				"dictionaries": [
+			"jsdoc",
+			"closure"
+		]
+		},
+		"source": {
+				"include" : [
+			"./src"
+		],
+				"exclude" : [],
+				"includePattern": ".+\\.js(doc)?$",
+				"excludePattern": "(^|\\/|\\\\)_"
+		},
+	"plugins": [
+		"plugins/markdown"
+	],
+	"templates": {
+		"cleverLinks": false,
+		"monospaceLinks": false,
+		"meta" : {
+			"titlePrefix": "Xebra.js Docs",
+			"description": "Xebra.js API Documentation"
+		},
+		"default": {
+			"outputSourceFiles" : true,
+			"staticFiles": {
+			"paths": ["misc"],
+				"includePattern": ".+\\.png$",
+				"exclude": []
+			}
+		},
+		"applicationName" : "TMS to Elasticsearch Import",
+		"footer" : "TODO",
+		"copyright" : "TODO",
+		"linenums" : true
+	},
+	"markdown"  : {
+		 "parser" : "gfm",
+		 "hardwrap" : false
+	 },
+	"opts" : {
+		"encoding" : "utf8",
+		"recurse" : true,
+		"private" : false,
+		"lenient" : true,
+		"destination" : "./docs",
+			"package" : "./package.json",
+		"readme" : "./README.md",
+		"template" : "./node_modules/jaguarjs-jsdoc"
+	}
+}
