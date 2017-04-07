@@ -127,6 +127,7 @@ module.exports = class ESCollection extends UpdateEmitter {
 
 	/**
 	 * Synchronize the elasticsearch index withe given CSV file
+	 * @private
 	 * @param {string} Path to the CSV file with which to synchronize
 	 */
 	_syncESWithCSV(csvFilePath) {
@@ -320,12 +321,21 @@ module.exports = class ESCollection extends UpdateEmitter {
 		});
 	}
 
+	/**
+	 * Attempts to synchronize the Elasticsearch index with the given CSV file.
+	 * If the index has already been synchronized with a CSV file, then this function will compare the CSV
+	 * file to be imported with the previous file. Only the differences between the two will be used to
+	 * update Elasticsearch. If the previous file cannot be found, or if the two CSV files have different
+	 * headers, then the Elasticsearch index will be cleared before updating.
+	 * @param {string} csvFilePath - Path to the CSV file to synchronize with ES
+	 * @return {Promise} Resolved when the synchronization is complete
+	 */
 	syncESToCSV(csvFilePath) {
 		if (!this._didInit) {
 			throw new ESCollectionException("Must call init() before interacting with ESCollection object");
 		}
 		// TODO: Throw an error if you can't find this CSV
-		this._getLastCSVName().then((res) => {
+		return this._getLastCSVName().then((res) => {
 			const canDiff = (res !== null);
 			if (canDiff) {
 				const csvDir = path.resolve(path.dirname(csvFilePath), "..");
