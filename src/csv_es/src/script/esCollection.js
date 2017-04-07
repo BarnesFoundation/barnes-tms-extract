@@ -1,5 +1,3 @@
-/** @namespace Elasticsearch */
-
 const logger = require('./esLogger.js');
 const {
 	doCSVKeysMatch,
@@ -21,7 +19,6 @@ const _ = require('lodash');
  * timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
  * currently synchronized with a CSV file (hasImportedCSV). The `object` type stores the collection objects
  * themselves, and will have different fields depending on the headers of the imported CSV file
- * @memberof Elasticsearch
  */
 class ESCollection extends UpdateEmitter {
 	constructor(esHost) {
@@ -377,6 +374,7 @@ class ESCollection extends UpdateEmitter {
 /**
  * Exceptions thrown by the {@link ESCollection} class
  * @constructor ESCollectionException
+ * @memberof ESCollection
  * @static
  */
 ESCollection.ESCollectionException = function(message) {

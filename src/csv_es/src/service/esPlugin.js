@@ -11,18 +11,20 @@ const port = config.Server.port;
  * Seneca plugin for coordinating with the Elasticsearch importer
  * @constructor
  * @see {@link ESCollection}
- * @memberof Elasticsearch
  */
-function ESPlugin(options) {
+function ESPluginAPI(options) {
 	const host = options.host;
 
 	/**
 	 * Returns a description of the Elasticsearch collection index
-	 * @name desc
-	 * @memberof ESPlugin
-	 * @see {@link ESCollection.description}
+	 * @alias desc
+	 * @memberof ESPluginAPI
+	 * @instance
+	 * @see {@link ESCollection#description}
+	 * @param {object} msg - unused
+	 * @param {function} respond - Callback receiving the index description
 	 */
-	this.add('role:es,cmd:desc', (msg, respond) => {
+	const	descHandler = (msg, respond) => {
 		const esCollection = new ESCollection(host);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
 		esCollection.init().then(() => {
@@ -30,17 +32,19 @@ function ESPlugin(options) {
 				respond(null, res);
 			});
 		});
-	});
+	}
 
 	/**
 	 * Synchronizes the Elasticsearch collection index with a given CSV file
-	 * msg.csv must be a string that is the path to a CSV file
-	 * Returns a description of the Elasticsearch collection index on completion
-	 * @name sync
-	 * @member {function}
-	 * @see {@link ESCollection.syncESToCSV}
+	 * @alias sync
+	 * @memberof ESPluginAPI
+	 * @instance
+	 * @see {@link ESCollection#syncESToCSV}
+	 * @param {object} msg - Message passed to the seneca action
+	 * @param {string} msg.csv - Path to the CSV file with which to synchronize
+	 * @param {function} respond - Callback receiving the index description
 	 */
-	this.add('role:es,cmd:sync', (msg, respond) => {
+	const syncHandler = (msg, respond) => {
 		const csvPath = msg.csv;
 		const esCollection = new ESCollection(host);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
@@ -49,7 +53,10 @@ function ESPlugin(options) {
 				respond(null, res);
 			});
 		});
-	});
+	}
+
+	this.add('role:es,cmd:desc', descHandler);
+	this.add('role:es,cmd:sync', syncHandler);
 }
 
-module.exports = es;
+module.exports = ESPluginAPI;
