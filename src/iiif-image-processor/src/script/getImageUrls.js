@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const page = require('webpage').create();
 const fs = require('fs');
 const system = require('system');

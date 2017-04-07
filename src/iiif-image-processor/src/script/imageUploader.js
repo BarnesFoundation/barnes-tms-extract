@@ -28,11 +28,11 @@ class ImageUploader extends UpdateEmitter {
 		this._currentStep = 'Not started.';
 		logger.info('creating image logger');
 		const cred = new AWS.SharedIniFileCredentials({
-		  profile: 'barnes',
+			profile: 'barnes',
 		});
 		const awss3 = new AWS.S3({
-		  credentials: cred,
-		  region: credentials.awsRegion,
+			credentials: cred,
+			region: credentials.awsRegion,
 		});
 		this._s3Client = s3.createClient({
 			s3Client: awss3,
@@ -102,18 +102,18 @@ class ImageUploader extends UpdateEmitter {
 		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../tiled.csv'));
 
 		return new Promise((resolve) => {
-	    writableStream.on('finish', () => {
-		  	this._s3Client.uploadFile({
-		  		localFile: path.resolve(__dirname, '../../tiled.csv'),
-		  		s3Params: {
+			writableStream.on('finish', () => {
+				this._s3Client.uploadFile({
+					localFile: path.resolve(__dirname, '../../tiled.csv'),
+					s3Params: {
 					Bucket: credentials.awsBucket,
 					Key: 'tiled.csv',
 				},
-		  	})
-		  	.on('end', () => {
-		  		resolve();
-		  	});
-		  });
+				})
+				.on('end', () => {
+					resolve();
+				});
+			});
 
 			csvStream.pipe(writableStream);
 			this._tiledImages.concat(images).forEach((img) => {
@@ -128,18 +128,18 @@ class ImageUploader extends UpdateEmitter {
 		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../raw.csv'));
 
 		return new Promise((resolve) => {
-	    writableStream.on('finish', () => {
-		  	this._s3Client.uploadFile({
-		  		localFile: path.resolve(__dirname, '../../raw.csv'),
-		  		s3Params: {
+			writableStream.on('finish', () => {
+				this._s3Client.uploadFile({
+					localFile: path.resolve(__dirname, '../../raw.csv'),
+					s3Params: {
 					Bucket: credentials.awsBucket,
 					Key: 'raw.csv',
 				},
-		  	})
-		  	.on('end', () => {
-		  		resolve();
-		  	});
-		  });
+				})
+				.on('end', () => {
+					resolve();
+				});
+			});
 
 			csvStream.pipe(writableStream);
 			this._rawImages.concat(images).forEach((img) => {
@@ -320,8 +320,8 @@ class ImageUploader extends UpdateEmitter {
 			this.progress();
 			const file = fs.createWriteStream(path.resolve(__dirname, `./${image.name}`));
 			https.get(`${credentials.barnesImagesUrl}${image.name}`, (response) => {
-			  response.pipe(file);
-			  file.on('finish', () => {
+				response.pipe(file);
+				file.on('finish', () => {
 				logger.info(`Uploading raw image ${image.name}.`);
 				this._s3Client.uploadFile({
 					s3Params: {
@@ -337,7 +337,7 @@ class ImageUploader extends UpdateEmitter {
 						index += 1;
 						fs.unlink(path.resolve(__dirname, `./${image.name}`), cb);
 					});
-			  });
+				});
 			});
 		}, (err) => {
 			logger.info('Finished uploading all raw images.');
