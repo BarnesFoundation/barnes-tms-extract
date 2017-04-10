@@ -4,7 +4,7 @@ const d = argv.d;
 
 require('seneca')()
 
-  .use('csv', { d })
+  .use('./csvPlugin.js', { d })
 
   // listen for role:math messages
   // IMPORTANT: must match client

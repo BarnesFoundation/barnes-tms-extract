@@ -1,5 +1,6 @@
 const ESCollection = require('../script/esCollection.js');
 const WebsocketUpdater = require('../../../util/websocketUpdater.js');
+const { makeAPI } = require('../../../util/makeAPI.js');
 
 const config = require('config');
 const fs = require('fs');
@@ -12,8 +13,10 @@ const port = config.Server.port;
  * @constructor
  * @see {@link ESCollection}
  */
-function ESPluginAPI(options) {
-	const host = options.host;
+class ESPluginAPI {
+	constructor(options) {
+		this._host = options.host
+	}
 
 	/**
 	 * Returns a description of the Elasticsearch collection index
@@ -24,14 +27,11 @@ function ESPluginAPI(options) {
 	 * @param {object} msg - unused
 	 * @param {function} respond - Callback receiving the index description
 	 */
-	const	descHandler = (msg, respond) => {
-		const esCollection = new ESCollection(host);
+	desc() {
+		const esCollection = new ESCollection(this._host);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		esCollection.init().then(() => {
-			esCollection.description().then((res) => {
-				respond(null, res);
-			});
-		});
+		return esCollection.init()
+		 .then(() => esCollection.description());
 	}
 
 	/**
@@ -44,19 +44,14 @@ function ESPluginAPI(options) {
 	 * @param {string} msg.csv - Path to the CSV file with which to synchronize
 	 * @param {function} respond - Callback receiving the index description
 	 */
-	const syncHandler = (msg, respond) => {
-		const csvPath = msg.csv;
-		const esCollection = new ESCollection(host);
+	sync(csv) {
+		const csvPath = csv;
+		const esCollection = new ESCollection(this._host);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		esCollection.init().then(() => esCollection.syncESToCSV(csvPath)).then((res) => {
-			esCollection.description().then((res) => {
-				respond(null, res);
-			});
-		});
+		return esCollection.init()
+		 .then(() => esCollection.syncESToCSV(csvPath))
+		 .then(() => esCollection.description());
 	}
-
-	this.add('role:es,cmd:desc', descHandler);
-	this.add('role:es,cmd:sync', syncHandler);
 }
 
-module.exports = ESPluginAPI;
+module.exports = makeAPI('role:es', ESPluginAPI);
