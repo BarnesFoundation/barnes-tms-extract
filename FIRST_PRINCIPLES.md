@@ -1,4 +1,4 @@
-# A collection-spelunker architecture / statement of bia
+# First principles (or statements of bias) for a collection-spelunker
 
 ## Separation of concerns
 
