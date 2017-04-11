@@ -15,6 +15,11 @@ const eachSeries = require('async/eachSeries');
 
 const credentials = config.Credentials.aws;
 
+/**
+ * Tiles and uploads images to Amazon s3
+ * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
+ *  The script will tile and upload images using the most recent complete export in the directory
+ */
 class ImageUploader extends UpdateEmitter {
 	constructor(csvDir) {
 		super();
@@ -41,6 +46,23 @@ class ImageUploader extends UpdateEmitter {
 		this._fetchTiledImages();
 	}
 
+	/**
+	 * @typedef {Object} ImageUploaderStatus
+	 * @description Current status of the Image Uploader script
+	 * @name ImageUploader~ImageUploaderStatus
+	 * @property {string} type - Always 'imageUploader'
+	 * @property {number} totalImagesToUpload - Number of images to upload
+	 * @property {number} numImagesUploaded - Number of images uploaded
+	 * @property {boolean} isRunning - Whether or not the script is running
+	 * @property {string} currentStep - Current step in the upload process
+	 * @property {number} numTiledImages - Number of images that have been tiled on s3
+	 * @property {nubmer} numRawImages - Number of raw images that have been uploaded to s3
+	 */
+
+	/**
+	 * @memberof ImageUploader
+	 * @member {ImageUploader~ImageUploaderStatus}
+	 */
 	get status() {
 		return {
 			type: 'imageUploader',
@@ -53,6 +75,9 @@ class ImageUploader extends UpdateEmitter {
 		};
 	}
 
+	/**
+	 * Begin the process of tiling and uploading images to s3
+	 */
 	process() {
 		this._isRunning = true;
 		this.started();

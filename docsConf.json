@@ -1,19 +1,19 @@
 {
-		"tags": {
-				"allowUnknownTags": true,
-				"dictionaries": [
+	"tags": {
+		"allowUnknownTags": true,
+		"dictionaries": [
 			"jsdoc",
 			"closure"
 		]
-		},
-		"source": {
-				"include" : [
+	},
+	"source": {
+		"include" : [
 			"./src"
 		],
-				"exclude" : [],
-				"includePattern": ".+\\.js(doc)?$",
-				"excludePattern": "(^|\\/|\\\\)_"
-		},
+		"exclude" : [],
+		"includePattern": ".+\\.js(doc)?$",
+		"excludePattern": "(^|\\/|\\\\)_"
+	},
 	"plugins": [
 		"plugins/markdown"
 	],
@@ -49,6 +49,6 @@
 		"destination" : "./docs",
 			"package" : "./package.json",
 		"readme" : "./README.md",
-		"template" : "./node_modules/jaguarjs-jsdoc"
+		"template" : "./node_modules/minami"
 	}
 }

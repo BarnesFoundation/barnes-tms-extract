@@ -1,0 +1,52 @@
+const { SenecaPluginAPI, makeAPI } = require('../../util/senecaPluginAPI.js');
+
+const config = require('config');
+const fs = require('fs');
+const path = require('path');
+
+const csvDir = config.CSV.path;
+
+/**
+ * Seneca plugin for listing the exported CSV files
+ * @see {@link ESCollection}
+ * @param {string} options.host - Hostname for the Elasticsearch server
+ */
+class CSVPluginAPI extends SenecaPluginAPI {
+
+	/**
+	 * typedef {Object} CSVExportDescription
+	 * @description Status of a pass of the TMS to CSV export script
+	 * @name CSVPluginAPI~CSVExportDescription
+	 * @property {string} file - The CSV filename
+	 * @property {string} status - Export status (INCOMPLETE, COMPLETED, ERROR)
+	 * @property {string} createdAt - When the export started
+	 * @property {number} processedObjects - Number of objects that have been exported
+	 * @property {number} totalObjects - Total number of objects to export
+	 */
+
+	/**
+	 * List the CSV files that have been exported from TMS
+	 * @return {CSVPluginAPI~CSVExportDescription[]}
+	 */
+	list() {
+		const files = fs.readdirSync(csvDir);
+		const data = { files: [] };
+		files.forEach((file) => {
+			if (path.basename(file).startsWith('csv_')) {
+				try {
+					const metaPath = path.join(csvDir, file, 'meta.json');
+					const metaString = fs.readFileSync(metaPath);
+					const metadata = JSON.parse(metaString);
+					metadata.name = file;
+					data.files.push(metadata);
+				} catch (e) {
+					// TODO: Consider logging this
+				}
+			}
+		});
+
+		return data;
+	}
+}
+
+module.exports = makeAPI('role:csv', CSVPluginAPI);

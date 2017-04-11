@@ -18,6 +18,7 @@
     "jaguarjs-jsdoc": "^1.0.2",
     "jsdoc": "^3.4.3",
     "lodash": "^4.17.4",
+    "minami": "^1.1.1",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",

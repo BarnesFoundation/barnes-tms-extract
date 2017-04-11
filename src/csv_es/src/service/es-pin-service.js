@@ -5,7 +5,7 @@ const config = require('config');
 
 require('seneca')()
 
-  .use('./esPlugin.js', { host: config.Elasticsearch.host })
+  .use('./esPluginAPI.js', { host: config.Elasticsearch.host })
 
   // listen for role:math messages
   // IMPORTANT: must match client
