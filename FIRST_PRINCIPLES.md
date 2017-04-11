@@ -1,5 +1,7 @@
 # First principles (or statements of bias) for a collection-spelunker
 
+This document is a high-level preamble that informs implemetation specific brass-tacks in the [ARCHITECTURE.md](ARCHITECTURE.md) document.
+
 ## Separation of concerns
 
 A collection-spelunker consists of the following layers, or separation of concerns:
