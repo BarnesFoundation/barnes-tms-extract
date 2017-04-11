@@ -181,7 +181,7 @@ The Barnes Collection has the following keys. The data model itself is limited b
 
 The scope of the import tools is limited to communicating with the data-model compliant static files and the datastore (Elasticsearch).
 
-The collection-spelunker import tools are written in Python and JavaScript. Python has a library called csvdiff which makes it easy to find changes in the exported csv's. The JavaScript portion is a Seneca.js microservice which communicates with the dashboard.
+The collection-spelunker import tools are written in Python and JavaScript. We use a Python library called `csvdiff` which makes it easy to find changes in the exported csv's. The JavaScript portion is a Seneca.js microservice which communicates with the dashboard.
 
 ## Datastore
 
