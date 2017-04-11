@@ -154,7 +154,7 @@ Folders in this repository are organized as follows
 
 ## Export tools
 
-The scope of the export tools is limited to communicating with the TMS source-of truth. They consist of a Node script that uses the TMS API to generate a CSV file corresponding to the data available in TMS. Node was chosen because of its simplicity, widespread support and robust community. The export script can be run from a Seneca microservice, which exposes the state of the export process to a local API for display in the dashboard microservice.
+The scope of the export tools is limited to communicating with the TMS source-of-truth. They consist of a Node script that uses the TMS API to generate a CSV file corresponding to the data available in TMS. Node was chosen because of its simplicity, widespread support and robust community. The export script can be run from a Seneca microservice, which exposes the state of the export process to a local API for display in the dashboard microservice.
 
 ## Data model
 
