@@ -1,10 +1,12 @@
-# Collection Exporter architecture
+# The Collection Spelunker Architecture
 
-The Collection Exporter is a group of services and scripts that pulls data from a TMS endpoint into a more usable form. Also included is a script for tiling and uploading images using go-ifff. Installation instructions can be found at https://github.com/thisisaaronland/go-iiif. Finally, a dashboard displays the current state of all the mircoservices, and all exported data in all formats.
+Albert Barnes wanted to use his collection to teach all audiences how to appreciate art, and he reasoned that grouping his artworks according to formal connections (rather than historical ones) made them more accessible. As a result, Barnes arranged his collection in “ensembles,” distinctive wall compositions organized according to formal principles of light, color, line, and space, rather than by chronology, nationality, style, or genre. In rethinking the presentation of our collection online, we are taking a more experiential and Barnes-like approach. Just like our founder, we’re going to start by focusing on the needs and interests of non-specialist, non-professional audiences and, therefore, develop a collections website that makes the image primary. Thinking about Barnes and his teaching style very specifically, we will design an interface that highlights purely visual connections between artworks — colors, shapes, lines, for example — so a visitor always has a way to move forward and deeper into the collection in a self-directed fashion.
 
-![Architechture](./docs/ARCHITECTURE.png)
+This Barnes Collection Spelunker is a group of services and scripts that pulls data from a TMS endpoint into a more usable form. Also included is a script for tiling and uploading images using go-ifff. Installation instructions can be found at https://github.com/thisisaaronland/go-iiif. Finally, a dashboard displays the current state of all the mircoservices, and all exported data in all formats.
 
-The Collection Exporter consists of the following layers, or separation of concerns:
+![Architechture](./misc/ARCHITECTURE.png)
+
+The Collection Spelunker consists of the following layers
 
 * source of truth (TMS)
 * export tools (TMS-API microservice)
@@ -16,32 +18,18 @@ The Collection Exporter consists of the following layers, or separation of conce
 
 Folders in this repository are organized as follows
 
-* csv_es - A node.js script (and Seneca.js microservice) that synchronizes an Elasticsearch index with the contents of an exported CSV file
-* csv_viewer - A javascript tool for rendering a CSV file in a searchable, filterable format
-* dashboard - A Seneca.js microservice with an Express.js server that displays the current stte of the Collection Exporter
-* iiif-image-processor - A node.js script (and Seneca.js microservice) that pulls images from TMS and exports tiled versions of those images to an Amazon s3 bucket
-* py_csv_diff - A python script that can compute the difference between two CSV files
-* scripts - Miscellaneous scripts
-* tms_csv - A node.js script (and Seneca.js microservice) that pulls object data from TMS and outputs data in a CSV format
+* src/csv_es - A node.js script (and Seneca.js microservice) that synchronizes an Elasticsearch index with the contents of an exported CSV file
+* src/csv_viewer - A javascript tool for rendering a CSV file in a searchable, filterable format
+* src.dashboard - A Seneca.js microservice with an Express.js server that displays the current state of the Collection Spelunker
+* src/iiif-image-processor - A node.js script (and Seneca.js microservice) that pulls images from TMS and exports tiled versions of those images to an Amazon s3 bucket
+* src/py_csv_diff - A python script that can compute the difference between two CSV files
+* src/scripts - Miscellaneous scripts
+* src/tms_csv - A node.js script (and Seneca.js microservice) that pulls object data from TMS and outputs data in a CSV format
 * util - Shared javascript utilities
-
-Wherever possible each layer is only aware of the layers immediately following or proceeding them.
-
-## Source of truth (TMS)
-
-TMS is considered to be the source of truth for all collections data. The Collection Exporter is assumed to be a read-only reflection of the data.
-
-## Export (TMS-API)
-
-The TMS API is considered to be the primary or default means of exporting data from TMS. The scope of the export tools is limited to communicating with the "source of truth" and generating data-model compliant static files (discussed below).
-
-The Collection Exporter export tools are written in JavaScript/Node.js. This was chosen to provide a working utility for easy introspection, experimentation and extending.
 
 ## Data model
 
-Until, or unless, there is a compelling reason to do otherwise the data model will assume a standard rows and columns (CSV) format. Columns with multiple values will be encoded as delimiter-separated values. This includes complex hierarchical data or collection-specific details that augment the default data model (discussed below).
-
-The data model itself is limited by design, and exposes the following Barnes-specific properties [TMS field name in brackets]:
+The Barnes Collection has the following keys. The data model itself is limited by design, and exposes the following Barnes-specific properties [TMS field name in brackets]:
 
 * id [id]
 * Artist/Maker [people]
@@ -68,7 +56,7 @@ The collection-spelunker import tools are written in Python and JavaScript. Pyth
 
 ## Datastore
 
-Elasticsearch is the primary datastore. Each collection object maps to a single Elasticsearch object with type `object`. Each column in the CSV file exported from TMS becomes a single field in the object. 
+Elasticsearch is the primary datastore. Each collection object maps to a single Elasticsearch object with type `object`. Each column in the CSV file exported from TMS becomes a single field in the object.
 
 Elasticsearch (ES) has been chosen because:
 
