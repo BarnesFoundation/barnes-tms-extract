@@ -131,7 +131,7 @@ The Barnes Collection Spelunker is a group of services and scripts that pulls da
 
 ![Architechture](./misc/ARCHITECTURE.png)
 
-The Collection Spelunker consists of the following layers
+We've implemented each layer outlined in _First Principles_ using the following technologies. 
 
 * source of truth (TMS)
 * export tools (TMS-API microservice)
@@ -150,7 +150,7 @@ Folders in this repository are organized as follows
 * src/py_csv_diff - A python script that can compute the difference between two CSV files
 * src/scripts - Miscellaneous scripts
 * src/tms_csv - A node.js script (and Seneca.js microservice) that pulls object data from TMS and outputs data in a CSV format
-* util - Shared javascript utilities
+* src/util - Shared javascript utilities
 
 ## Export tools
 
