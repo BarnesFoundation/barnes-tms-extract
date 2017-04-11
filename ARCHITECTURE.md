@@ -2,11 +2,11 @@
 
 Albert Barnes wanted to use his collection to teach all audiences how to appreciate art, and he reasoned that grouping his artworks according to formal connections (rather than historical ones) made them more accessible. As a result, Barnes arranged his collection in “ensembles,” distinctive wall compositions organized according to formal principles of light, color, line, and space, rather than by chronology, nationality, style, or genre. In rethinking the presentation of our collection online, we are taking a more experiential and Barnes-like approach. Just like our founder, we’re going to start by focusing on the needs and interests of non-specialist, non-professional audiences and, therefore, develop a collections website that makes the image primary. Thinking about Barnes and his teaching style very specifically, we will design an interface that highlights purely visual connections between artworks — colors, shapes, lines, for example — so a visitor always has a way to move forward and deeper into the collection in a self-directed fashion.
 
-This ARCHITECTURE document is divided in to two parts. _First Principles_ outlines the requirements and constraints that inform _The Barnes Spelunker Implementation_, which describes the choices and code structure of this implementation.
+This ARCHITECTURE document is divided in to two parts. _First Principles_ outlines the requirements and constraints that inform _The Barnes Spelunker Implementation_, which describes the choices and code structure of this repository.
 
 # First Principles (or statements of bias)
 
-This section is a high-level preamble that informs implemetation specific brass-tacks to follow in the Barnes Spelunker Implementation section.
+This section is a high-level preamble that informs implemetation specific brass-tacks to follow in _The Barnes Spelunker Implementation_ section.
 
 ## Separation of concerns
 
@@ -127,7 +127,7 @@ Like the datastore an abstract model for the web application be defined and be i
 
 # The Barnes Spelunker Implementation
 
-This Barnes Collection Spelunker is a group of services and scripts that pulls data from a TMS endpoint into a more usable form. A tms-to-csv exporter script and service exports a set of collection object properties into a CSV (comma separated value) file. A separate csv-to-elasticsearch script imports that CSV file into an Elasticsearch index. There is also a iiif script for tiling and uploading images using go-ifff (installation instructions for go-iiif can be found at https://github.com/thisisaaronland/go-iiif). Finally, a dashboard microservice displays the current state of all the mircoservices, and all exported data in all formats.
+The Barnes Collection Spelunker is a group of services and scripts that pulls data from a TMS into a more searchable and flexible form. A tms-to-csv exporter script and service exports a set of collection object properties into a CSV (comma separated value) file. A separate csv-to-elasticsearch script imports that CSV file into an Elasticsearch index. There is also a iiif script for tiling and uploading images using go-ifff (installation instructions for go-iiif can be found at https://github.com/thisisaaronland/go-iiif). Finally, a dashboard microservice displays the current state of all the mircoservices, and all exported data in all formats.
 
 ![Architechture](./misc/ARCHITECTURE.png)
 
