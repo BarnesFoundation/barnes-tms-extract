@@ -1,13 +1,11 @@
 const TMSExporter = require('./tmsExporter.js');
 
-const argv = require('minimist')(process.argv.slice(2));
+const config = require('config');
 
-const configFile = argv.config;
-const credfile = argv.creds;
-const config = require(configFile); // eslint-disable-line
+const credentials = config.Credentials.tms;
 
-const tmsExporter = new TMSExporter(credfile);
+const tmsExporter = new TMSExporter(credentials);
 
-tmsExporter.exportCSV(config).then(() => {
+tmsExporter.exportCSV(config.TMS.export).then(() => {
 	console.log('All done!!');
 });
