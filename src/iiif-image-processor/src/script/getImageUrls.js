@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+// PhantomJS runs this script to pull the metadata from the image files in TMS
+
 const page = require('webpage').create();
 const fs = require('fs');
 const system = require('system');

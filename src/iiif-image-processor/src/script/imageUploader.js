@@ -85,38 +85,38 @@ class ImageUploader extends UpdateEmitter {
 		const imageDirPromise = this._fetchAvailableImages();
 		this._currentStep = 'Fetching available images from TMS.';
 		this.progress();
-		imageDirPromise.then(() => {
+		this._fetchAvailableImages().then(() => {
 			logger.info('Pulled list of available images from TMS successfully.');
 			this._currentStep = 'Fetching list of images uploaded to S3.';
 			this.progress();
-			this._fetchTiledImages().then(() => {
-				this._fetchRawImages().then(() => {
-					this._currentStep = 'Determining which images need to be uploaded or tiled.';
-					this.progress();
-					const lastCSV = getLastCompletedCSV(this._csvDir);
-					const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
-					const imagesToProcess = [];
-					const imagesToUpload = [];
-					csvForEach(csvPath, (row) => {
-						const img = this._imageNeedsUpload(`${row.invno}.jpg`);
-						if (img) {
-							imagesToProcess.push(img);
-						}
-						const rawImg = this._rawImageNeedsUpload(`${row.invno}.tif`);
-						if (rawImg) {
-							imagesToUpload.push(rawImg);
-						}
-					},
-					() => {
-						this._tileAndUpload(imagesToProcess);
-						this._updateTiledList(imagesToProcess);
-						this._uploadRaw(imagesToUpload);
-						this._updateRawList(imagesToUpload).then(() => {
-							this._currentStep = 'Finished.';
-							this._isRunning = false;
-							this.completed();
-						});
-					});
+			return this._fetchTiledImages();
+		}).then(() => {
+			return this._fetchRawImages();
+		}).then(() => {
+			this._currentStep = 'Determining which images need to be uploaded or tiled.';
+			this.progress();
+			const lastCSV = getLastCompletedCSV(this._csvDir);
+			const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
+			const imagesToProcess = [];
+			const imagesToUpload = [];
+			csvForEach(csvPath, (row) => {
+				const img = this._imageNeedsUpload(`${row.invno}.jpg`);
+				if (img) {
+					imagesToProcess.push(img);
+				}
+				const rawImg = this._rawImageNeedsUpload(`${row.invno}.tif`);
+				if (rawImg) {
+					imagesToUpload.push(rawImg);
+				}
+			},
+			() => {
+				this._tileAndUpload(imagesToProcess);
+				this._updateTiledList(imagesToProcess);
+				this._uploadRaw(imagesToUpload);
+				this._updateRawList(imagesToUpload).then(() => {
+					this._currentStep = 'Finished.';
+					this._isRunning = false;
+					this.completed();
 				});
 			});
 		});
@@ -368,8 +368,6 @@ class ImageUploader extends UpdateEmitter {
 			if (err) logger.error(err);
 		});
 	}
-
-
 }
 
 module.exports = ImageUploader;
