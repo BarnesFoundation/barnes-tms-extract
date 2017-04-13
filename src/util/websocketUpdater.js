@@ -1,6 +1,13 @@
 const io = require('socket.io-client');
 
-module.exports = class WebsocketUpdater {
+/**
+ * Forwards updates from a subclass of {@link UpdateEmitter} to a websocket
+ * @global
+ * @param {string} name - Name string to be send with each {@link UpdateEmitter#status} event
+ * @param {number} port - Websocket port to which to connect and forward events
+ * @param {UpdateEmitter} updateEmitter - Concrete subclass of {@link UpdateEmitter}
+ */
+class WebsocketUpdater {
 	constructor(name, port, updateEmitter) {
 		this._name = name;
 		this._socket = io.connect(`http://localhost:${port}`);
@@ -18,3 +25,14 @@ module.exports = class WebsocketUpdater {
 		}
 	}
 };
+
+ /**
+ * Forwarded event from an {@link UpdateEmitter} subclass
+ *
+ * @event WebsocketUpdater#status
+ * @param {string} name - Name of the event
+ * @param {string} status - Will be `started`, `progress` or `completed`
+ * @param {object} state - Params depend on subclass implementation
+ */
+
+ module.exports = WebsocketUpdater;

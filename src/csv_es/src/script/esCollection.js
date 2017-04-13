@@ -14,6 +14,13 @@ const tmp = require('tmp');
 const _ = require('lodash');
 
 /**
+ * @typedef {object} ESCollection~ESImportStatus
+ * @property {boolean} hasImportedCSV - Whether the ES index has imported a CSV
+ * @property {number} lastCSVImportTimestamp - UNIX timestamp of the last imported CSV
+ * @property {string} lastImportedCSV - Name of the last imported CSV file
+ */
+
+/**
  * Manages the process of importing a CSV file into Elasticsearch. The `collection` index has two types,
  * `meta` and `object`. The `meta` type stores information about the import process itself, including the
  * timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
@@ -30,7 +37,9 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 
-	// @ignore
+	/** @property {ESCollection~ESImportStatus} status
+	 * @override
+	 */
 	get status() {
 		return this.description();
 	}

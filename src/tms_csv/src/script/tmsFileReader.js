@@ -3,7 +3,12 @@ const TMSReader = require('./tmsReader.js');
 
 const fs = require('fs');
 
-module.exports = class TMSFileReader extends TMSReader {
+/**
+ * Reads a directory of JSON files, each one representing a TMS collection object,
+ *  as if it were a TMS API. Used mostly for testing
+ * @implements TMSReader
+ */
+class TMSFileReader extends TMSReader {
 	constructor() {
 		super();
 		this._index = 0;
@@ -38,3 +43,6 @@ module.exports = class TMSFileReader extends TMSReader {
 		});
 	}
 };
+
+
+module.exports = TMSFileReader;

@@ -1,6 +1,11 @@
 const _ = require('lodash');
 
-module.exports = class ExportConfig {
+/**
+ * Wrapper and validator for a JSON object implementing {@link TMSExporter~TMSExportConfiguration}
+ * @param {TMSExporter~TMSExportConfiguration} config - TMS export configuration
+ * @throws Error if the TMS export configuration is impropertly constructed
+ */
+class ExportConfig {
 	constructor(config) {
 		const jsonConfig = config;
 
@@ -34,35 +39,51 @@ module.exports = class ExportConfig {
 		});
 	}
 
+	// @property {string} apiURL - The root URL of the TMS API
 	get apiURL() {
 		return this._config.apiURL;
 	}
 
+	// @property {string[]} fields - Which fields to retrieve for each collection object in TMS
 	get fields() {
 		return _.keys(this._fields);
 	}
 
+	// @property {object} debug - Any specified debug keys
 	get debug() {
 		return this._config.debug;
 	}
 
+	// @property {string} outputDirectory - The directory into which to write all TMS files
 	get outputDirectory() {
 		return this._config.outputDirectory;
 	}
 
+	// @property {string} primaryKey - Field name to use as a unique identifier for each TMS collection object
 	get primaryKey() {
 		return this._primaryKey;
 	}
 
+	// @property {string} warnings - Which warnings to emit
 	get warnings() {
 		return this._config.warnings;
 	}
 
+	/**
+	 * Whether or not the field with a given name represents an enumerated value
+	 * @param {string} field - the name of the field
+	 */
 	fieldIsEnumerated(field) {
 		return this._fields[field] ? this._fields[field].enumerated === true : false;
 	}
 
+	/**
+	 * Whether or not the field with a given name must be included
+	 * @param {string} field - the name of the field
+	 */
 	fieldIsRequired(field) {
 		return this._fields[field] ? this._fields[field].required === true : false;
 	}
 };
+
+module.exports = ExportConfig;

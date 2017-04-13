@@ -1,3 +1,8 @@
+/**
+ * Utitly functions for working with CSV files
+ * @module
+ */
+
 const fs = require('fs');
 const _ = require('lodash');
 const path = require('path');

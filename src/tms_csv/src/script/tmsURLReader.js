@@ -5,7 +5,10 @@ const logger = require('./logger.js');
 const https = require('https');
 const url = require('url');
 
-module.exports = class TMSURLReader extends TMSReader {
+/**
+ * @implements TMSReader
+ */
+class TMSURLReader extends TMSReader {
 	constructor(credentials) {
 		super();
 		this._credentials = credentials;
@@ -15,6 +18,8 @@ module.exports = class TMSURLReader extends TMSReader {
 		this._currentPageJSON = null;
 	}
 
+	// @property {string} collectionURL - URL of a collection within the TMS API
+	// @deprecated
 	get collectionURL() {
 		const requestURL = url.parse(this._rootURL);
 
@@ -22,6 +27,8 @@ module.exports = class TMSURLReader extends TMSReader {
 		return url.format(requestURL);
 	}
 
+	// @property {string} path
+	// @override
 	get path() {
 		return super.path;
 	}
@@ -34,6 +41,7 @@ module.exports = class TMSURLReader extends TMSReader {
 		this._currentPageJSON = null;
 	}
 
+	// @property {string} rootURL - root URL of the TMS API
 	get rootURL() {
 		return this._rootURL;
 	}
@@ -158,6 +166,12 @@ module.exports = class TMSURLReader extends TMSReader {
 		return url.format(requestURL);
 	}
 
+	/**
+	 * Return the number of objects in the collection. This function must actually retrieve
+	 * each page of objects in the collection, and so can be very slow. Even for the Barnes collection
+	 * (about 4000 objects) this function can take up to a minute
+	 * @return {Promise} resolves to the number of objects in the collection
+	 */
 	getObjectCount() {
 		const requestURL = url.parse(this.rootURL);
 
@@ -194,6 +208,7 @@ module.exports = class TMSURLReader extends TMSReader {
 		});
 	}
 
+	// @override
 	hasNext() {
 		return new Promise((resolve, reject) => {
 			if (this._currentPageHasMoreObjects()) {
@@ -208,6 +223,7 @@ module.exports = class TMSURLReader extends TMSReader {
 		});
 	}
 
+	// @override
 	next() {
 		return new Promise((resolve, reject) => {
 			this.hasNext().then((hasNext) => {
@@ -229,3 +245,5 @@ module.exports = class TMSURLReader extends TMSReader {
 		});
 	}
 };
+
+module.exports = TMSURLReader;

@@ -22,7 +22,58 @@ function decodeUTF8InterpretedAsWin(str) {
 	return newnewbuf.toString();
 }
 
-module.exports = class TMSExporter extends UpdateEmitter {
+/**
+ * @typedef {object} TMSExporter~TMSCredentials
+ * @description Credentials for connecting to a TMS API
+ * @property {string} key - TMS key
+ * @property {string} username - TMS username
+ * @property {string} password - TMS password
+ */
+
+/**
+ * @typedef {object} TMSExporter~TMSExportStatus
+ * @description Status of a running TMS export
+ * @property {boolean} active - Whether or not the TMS export script is currently running
+ * @property {string} csv - Path to the objects.csv file containing the exported collection objects
+ * @property {number} processed - Number of collection objects that have been processed
+ * @property {number} total - Totl number of collection objects that will be exported
+ * @property {ExportMetadata~ExportStatus} status - Status of the TMS export
+ */
+
+/**
+ * @typedef {object} TMSExporter~TMSExportConfiguration
+ * @description Configures the TMS export process. Specifies the root TMS API URL, the output directory,
+ *  debug configuration, which fields to export, and which warnings to generate
+ * @property {string} apiURL - The root TMS API URL
+ * @property {string} outputDirectory - The directory into which the exported CSV file will be placed
+ * @property {object} debug - Debug values (optional)
+ * @property {number} debug.limit - Exit after exporting this many collection objects (optional)
+ * @property {TMSExporter~TMSFieldExportConfiguration[]} fields - Export configuration for each field that is to be exported
+ * @property {object} warnings - Warning flags. Warnings are written to `warnings.csv`
+ * @property {boolean} warnings.singletonFields - Emit a warning for fields that only appear a very small number of times
+ * @default false
+ * @property {boolean} warnings.missingFields - Emit a warning for objects that do not expose a required field
+ * @default false
+ * @property {boolean} warnings.unusedFields - Emit a warning for fields that are not exported
+ * @default false
+ */
+
+/**
+ * @typedef {object} TMSExporter~TMSFieldExportConfiguration
+ * @description Export configuration for a particular TMS field
+ * @property {string} name - The name of the field to be exported
+ * @property {boolean} primaryKey - Whether this field should be used as a unique identifier for the object (one required)
+ * @property {boolean} required - Whether the field must be present (when absent a warning will be generated)
+ * @property {boolean} enumerated - Whether the field is expected to have one of a small number of values
+ */
+
+/**
+ * Manages the export from TMS to a CSV file.
+ * @implements {@link UpdateEmitter}
+ * @param {TMSCredentials} credentials - Credentials for connecting to the TMS API. These are typically
+ *  loaded from `config/credentials.json`, which is encrypted by default
+ */
+class TMSExporter extends UpdateEmitter {
 	constructor(credentials) {
 		super();
 		this._credentials = credentials;
@@ -31,14 +82,24 @@ module.exports = class TMSExporter extends UpdateEmitter {
 		this._active = false;
 	}
 
+	/**
+	 * @property {boolean} active - Whether or not the TMS export script is currently running
+	 */
 	get active() {
 		return this._active;
 	}
 
+	/**
+	 * @property {string} csvFilePath - Path to the objects.csv file containing the exported collection objects
+	 */
 	get csvFilePath() {
 		return this._csvFilePath;
 	}
 
+	/**
+	 * @property {TMSExporter~TMSExportStatus} status - Status of the currently running TMSExport status
+	 * @override
+	 */
 	get status() {
 		return {
 			active: this._active,
@@ -153,12 +214,23 @@ module.exports = class TMSExporter extends UpdateEmitter {
 		});
 	}
 
+	/**
+	 * Stop the running TMS export
+	 */
 	cancelExport() {
 		logger.info('Cancelling CSV export', { tag: 'tag:cancel' });
 		this._active = false;
 		this._exportMeta.status = ExportStatus.CANCELLED;
 	}
 
+	/**
+	 * Begin the TMS export process
+	 * @param {TMSExporter~TMSExportConfiguration} configJSON - Export configuration
+	 * @fires UpdateEmitter#started
+	 * @fires UpdateEmitter#progress
+	 * @fires UpdateEmitter#completed
+	 * @return {Promise} - Resolves when completed
+	 */
 	exportCSV(configJSON) {
 		logger.info('Beginning CSV export', { tag: 'tag:start' });
 
@@ -174,3 +246,5 @@ module.exports = class TMSExporter extends UpdateEmitter {
 		return this._processTMS(this._credentials, exportConfig, outputPath).then(() => this.status);
 	}
 };
+
+module.exports = TMSExporter;

@@ -3,7 +3,15 @@ const logger = require('./logger.js');
 
 const _ = require('lodash');
 
-module.exports = class WarningReporter {
+/**
+ * Writes warnings to a CSV file as they are emitted by the TMS export script. Warning file will
+ * be called `warnings.csv`
+ * @param {string} outputDirectory - Directory contaning the `meta.json` and `objects.csv` files
+ * exported by the TMS script
+ * @param {ExportConfig} searchConfig - Export configuration
+ * @throws Error if the output file cannot be opened for some reason
+ */
+class WarningReporter {
 	constructor(outputDirectory, searchConfig) {
 		this._outputDirectory = outputDirectory;
 		this._searchConfig = searchConfig;
@@ -84,6 +92,13 @@ module.exports = class WarningReporter {
 		});
 	}
 
+	/**
+	 * Call this function to process the object with the given identifier
+	 * @param {number|string} objectId - Unique identifier for collection objects
+	 * @param {ArtObject} artObject - the object itself
+	 * @param {string[]} fields - The fields that should be exported
+	 * @throws Error if writing to the CSV file fails for some reason
+	 */
 	appendFieldsForObject(objectId, artObject, fields) {
 		const desc = artObject.fullDescription;
 
@@ -100,8 +115,14 @@ module.exports = class WarningReporter {
 		}
 	}
 
+	/**
+	 * Close the `warnings.csv` output file
+	 * @throws Error if closing the file fails for some reason
+	 */
 	end() {
 		if (this._searchConfig.warnings.singletonFields) this._checkSingletonFields();
 		this._csv.end();
 	}
 };
+
+module.exports = WarningReporter;

@@ -1,5 +1,9 @@
 const fs = require('fs');
 
+/**
+ * @alias ExportMetadata~ExportStatus
+ * @enum {string}
+ */
 const ExportStatus = Object.freeze({
 	INCOMPLETE: 'INCOMPLETE',
 	CANCELLED: 'CANCELLED',
@@ -7,6 +11,11 @@ const ExportStatus = Object.freeze({
 	ERROR: 'ERROR',
 });
 
+/**
+ * Synchronizes the state of a TMS export process with a `meta.json` file.
+ * @param {string} jsonExportPath - Path where the `meta.json` file will be created
+ * @throws Error if the file cannot be created for some reason
+ */
 class ExportMetadata {
 	constructor(jsonExportPath) {
 		this._outputFilePath = jsonExportPath;
@@ -18,6 +27,7 @@ class ExportMetadata {
 		this._updateOutput();
 	}
 
+	/** @property {ExportMetadata~ExportStatus} status */
 	get status() {
 		return this._status;
 	}
@@ -29,10 +39,12 @@ class ExportMetadata {
 		}
 	}
 
+	/** @property {number} createdAt- UNIX timestamp for the start of the TMS export process */
 	get createdAt() {
 		return this._createdAt;
 	}
 
+	/** @property {number} processedObjects - Number of objects that have been exported */
 	get processedObjects() {
 		return this._processedObjects;
 	}
@@ -42,6 +54,7 @@ class ExportMetadata {
 		this._updateOutput();
 	}
 
+	/** @property {number} totalObjects - Number of objects that will be exported */
 	get totalObjects() {
 		return this._totalObjects;
 	}
@@ -55,6 +68,10 @@ class ExportMetadata {
 		fs.writeFileSync(this._outputFilePath, this.description(), 'utf8');
 	}
 
+	/**
+	 * Structured description of the current status of the TMS export
+	 * @return {object} Structured status
+	 */
 	description() {
 		const desc = {};
 		desc.status = this.status;
