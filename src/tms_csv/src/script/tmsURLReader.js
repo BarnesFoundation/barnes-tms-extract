@@ -16,6 +16,7 @@ class TMSURLReader extends TMSReader {
 		this._currentIndexOfObjectInPage = 0;
 		this._numberOfObjectsOnCurrentPage = 0;
 		this._currentPageJSON = null;
+		this.path = '';
 	}
 
 	// @property {string} collectionURL - URL of a collection within the TMS API
