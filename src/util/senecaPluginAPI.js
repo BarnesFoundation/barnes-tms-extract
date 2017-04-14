@@ -17,15 +17,15 @@ function getParamNames(func) {
   return result;
 }
 
-function getFunctionDescriptors(objClass) {
-	let descriptors = Object.getOwnPropertyDescriptors(objClass.prototype);
-	descriptors = _.filter(descriptors, (desc) => {
-		if (typeof (desc.value) !== 'function') return false;
-		if (desc.value.name === 'constructor') return false;
-		if (desc.value.name === objClass.name) return false;
+function getFunctionNames(objClass) {
+	let names = Object.getOwnPropertyNames(objClass.prototype);
+	names = _.filter(names, (name) => {
+		if (typeof (objClass.prototype[name]) !== 'function') return false;
+		if (name === 'constructor') return false;
+		if (name === objClass.name) return false;
 		return true;
 	});
-	return descriptors;
+	return names;
 }
 
 /**
@@ -72,19 +72,21 @@ class SenecaPluginAPI {
 module.exports.makeAPI = function(role, apiObjectClass) {
 	const f = function(options) {
 		const apiObject = new apiObjectClass(this, options);
-		const descriptors = getFunctionDescriptors(apiObjectClass);
+		const names = getFunctionNames(apiObjectClass);
 
-		_.forEach(descriptors, (d) => {
-			const argnames = getParamNames(d.value);
+		_.forEach(names, (n) => {
+			const func = apiObject[n];
+
+			const argnames = getParamNames(func);
 
 			const handler = (msg, done) => {
 				const args = _.at(msg, argnames);
-				Promise.resolve(d.value.apply(apiObject, args)).then((res) => {
+				Promise.resolve(func.apply(apiObject, args)).then((res) => {
 					done(res)
 				});
 			}
 
-			this.add(role, { cmd:d.value.name }, handler);
+			this.add(role, { cmd:n }, handler);
 		});
 	}
 	return f;
