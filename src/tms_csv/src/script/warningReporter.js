@@ -96,14 +96,15 @@ class WarningReporter {
 	 * Call this function to process the object with the given identifier
 	 * @param {number|string} objectId - Unique identifier for collection objects
 	 * @param {ArtObject} artObject - the object itself
-	 * @param {string[]} fields - The fields that should be exported
+	 * @param {object} description - The fields that should be exported
 	 * @throws Error if writing to the CSV file fails for some reason
 	 */
-	appendFieldsForObject(objectId, artObject, fields) {
-		const desc = artObject.fullDescription;
+	appendFieldsForObject(objectId, artObject, description) {
+		const desc = artObject.transformedDescription;
+		const mappedFields = _.mapKeys(description, this._searchConfig.transformKey.bind(this._searchConfig));
 
 		if (this._searchConfig.warnings.unusedFields) {
-			this._checkUnusedFields(desc, objectId, artObject, fields);
+			this._checkUnusedFields(desc, objectId, artObject, mappedFields);
 		}
 
 		if (this._searchConfig.warnings.singletonFields) {
@@ -111,7 +112,7 @@ class WarningReporter {
 		}
 
 		if (this._searchConfig.warnings.missingFields) {
-			this._checkMissingFields(objectId, fields);
+			this._checkMissingFields(objectId, mappedFields);
 		}
 	}
 

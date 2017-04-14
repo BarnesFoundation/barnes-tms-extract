@@ -129,8 +129,7 @@ class TMSExporter extends UpdateEmitter {
 		const name = 'objects';
 
 		const collectionFields = exportConfig.fields;
-
-		const tms = new TMSURLReader(credentials);
+		const tms = new TMSURLReader(credentials, exportConfig);
 
 		const csvFilePath = `${csvOutputDir}/${name}.csv`;
 		this._csvFilePath = csvFilePath;

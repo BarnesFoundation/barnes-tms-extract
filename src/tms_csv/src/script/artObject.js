@@ -3,17 +3,28 @@ const _ = require('lodash');
 /**
  * Thin wrapper around the JSON description of a collection object in TMS
  * @param {object} jsonDescription - JSON description as returned by the TMS API
+ * @param {ExportConfig} searchConfig - Export configuration
  */
 class ArtObject {
-	constructor(jsonDescription) {
+	constructor(jsonDescription, searchConfig) {
 		this._jsonObj = jsonDescription;
+		this._searchConfig = searchConfig;
+	}
+
+	_flattenTMSValue(desc, key) {
+		if (this._searchConfig.fieldIsMask(key)) {
+			const select = this._searchConfig.fieldMaskSelector(key);
+			return desc.value.indexOf(select) >= 0;
+		}
+		return desc.value;
 	}
 
 	/**
-	 * @property {object} fullDescription - JSON description with TMS field metadata stripped
+	 * @property {object} transformedDescription - JSON description with TMS field metadata stripped
 	 */
-	get fullDescription() {
-		return _.mapValues(this._jsonObj, 'value');
+	get transformedDescription() {
+		const updateValues = _.mapValues(this._jsonObj, this._flattenTMSValue.bind(this));
+		return _.mapKeys(updateValues, (value, key) => this._searchConfig.transformKey(key));
 	}
 
 	/**
@@ -23,11 +34,8 @@ class ArtObject {
 	 * @return {object} Selected JSON description
 	 */
 	descriptionWithFields(fields) {
-		const ret = {};
-		for (let i = 0; i < fields.length; i += 1) {
-			ret[fields[i]] = this._jsonObj[fields[i]] !== undefined ? this._jsonObj[fields[i]].value : undefined;
-		}
-		return ret;
+		const mappedFields = fields.map(this._searchConfig.transformKey.bind(this._searchConfig));
+		return _.pick(this.transformedDescription, mappedFields);
 	}
 };
 

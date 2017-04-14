@@ -9,10 +9,11 @@ const fs = require('fs');
  * @implements TMSReader
  */
 class TMSFileReader extends TMSReader {
-	constructor() {
+	constructor(searchConfig) {
 		super();
 		this._index = 0;
 		this._files = [];
+		this._searchConfig = searchConfig;
 	}
 
 	get path() {
@@ -23,7 +24,6 @@ class TMSFileReader extends TMSReader {
 		super.path = path;
 		this._index = 0;
 		this._files = fs.readdirSync(path);
-		console.log(this._files);
 	}
 
 	hasNext() {
@@ -38,7 +38,7 @@ class TMSFileReader extends TMSReader {
 				const artObjectPath = `${this.path}/${this._files[this._index]}`;
 				const description = fs.readFileSync(artObjectPath, 'utf8');
 				this._index += 1;
-				resolve(new ArtObject(description));
+				resolve(new ArtObject(description, this._searchConfig));
 			}
 		});
 	}
