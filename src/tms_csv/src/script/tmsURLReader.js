@@ -9,7 +9,7 @@ const url = require('url');
  * @implements TMSReader
  */
 class TMSURLReader extends TMSReader {
-	constructor(credentials) {
+	constructor(credentials, searchConfig) {
 		super();
 		this._credentials = credentials;
 		this._currentPageIndex = -1;
@@ -17,6 +17,7 @@ class TMSURLReader extends TMSReader {
 		this._numberOfObjectsOnCurrentPage = 0;
 		this._currentPageJSON = null;
 		this.path = '';
+		this._searchConfig = searchConfig;
 	}
 
 	// @property {string} collectionURL - URL of a collection within the TMS API
@@ -72,7 +73,8 @@ class TMSURLReader extends TMSReader {
 	_fetchArtObjectWithId(id) {
 		const requestURLString = this._urlForObjectWithId(id);
 
-		logger.info(`Fething collection object with id: ${id} at url: ${requestURLString}`);
+		// CAT -- smdh
+		logger.info(`Fetching collection object with id: ${id} at url: ${requestURLString}`);
 
 		return new Promise((resolve, reject) => {
 			const req = https.request(requestURLString, (res) => {
@@ -87,7 +89,7 @@ class TMSURLReader extends TMSReader {
 					logger.silly(`Object data: ${data}`);
 					try {
 						const artObjectDescription = JSON.parse(data);
-						resolve(new ArtObject(artObjectDescription));
+						resolve(new ArtObject(artObjectDescription, this._searchConfig));
 					} catch (e) {
 						reject(e);
 					}

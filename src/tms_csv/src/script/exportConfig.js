@@ -78,12 +78,36 @@ class ExportConfig {
 	}
 
 	/**
+	 * Whether or not the field with a given name represents a mask value
+	 * @param {string} field - the name of the field
+	 */
+	fieldIsMask(field) {
+		return this._fields[field] && this._fields[field].dataType === "mask";
+	}
+
+	/**
 	 * Whether or not the field with a given name must be included
 	 * @param {string} field - the name of the field
 	 */
 	fieldIsRequired(field) {
 		return this._fields[field] ? this._fields[field].required === true : false;
 	}
+
+	/**
+	 * Returns the mask string to select given a field name
+	 * @param {string} field - the name of the field
+	 */
+	fieldMaskSelector(field) {
+		return this.fieldIsMask(field) ? this._fields[field].select : field;
+	}
+
+	transformKey(key) {
+		if (this.fieldIsMask(key)) {
+			return this.fieldMaskSelector(key);
+		}
+		return key;
+	}
+
 };
 
 module.exports = ExportConfig;

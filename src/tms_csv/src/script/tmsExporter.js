@@ -115,7 +115,7 @@ class TMSExporter extends UpdateEmitter {
 		this._processedObjectCount = 0;
 		this._totalObjectCount = 0;
 		this._limitOutput = false;
-		this._tms = new TMSURLReader(credentials);
+		this._tms = new TMSURLReader(credentials, exportConfig);
 		this._tms.rootURL = exportConfig.apiURL;
 		logger.info(`Exporting TMS API from URL ${this._tms.collectionURL}`);
 		this._csvFilePath = `${csvOutputDir}/objects.csv`;

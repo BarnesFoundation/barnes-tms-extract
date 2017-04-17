@@ -77,6 +77,11 @@
 				},
 				{
 					"name": "provenance"
+				},
+				{
+					"name": "flags",
+					"dataType": "mask",
+					"select": "Highlight"
 				}
 			],
 			"warnings": {
