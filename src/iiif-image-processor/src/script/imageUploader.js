@@ -6,7 +6,6 @@ const { exec, execSync } = require('child_process');
 const config = require('config');
 const path = require('path');
 const s3 = require('s3');
-const AWS = require('aws-sdk');
 const csv = require('fast-csv');
 const fs = require('fs');
 const https = require('https');
@@ -32,15 +31,12 @@ class ImageUploader extends UpdateEmitter {
 		this._numImagesToProcess = 0;
 		this._currentStep = 'Not started.';
 		logger.info('creating image logger');
-		const cred = new AWS.SharedIniFileCredentials({
-			profile: 'barnes',
-		});
-		const awss3 = new AWS.S3({
-			credentials: cred,
-			region: credentials.awsRegion,
-		});
 		this._s3Client = s3.createClient({
-			s3Client: awss3,
+			s3Options: {
+				accessKeyId: credentials.awsAccessKeyId,
+				secretAccessKey: credentials.awsSecretAccessKey,
+				region: credentials.awsRegion
+			}
 		});
 		this._fetchRawImages();
 		this._fetchTiledImages();
