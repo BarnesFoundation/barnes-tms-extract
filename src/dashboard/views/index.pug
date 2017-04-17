@@ -97,6 +97,7 @@ html
 				$.ajax("./csvFiles").done(function(data) {
 					$("#csvFilesPanelBody").empty();
 					$("#csvFilesPanelBody").append(data);
+					bindESSyncButtons();
 				});
 				if (lastCSVData.active) setTimeout(fetchCSVFileInfo, 5000);
 			}
@@ -164,6 +165,19 @@ html
 				console.log("Searching for: " + query);
 				$.get(window.location.protocol + "//" + window.location.hostname + ":" + port + "/_search?pretty&q=" + query, updateSearchResults);
 			}
+
+			function bindESSyncButtons() {
+				$(".esSyncButton").click( function() {
+					$.ajax({
+						contentType: 'application/json',
+						data: JSON.stringify({ csv:this.name }),
+						dataType: 'json',
+						type: 'POST',
+						url: './sync'
+					});
+				});
+			}
+			bindESSyncButtons();
 
 			function updateSearchResults(data) {
 				$("#search_results").text(JSON.stringify(data));

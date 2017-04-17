@@ -34,3 +34,5 @@ mixin csvFilesMixin(list, desc)
 						- var synced = (file.name === desc.lastImportedCSV)
 						if (synced)
 							strong= "Synced"
+						else
+							button.esSyncButton(name=file.name)= "Sync with " + file.name
