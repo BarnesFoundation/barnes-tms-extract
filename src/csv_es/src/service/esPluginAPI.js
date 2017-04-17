@@ -12,11 +12,13 @@ const port = config.Server.port;
  * Seneca plugin for coordinating with the Elasticsearch importer
  * @see {@link ESCollection}
  * @param {string} options.host - Hostname for the Elasticsearch server
+ * @param {string} options.csvDir - Path to the root CSV export directory
  */
 class ESPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
 		this._host = options.host;
+		this._csvDir = options.csvDir;
 	}
 
 	/**
@@ -25,7 +27,7 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to a description of the Elasticsearch collection index
 	 */
 	desc() {
-		const esCollection = new ESCollection(this._host);
+		const esCollection = new ESCollection(this._host, this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
 		return esCollection.init()
 		 .then(() => esCollection.description());
@@ -34,15 +36,14 @@ class ESPluginAPI extends SenecaPluginAPI {
 	/**
 	 * Synchronizes the Elasticsearch collection index with a given CSV file
 	 * @see {@link ESCollection#syncESToCSV}
-	 * @param {string} csv - Path to the CSV file with which to synchronize
+	 * @param {string} csv - Name of the CSV export with which to sync
 	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
 	 */
 	sync(csv) {
-		const csvPath = csv;
-		const esCollection = new ESCollection(this._host);
+		const esCollection = new ESCollection(this._host, this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
 		return esCollection.init()
-		 .then(() => esCollection.syncESToCSV(csvPath))
+		 .then(() => esCollection.syncESToCSV(csv))
 		 .then(() => esCollection.description());
 	}
 }

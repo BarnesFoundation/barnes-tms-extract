@@ -26,15 +26,18 @@ const _ = require('lodash');
  * timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
  * currently synchronized with a CSV file (hasImportedCSV). The `object` type stores the collection objects
  * themselves, and will have different fields depending on the headers of the imported CSV file
+ * @param {string} esHost - Host of the running elasticsearch server
+ * @param {string} csvRootDirectory - Path to the directory containing csv_* directories with exports from TMS
  */
 class ESCollection extends UpdateEmitter {
-	constructor(esHost) {
+	constructor(esHost, csvRootDirectory) {
 		super();
 		this._didInit = false;
 		this._esHost = esHost;
 		this._client = new elasticsearch.Client({
 			host: this._esHost,
 		});
+		this._csvRootDir = csvRootDirectory;
 	}
 
 	/** @property {ESCollection~ESImportStatus} status
@@ -138,11 +141,12 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
-	 * Synchronize the elasticsearch index withe given CSV file
+	 * Synchronize the elasticsearch index with the given CSV file
 	 * @private
-	 * @param {string} Path to the CSV file with which to synchronize
+	 * @param {string} csvExport - Name of the CSV export with which to synchronize
 	 */
-	_syncESWithCSV(csvFilePath) {
+	_syncESWithCSV(csvExport) {
+		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
 		this.started();
 		csv
 			.fromPath(csvFilePath, { headers: true })
@@ -150,7 +154,7 @@ class ESCollection extends UpdateEmitter {
 				this._createDocumentWithData(data, this._client);
 			})
 			.on('end', () => {
-				this._updateMetaForCSVFile(csvFilePath).then(() => {
+				this._updateMetaForCSVFile(csvExport).then(() => {
 					logger.info('Finished export');
 					this.completed();
 				});
@@ -173,7 +177,13 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 
-	_updateESWithCSV(csvFilePath) {
+	/**
+	 * Update the elasticsearch index with the given CSV file
+	 * @private
+	 * @param {string} csvExport - Name of the CSV export
+	 */
+	_updateESWithCSV(csvExport) {
+		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
 		this.started();
 		const csvDir = path.resolve(path.dirname(csvFilePath), '..');
 		const tmpDir = tmp.dirSync();
@@ -185,7 +195,7 @@ class ESCollection extends UpdateEmitter {
 			return this._updateESWithDiffJSON(res);
 		}).then(() => {
 			logger.info('Finished import, updating index metadata');
-			return this._updateMetaForCSVFile(csvFilePath).then(() => {
+			return this._updateMetaForCSVFile(csvExport).then(() => {
 				logger.info('Index metadata updated');
 				this.completed();
 			});
@@ -217,7 +227,13 @@ class ESCollection extends UpdateEmitter {
 		return Promise.all(todos);
 	}
 
-	_updateMetaForCSVFile(csvFilePath) {
+	/**
+	 * Update the elasticsearch metadata type for the given CSV file
+	 * @private
+	 * @param {string} csvExport - Name of the CSV export
+	 */
+	_updateMetaForCSVFile(csvExport) {
+		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
 		const bn = path.dirname(csvFilePath).split(path.sep).pop();
 		const timestamp = parseInt(bn.split('_')[1]);
 		return new Promise((resolve, reject) => {
@@ -334,16 +350,17 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
-	 * Attempts to synchronize the Elasticsearch index with the given CSV file.
+	 * Attempts to synchronize the Elasticsearch index with the given CSV export
 	 * If the index has already been synchronized with a CSV file, then this function will compare the CSV
 	 * file to be imported with the previous file. Only the differences between the two will be used to
 	 * update Elasticsearch. If the previous file cannot be found, or if the two CSV files have different
 	 * headers, then the Elasticsearch index will be cleared before updating.
-	 * @param {string} csvFilePath - Path to the CSV file to synchronize with ES
+	 * @param {string} csvExport - Name of the CSV export to synchronize with ES
 	 * @return {Promise} Resolved when the synchronization is complete
 	 * @throws {ESCollectionException}
 	 */
-	syncESToCSV(csvFilePath) {
+	syncESToCSV(csvExport) {
+		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
 		if (!this._didInit) {
 			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
@@ -351,8 +368,7 @@ class ESCollection extends UpdateEmitter {
 		return this._getLastCSVName().then((res) => {
 			const canDiff = (res !== null);
 			if (canDiff) {
-				const csvDir = path.resolve(path.dirname(csvFilePath), '..');
-				const lastCSVFilePath = path.join(csvDir, res, 'objects.csv');
+				const lastCSVFilePath = path.join(this._csvRootDir, res, 'objects.csv');
 				if (!fs.existsSync(lastCSVFilePath)) {
 					logger.info("Can't find previously imported CSV --- initializing new ES index");
 					return false;
@@ -372,10 +388,10 @@ class ESCollection extends UpdateEmitter {
 		}).then((tryToDiff) => {
 			if (tryToDiff) {
 				logger.info('Updating from previously imported CSV');
-				return this._updateESWithCSV(csvFilePath);
+				return this._updateESWithCSV(csvExport);
 			}
 			logger.info(`Initializing with CSV ${csvFilePath}`);
-			return this.clearCollectionObjects().then(res => this._syncESWithCSV(csvFilePath));
+			return this.clearCollectionObjects().then(res => this._syncESWithCSV(csvExport));
 		});
 	}
 };

@@ -1,4 +1,5 @@
 const config = require('config');
+const path = require('path');
 const TMSExporter = require('../script/tmsExporter.js');
 const WebsocketUpdater = require('../../../util/websocketUpdater.js');
 const {
@@ -45,7 +46,8 @@ class TMSExportAPI extends SenecaPluginAPI {
 			this._tmsExporter.exportCSV(this._exportConfig)
 				.then((res) => {
 					if (res.status === 'COMPLETED') {
-						this.seneca.act('role:es,cmd:sync', { csv: res.csv }, (err, result) => {
+						const csv = path.basename(path.dirname(res.csv));
+						this.seneca.act('role:es,cmd:sync', { csv }, (err, result) => {
 							logger.info('ES Sync completed');
 							logger.info(result);
 						});

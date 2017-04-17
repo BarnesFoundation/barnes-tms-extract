@@ -5,7 +5,10 @@ const config = require('config');
 
 require('seneca')()
 
-  .use('./esPluginAPI.js', { host: config.Elasticsearch.host })
+  .use('./esPluginAPI.js', {
+  	host: config.Elasticsearch.host,
+  	csvDir: config.CSV.path
+  })
 
   // listen for role:math messages
   // IMPORTANT: must match client
