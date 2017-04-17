@@ -216,9 +216,9 @@ class TMSExporter extends UpdateEmitter {
 
 	_processTMS(credentials, exportConfig, csvOutputDir) {
 		return this._beginExport(credentials, exportConfig, csvOutputDir).then(() => {
-			this._processTMSHelper(credentials, exportConfig, csvOutputDir);
+			return this._processTMSHelper(credentials, exportConfig, csvOutputDir);
 		}).catch((error) => {
-			this._finishExport(exportConfig, ExportStatus.ERROR);
+			return this._finishExport(exportConfig, ExportStatus.ERROR);
 		});
 	}
 
