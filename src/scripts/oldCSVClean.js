@@ -1,10 +1,7 @@
 const fs = require('fs-extra');
 const moment = require('moment');
 const path = require('path');
-
-const argv = require('minimist')(process.argv.slice(2));
-
-const source = argv.d || path.resolve(__dirname, '../dashboard/public/output');
+const source = require('config').CSV.path;
 
 const cutoff = moment().subtract(15, 'days');
 

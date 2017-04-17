@@ -110,43 +110,42 @@ class TMSExporter extends UpdateEmitter {
 		};
 	}
 
-	_beginExport() {
+	_beginExport(credentials, exportConfig, csvOutputDir) {
 		this._active = true;
 		this._processedObjectCount = 0;
 		this._totalObjectCount = 0;
-		const exportState = {};
-
-		exportState.limitOutput = false;
-		exportState.tms = new TMSURLReader(credentials);
+		this._limitOutput = false;
+		this._tms = new TMSURLReader(credentials);
+		this._tms.rootURL = exportConfig.apiURL;
+		logger.info(`Exporting TMS API from URL ${this._tms.collectionURL}`);
 		this._csvFilePath = `${csvOutputDir}/objects.csv`;
-		this._exportMeta = new ExportMetadata(`${csvOutputDir}/meta.json`);
-		this._exportMeta.status = ExportStatus.INCOMPLETE;
 		this._csv = new CSVWriter(this._csvFilePath);
 		this._warningReporter = new WarningReporter(csvOutputDir, exportConfig);
-		if (exportConfig.debug && exportConfig.debug.limit) {
-			exportState.limitOutput = true;
-			this._totalObjectCount = exportConfig.debug.limit;
-			this._exportMeta.totalObjects = this._totalObjectCount;
-			logger.info(`Limiting output to ${exportConfig.debug.limit} entires`);
-		}
-		exportState.tms.rootURL = exportConfig.apiURL;
-		logger.info(`Exporting TMS API from URL ${exportState.tms.collectionURL}`);
+		this._exportMeta = new ExportMetadata(`${csvOutputDir}/meta.json`);
+		this._exportMeta.status = ExportStatus.INCOMPLETE;
 		this._exportMeta.processedObjects = 0;
 		this.started();
 
-		if (exportState.limitOutput) {
+		return this._countObjects(exportConfig);
+	}
+
+	_countObjects(exportConfig) {
+		if (exportConfig.debug && exportConfig.debug.limit) {
+			this._limitOutput = true;
+			this._totalObjectCount = exportConfig.debug.limit;
+			this._exportMeta.totalObjects = this._totalObjectCount;
+			logger.info(`Limiting output to ${exportConfig.debug.limit} entires`);
 			logger.info(`Processing ${this._totalObjectCount} collection objects`);
-			return Promise.resolve(exportState);
+			return Promise.resolve();
 		} else {
-			return exportState.tms.getObjectCount().then((res) => {
+			return this._tms.getObjectCount().then((res) => {
 				this._totalObjectCount = res;
 				this._exportMeta.totalObjects = this._totalObjectCount;
 				logger.info(`Processing ${this._totalObjectCount} collection objects`);
-				return exportState;
-			}, (err) => {
+			}).catch((err) => {
 				logger.error(err);
 				this._exportMeta.status = ExportStatus.ERROR;
-				return exportState;
+				return Promise.reject(error);
 			});
 		}
 	}
@@ -160,7 +159,7 @@ class TMSExporter extends UpdateEmitter {
 		this._exportMeta.status = status;
 	}
 
-	_processArtObject(credentials, exportConfig, csvOutputDir, exportState, artObject) {
+	_processArtObject(credentials, exportConfig, csvOutputDir, artObject) {
 		const id = artObject.descriptionWithFields([exportConfig.primaryKey])[exportConfig.primaryKey];
 
 		const description = artObject.descriptionWithFields(exportConfig.fields);
@@ -179,43 +178,47 @@ class TMSExporter extends UpdateEmitter {
 		}
 	}
 
-	_processTMSHelper(credentials, exportConfig, csvOutputDir, exportState) {
+	_processTMSHelper(credentials, exportConfig, csvOutputDir) {
 		if (!this._active) {
 			return this._finishExport(exportConfig, ExportStatus.CANCELLED);
 		}
 
-		return exportState.tms.hasNext().then((hasNext) => {
+		return this._tms.hasNext().then((hasNext) => {
 			if (hasNext) {
-				return exportState.tms.next();
+				return this._tms.next();
 			} else {
 				this._finishExport(exportConfig, ExportStatus.COMPLETED);
+				return null;
 			}
-		}).then((artObject) => {
-			this._processArtObject(credentials, exportConfig, csvOutputDir, exportState, artObject);
-			if (exportState.limitOutput && this._processedObjectCount >= exportConfig.debug.limit) {
-				logger.info(`Reached ${this._processedObjectCount} collection objects processed, finishing`);
-				this._finishExport(exportConfig, ExportStatus.COMPLETED);
-			} else {
-				return this._processTMSHelper(credentials, exportConfig, csvOutputDir, exportState);
-			}
-		}, (error) => {
-			logger.warn(error);
-			logger.info('Error fetching collection object, skipping');
-			return this._processTMSHelper(credentials, exportConfig, csvOutputDir, exportState);
 		}).catch((error) => {
 			logger.error(error);
 			logger.info('Error fetching collection data, finishing');
 			return this._finishExport(exportConfig, ExportStatus.ERROR);
+		}).then((artObject) => {
+			if (artObject !== null) {
+				this._processArtObject(credentials, exportConfig, csvOutputDir, artObject);
+				const reachedLimit = this._limitOutput && this._processedObjectCount >= exportConfig.debug.limit;
+				if (reachedLimit) {
+					logger.info(`Reached ${this._processedObjectCount} collection objects processed, finishing`);
+					this._finishExport(exportConfig, ExportStatus.COMPLETED);
+				} else {
+					return this._processTMSHelper(credentials, exportConfig, csvOutputDir);
+				}
+			} else {
+				logger.info('Reached the end of the collection, finishing');
+			}
+		}).catch((error) => {
+			logger.warn(error);
+			logger.info('Error fetching collection object, skipping');
+			return this._processTMSHelper(credentials, exportConfig, csvOutputDir);
 		});
 	}
 
 	_processTMS(credentials, exportConfig, csvOutputDir) {
-		this._beginExport().then((exportState) => {
-			if (this._exportMeta.status !== ExportStatus.ERROR) {
-				this._processTMSHelper(credentials, exportConfig, csvOutputDir, exportState);
-			} else {
-				this._finishExport(exportConfig, ExportStatus.ERROR);
-			}
+		return this._beginExport(credentials, exportConfig, csvOutputDir).then(() => {
+			this._processTMSHelper(credentials, exportConfig, csvOutputDir);
+		}).catch((error) => {
+			this._finishExport(exportConfig, ExportStatus.ERROR);
 		});
 	}
 
@@ -242,11 +245,12 @@ class TMSExporter extends UpdateEmitter {
 		const exportConfig = new ExportConfig(configJSON);
 
 		const outputFolderName = `csv_${new Date().getTime()}`;
+
 		const outputPath = path.join(exportConfig.outputDirectory, outputFolderName);
-		logger.info(`Creating CSV output directory ${outputPath}`);
-		fs.mkdirSync(outputPath);
 
 		logger.info(`Reading TMS API from root URL ${exportConfig.apiURL}`);
+		logger.info(`Creating CSV output directory ${outputPath}`);
+		fs.mkdirSync(outputPath);
 
 		return this._processTMS(this._credentials, exportConfig, outputPath).then(() => this.status);
 	}
