@@ -18,9 +18,18 @@ if (targetCSV === 'latest') {
 	targetCSV = getLastCompletedCSV(csvRootDir);
 }
 
-esCollection._collectionIndexExists().then((res) => {
-	console.log("Collection index: ", res);
+esCollection.clearCollectionObjects().then (() => {
+	return esCollection.syncESToCSV(targetCSV)
+}).then((res) => {
+	console.log(`Synchronizing ES to CSV ${targetCSV}`);
+	return esCollection.description();
+}).then((desc) => {
+	console.dir(desc);
 });
+
+// esCollection.description().then((desc) => {
+// 	console.dir(desc);
+// });
 
 // esCollection.description().then(() => {
 // 	console.log("Getting description");

@@ -79,9 +79,10 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	_createCollectionIndex() {
+		return Promise.resolve(); // no-op, for now
 		return this._client.indices.createAsync({
 			index: 'collection',
-			body: require('mapping.json')
+			body: require('./mapping.json')
 		});
 	}
 
@@ -128,7 +129,7 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	_deleteCollectionIndex() {
-		return this._client.collectionIndexExists().then((res) => {
+		return this._collectionIndexExists().then((res) => {
 			if (res) {
 				return this._client.indices.deleteAsync({ index: 'collection' });
 			}
@@ -160,7 +161,7 @@ class ESCollection extends UpdateEmitter {
 			id: 1,
 		}).then((res) => {
 			if (res._source.hasImportedCSV === false) return null;
-			return `csv_${response._source.lastCSVImportTimestamp}`;
+			return `csv_${res._source.lastCSVImportTimestamp}`;
 		});
 	}
 
@@ -203,17 +204,24 @@ class ESCollection extends UpdateEmitter {
 	_syncESWithCSV(csvExport) {
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
 		this.started();
-		csv
-			.fromPath(csvFilePath, { headers: true })
-			.on('data', (data) => {
-				this._createDocumentWithData(data, this._client);
-			})
-			.on('end', () => {
-				this._updateMetaForCSVFile(csvExport).then(() => {
-					logger.info('Finished export');
-					this.completed();
-				});
-			});
+		return new Promise((resolve, reject) => {
+			try {
+				csv
+					.fromPath(csvFilePath, { headers: true })
+					.on('data', (data) => {
+						this._createDocumentWithData(data, this._client);
+					})
+					.on('end', () => {
+						this._updateMetaForCSVFile(csvExport).then(() => {
+							logger.info('Finished export');
+							this.completed();
+							resolve();
+						});
+					});
+			} catch (e) {
+				reject(e);
+			}
+		});
 	}
 
 	_updateDocumentWithData(docId, data) {
@@ -300,45 +308,66 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
+	 * Removes all objects from the collections index and resets the meta document
+	 * @return {Promise} Resolves to a description of the Elasticsearch index
+	 */
+	clearCollectionObjects() {
+		return this._collectionIndexExists().then((res) => {
+			if (res) {
+				return this._client.updateAsync({
+					index: 'collection',
+					type: 'meta',
+					id: 1,
+					body: {
+						doc: {
+							hasImportedCSV: false,
+							lastCSVImportTimestamp: 0,
+						},
+					},
+				}).then((res) => {
+					return this._client.deleteByQueryAsync({
+						conflicts: 'proceed',
+						index: 'collection',
+						type: 'object',
+						body: {
+							query: {
+								match_all: {},
+							},
+						},
+					});
+				});
+			}
+		});
+	}
+
+	/**
 	 * Returns a description of the Elasticsearch index.
 	 * @return {Promise} Resolves to a description of the Elasticsearch index
 	 */
 	description() {
-		return this.collectionIndexExists().then((res) => {
+		return this._collectionIndexExists().then((res) => {
 			if (!res) {
 				return { status: 'uninitialized' };
 			} else {
-				const metaGetter = new Promise((resolve, reject) => {
-					this._client.get({
-						index: 'collection',
-						type: 'meta',
-						id: 1,
-					}, (error, response) => {
-						if (error) {
-							reject(error);
-						} else {
-							resolve({
-								hasImportedCSV: response._source.hasImportedCSV,
-								lastCSVImportTimestamp: response._source.lastCSVImportTimestamp,
-								lastImportedCSV: response._source.hasImportedCSV ? `csv_${response._source.lastCSVImportTimestamp}` : null,
-							});
-						}
-					});
+				const metaGetter = this._client.getAsync({
+					index: 'collection',
+					type: 'meta',
+					id: 1,
+				}).then((response) => {
+					return {
+						hasImportedCSV: response._source.hasImportedCSV,
+						lastCSVImportTimestamp: response._source.lastCSVImportTimestamp,
+						lastImportedCSV: response._source.hasImportedCSV ? `csv_${response._source.lastCSVImportTimestamp}` : null,
+					};
 				});
 
-				const countGetter = new Promise((resolve, reject) => {
-					this._client.count({
-						index: 'collection',
-						type: 'object',
-					}, (error, response) => {
-						if (error) {
-							reject(error);
-						} else {
-							resolve({
-							count: response.count || 0,
-						});
-						}
-					});
+				const countGetter = this._client.countAsync({
+					index: 'collection',
+					type: 'object',
+				}).then((response) => {
+					return {
+						count: response.count || 0
+					}
 				});
 
 				return Promise.all([metaGetter, countGetter]).then((res) => {
@@ -377,7 +406,7 @@ class ESCollection extends UpdateEmitter {
 			if (canDiff) {
 				const lastCSVFilePath = path.join(this._csvRootDir, lastCSVName, 'objects.csv');
 				if (!fs.existsSync(lastCSVFilePath)) {
-					logger.info("Can't find previously imported CSV --- importing all objects from " + lastCSVName);
+					logger.info("Can't find previously imported CSV --- importing all objects from " + csvExport);
 					return false;
 				}
 
@@ -390,7 +419,7 @@ class ESCollection extends UpdateEmitter {
 					return res;
 				});
 			}
-			logger.info('No previous CSV file has been imported --- importing all objects from ' + lastCSVName);
+			logger.info('No previous CSV file has been imported --- importing all objects from ' + csvExport);
 			return false;
 		}).then((tryToDiff) => {
 			if (tryToDiff) {
