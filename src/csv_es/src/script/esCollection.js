@@ -6,6 +6,7 @@ const {
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 
 const csv = require('fast-csv');
+const Promise = require('bluebird');
 const elasticsearch = require('elasticsearch');
 const fs = require('fs');
 const path = require('path');
@@ -32,13 +33,14 @@ const _ = require('lodash');
 class ESCollection extends UpdateEmitter {
 	constructor(esHost, csvRootDirectory) {
 		super();
-		this._didInit = false;
 		this._esHost = esHost;
 		this._client = new elasticsearch.Client({
 			host: this._esHost,
 		});
+		Promise.promisifyAll(this._client);
+		Promise.promisifyAll(this._client.cat);
+		Promise.promisifyAll(this._client.indices);
 		this._csvRootDir = csvRootDirectory;
-		this._didInit = true;
 	}
 
 	/** @property {ESCollection~ESImportStatus} status
@@ -49,75 +51,54 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
+	 * Whether or not the collection index exists
+	 * @private
+	 */
+	_collectionIndexExists() {
+		return this._client.indices.existsAsync({
+			index: 'collection'
+		});
+	}
+
+	/**
 	 * Check whether or not the collection metadata exists
 	 * @private
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	_collectionMetadataExists() {
-		return new Promise((resolve, reject) => {
-			this._client.exists({
-				index: 'collection',
-				type: 'meta',
-				id: 1,
-			}, (error, exists) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(exists);
-				}
-			});
+		return this._client.existsAsync({
+			index: 'collection',
+			type: 'meta',
+			id: 1
 		});
 	}
 
 	/**
-	 * Configures the index for the collection
+	 * Creates the index for the collection
 	 * @private
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
-	_configureCollectionIndex() {
-		return new Promise((resolve, reject) => {
-			this._client.indices.create({
-				index: 'collection',
-				body: {
-					settings: {
-						index: {
-							number_of_shards: 5,
-							number_of_replicas: 5
-						}
-					}
-				}
-			}, (error, response) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(error);
-				}
-			});
+	_createCollectionIndex() {
+		return this._client.indices.createAsync({
+			index: 'collection',
+			body: require('mapping.json')
 		});
 	}
 
 	/**
-	 * Creates a meta type for the collection index, if necessary
+	 * Creates a meta type for the collection index
 	 * @private
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	_createCollectionMetadata() {
-		return new Promise((resolve, reject) => {
-			this._client.create({
-				index: 'collection',
-				type: 'meta',
-				id: 1,
-				body: {
-					hasImportedCSV: false,
-					lastCSVImportTimestamp: 0,
-				},
-			}, (error, response) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(error);
-				}
-			});
+		return this._client.createAsync({
+			index: 'collection',
+			type: 'meta',
+			id: 1,
+			body: {
+				hasImportedCSV: false,
+				lastCSVImportTimestamp: 0
+			}
 		});
 	}
 
@@ -134,52 +115,83 @@ class ESCollection extends UpdateEmitter {
 			if (v === '') return null;
 			return v;
 		});
-		return new Promise((resolve, reject) => {
-			this._client.create({
-				index: 'collection',
-				type: 'object',
-				id: dataCopy.id,
-				body: dataCopy,
-			}, (error, response) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(response);
-				}
-			});
+		return this._client.createAsync({
+			index: 'collection',
+			type: 'object',
+			id: dataCopy.id,
+			body: dataCopy,
 		});
 	}
 
+	/**
+	 * Removes the collection index
+	 * @return {Promise} Resolved when the elasticsearch request completes
+	 */
+	_deleteCollectionIndex() {
+		return this._client.collectionIndexExists().then((res) => {
+			if (res) {
+				return this._client.indices.deleteAsync({ index: 'collection' });
+			}
+		});
+	}
+
+	/**
+	 * Delete a document by id
+	 * @private
+	 * @param {number} docId - ID of the document to delete
+	 * @return {Promise} Resolved when the elasticsearch request completes
+	 */
 	_deleteDocumentWithId(docId) {
-		return new Promise((resolve, reject) => {
-			this._client.delete({
-				index: 'collection',
-				type: 'object',
-				id: docId,
-			}, (error, response) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(response);
-				}
-			});
+		return this._client.deleteAsync({
+			index: 'collection',
+			type: 'object',
+			id: docId,
 		});
 	}
 
+	/**
+	 * Get the name of the last CSV to be imported
+	 * @private
+	 */
 	_getLastCSVName() {
-		return new Promise((resolve, reject) => {
-			this._client.get({
-				index: 'collection',
-				type: 'meta',
-				id: 1,
-			}, (error, response) => {
-				if (error) {
-					reject(error);
-				} else {
-					if (response._source.hasImportedCSV === false) resolve(null);
-					resolve(`csv_${response._source.lastCSVImportTimestamp}`);
-				}
-			});
+		return this._client.getAsync({
+			index: 'collection',
+			type: 'meta',
+			id: 1,
+		}).then((res) => {
+			if (res._source.hasImportedCSV === false) return null;
+			return `csv_${response._source.lastCSVImportTimestamp}`;
+		});
+	}
+
+	/**
+	 * Whether or not the index is ready to sync with a CSV. Checks if the index exists
+	 * and whether the meta object exists
+	 * @return {Promise} Resolved when the elasticsearch request complete, result is whether the index is ready
+	 */
+	_isIndexReadyForSync() {
+		return this._collectionIndexExists().then((res) => {
+			if (!res) return false;
+			return this._collectionMetadataExists();
+		});
+	}
+
+	/**
+	 * Creates the index if it doesn't exists, and creates the meta object if it doesn't exist
+	 * @private
+	 * @return {Promise} Resolved when the elasticsearch request complete
+	 */
+	_prepareIndexForSync() {
+		return this._collectionIndexExists().then((res) => {
+			if (!res) {
+				return this._createCollectionIndex();
+			}
+		}).then(() => {
+			return this._collectionMetadataExists();
+		}).then((res) => {
+			if (!res) {
+				return this._createCollectionMetadata();
+			}
 		});
 	}
 
@@ -205,21 +217,13 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	_updateDocumentWithData(docId, data) {
-		return new Promise((resolve, reject) => {
-			this._client.update({
-				index: 'collection',
-				type: 'object',
-				id: docId,
-				body: {
-					doc: data,
-				},
-			}, (error, response) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(response);
-				}
-			});
+		return this._client.updateAsync({
+			index: 'collection',
+			type: 'object',
+			id: docId,
+			body: {
+				doc: data,
+			},
 		});
 	}
 
@@ -282,95 +286,16 @@ class ESCollection extends UpdateEmitter {
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
 		const bn = path.dirname(csvFilePath).split(path.sep).pop();
 		const timestamp = parseInt(bn.split('_')[1]);
-		return new Promise((resolve, reject) => {
-			this._client.update({
-				index: 'collection',
-				type: 'meta',
-				id: 1,
-				body: {
-					doc: {
-						hasImportedCSV: true,
-						lastCSVImportTimestamp: timestamp,
-					},
+		return this._client.updateAsync({
+			index: 'collection',
+			type: 'meta',
+			id: 1,
+			body: {
+				doc: {
+					hasImportedCSV: true,
+					lastCSVImportTimestamp: timestamp,
 				},
-			}, (error, response) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(response);
-				}
-			});
-		});
-	}
-
-	/**
-	 * Remove all collection objects from the collection index and the object type
-	 * @return {Promise} Resolved when the elasticsearch request completes
-	 */
-	clearCollectionObjects() {
-		if (!this._didInit) {
-			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
-		}
-		return new Promise((resolve, reject) => {
-			this._client.indices.delete({
-				index: 'collection'
-			}, (error, response) => {
-				if (error) console.log(error);
-				resolve(response);
-				// if (error) {
-				// 	reject(error);
-				// } else {
-				// 	resolve(response);
-				// }
-			});
-		});
-		// 	this._client.update({
-		// 		index: 'collection',
-		// 		type: 'meta',
-		// 		id: 1,
-		// 		body: {
-		// 			doc: {
-		// 				hasImportedCSV: false,
-		// 				lastCSVImportTimestamp: 0,
-		// 			},
-		// 		},
-		// 	}, (error, response) => {
-		// 		if (error) reject(error);
-		// 		this._client.deleteByQuery({
-		// 			conflicts: 'proceed',
-		// 			index: 'collection',
-		// 			type: 'object',
-		// 			body: {
-		// 				query: {
-		// 					match_all: {},
-		// 				},
-		// 			},
-		// 		}, (error, response) => {
-		// 			if (error) reject(error);
-		// 			resolve(response);
-		// 		});
-		// 	});
-		// });
-	}
-
-	/**
-	 * Whether or not the 'collection' index exists
-	 * @return {Promise} Resolves to a description of the Elasticsearch index
-	 */
-	collectionIndexExists() {
-		if (!this._didInit) {
-			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
-		}
-		return new Promise((resolve, reject) => {
-			this._client.indices.exists({
-				index: 'collection'
-			}, (error, response) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve(response);
-				}
-			});
+			},
 		});
 	}
 
@@ -379,10 +304,6 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolves to a description of the Elasticsearch index
 	 */
 	description() {
-		if (!this._didInit) {
-			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
-		}
-
 		return this.collectionIndexExists().then((res) => {
 			if (!res) {
 				return { status: 'uninitialized' };
@@ -429,19 +350,11 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
-	 * Must be called before trying to interact with the ES collection index. This
-	 * will prepare the index by, for example, adding the collection metadata
+	 * Public wrapper for _prepareIndexForSync, which creates the index and metadata document
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
-	init() {
-		this._didInit = true;
-		return this._collectionMetadataExists().then((exists) => {
-			if (!exists) {
-				return this._createCollectionMetadata();
-			}
-		}, (error) => {
-			throw error;
-		});
+	initialize() {
+		return this._prepareIndexForSync();
 	}
 
 	/**
@@ -456,16 +369,15 @@ class ESCollection extends UpdateEmitter {
 	 */
 	syncESToCSV(csvExport) {
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
-		if (!this._didInit) {
-			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
-		}
-		// TODO: Throw an error if you can't find this CSV
-		return this._getLastCSVName().then((res) => {
-			const canDiff = (res !== null);
+
+		return this._prepareIndexForSync().then(() => {
+			return this._getLastCSVName();
+		}).then((lastCSVName) => {
+			const canDiff = (lastCSVName !== null);
 			if (canDiff) {
-				const lastCSVFilePath = path.join(this._csvRootDir, res, 'objects.csv');
+				const lastCSVFilePath = path.join(this._csvRootDir, lastCSVName, 'objects.csv');
 				if (!fs.existsSync(lastCSVFilePath)) {
-					logger.info("Can't find previously imported CSV --- initializing new ES index");
+					logger.info("Can't find previously imported CSV --- importing all objects from " + lastCSVName);
 					return false;
 				}
 
@@ -478,7 +390,7 @@ class ESCollection extends UpdateEmitter {
 					return res;
 				});
 			}
-			logger.info('No previous CSV file has been imported --- initializing new ES index');
+			logger.info('No previous CSV file has been imported --- importing all objects from ' + lastCSVName);
 			return false;
 		}).then((tryToDiff) => {
 			if (tryToDiff) {

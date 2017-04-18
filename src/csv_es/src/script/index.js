@@ -18,27 +18,31 @@ if (targetCSV === 'latest') {
 	targetCSV = getLastCompletedCSV(csvRootDir);
 }
 
-esCollection.description().then(() => {
-	console.log("Getting description");
-	return esCollection.description();
-}).then((res) => {
-	console.log(res);
-	console.log("Checking if the collection index exists");
-	return esCollection.collectionIndexExists();
-}).then((res) => {
-	if (res) {
-		console.log("Collection index exists --- deleting");
-		return esCollection.clearCollectionObjects();
-	} else {
-		console.log("Collection index does not exist");
-		return Promise.resolve({});
-	}
-}).then((res) => {
-	console.log("Creating the collection index");
-	return esCollection._configureCollectionIndex();
-}).then((res) => {
-	console.log(res);
+esCollection._collectionIndexExists().then((res) => {
+	console.log("Collection index: ", res);
 });
+
+// esCollection.description().then(() => {
+// 	console.log("Getting description");
+// 	return esCollection.description();
+// }).then((res) => {
+// 	console.log(res);
+// 	console.log("Checking if the collection index exists");
+// 	return esCollection.collectionIndexExists();
+// }).then((res) => {
+// 	if (res) {
+// 		console.log("Collection index exists --- deleting");
+// 		return esCollection.clearCollectionObjects();
+// 	} else {
+// 		console.log("Collection index does not exist");
+// 		return Promise.resolve({});
+// 	}
+// }).then((res) => {
+// 	console.log("Creating the collection index");
+// 	return esCollection._configureCollectionIndex();
+// }).then((res) => {
+// 	console.log(res);
+// });
 // }).then((res) => {
 // 	console.log("Creating the collection metadata");
 // 	return esCollection._createCollectionMetadata();
