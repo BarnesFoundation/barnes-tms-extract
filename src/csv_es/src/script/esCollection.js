@@ -38,6 +38,7 @@ class ESCollection extends UpdateEmitter {
 			host: this._esHost,
 		});
 		this._csvRootDir = csvRootDirectory;
+		this._didInit = true;
 	}
 
 	/** @property {ESCollection~ESImportStatus} status
@@ -59,8 +60,38 @@ class ESCollection extends UpdateEmitter {
 				type: 'meta',
 				id: 1,
 			}, (error, exists) => {
-				if (error) reject(error);
-				resolve(exists);
+				if (error) {
+					reject(error);
+				} else {
+					resolve(exists);
+				}
+			});
+		});
+	}
+
+	/**
+	 * Configures the index for the collection
+	 * @private
+	 * @return {Promise} Resolved when the elasticsearch request completes
+	 */
+	_configureCollectionIndex() {
+		return new Promise((resolve, reject) => {
+			this._client.indices.create({
+				index: 'collection',
+				body: {
+					settings: {
+						index: {
+							number_of_shards: 5,
+							number_of_replicas: 5
+						}
+					}
+				}
+			}, (error, response) => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve(error);
+				}
 			});
 		});
 	}
@@ -81,8 +112,11 @@ class ESCollection extends UpdateEmitter {
 					lastCSVImportTimestamp: 0,
 				},
 			}, (error, response) => {
-				if (error) reject(error);
-				resolve(error);
+				if (error) {
+					reject(error);
+				} else {
+					resolve(error);
+				}
 			});
 		});
 	}
@@ -107,8 +141,11 @@ class ESCollection extends UpdateEmitter {
 				id: dataCopy.id,
 				body: dataCopy,
 			}, (error, response) => {
-				if (error) reject(error);
-				resolve(response);
+				if (error) {
+					reject(error);
+				} else {
+					resolve(response);
+				}
 			});
 		});
 	}
@@ -120,8 +157,11 @@ class ESCollection extends UpdateEmitter {
 				type: 'object',
 				id: docId,
 			}, (error, response) => {
-				if (error) reject(error);
-				resolve(response);
+				if (error) {
+					reject(error);
+				} else {
+					resolve(response);
+				}
 			});
 		});
 	}
@@ -133,9 +173,12 @@ class ESCollection extends UpdateEmitter {
 				type: 'meta',
 				id: 1,
 			}, (error, response) => {
-				if (error) reject(error);
-				if (response._source.hasImportedCSV === false) resolve(null);
-				resolve(`csv_${response._source.lastCSVImportTimestamp}`);
+				if (error) {
+					reject(error);
+				} else {
+					if (response._source.hasImportedCSV === false) resolve(null);
+					resolve(`csv_${response._source.lastCSVImportTimestamp}`);
+				}
 			});
 		});
 	}
@@ -171,8 +214,11 @@ class ESCollection extends UpdateEmitter {
 					doc: data,
 				},
 			}, (error, response) => {
-				if (error) reject(error);
-				resolve(response);
+				if (error) {
+					reject(error);
+				} else {
+					resolve(response);
+				}
 			});
 		});
 	}
@@ -248,8 +294,11 @@ class ESCollection extends UpdateEmitter {
 					},
 				},
 			}, (error, response) => {
-				if (error) reject(error);
-				resolve(response);
+				if (error) {
+					reject(error);
+				} else {
+					resolve(response);
+				}
 			});
 		});
 	}
@@ -263,31 +312,64 @@ class ESCollection extends UpdateEmitter {
 			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
 		return new Promise((resolve, reject) => {
-			this._client.update({
-				index: 'collection',
-				type: 'meta',
-				id: 1,
-				body: {
-					doc: {
-						hasImportedCSV: false,
-						lastCSVImportTimestamp: 0,
-					},
-				},
+			this._client.indices.delete({
+				index: 'collection'
 			}, (error, response) => {
-				if (error) reject(error);
-				this._client.deleteByQuery({
-					conflicts: 'proceed',
-					index: 'collection',
-					type: 'object',
-					body: {
-						query: {
-							match_all: {},
-						},
-					},
-				}, (error, response) => {
-					if (error) reject(error);
+				if (error) console.log(error);
+				resolve(response);
+				// if (error) {
+				// 	reject(error);
+				// } else {
+				// 	resolve(response);
+				// }
+			});
+		});
+		// 	this._client.update({
+		// 		index: 'collection',
+		// 		type: 'meta',
+		// 		id: 1,
+		// 		body: {
+		// 			doc: {
+		// 				hasImportedCSV: false,
+		// 				lastCSVImportTimestamp: 0,
+		// 			},
+		// 		},
+		// 	}, (error, response) => {
+		// 		if (error) reject(error);
+		// 		this._client.deleteByQuery({
+		// 			conflicts: 'proceed',
+		// 			index: 'collection',
+		// 			type: 'object',
+		// 			body: {
+		// 				query: {
+		// 					match_all: {},
+		// 				},
+		// 			},
+		// 		}, (error, response) => {
+		// 			if (error) reject(error);
+		// 			resolve(response);
+		// 		});
+		// 	});
+		// });
+	}
+
+	/**
+	 * Whether or not the 'collection' index exists
+	 * @return {Promise} Resolves to a description of the Elasticsearch index
+	 */
+	collectionIndexExists() {
+		if (!this._didInit) {
+			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
+		}
+		return new Promise((resolve, reject) => {
+			this._client.indices.exists({
+				index: 'collection'
+			}, (error, response) => {
+				if (error) {
+					reject(error);
+				} else {
 					resolve(response);
-				});
+				}
 			});
 		});
 	}
@@ -300,37 +382,50 @@ class ESCollection extends UpdateEmitter {
 		if (!this._didInit) {
 			throw new this.constructor.ESCollectionException('Must call init() before interacting with ESCollection object');
 		}
-		const metaGetter = new Promise((resolve, reject) => {
-			this._client.get({
-				index: 'collection',
-				type: 'meta',
-				id: 1,
-			}, (error, response) => {
-				if (error) reject(error);
-				resolve({
-					hasImportedCSV: response._source.hasImportedCSV,
-					lastCSVImportTimestamp: response._source.lastCSVImportTimestamp,
-					lastImportedCSV: response._source.hasImportedCSV ? `csv_${response._source.lastCSVImportTimestamp}` : null,
-				});
-			});
-		});
 
-		const countGetter = new Promise((resolve, reject) => {
-			this._client.count({
-				index: 'collection',
-				type: 'object',
-			}, (error, response) => {
-				if (error) reject(error);
-				resolve({
-					count: response.count || 0,
+		return this.collectionIndexExists().then((res) => {
+			if (!res) {
+				return { status: 'uninitialized' };
+			} else {
+				const metaGetter = new Promise((resolve, reject) => {
+					this._client.get({
+						index: 'collection',
+						type: 'meta',
+						id: 1,
+					}, (error, response) => {
+						if (error) {
+							reject(error);
+						} else {
+							resolve({
+								hasImportedCSV: response._source.hasImportedCSV,
+								lastCSVImportTimestamp: response._source.lastCSVImportTimestamp,
+								lastImportedCSV: response._source.hasImportedCSV ? `csv_${response._source.lastCSVImportTimestamp}` : null,
+							});
+						}
+					});
 				});
-			});
-		});
 
-		return Promise.all([metaGetter, countGetter]).then((res) => {
-			const [meta, count] = res;
-			return Object.assign({}, meta, count);
-		});
+				const countGetter = new Promise((resolve, reject) => {
+					this._client.count({
+						index: 'collection',
+						type: 'object',
+					}, (error, response) => {
+						if (error) {
+							reject(error);
+						} else {
+							resolve({
+							count: response.count || 0,
+						});
+						}
+					});
+				});
+
+				return Promise.all([metaGetter, countGetter]).then((res) => {
+					const [meta, count] = res;
+					return Object.assign({}, meta, count);
+				});
+			}
+		})
 	}
 
 	/**
