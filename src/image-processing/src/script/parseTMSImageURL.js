@@ -4,8 +4,11 @@ const https = require('https');
 const path = require('path');
 const url = require('url');
 
+const logger = require('../script/imageLogger.js');
+
 function parsePageData(data) {
 	const $ = cheerio.load(data);
+	logger.info("Parsing tms image page");
 	const retVal = [];
 	$('tr').each(function (idx) {
 		if (idx > 0) {
@@ -29,6 +32,7 @@ function parsePageData(data) {
 		images: retVal,
 	};
 
+	logger.info("Got the data");
 	return o;
 }
 
@@ -45,6 +49,7 @@ function parseTMSImageURL(tmsurl) {
 				try {
 					resolve(parsePageData(data));
 				} catch (e) {
+					logger.warn("Page parse error " + e);
 					reject(e);
 				}
 			});

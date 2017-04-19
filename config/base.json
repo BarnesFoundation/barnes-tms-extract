@@ -7,7 +7,7 @@
 		"log": "src/csv_es/logs/all-logs.log"
 	},
 	"Images": {
-		"log": "src/iiif-image-processor/logs/all-logs.log"
+		"log": "src/image-processing/logs/all-logs.log"
 	},
 	"Server": {
 		"port": 3000

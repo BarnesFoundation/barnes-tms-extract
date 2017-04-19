@@ -3,7 +3,7 @@ const shell = require('shelljs');
 
 const output = shell.exec('which bash');
 const bashPath = output.stdout.trim();
-const reqPath = path.resolve(__dirname, '../py_csv_diff/requirements.txt');
+const reqPath = path.resolve(__dirname, '../python_scripts/requirements.txt');
 
 shell.echo('Creating tmsdiff Python environment');
 shell.exec('conda create -n tmsdiff -yq', { shell: bashPath });
