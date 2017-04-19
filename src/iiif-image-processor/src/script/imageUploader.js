@@ -1,6 +1,7 @@
 const logger = require('../script/imageLogger.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
+const parseTMSImageURL = require('./parseTMSImageURL.js');
 
 const { exec, execSync } = require('child_process');
 const config = require('config');
@@ -172,17 +173,10 @@ class ImageUploader extends UpdateEmitter {
 
 	_fetchAvailableImages() {
 		logger.info('Starting fetch available images.');
-		const getImageUrlPath = path.resolve(__dirname, './getImageUrls.js');
 		const outputPath = path.resolve(__dirname, '../../names.json');
 		const url = credentials.barnesImagesUrl;
-		const cmd = `phantomjs --ignore-ssl-errors=true --ssl-protocol=tlsv1 --web-security=false ${getImageUrlPath} ${url} ${outputPath}`;
-		return new Promise((resolve) => {
-			const phantom = exec(cmd, () => {
-				this._isInitialized = true;
-				this._availableImages = require('../../names.json').images; // eslint-disable-line
-				resolve();
-			});
-			phantom.stdout.pipe(process.stdout);
+		return parseTMSImageURL(url).then((res) => {
+			fs.writeFileSync(outputPath, JSON.stringify(res));
 		});
 	}
 
