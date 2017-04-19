@@ -29,8 +29,7 @@ class ESPluginAPI extends SenecaPluginAPI {
 	desc() {
 		const esCollection = new ESCollection(this._host, this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		return esCollection.init()
-		 .then(() => esCollection.description());
+		return esCollection.description();
 	}
 
 	/**
@@ -42,8 +41,7 @@ class ESPluginAPI extends SenecaPluginAPI {
 	sync(csv) {
 		const esCollection = new ESCollection(this._host, this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		return esCollection.init()
-		 .then(() => esCollection.syncESToCSV(csv))
+		return esCollection.syncESToCSV(csv)
 		 .then(() => esCollection.description());
 	}
 }
