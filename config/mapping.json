@@ -1,0 +1,160 @@
+{
+	"settings": {
+		"number_of_shards": 5,
+		"number_of_replicas": 1,
+		"analysis": {
+			"filter": {
+				"english_stop": {
+					"type":				"stop",
+					"stopwords":	"_english_"
+				},
+				"english_stemmer": {
+					"type":				"stemmer",
+					"language":		"english"
+				},
+				"period_stop": {
+					"type":				"stop",
+					"stopwords":	["possibly"]
+				}
+			},
+			"analyzer": {
+				"html_description_analyzer": {
+					"type": "custom",
+					"char_filter": "html_strip",
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"english_stop",
+						"english_stemmer"
+					]
+				},
+				"lowercase_keyword_analyzer": {
+					"type": "custom",
+					"tokenizer": "keyword",
+					"filter": [
+						"lowercase"
+					]
+				},
+				"medium_analyzer": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"english_stop"
+					]
+				},
+				"period_analyzer": {
+					"type": "custom",
+					"tokenizer": "keyword",
+					"filter": [
+						"lowercase",
+						"period_stop"
+					]
+				},
+				"text_description_analyzer": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"english_stop",
+						"english_stemmer"
+					]
+				}
+			}
+		}
+	},
+	"mappings": {
+		"meta": {
+			"properties":{
+				"hasImportedCSV": { "type": "boolean", "index": false, "include_in_all": false },
+				"lastCSVImportTimestamp": { "type": "long", "index": false, "include_in_all": false }
+			}
+		},
+		"object": {
+			"dynamic": false,
+			"properties": {
+				"bibliography": { "type": "text" },
+				"classification": { "type": "keyword" },
+				"copyright": {
+					"type": "text",
+					"fields": {
+						"keyword": { "type": "text", "analyzer": "keyword" }
+					}
+				},
+				"culture": {
+					"type": "text",
+					"fields": {
+						"keyword": { "type": "text", "analyzer": "keyword" }
+					}
+				},
+				"description": {
+					"type": "text",
+					"fields": {
+						"text": { "type": "text", "analyzer": "text_description_analyzer" }
+					}
+				},
+				"dimensions": { "type": "keyword", "index": false },
+				"displayDate": {
+					"type": "text",
+					"analyzer": "keyword",
+					"index": false
+				},
+				"exhHistory": {
+					"type": "text",
+					"fields": {
+						"text": { "type": "text", "analyzer": "text_description_analyzer" }
+					}
+				},
+				"highlight": { "type": "boolean" },
+				"id": { "type": "long" },
+				"invno": { "type": "keyword" },
+				"locations": { "type": "keyword", "index": false },
+				"longDescription": {
+					"type": "text",
+					"fields": {
+						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+					}
+				},
+				"medium": {
+					"type": "text",
+					"fields": {
+						"text": { "type": "text", "analyzer": "medium_analyzer" }
+					}
+				},
+				"objRightsTypeId": { "type": "long" },
+				"onView": { "type": "boolean" },
+				"people": {
+					"type": "text",
+					"fields": {
+						"keyword": { "type": "text", "analyzer": "keyword" }
+					}
+				},
+				"period": {
+					"type": "text",
+					"analyzer": "period_analyzer"
+				},
+				"room": { "type": "text", "analyzer": "lowercase_keyword_analyzer" },
+				"shortDescription": {
+					"type": "text",
+					"fields": {
+						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+					}
+				},
+				"provenance": { "type": "text" },
+				"title": {
+					"type": "text",
+					"fields": {
+						"keyword": { "type": "text", "analyzer": "keyword" }
+					}
+				},
+				"wall": { "type": "keyword" },
+				"visualDescription": {
+					"type": "text",
+					"fields": {
+						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+					}
+				}
+			}
+		}
+	}
+}

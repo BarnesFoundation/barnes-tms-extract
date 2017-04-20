@@ -4,7 +4,6 @@
 			"apiURL": "https://emuseum.barnesfoundation.org",
 			"outputDirectory": "src/dashboard/public/output",
 			"debug": {
-				"limit": 100
 			},
 			"fields": [
 				{
@@ -80,9 +79,14 @@
 					"name": "provenance"
 				},
 				{
+					"name": "objRightsTypeId",
+					"required": true
+				},
+				{
 					"name": "flags",
 					"dataType": "mask",
-					"select": "Highlight"
+					"select": "Highlight",
+					"alias": "highlight"
 				}
 			],
 			"warnings": {

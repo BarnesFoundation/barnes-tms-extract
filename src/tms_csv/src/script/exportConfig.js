@@ -59,6 +59,11 @@ class ExportConfig {
 		return this._config.outputDirectory;
 	}
 
+	// @property {string} outputHeaders - Headers for the output CSV
+	get outputHeaders() {
+		return _.keys(this._fields).map((key) => this.transformKey(key));
+	}
+
 	// @property {string} primaryKey - Field name to use as a unique identifier for each TMS collection object
 	get primaryKey() {
 		return this._primaryKey;
@@ -67,6 +72,14 @@ class ExportConfig {
 	// @property {string} warnings - Which warnings to emit
 	get warnings() {
 		return this._config.warnings;
+	}
+
+	/**
+	 * Whether or not the field with the given name will have an aliased name in the export
+	 * @param {string} field - the name of the field
+	 */
+	fieldHasAlias(field) {
+		return this._fields[field] ? this._fields[field].alias !== undefined : false;
 	}
 
 	/**
@@ -102,8 +115,8 @@ class ExportConfig {
 	}
 
 	transformKey(key) {
-		if (this.fieldIsMask(key)) {
-			return this.fieldMaskSelector(key);
+		if (this.fieldHasAlias(key)) {
+			return this._fields[key].alias;
 		}
 		return key;
 	}

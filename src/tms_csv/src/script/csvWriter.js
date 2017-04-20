@@ -9,10 +9,10 @@ const csv = require('fast-csv');
  * @throws Error if the file cannot be created or opened for some reason
  */
 class CSVWriter {
-	constructor(path) {
+	constructor(path, headers) {
 		logger.info(`Opening CSV file at ${path}`);
 		this._path = path;
-		this._csvStream = csv.createWriteStream({ headers: true });
+		this._csvStream = csv.createWriteStream({ headers: headers });
 		this._writableStream = fs.createWriteStream(path);
 		this._csvStream.pipe(this._writableStream);
 	}

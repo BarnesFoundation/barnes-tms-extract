@@ -101,7 +101,7 @@ class WarningReporter {
 	 */
 	appendFieldsForObject(objectId, artObject, description) {
 		const desc = artObject.transformedDescription;
-		const mappedFields = _.mapKeys(description, this._searchConfig.transformKey.bind(this._searchConfig));
+		const mappedFields = _.mapKeys(description, (v, key) => this._searchConfig.transformKey(key));
 
 		if (this._searchConfig.warnings.unusedFields) {
 			this._checkUnusedFields(desc, objectId, artObject, mappedFields);

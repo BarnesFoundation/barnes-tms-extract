@@ -119,7 +119,7 @@ class TMSExporter extends UpdateEmitter {
 		this._tms.rootURL = exportConfig.apiURL;
 		logger.info(`Exporting TMS API from URL ${this._tms.collectionURL}`);
 		this._csvFilePath = `${csvOutputDir}/objects.csv`;
-		this._csv = new CSVWriter(this._csvFilePath);
+		this._csv = new CSVWriter(this._csvFilePath, exportConfig.outputHeaders);
 		this._warningReporter = new WarningReporter(csvOutputDir, exportConfig);
 		this._exportMeta = new ExportMetadata(`${csvOutputDir}/meta.json`);
 		this._exportMeta.status = ExportStatus.INCOMPLETE;
@@ -163,6 +163,10 @@ class TMSExporter extends UpdateEmitter {
 		const id = artObject.descriptionWithFields([exportConfig.primaryKey])[exportConfig.primaryKey];
 
 		const description = artObject.descriptionWithFields(exportConfig.fields);
+
+		if (id === 5189) {
+			debugger;
+		}
 
 		_.forOwn(description, (value, key) => {
 			description[key] = decodeUTF8InterpretedAsWin(value);

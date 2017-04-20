@@ -18,18 +18,15 @@ if (targetCSV === 'latest') {
 	targetCSV = getLastCompletedCSV(csvRootDir);
 }
 
-esCollection.clearCollectionObjects().then (() => {
-	return esCollection.syncESToCSV(targetCSV)
-}).then((res) => {
+esCollection._deleteCollectionIndex().then(() => {
 	console.log(`Synchronizing ES to CSV ${targetCSV}`);
+	return esCollection.syncESToCSV(targetCSV);
+}).then(() => {
 	return esCollection.description();
 }).then((desc) => {
+	console.log("Finished export");
 	console.dir(desc);
 });
-
-// esCollection.description().then((desc) => {
-// 	console.dir(desc);
-// });
 
 // esCollection.description().then(() => {
 // 	console.log("Getting description");

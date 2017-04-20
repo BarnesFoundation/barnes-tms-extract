@@ -89,6 +89,9 @@ class TMSURLReader extends TMSReader {
 					logger.silly(`Object data: ${data}`);
 					try {
 						const artObjectDescription = JSON.parse(data);
+						if (id === 5189) {
+							debugger;
+						}
 						resolve(new ArtObject(artObjectDescription, this._searchConfig));
 					} catch (e) {
 						reject(e);

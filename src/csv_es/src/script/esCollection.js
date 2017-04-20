@@ -1,4 +1,5 @@
 const logger = require('./esLogger.js');
+const mapping = require('config').mapping;
 const {
 	doCSVKeysMatch,
 	diffCSV,
@@ -51,6 +52,50 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
+	 * Analyze a JSON object before sending it to be stored in ES, decorating it
+	 * with additional KV pairs and filtering out bad characters
+	 */
+	_analyzedData(data) {
+		const onViewPrefix = 'Barnes Foundation (Philadelphia), Collection Gallery';
+
+		// Turn empty strings into null
+		let dataCopy = Object.assign({}, data);
+		dataCopy.id = parseInt(dataCopy.id);
+		dataCopy = _.mapValues(dataCopy, (v, k) => {
+			if (v === '') return null;
+			return v;
+		});
+
+		// Add a KV pair for onView, if the data has a field called locations
+		if (_.has(dataCopy, 'locations')) {
+			const location = dataCopy.locations;
+			const onView = location.includes(onViewPrefix);
+			dataCopy.onView = onView;
+		}
+
+		// Add a room, if the data is on view
+		if (dataCopy.onView === true) {
+			const location = dataCopy.locations;
+			const start = location.indexOf(onViewPrefix) + onViewPrefix.length;
+			const sections = location.substr(start).split(',');
+			if (sections.length >= 2) {
+				dataCopy.room = sections[1].trim();
+			}
+		}
+
+		// Add a wall, if the data is on view
+		if (dataCopy.onView === true) {
+			const location = dataCopy.locations;
+			if (location.includes('North Wall')) dataCopy.wall = 'north';
+			if (location.includes('South Wall')) dataCopy.wall = 'south';
+			if (location.includes('East Wall')) dataCopy.wall = 'east';
+			if (location.includes('West Wall')) dataCopy.wall = 'west';
+		}
+
+		return dataCopy;
+	}
+
+	/**
 	 * Whether or not the collection index exists
 	 * @private
 	 */
@@ -79,10 +124,10 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	_createCollectionIndex() {
-		return Promise.resolve(); // no-op, for now
+		console.log("Creating the collection index");
 		return this._client.indices.createAsync({
 			index: 'collection',
-			body: require('./mapping.json')
+			body: mapping
 		});
 	}
 
@@ -110,12 +155,7 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	_createDocumentWithData(data) {
-		let dataCopy = Object.assign({}, data);
-		dataCopy.id = parseInt(dataCopy.id);
-		dataCopy = _.mapValues(dataCopy, (v, k) => {
-			if (v === '') return null;
-			return v;
-		});
+		const dataCopy = this._analyzedData(data);
 		return this._client.createAsync({
 			index: 'collection',
 			type: 'object',
@@ -225,12 +265,13 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	_updateDocumentWithData(docId, data) {
+		const dataCopy = this._analyzedData(data);
 		return this._client.updateAsync({
 			index: 'collection',
 			type: 'object',
 			id: docId,
 			body: {
-				doc: data,
+				doc: dataCopy,
 			},
 		});
 	}
