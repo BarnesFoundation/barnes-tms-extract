@@ -119,6 +119,18 @@ class ImageUploader extends UpdateEmitter {
 		});
 	}
 
+	extractPalettes() {
+		this._fetchAvailableImages.then(() => {
+			const lastCSV = getLastCompletedCSV(this._csvDir);
+			const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
+			csvForEach(csvPath, (row) => {
+				if (this._imageInTMS(`${row.invno}.jpg`)) {
+					//extract colors from image
+				}
+			});
+		});
+	}
+
 	_updateTiledList(images) {
 		const csvStream = csv.createWriteStream({ headers: true });
 		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../tiled.csv'));
@@ -244,10 +256,18 @@ class ImageUploader extends UpdateEmitter {
 		});
 	}
 
+	_imageInTMS(imgName) {
+		return this._availableImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
+	}
+
+	_imageIsTiled(imgName) {
+		return this._tiledImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
+	}
+
 	_imageNeedsUpload(imgName) {
 		logger.info(`Checking if image ${imgName} needs upload.`);
-		const s3Found = this._tiledImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
-		const tmsFound = this._availableImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
+		const s3Found = this._imageIsTiled(imgName);
+		const tmsFound = this._imageInTMS(imgName);
 
 		// if the picture is on TMS
 		// 		if the picture is on S3 but has changed

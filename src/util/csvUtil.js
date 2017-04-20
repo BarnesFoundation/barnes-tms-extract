@@ -126,7 +126,7 @@ module.exports.getLastCompletedCSV = function (csvRootDir) {
  * @return {object} the diff in JSON form
  */
 module.exports.diffCSV = function (oldCSVPath, newCSVPath, logger) {
-	const pyDiff = path.resolve(__dirname, '../py_csv_diff/py_csv_diff.py');
+	const pyDiff = path.resolve(__dirname, '../python_scripts/py_csv_diff.py');
 	const resolvedOldPath = path.relative('.', oldCSVPath);
 	const resolvedNewPath = path.relative('.', newCSVPath);
 	const tmpDir = tmp.dirSync();
