@@ -21,6 +21,8 @@ class ESPluginAPI extends SenecaPluginAPI {
 		this._csvDir = options.csvDir;
 	}
 
+	get name() { return "es"; }
+
 	/**
 	 * Returns a description of the Elasticsearch collection index
 	 * @see {@link ESCollection#description}

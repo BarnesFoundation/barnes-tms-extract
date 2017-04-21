@@ -1,6 +1,5 @@
 doctype html
 html
-	include csvFilesMixin.pug
 	head
 		meta( charset='UTF-8')
 		meta( name='viewport', content='maximum-scale=1,width=device-width,initial-scale=1,user-scalable=0')
@@ -16,73 +15,30 @@ html
 			div.panel.panel-default
 				div.panel-heading
 					h2.panel-title TMS to CSV Exporter
-				div.panel-body
+				div#tmsExportPanelBody.panel-body
 					p
-						span Script last ran: 
-						span#lastRan= moment(info.startTime).toString()
-					p
-						span Script last completed: 
-						span#lastCompleted= moment(info.completeTime).toString()
-					p
-						span Script running: 
-						span#active= info.active
-					p
-						span Progress: 
-						span#progress= `${info.progress.processed} of ${info.progress.total} objects processed`
-					p
-						span Listening for updates on port: 
-						span#port= 3000
-					button#run Run Script
-					button#cancel Cancel Script
+						span Loading...
 		section
 			div.panel.panel-default
 				div.panel-heading
 					h2.panel-title Exported CSV files
 				div#csvFilesPanelBody.panel-body
-					+csvFilesMixin(list, desc)
+					p
+						span Loading...
 		section
 			div.panel.panel-default
 				div.panel-heading
 					h2.panel-title Elasticsearch
-				div.panel-body
-					div.row
-						div.col-lg-6
-							text#es_status= `ES synchronized with ${desc.lastImportedCSV}`
-						div.col-lg-6
-							text#es_count= `Total objects in ES: ${desc.count}`
-					div.row
-						div.col-lg-6
-							div.input-group
-								input#query.form-control(type="text" name="es_query" placeholder="Search for...")
-								span.input-group-btn
-									button#query_button.btn.btn-default(type="button") Search
-						div.col-lg-6
-							a(href="/app/kibana") View on Kibana
-					div.row
-						div.col-lg-12
-							text#search_results
+				div#esPanelBody.panel-body
+					p
+						span Loading...
 		section
 			div.panel.panel-default
 				div.panel-heading
-					h2.panel-title IIIF Image Processing
-				div.panel-body
-					button#run-images Run
+					h2.panel-title Image Processing
+				div#imageProcessingPanelBody.panel-body
 					p
-						span Status: 
-						span#current-status
-					p
-						span Running: 
-						span#images-running
-					p
-						span Progress: 
-						span#images-progress
-					p 
-						span Images Tiled: 
-						span#images-tiled= imageInfo.numTiledImages
-						span , Raw Images Uploaded: 
-						span#images-uploaded= imageInfo.numRawImages
-						span , Total Objects: 
-						span#images-total-objects= desc.count
+						span Loading...
 
 	script.
 		$(function() {
@@ -102,6 +58,31 @@ html
 				if (lastCSVData.active) setTimeout(fetchCSVFileInfo, 5000);
 			}
 
+			function fetchESInfo() {
+				$.ajax("./es").done(function(data) {
+					$("#esPanelBody").empty();
+					$("#esPanelBody").append(data);
+				});
+				bindESSearchButtons();
+			}
+
+			function fetchImageProcessingInfo() {
+				$.ajax("./images").done(function(data) {
+					$("#imageProcessingPanelBody").empty();
+					$("#imageProcessingPanelBody").append(data);
+				});
+			}
+
+			function fetchTMSExportInfo() {
+				$.ajax("./tmsToCsv").done(function(data) {
+					$("#tmsExportPanelBody").empty();
+					if (data.success !== false) {
+						$("#tmsExportPanelBody").append(data);
+						bindTMSExportButtons();
+					}
+				});
+			};
+
 			function handleESServiceUpdate(name, status, data) {
 				if (data.hasImportedCSV === false) {
 					$("#es_status").text("Elasticsearch not yet synced with a CSV");
@@ -114,7 +95,6 @@ html
 			}
 
 			function handleImagesServiceUpdate(name, status, data) {
-				console.dir(data);
 				$("#images-running").text(data.isRunning);
 				$("#images-progress").text(`${data.numImagesUploaded} of ${data.totalImagesToUpload} images processed.`);
 				$("#images-tiled").text(data.numTiledImages);
@@ -126,21 +106,53 @@ html
 				$("#progress").text(`${data.processed} of ${data.total} objects processed`);
 				$("#images-total-object").text(data.total);
 
-				var needsFetch = false;
-				needsFetch |= (data.active !== lastCSVData.active && data.active);
-				needsFetch |= (data.status !== lastCSVData.status);
+				var needsCSVFetch = false;
+				needsCSVFetch |= (data.active !== lastCSVData.active && data.active);
+				needsCSVFetch |= (data.status !== lastCSVData.status);
 
 				lastCSVData.active = data.active;
 				lastCSVData.csv = data.csv;
 				lastCSVData.status = data.status;
 
-				if (needsFetch) fetchCSVFileInfo();
+				if (needsCSVFetch) fetchCSVFileInfo();
 			}
+
+			var viewNames = {
+				csv: "csvFilesPanelBody",
+				es: "esPanelBody",
+				images: "imageProcessingPanelBody",
+				tmstocsv: "tmsExportPanelBody"
+			};
+
+			var serviceViewUris = {
+				csv: fetchCSVFileInfo,
+				es: fetchESInfo,
+				images: fetchImageProcessingInfo,
+				tmstocsv: fetchTMSExportInfo
+			};
 
 			var websocketUpdateHandlers = {
 				es: handleESServiceUpdate,
 				images: handleImagesServiceUpdate,
 				tmstocsv: handleTMSServiceUpdate
+			};
+
+			function clearServiceView(name) {
+				var viewName = viewNames[name];
+				if (viewName !== undefined) {
+					$.ajax('/empty').done(function(data) {
+						$("#" + viewName).empty();
+						$("#" + viewName).append(data);
+					});
+				}
+			}
+
+			function fetchServiceView(name) {
+				if (typeof serviceViewUris[name] === "function") {
+					serviceViewUris[name]();
+				} else {
+					console.warn("Received connection from unrecognized microservice name ", name);
+				}
 			}
 
 			function handleWebsocketServiceUpdate(name, status, data) {
@@ -154,16 +166,32 @@ html
 			function createUpdateSocket(port) {
 				var socket = io(window.location.protocol + "//" + window.location.hostname + ":" + port);
 				socket.on('status', handleWebsocketServiceUpdate);
+				socket.on('announce', fetchServiceView);
+				socket.on('farewell', clearServiceView);
 				return socket;
 			}
 
-			var socket = createUpdateSocket(parseInt($('#port').text()));
+			var socket = createUpdateSocket(3000);
+
+			function updateSearchResults(data) {
+				$("#search_results").text(JSON.stringify(data));
+			}
 
 			function doSearchQuery() {
 				var query = $("#query")[0].value;
 				var port = 9200;
-				console.log("Searching for: " + query);
 				$.get(window.location.protocol + "//" + window.location.hostname + ":" + port + "/_search?pretty&q=" + query, updateSearchResults);
+			}
+
+			function bindESSearchButtons() {
+				$("#query_button").click(doSearchQuery);
+
+				$("#query").keypress(function(e, a) {
+					if (e.which == 13) {
+						doSearchQuery();
+						return false;    //<---- Add this line
+					}
+				});
 			}
 
 			function bindESSyncButtons() {
@@ -179,32 +207,21 @@ html
 			}
 			bindESSyncButtons();
 
-			function updateSearchResults(data) {
-				$("#search_results").text(JSON.stringify(data));
-			}
-
-			$("#run").click(function() {
-				$.get('api/tmstocsv/run', function(response) {
-					$("#test").text(response.time);
+			function bindTMSExportButtons() {
+				$("#tmsRun").click(function() {
+					$.get('api/tmstocsv/run', function(response) {
+						$("#test").text(response.time);
+					});
+					$("#tmsCancel").click(function() {
+						$.get('api/tmstocsv/cancel');
+					});
 				});
-			});
+			}
+			bindTMSExportButtons();
 
 			$("#run-images").click(function() {
 				$.get('api/images/tile', function(response) {
 					
 				});
-			});
-
-			$("#cancel").click(function() {
-				$.get('api/tmstocsv/cancel');
-			});
-
-			$("#query_button").click(doSearchQuery);
-
-			$("#query").keypress(function(e, a) {
-				if (e.which == 13) {
-					doSearchQuery();
-					return false;    //<---- Add this line
-				}
 			});
 		});

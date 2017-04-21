@@ -8,10 +8,13 @@ const csvDir = config.CSV.path;
 
 /**
  * Seneca plugin for listing the exported CSV files
- * @see {@link ESCollection}
- * @param {string} options.host - Hostname for the Elasticsearch server
  */
 class CSVPluginAPI extends SenecaPluginAPI {
+	constructor(seneca, options) {
+		super(seneca, options);
+	}
+
+	get name() { return "csv"; }
 
 	/**
 	 * typedef {Object} CSVExportDescription

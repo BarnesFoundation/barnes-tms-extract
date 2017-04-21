@@ -10,7 +10,6 @@ const io = require('socket.io-client');
 class WebsocketUpdater {
 	constructor(name, port, updateEmitter) {
 		this._name = name;
-		this._socket = io.connect(`http://localhost:${port}`);
 		this._updateEmitter = updateEmitter;
 		updateEmitter.on('started', () => this._broadcastProgress('started'));
 		updateEmitter.on('progress', () => this._broadcastProgress('progress'));

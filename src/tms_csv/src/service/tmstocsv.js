@@ -20,6 +20,8 @@ class TMSExportAPI extends SenecaPluginAPI {
 		this._tmsWebsocketUpdater = new WebsocketUpdater('tmstocsv', this._exportProcessPort, this._tmsExporter);
 	}
 
+	get name() { return "tmstocsv"; }
+
 	active() {
 		return { active: this._tmsExporter.active };
 	}

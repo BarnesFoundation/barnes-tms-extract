@@ -1,0 +1,17 @@
+p
+	span Script last ran: 
+	span#lastRan= moment(info.startTime).toString()
+p
+	span Script last completed: 
+	span#lastCompleted= moment(info.completeTime).toString()
+p
+	span Script running: 
+	span#active= info.active
+p
+	span Progress: 
+	span#progress= `${info.progress.processed} of ${info.progress.total} objects processed`
+p
+	span Listening for updates on port: 
+	span#port= 3000
+button#tmsRun Run Script
+button#tmsCancel Cancel Script

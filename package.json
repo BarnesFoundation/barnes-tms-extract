@@ -25,7 +25,7 @@
     "moment": "^2.18.1",
     "pug": "^2.0.0-beta.12",
     "s3": "^4.4.0",
-    "seneca": "^3.3.0",
+    "seneca": "friedemannsommer/seneca-transport",
     "seneca-web": "^2.0.0",
     "seneca-web-adapter-express": "^1.0.2",
     "shelljs": "^0.7.6",

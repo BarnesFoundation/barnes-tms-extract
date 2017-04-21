@@ -31,21 +31,11 @@ const seneca = require('seneca')()
 			.client({ type: 'tcp', pin: 'role:es', port: 10203 })
 			.client({ type: 'tcp', pin: 'role:images', port: 10204 });
 
-// Promisify Seneca.act
+// Promisify Seneca functions
 const act = Promise.promisify(seneca.act, { context: seneca });
 
 app.get('/', (req, res) => {
-	const infos = [
-		act('role:es,cmd:desc'),
-		act('role:tmstocsv,cmd:info'),
-		act('role:csv,cmd:list'),
-		act('role:images,cmd:info'),
-	];
-	Promise.all(infos).then((resArray) => {
-		const args = _.zipObject(['desc', 'info', 'list', 'imageInfo'], resArray);
-		args.moment = moment;
-		res.render('index', args);
-	});
+	res.render('index');
 });
 
 app.get('/csvFiles', (req, res) => {
@@ -55,6 +45,30 @@ app.get('/csvFiles', (req, res) => {
 	];
 	Promise.all(infos).then((resArray) => {
 		res.render('csvFiles', _.zipObject(['desc', 'list'], resArray));
+	});
+});
+
+app.get('/empty', (req, res) => {
+	res.render('empty');
+});
+
+app.get('/es', (req, res) => {
+	act('role:es,cmd:desc').then((desc) => {
+		res.render('es', { desc });
+	});
+});
+
+app.get('/images', (req, res) => {
+	act('role:images,cmd:info').then((imageInfo) => {
+		res.render('images', { imageInfo });
+	});
+});
+
+app.get('/tmsToCsv', (req, res) => {
+	act('role:tmstocsv,cmd:info').then((info) => {
+		res.render('tmsToCsv', { info, moment });
+	}).catch((error) => {
+		res.send({success: false, error});
 	});
 });
 
@@ -84,6 +98,17 @@ app.get('/:csv_id/warnings', (req, res) => {
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 io.on('connection', (socket) => {
+	_.forOwn(io.sockets.sockets, (s) => {
+		s.send('introduce');
+	});
+	socket.on('announce', (name) => {
+		socket.broadcast.emit('announce', name);
+		socket.on('disconnect', (socket) => {
+			_.forOwn(io.sockets.sockets, (s) => {
+				s.emit('farewell', name);
+			});
+		});
+	});
 	socket.on('status', (name, status, data) => {
 		socket.broadcast.emit('status', name, status, data);
 	});

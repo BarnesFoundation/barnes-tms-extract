@@ -1,0 +1,16 @@
+div.row
+	div.col-lg-6
+		text#es_status= `ES synchronized with ${desc.lastImportedCSV}`
+	div.col-lg-6
+		text#es_count= `Total objects in ES: ${desc.count}`
+div.row
+	div.col-lg-6
+		div.input-group
+			input#query.form-control(type="text" name="es_query" placeholder="Search for...")
+			span.input-group-btn
+				button#query_button.btn.btn-default(type="button") Search
+	div.col-lg-6
+		a(href="/app/kibana") View on Kibana
+div.row
+	div.col-lg-12
+		text#search_results

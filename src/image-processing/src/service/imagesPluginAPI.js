@@ -19,6 +19,8 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 		this._websocketUpdater = new WebsocketUpdater('images', port, this._imageUploader);
 	}
 
+	get name() { return "images"; }
+
 	/**
 	 * Return a description of the ImageUploader
 	 * @see {@link ImageUploader#status}

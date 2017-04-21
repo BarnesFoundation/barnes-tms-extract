@@ -4,6 +4,7 @@
  */
 
 const _ = require('lodash');
+const io = require('socket.io-client');
 
 module.exports = {};
 
@@ -37,6 +38,13 @@ function getFunctionNames(objClass) {
 class SenecaPluginAPI {
 	constructor(seneca, options) {
 		this._seneca = seneca;
+		const port = options.port || 3000;
+		this._socket = io.connect(`http://localhost:${port}`);
+		this._socket.on('message', (msg) => {if (msg === 'introduce') {this._introduce()}});
+	}
+
+	get name() {
+		throw {message: "Subclasses must override this method"};
 	}
 
 	/**
@@ -44,6 +52,12 @@ class SenecaPluginAPI {
 	 */
 	get seneca() {
 		return this._seneca;
+	}
+
+	_introduce() {
+		if (this._socket) {
+			this._socket.emit('announce', this.name);
+		}
 	}
 }
 
