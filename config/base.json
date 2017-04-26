@@ -9,6 +9,9 @@
 	"Images": {
 		"log": "src/image-processing/logs/all-logs.log"
 	},
+	"Python": {
+		"path": "$HOME/.miniconda/bin"
+	},
 	"Server": {
 		"port": 3000
 	},

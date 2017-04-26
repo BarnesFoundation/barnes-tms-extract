@@ -9,6 +9,7 @@ const path = require('path');
 const tmp = require('tmp');
 const shell = require('shelljs');
 const csv = require('fast-csv');
+const pypath = require('config').Python.path;
 
 const output = shell.exec('which bash');
 const bashPath = output.stdout.trim();
@@ -132,8 +133,8 @@ module.exports.diffCSV = function (oldCSVPath, newCSVPath, logger) {
 	const tmpDir = tmp.dirSync();
 	const outputJsonFile = path.join(tmpDir.name, 'diff.json');
 	logger.info(`Running CSV diff python script on ${oldCSVPath} ${newCSVPath}`);
-	logShellOutput(logger, shell.exec('source activate tmsdiff', { shell: bashPath }));
+	logShellOutput(logger, shell.exec(`source ${pypath}/activate tmsdiff`, { shell: bashPath }));
 	logShellOutput(logger, shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
-	logShellOutput(logger, shell.exec('source deactivate', { shell: bashPath }));
+	logShellOutput(logger, shell.exec(`source ${pypath}/deactivate`, { shell: bashPath }));
 	return JSON.parse(fs.readFileSync(outputJsonFile));
 };
