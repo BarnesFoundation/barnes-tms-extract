@@ -11,7 +11,7 @@ class WebsocketUpdater {
 	constructor(name, port, updateEmitter) {
 		this._name = name;
 		this._updateEmitter = updateEmitter;
-		this._socket = io.connect(`http://localhost:${port}`);
+		this._socket = io(`http://localhost:${port}`);
 		updateEmitter.on('started', () => this._broadcastProgress('started'));
 		updateEmitter.on('progress', () => this._broadcastProgress('progress'));
 		updateEmitter.on('completed', () => this._broadcastProgress('completed'));
@@ -20,7 +20,6 @@ class WebsocketUpdater {
 	_broadcastProgress(status) {
 		if (this._socket) {
 			Promise.resolve(this._updateEmitter.status).then((res) => {
-				console.log("Sending status");
 				this._socket.emit('status', this._name, status, res);
 			});
 		}

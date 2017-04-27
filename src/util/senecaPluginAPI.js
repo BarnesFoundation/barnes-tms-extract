@@ -39,8 +39,9 @@ class SenecaPluginAPI {
 	constructor(seneca, options) {
 		this._seneca = seneca;
 		const port = options.port || 3000;
-		this._socket = io.connect(`http://localhost:${port}`);
-		this._socket.on('message', (msg) => {if (msg === 'introduce') {this._introduce()}});
+		this._socket = io(`http://localhost:${port}`);
+		this._socket.on('connect', () => this._introduce());
+		this._socket.on('introduce', () => this._introduce());
 	}
 
 	get name() {
@@ -56,7 +57,7 @@ class SenecaPluginAPI {
 
 	_introduce() {
 		if (this._socket) {
-			this._socket.emit('announce', this.name);
+			this._socket.emit('name', this.name);
 		}
 	}
 }

@@ -49,11 +49,14 @@ html
 				status: null
 			};
 
+			var hasViewForName = {};
+
 			function fetchCSVFileInfo() {
 				$.ajax("./csvFiles").done(function(data) {
 					$("#csvFilesPanelBody").empty();
 					$("#csvFilesPanelBody").append(data);
 					bindESSyncButtons();
+					hasViewForName["csv"] = true;
 				});
 				if (lastCSVData.active) setTimeout(fetchCSVFileInfo, 5000);
 			}
@@ -62,14 +65,16 @@ html
 				$.ajax("./es").done(function(data) {
 					$("#esPanelBody").empty();
 					$("#esPanelBody").append(data);
+					bindESSearchButtons();
+					hasViewForName["es"] = true;
 				});
-				bindESSearchButtons();
 			}
 
 			function fetchImageProcessingInfo() {
 				$.ajax("./images").done(function(data) {
 					$("#imageProcessingPanelBody").empty();
 					$("#imageProcessingPanelBody").append(data);
+					hasViewForName["images"] = true;
 				});
 			}
 
@@ -79,6 +84,7 @@ html
 					if (data.success !== false) {
 						$("#tmsExportPanelBody").append(data);
 						bindTMSExportButtons();
+						hasViewForName["tmstocsv"] = true;
 					}
 				});
 			};
@@ -143,13 +149,14 @@ html
 					$.ajax('/empty').done(function(data) {
 						$("#" + viewName).empty();
 						$("#" + viewName).append(data);
+						delete hasViewForName[name];
 					});
 				}
 			}
 
 			function fetchServiceView(name) {
 				if (typeof serviceViewUris[name] === "function") {
-					serviceViewUris[name]();
+					if (hasViewForName[name] !== true) serviceViewUris[name]();
 				} else {
 					console.warn("Received connection from unrecognized microservice name ", name);
 				}
@@ -168,11 +175,13 @@ html
 				socket.on('status', handleWebsocketServiceUpdate);
 				socket.on('announce', fetchServiceView);
 				socket.on('farewell', clearServiceView);
+				socket.on('connect', function() {
+					socket.emit('listNames');
+				});
 				return socket;
 			}
 
 			var socket = createUpdateSocket(3000);
-
 			function updateSearchResults(data) {
 				$("#search_results").text(JSON.stringify(data));
 			}

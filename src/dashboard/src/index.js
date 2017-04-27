@@ -97,18 +97,25 @@ app.get('/:csv_id/warnings', (req, res) => {
 // Start the server
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const socketNames = {};
 io.on('connection', (socket) => {
-	_.forOwn(io.sockets.sockets, (s) => {
-		s.send('introduce');
+	socket.on('listNames', () => {
+		socket.broadcast.emit('introduce');
 	});
-	socket.on('announce', (name) => {
+
+	socket.on('name', (name) => {
+		socketNames[socketNames.id] = name;
 		socket.broadcast.emit('announce', name);
-		socket.on('disconnect', (socket) => {
-			_.forOwn(io.sockets.sockets, (s) => {
-				s.emit('farewell', name);
-			});
-		});
 	});
+
+	socket.on('disconnect', () => {
+		if (socketNames[socket.id] !== undefined) {
+			_.forOwn(io.sockets.sockets, (s) => {
+				s.emit('farewell', socketNames[socket.id]);
+			});
+		}
+	});
+
 	socket.on('status', (name, status, data) => {
 		socket.broadcast.emit('status', name, status, data);
 	});
