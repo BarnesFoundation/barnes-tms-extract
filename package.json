@@ -48,7 +48,7 @@
     "csv-pin": "node src/csv_viewer/src/csv-pin-service.js",
     "dashboard": "node src/dashboard/src/index.js",
     "docs": "jsdoc -c docsConf.json",
-    "es-pin": "node src/csv_es/src/service/es-pin-service.js",
+    "es-pin": "bash src/scripts/startES.sh && node src/csv_es/src/service/es-pin-service.js",
     "images-pin": "node src/image-processing/src/service/images-pin-service.js",
     "lint": "eslint src",
     "lint-fix": "eslint src --fix",
