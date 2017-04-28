@@ -39,12 +39,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/csvFiles', (req, res) => {
-	const infos = [
-		act('role:es,cmd:desc'),
-		act('role:csv,cmd:list'),
-	];
-	Promise.all(infos).then((resArray) => {
-		res.render('csvFiles', _.zipObject(['desc', 'list'], resArray));
+	const infos = {};
+	act('role:csv,cmd:list').then((list) => {
+		infos.list = list;
+		infos.desc = {};
+		res.render('csvFiles', infos);
 	}).catch((errorDescription) => {
 		res.render('error', { desc: errorDescription });
 	});
