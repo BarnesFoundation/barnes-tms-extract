@@ -98,6 +98,8 @@ module.exports.makeAPI = function(role, apiObjectClass) {
 				const args = _.at(msg, argnames);
 				Promise.resolve(func.apply(apiObject, args)).then((res) => {
 					done(res)
+				}).catch((error) => {
+					done(error);
 				});
 			}
 

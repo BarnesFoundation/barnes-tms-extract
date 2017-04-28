@@ -124,7 +124,6 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	_createCollectionIndex() {
-		console.log("Creating the collection index");
 		return this._client.indices.createAsync({
 			index: 'collection',
 			body: mapping

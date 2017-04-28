@@ -45,6 +45,8 @@ app.get('/csvFiles', (req, res) => {
 	];
 	Promise.all(infos).then((resArray) => {
 		res.render('csvFiles', _.zipObject(['desc', 'list'], resArray));
+	}).catch((errorDescription) => {
+		res.render('error', { desc: errorDescription });
 	});
 });
 
@@ -54,21 +56,26 @@ app.get('/empty', (req, res) => {
 
 app.get('/es', (req, res) => {
 	act('role:es,cmd:desc').then((desc) => {
+		console.log("No error");
 		res.render('es', { desc });
+	}).catch((errorDescription) => {
+		res.render('error', { desc: errorDescription });
 	});
 });
 
 app.get('/images', (req, res) => {
 	act('role:images,cmd:info').then((imageInfo) => {
 		res.render('images', { imageInfo });
+	}).catch((errorDescription) => {
+		res.render('error', { desc: errorDescription });
 	});
 });
 
 app.get('/tmsToCsv', (req, res) => {
 	act('role:tmstocsv,cmd:info').then((info) => {
 		res.render('tmsToCsv', { info, moment });
-	}).catch((error) => {
-		res.send({success: false, error});
+	}).catch((errorDescription) => {
+		res.render('error', { desc: errorDescription });
 	});
 });
 
