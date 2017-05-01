@@ -64,7 +64,7 @@ class RawUploader extends UpdateEmitter {
       currentStep: this._currentStep,
       numImagesUploaded: this._rawImages ? this._rawImages.length : 0,
       totalImagesToUpload: this._numImagesToUpload,
-      this._uploadIndex = this._uploadIndex
+      uploadIndex: this._uploadIndex
     }
   }
 

@@ -34,7 +34,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	 * @return {Object} {success: true} if the call to start processing was successful, {success:false} otherwise
 	 */
 	tile() {
-		const websocketUpdater;
+		let websocketUpdater;
 		return fetchAvailableImages.then((outputPath) => {
 			const tileUploader = new TileUploader(outputPath, csvDir);
 			websocketUpdater = new WebsocketUpdater('images', port, tileUploader);
@@ -47,7 +47,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	raw() {
-		const websocketUpdater;
+		let websocketUpdater;
 		return fetchAvailableImages.then((outputPath) => {
 			const rawUploader = new RawUploader(outputPath, csvDir);
 			websocketUpdater = new WebsocketUpdater('images', port, rawUploader);
@@ -60,7 +60,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	upload() {
-		const websocketUpdater;
+		let websocketUpdater;
 		return fetchAvailableImages.then((outputPath) => {
 			const imageUploader = new ImageUploader(outputPath, csvDir);
 			websocketUpdater = new WebsocketUpdater('images', port, imageUploader);
