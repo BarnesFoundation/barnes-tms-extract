@@ -1,7 +1,3 @@
-const logger = require('../script/imageLogger.js');
-const UpdateEmitter = require('../../../util/updateEmitter.js');
-const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
-
 const config = require('config');
 const path = require('path');
 const s3 = require('s3');
@@ -10,10 +6,14 @@ const fs = require('fs');
 const https = require('https');
 const eachSeries = require('async/eachSeries');
 
+const logger = require('../script/imageLogger.js');
+const UpdateEmitter = require('../../../util/updateEmitter.js');
+const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
 const credentials = config.Credentials.aws;
 
 /**
- * Tiles and uploads images to Amazon s3
+ * Uploads images (jpgs) to Amazon s3 from TMS
+ * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
  * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
  *  The script will tile and upload images using the most recent complete export in the directory
  */
@@ -31,18 +31,47 @@ class ImageUploader extends UpdateEmitter {
 			}
 		});
 		this._uploadedImages = null;
+		this._numImagesToUpload = 0;
+		this._currentStep = 'Not started';
+		this._isRunning = false;
+		this._uploadIndex = 0;
 	}
 
 	init() {
 		this._fetchUploadedImages();
 	}
 
+	/**
+	 * @typedef {Object} ImageUploaderStatus
+	 * @description Current status of the Image Uploader script
+	 * @name ImageUploader~ImageUploaderStatus
+	 * @property {string} type - Always 'imageUploader'
+	 * @property {boolean} isRunning - Whether or not the script is running
+	 * @property {string} currentStep - Current step in the upload process
+	 * @property {number} numImagesUploaded - Total number of images uploaded
+	 * @property {number} totalImagesToUpload - Number of images to upload
+	 * @property {number} uploadIndex - Number of images uploaded by the current task
+	*/ 
+
+	/**
+	 * @memberof ImageUploader
+	 * @member {ImageUploader~ImageUploaderStatus}
+	 */
 	get status() {
 		return {
-      isRunning: this._isRunning
+			type: 'imageUploader',
+      isRunning: this._isRunning,
+      currentStep: this._currentStep,
+      numImagesUploaded: this._uploadedImages ? this._uploadedImages.length : 0,
+      totaImagesToUpload: this._numImagesToUpload,
+      uploadIndex: this._uploadIndex
+
     }
 	}
 
+	/**
+	 * Begin the process of uploading images to S3
+	 */
 	process() {
 		return new Promise((resolve) => {
 			this._isRunning = true;
@@ -118,9 +147,11 @@ class ImageUploader extends UpdateEmitter {
     return false;
 	}
 
-	_upload() {
+	_upload(images) {
+		this._numImagesToUpload = images.length;
+		this.progress();
 		let index = 1;
-		eachSeries(image, (image, cb) => {
+		eachSeries(images, (image, cb) => {
 			const localImagePath = path.resolve(__dirname, `./${image.name}`);
 			const file = fs.createWriteStream(localImagePath);
 			
@@ -138,8 +169,10 @@ class ImageUploader extends UpdateEmitter {
           .on('err', (err) => {
           	cb(err);
           })
-          .on('end' () => {
+          .on('end', () => {
           	index += 1;
+          	this._uploadIndex = index;
+          	this.progress();
           	fs.unlink(localImagePath);
           });
 				});
@@ -152,35 +185,6 @@ class ImageUploader extends UpdateEmitter {
 			}
 		});
 	}
-
-	// *
-	//  * @typedef {Object} ImageUploaderStatus
-	//  * @description Current status of the Image Uploader script
-	//  * @name ImageUploader~ImageUploaderStatus
-	//  * @property {string} type - Always 'imageUploader'
-	//  * @property {number} totalImagesToUpload - Number of images to upload
-	//  * @property {number} numImagesUploaded - Number of images uploaded
-	//  * @property {boolean} isRunning - Whether or not the script is running
-	//  * @property {string} currentStep - Current step in the upload process
-	//  * @property {number} numTiledImages - Number of images that have been tiled on s3
-	//  * @property {nubmer} numRawImages - Number of raw images that have been uploaded to s3
-	 
-
-	// /**
-	//  * @memberof ImageUploader
-	//  * @member {ImageUploader~ImageUploaderStatus}
-	//  */
-	// get status() {
-	// 	return {
-	// 		type: 'imageUploader',
-	// 		totalImagesToUpload: this._numImagesToProcess,
-	// 		numImagesUploaded: this._numImagesProcessed,
-	// 		isRunning: this._isRunning,
-	// 		currentStep: this._currentStep,
-	// 		numTiledImages: this._tiledImages ? this._tiledImages.length : 0,
-	// 		numRawImages: this._rawImages ? this._rawImages.length : 0,
-	// 	};
-	// }
 
 	_updateUploadedList(images) {
 		const csvStream = csv.createWriteStream({ headers: true });

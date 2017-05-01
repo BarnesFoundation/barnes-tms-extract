@@ -11,6 +11,12 @@ const logger = require('../script/imageLogger.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
 const credentials = config.Credentials.aws;
 
+/**
+ * Uploads raw images (tifs) to Amazon s3 from TMS
+ * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
+ * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
+ *  The script will tile and upload images using the most recent complete export in the directory
+ */
 class RawUploader extends UpdateEmitter {
   constructor(pathToAvailableImages, csvDir) {
     super();
@@ -23,20 +29,48 @@ class RawUploader extends UpdateEmitter {
         region: credentials.awsRegion
       }
     });
-    this._rawImages = null;
     this._csvDir = csvDir;
+    this._rawImages = null;
+    this._numImagesToUpload = 0;
+    this._currentStep = 'Not started';
+    this._isRunning = false;
+    this._uploadIndex = 0;
   }
 
   init() {
     return this._fetchRawImages();
   }
 
+  /**
+   * @typedef {Object} RawUploaderStatus
+   * @description Current status of the Raw Uploader script
+   * @name RawUploader~RawUploaderStatus
+   * @property {string} type - Always 'rawUploader'
+   * @property {boolean} isRunning - Whether or not the script is running
+   * @property {string} currentStep - Current step in the tiling process
+   * @property {number} numImagesUploaded - Number of images tiled and uploaded
+   * @property {number} totalImagesToUpload - Number of images to tile and upload
+  */ 
+
+  /**
+   * @memberof TileUploader
+   * @member {TileUploader~TileUploaderStatus}
+   */
+
   get status() {
     return {
-      isRunning: this._isRunning
+      type: 'rawUploader',
+      isRunning: this._isRunning,
+      currentStep: this._currentStep,
+      numImagesUploaded: this._rawImages ? this._rawImages.length : 0,
+      totalImagesToUpload: this._numImagesToUpload,
+      this._uploadIndex = this._uploadIndex
     }
   }
 
+  /**
+   * Begin the process of uploading raw images to S3
+   */
   process() {
     return new Promise((resolve) => {
       this._isRunning = true;
@@ -113,11 +147,11 @@ class RawUploader extends UpdateEmitter {
   }
 
   _uploadRaw(images) {
-    this._numImagesToProcess = images.length;
+    this._numImagesToUpload = images.length;
     let index = 1;
     eachSeries(images, (image, cb) => {
       this._currentStep = `Uploading raw image: ${image.name}`;
-      this._numImagesProcessed = index;
+      this._uploadIndex = index;
       this.progress();
       const file = fs.createWriteStream(path.resolve(__dirname, `./${image.name}`));
       https.get(`${credentials.barnesImagesUrl}${image.name}`, (response) => {
@@ -136,6 +170,7 @@ class RawUploader extends UpdateEmitter {
           })
           .on('end', () => {
             index += 1;
+            this._uploadIndex = index;
             fs.unlink(path.resolve(__dirname, `./${image.name}`), cb);
           });
         });

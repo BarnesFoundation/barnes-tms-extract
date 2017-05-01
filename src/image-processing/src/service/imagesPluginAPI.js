@@ -18,19 +18,14 @@ const port = config.Server.port;
 class ImagesPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
-		this._imageUploader = new ImageUploader(path.resolve(process.cwd(), csvDir));
-		this._websocketUpdater = new WebsocketUpdater('images', port, this._imageUploader);
 	}
 
 	get name() { return "images"; }
 
-	/**
-	 * Return a description of the ImageUploader
-	 * @see {@link ImageUploader#status}
-	 * @return {ImageUploader~ImageUploaderStatus}
-	 */
-	info() {
-		return Object.assign({}, this._imageUploader.status);
+	get status() {
+		return {
+			isRunning: this._isRunning
+		}
 	}
 
 	/**
@@ -39,9 +34,10 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	 * @return {Object} {success: true} if the call to start processing was successful, {success:false} otherwise
 	 */
 	tile() {
-		// new instance of websocket updater?
+		const websocketUpdater;
 		return fetchAvailableImages.then((outputPath) => {
 			const tileUploader = new TileUploader(outputPath, csvDir);
+			websocketUpdater = new WebsocketUpdater('images', port, tileUploader);
 			return tileUploader.init();
 		}).then(() => {
 			return tileUploader.process();
@@ -51,9 +47,10 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	raw() {
-		// new instance of websocket updater?
+		const websocketUpdater;
 		return fetchAvailableImages.then((outputPath) => {
 			const rawUploader = new RawUploader(outputPath, csvDir);
+			websocketUpdater = new WebsocketUpdater('images', port, rawUploader);
 			return rawUploader.init();
 		 }).then(() => {
 			return rawUploader.process();
@@ -63,8 +60,16 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	upload() {
-		//upload all JPGs
-		// "regular uploader"
+		const websocketUpdater;
+		return fetchAvailableImages.then((outputPath) => {
+			const imageUploader = new ImageUploader(outputPath, csvDir);
+			websocketUpdater = new WebsocketUpdater('images', port, imageUploader);
+			return imageUploader.init();
+		}).then(() => {
+			return imageUploader.process();
+		}).then(() => {
+			return { success: true };
+		});
 	}
 }
 
