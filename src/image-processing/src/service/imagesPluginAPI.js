@@ -1,6 +1,9 @@
 const ImageUploader = require('../script/imageUploader.js');
 const WebsocketUpdater = require('../../../util/websocketUpdater.js');
 const { SenecaPluginAPI, makeAPI } = require('../../../util/senecaPluginAPI.js');
+const TileUploader = require('../script/tileUploader.js');
+const RawUploader = require('../script/rawUploader.js');
+const fetchAvailableImages = require('../script/tmsImageFetch.js');
 
 const config = require('config');
 const path = require('path');
@@ -36,8 +39,32 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	 * @return {Object} {success: true} if the call to start processing was successful, {success:false} otherwise
 	 */
 	tile() {
-		this._imageUploader.process();
-		return { success: true };
+		// new instance of websocket updater?
+		return fetchAvailableImages.then((outputPath) => {
+			const tileUploader = new TileUploader(outputPath, csvDir);
+			return tileUploader.init();
+		}).then(() => {
+			return tileUploader.process();
+		}).then(() => {
+			return { success: true };
+		});
+	}
+
+	raw() {
+		// new instance of websocket updater?
+		return fetchAvailableImages.then((outputPath) => {
+			const rawUploader = new RawUploader(outputPath, csvDir);
+			return rawUploader.init();
+		 }).then(() => {
+			return rawUploader.process();
+		 }).then(() => {
+			return { success: true };
+		 });
+	}
+
+	upload() {
+		//upload all JPGs
+		// "regular uploader"
 	}
 }
 
