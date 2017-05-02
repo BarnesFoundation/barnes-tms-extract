@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>SenecaPluginAPI - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ArtObject.html">ArtObject</a><ul class='methods'><li data-type='method'><a href="ArtObject.html#descriptionWithFields">descriptionWithFields</a></li></ul></li><li><a href="CSVPluginAPI.html">CSVPluginAPI</a><ul class='methods'><li data-type='method'><a href="CSVPluginAPI.html#list">list</a></li></ul></li><li><a href="CSVWriter.html">CSVWriter</a><ul class='methods'><li data-type='method'><a href="CSVWriter.html#end">end</a></li><li data-type='method'><a href="CSVWriter.html#write">write</a></li></ul></li><li><a href="ESCollection.html">ESCollection</a><ul class='methods'><li data-type='method'><a href="ESCollection.html#_analyzedData">_analyzedData</a></li><li data-type='method'><a href="ESCollection.html#_deleteCollectionIndex">_deleteCollectionIndex</a></li><li data-type='method'><a href="ESCollection.html#_isIndexReadyForSync">_isIndexReadyForSync</a></li><li data-type='method'><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></li><li data-type='method'><a href="ESCollection.html#description">description</a></li><li data-type='method'><a href="ESCollection.html#initialize">initialize</a></li><li data-type='method'><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></li></ul></li><li><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></li><li><a href="ESPluginAPI.html">ESPluginAPI</a><ul class='methods'><li data-type='method'><a href="ESPluginAPI.html#desc">desc</a></li><li data-type='method'><a href="ESPluginAPI.html#sync">sync</a></li></ul></li><li><a href="ExportConfig.html">ExportConfig</a><ul class='methods'><li data-type='method'><a href="ExportConfig.html#fieldHasAlias">fieldHasAlias</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsEnumerated">fieldIsEnumerated</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsMask">fieldIsMask</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsRequired">fieldIsRequired</a></li><li data-type='method'><a href="ExportConfig.html#fieldMaskSelector">fieldMaskSelector</a></li></ul></li><li><a href="ExportMetadata.html">ExportMetadata</a><ul class='methods'><li data-type='method'><a href="ExportMetadata.html#description">description</a></li></ul></li><li><a href="ImagesPluginAPI.html">ImagesPluginAPI</a><ul class='methods'><li data-type='method'><a href="ImagesPluginAPI.html#info">info</a></li><li data-type='method'><a href="ImagesPluginAPI.html#tile">tile</a></li></ul></li><li><a href="ImageUploader.html">ImageUploader</a><ul class='methods'><li data-type='method'><a href="ImageUploader.html#process">process</a></li></ul></li><li><a href="module-util_senecaPluginAPI-SenecaPluginAPI.html">SenecaPluginAPI</a></li><li><a href="TMSExporter.html">TMSExporter</a><ul class='methods'><li data-type='method'><a href="TMSExporter.html#cancelExport">cancelExport</a></li><li data-type='method'><a href="TMSExporter.html#exportCSV">exportCSV</a></li></ul></li><li><a href="TMSFileReader.html">TMSFileReader</a><ul class='methods'><li data-type='method'><a href="TMSFileReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSFileReader.html#next">next</a></li></ul></li><li><a href="TMSURLReader.html">TMSURLReader</a><ul class='methods'><li data-type='method'><a href="TMSURLReader.html#getObjectCount">getObjectCount</a></li><li data-type='method'><a href="TMSURLReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSURLReader.html#next">next</a></li></ul></li><li><a href="WarningReporter.html">WarningReporter</a><ul class='methods'><li data-type='method'><a href="WarningReporter.html#appendFieldsForObject">appendFieldsForObject</a></li><li data-type='method'><a href="WarningReporter.html#end">end</a></li></ul></li><li><a href="WebsocketUpdater.html">WebsocketUpdater</a></li></ul><h3>Modules</h3><ul><li><a href="module-util_csvUtil.html">util/csvUtil</a><ul class='methods'><li data-type='method'><a href="module-util_csvUtil.html#.csvCompleted">csvCompleted</a></li><li data-type='method'><a href="module-util_csvUtil.html#.csvForEach">csvForEach</a></li><li data-type='method'><a href="module-util_csvUtil.html#.diffCSV">diffCSV</a></li><li data-type='method'><a href="module-util_csvUtil.html#.doCSVKeysMatch">doCSVKeysMatch</a></li><li data-type='method'><a href="module-util_csvUtil.html#.getLastCompletedCSV">getLastCompletedCSV</a></li></ul></li><li><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a><ul class='methods'><li data-type='method'><a href="module-util_senecaPluginAPI.html#.makeAPI">makeAPI</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="UpdateEmitter.html#event:completed">completed</a></li><li><a href="UpdateEmitter.html#event:progress">progress</a></li><li><a href="UpdateEmitter.html#event:started">started</a></li><li><a href="WebsocketUpdater.html#event:status">status</a></li></ul><h3>Interfaces</h3><ul><li><a href="TMSReader.html">TMSReader</a><ul class='methods'><li data-type='method'><a href="TMSReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSReader.html#next">next</a></li></ul></li><li><a href="UpdateEmitter.html">UpdateEmitter</a><ul class='methods'><li data-type='method'><a href="UpdateEmitter.html#completed">completed</a></li><li data-type='method'><a href="UpdateEmitter.html#progress">progress</a></li><li data-type='method'><a href="UpdateEmitter.html#started">started</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">SenecaPluginAPI</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a>~</span>
+        
+        SenecaPluginAPI
+        </h2>
+        
+            <div class="class-description"><p>Abstract base class for Seneca API plugin services</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="SenecaPluginAPI"><span class="type-signature">(abstract) </span>new SenecaPluginAPI<span class="signature">(seneca, options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>seneca</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The seneca object used to initialize the API plugin</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Opitions to be passed to the plugin on initialization</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_senecaPluginAPI.js.html">util/senecaPluginAPI.js</a>, <a href="util_senecaPluginAPI.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="seneca"><span class="type-signature"></span>seneca<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>The seneca object used to initialize the API plugin</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="util_senecaPluginAPI.js.html">util/senecaPluginAPI.js</a>, <a href="util_senecaPluginAPI.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 15:37:24 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

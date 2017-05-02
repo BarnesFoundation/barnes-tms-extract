@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>tms_csv/src/script/warningReporter.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ArtObject.html">ArtObject</a><ul class='methods'><li data-type='method'><a href="ArtObject.html#descriptionWithFields">descriptionWithFields</a></li></ul></li><li><a href="CSVPluginAPI.html">CSVPluginAPI</a><ul class='methods'><li data-type='method'><a href="CSVPluginAPI.html#list">list</a></li></ul></li><li><a href="CSVWriter.html">CSVWriter</a><ul class='methods'><li data-type='method'><a href="CSVWriter.html#end">end</a></li><li data-type='method'><a href="CSVWriter.html#write">write</a></li></ul></li><li><a href="ESCollection.html">ESCollection</a><ul class='methods'><li data-type='method'><a href="ESCollection.html#_analyzedData">_analyzedData</a></li><li data-type='method'><a href="ESCollection.html#_deleteCollectionIndex">_deleteCollectionIndex</a></li><li data-type='method'><a href="ESCollection.html#_isIndexReadyForSync">_isIndexReadyForSync</a></li><li data-type='method'><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></li><li data-type='method'><a href="ESCollection.html#description">description</a></li><li data-type='method'><a href="ESCollection.html#initialize">initialize</a></li><li data-type='method'><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></li></ul></li><li><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></li><li><a href="ESPluginAPI.html">ESPluginAPI</a><ul class='methods'><li data-type='method'><a href="ESPluginAPI.html#desc">desc</a></li><li data-type='method'><a href="ESPluginAPI.html#sync">sync</a></li></ul></li><li><a href="ExportConfig.html">ExportConfig</a><ul class='methods'><li data-type='method'><a href="ExportConfig.html#fieldHasAlias">fieldHasAlias</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsEnumerated">fieldIsEnumerated</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsMask">fieldIsMask</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsRequired">fieldIsRequired</a></li><li data-type='method'><a href="ExportConfig.html#fieldMaskSelector">fieldMaskSelector</a></li></ul></li><li><a href="ExportMetadata.html">ExportMetadata</a><ul class='methods'><li data-type='method'><a href="ExportMetadata.html#description">description</a></li></ul></li><li><a href="ImagesPluginAPI.html">ImagesPluginAPI</a><ul class='methods'><li data-type='method'><a href="ImagesPluginAPI.html#info">info</a></li><li data-type='method'><a href="ImagesPluginAPI.html#tile">tile</a></li></ul></li><li><a href="ImageUploader.html">ImageUploader</a><ul class='methods'><li data-type='method'><a href="ImageUploader.html#process">process</a></li></ul></li><li><a href="module-util_senecaPluginAPI-SenecaPluginAPI.html">SenecaPluginAPI</a></li><li><a href="TMSExporter.html">TMSExporter</a><ul class='methods'><li data-type='method'><a href="TMSExporter.html#cancelExport">cancelExport</a></li><li data-type='method'><a href="TMSExporter.html#exportCSV">exportCSV</a></li></ul></li><li><a href="TMSFileReader.html">TMSFileReader</a><ul class='methods'><li data-type='method'><a href="TMSFileReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSFileReader.html#next">next</a></li></ul></li><li><a href="TMSURLReader.html">TMSURLReader</a><ul class='methods'><li data-type='method'><a href="TMSURLReader.html#getObjectCount">getObjectCount</a></li><li data-type='method'><a href="TMSURLReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSURLReader.html#next">next</a></li></ul></li><li><a href="WarningReporter.html">WarningReporter</a><ul class='methods'><li data-type='method'><a href="WarningReporter.html#appendFieldsForObject">appendFieldsForObject</a></li><li data-type='method'><a href="WarningReporter.html#end">end</a></li></ul></li><li><a href="WebsocketUpdater.html">WebsocketUpdater</a></li></ul><h3>Modules</h3><ul><li><a href="module-util_csvUtil.html">util/csvUtil</a><ul class='methods'><li data-type='method'><a href="module-util_csvUtil.html#.csvCompleted">csvCompleted</a></li><li data-type='method'><a href="module-util_csvUtil.html#.csvForEach">csvForEach</a></li><li data-type='method'><a href="module-util_csvUtil.html#.diffCSV">diffCSV</a></li><li data-type='method'><a href="module-util_csvUtil.html#.doCSVKeysMatch">doCSVKeysMatch</a></li><li data-type='method'><a href="module-util_csvUtil.html#.getLastCompletedCSV">getLastCompletedCSV</a></li></ul></li><li><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a><ul class='methods'><li data-type='method'><a href="module-util_senecaPluginAPI.html#.makeAPI">makeAPI</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="UpdateEmitter.html#event:completed">completed</a></li><li><a href="UpdateEmitter.html#event:progress">progress</a></li><li><a href="UpdateEmitter.html#event:started">started</a></li><li><a href="WebsocketUpdater.html#event:status">status</a></li></ul><h3>Interfaces</h3><ul><li><a href="TMSReader.html">TMSReader</a><ul class='methods'><li data-type='method'><a href="TMSReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSReader.html#next">next</a></li></ul></li><li><a href="UpdateEmitter.html">UpdateEmitter</a><ul class='methods'><li data-type='method'><a href="UpdateEmitter.html#completed">completed</a></li><li data-type='method'><a href="UpdateEmitter.html#progress">progress</a></li><li data-type='method'><a href="UpdateEmitter.html#started">started</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">tms_csv/src/script/warningReporter.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const CSVWriter = require('./csvWriter.js');
+const logger = require('./logger.js');
+
+const _ = require('lodash');
+
+/**
+ * Writes warnings to a CSV file as they are emitted by the TMS export script. Warning file will
+ * be called `warnings.csv`
+ * @param {string} outputDirectory - Directory contaning the `meta.json` and `objects.csv` files
+ * exported by the TMS script
+ * @param {ExportConfig} searchConfig - Export configuration
+ * @throws Error if the output file cannot be opened for some reason
+ */
+class WarningReporter {
+	constructor(outputDirectory, searchConfig) {
+		this._outputDirectory = outputDirectory;
+		this._searchConfig = searchConfig;
+		this._enumeratedFieldCounts = {};
+		this._singletonCap = 4;
+		const warningPath = `${this._outputDirectory}/warnings.csv`;
+
+		logger.info(`Writing warnings to ${warningPath}`);
+		this._csv = new CSVWriter(warningPath);
+	}
+
+	_checkMissingFields(objectId, fields) {
+		_.forEach(fields, (value, field) => {
+			if (this._searchConfig.fieldIsRequired(field)) {
+				if (value === undefined) {
+					const newWarning = {
+						type: 'missing',
+						object: objectId,
+						field,
+						message: `Object is missing a required field ${field}`,
+					};
+
+					logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
+					this._csv.write(newWarning);
+				}
+			}
+		});
+	}
+
+	_checkSingletonFields() {
+		_.forEach(this._enumeratedFieldCounts, (valueCountDict, field) => {
+			_.forEach(valueCountDict, (objectIds, fieldValue) => {
+				if (objectIds.length &lt; this._singletonCap) {
+					_.forEach(objectIds, (objectId) => {
+						const newWarning = {
+							type: 'singleton',
+							object: objectId,
+							field,
+							message: `Value ${fieldValue} for field ${field} only appears ${objectIds.length} times — maybe a typo`,
+						};
+
+						logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
+						this._csv.write(newWarning);
+					});
+				}
+			});
+		});
+	}
+
+	_checkUnusedFields(desc, objectId, artObject, fields) {
+		_.forEach(desc, (value, key) => {
+			if (!_.has(fields, key)) {
+				const newWarning = {
+					type: 'unused',
+					object: objectId,
+					field: key,
+					message: `Object description has field ${key}, but that field was not selected for export`,
+				};
+
+				logger.debug(`Export warning: ${JSON.stringify(newWarning)}`);
+				this._csv.write(newWarning);
+			}
+		});
+	}
+
+	_countEnumeratedFields(desc, objectId) {
+		_.forEach(desc, (value, key) => {
+			if (this._searchConfig.fieldIsEnumerated(key)) {
+				if (!this._enumeratedFieldCounts[key]) this._enumeratedFieldCounts[key] = {};
+				if (!this._enumeratedFieldCounts[key][value]) this._enumeratedFieldCounts[key][value] = [];
+
+				// If a particular field already has more than the required number of object id's associated with it,
+				// then we don't need to store it. Save a bit of memory this way
+				if ((this._enumeratedFieldCounts[key][value]).length &lt;= this._singletonCap) {
+					(this._enumeratedFieldCounts[key][value]).push(objectId);
+				}
+			}
+		});
+	}
+
+	/**
+	 * Call this function to process the object with the given identifier
+	 * @param {number|string} objectId - Unique identifier for collection objects
+	 * @param {ArtObject} artObject - the object itself
+	 * @param {object} description - The fields that should be exported
+	 * @throws Error if writing to the CSV file fails for some reason
+	 */
+	appendFieldsForObject(objectId, artObject, description) {
+		const desc = artObject.transformedDescription;
+		const mappedFields = _.mapKeys(description, (v, key) => this._searchConfig.transformKey(key));
+
+		if (this._searchConfig.warnings.unusedFields) {
+			this._checkUnusedFields(desc, objectId, artObject, mappedFields);
+		}
+
+		if (this._searchConfig.warnings.singletonFields) {
+			this._countEnumeratedFields(desc, objectId);
+		}
+
+		if (this._searchConfig.warnings.missingFields) {
+			this._checkMissingFields(objectId, mappedFields);
+		}
+	}
+
+	/**
+	 * Close the `warnings.csv` output file
+	 * @throws Error if closing the file fails for some reason
+	 */
+	end() {
+		if (this._searchConfig.warnings.singletonFields) this._checkSingletonFields();
+		this._csv.end();
+	}
+};
+
+module.exports = WarningReporter;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 15:37:24 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

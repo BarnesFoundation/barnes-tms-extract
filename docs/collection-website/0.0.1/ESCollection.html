@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ESCollection - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ArtObject.html">ArtObject</a><ul class='methods'><li data-type='method'><a href="ArtObject.html#descriptionWithFields">descriptionWithFields</a></li></ul></li><li><a href="CSVPluginAPI.html">CSVPluginAPI</a><ul class='methods'><li data-type='method'><a href="CSVPluginAPI.html#list">list</a></li></ul></li><li><a href="CSVWriter.html">CSVWriter</a><ul class='methods'><li data-type='method'><a href="CSVWriter.html#end">end</a></li><li data-type='method'><a href="CSVWriter.html#write">write</a></li></ul></li><li><a href="ESCollection.html">ESCollection</a><ul class='methods'><li data-type='method'><a href="ESCollection.html#_analyzedData">_analyzedData</a></li><li data-type='method'><a href="ESCollection.html#_deleteCollectionIndex">_deleteCollectionIndex</a></li><li data-type='method'><a href="ESCollection.html#_isIndexReadyForSync">_isIndexReadyForSync</a></li><li data-type='method'><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></li><li data-type='method'><a href="ESCollection.html#description">description</a></li><li data-type='method'><a href="ESCollection.html#initialize">initialize</a></li><li data-type='method'><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></li></ul></li><li><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></li><li><a href="ESPluginAPI.html">ESPluginAPI</a><ul class='methods'><li data-type='method'><a href="ESPluginAPI.html#desc">desc</a></li><li data-type='method'><a href="ESPluginAPI.html#sync">sync</a></li></ul></li><li><a href="ExportConfig.html">ExportConfig</a><ul class='methods'><li data-type='method'><a href="ExportConfig.html#fieldHasAlias">fieldHasAlias</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsEnumerated">fieldIsEnumerated</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsMask">fieldIsMask</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsRequired">fieldIsRequired</a></li><li data-type='method'><a href="ExportConfig.html#fieldMaskSelector">fieldMaskSelector</a></li></ul></li><li><a href="ExportMetadata.html">ExportMetadata</a><ul class='methods'><li data-type='method'><a href="ExportMetadata.html#description">description</a></li></ul></li><li><a href="ImagesPluginAPI.html">ImagesPluginAPI</a><ul class='methods'><li data-type='method'><a href="ImagesPluginAPI.html#info">info</a></li><li data-type='method'><a href="ImagesPluginAPI.html#tile">tile</a></li></ul></li><li><a href="ImageUploader.html">ImageUploader</a><ul class='methods'><li data-type='method'><a href="ImageUploader.html#process">process</a></li></ul></li><li><a href="module-util_senecaPluginAPI-SenecaPluginAPI.html">SenecaPluginAPI</a></li><li><a href="TMSExporter.html">TMSExporter</a><ul class='methods'><li data-type='method'><a href="TMSExporter.html#cancelExport">cancelExport</a></li><li data-type='method'><a href="TMSExporter.html#exportCSV">exportCSV</a></li></ul></li><li><a href="TMSFileReader.html">TMSFileReader</a><ul class='methods'><li data-type='method'><a href="TMSFileReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSFileReader.html#next">next</a></li></ul></li><li><a href="TMSURLReader.html">TMSURLReader</a><ul class='methods'><li data-type='method'><a href="TMSURLReader.html#getObjectCount">getObjectCount</a></li><li data-type='method'><a href="TMSURLReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSURLReader.html#next">next</a></li></ul></li><li><a href="WarningReporter.html">WarningReporter</a><ul class='methods'><li data-type='method'><a href="WarningReporter.html#appendFieldsForObject">appendFieldsForObject</a></li><li data-type='method'><a href="WarningReporter.html#end">end</a></li></ul></li><li><a href="WebsocketUpdater.html">WebsocketUpdater</a></li></ul><h3>Modules</h3><ul><li><a href="module-util_csvUtil.html">util/csvUtil</a><ul class='methods'><li data-type='method'><a href="module-util_csvUtil.html#.csvCompleted">csvCompleted</a></li><li data-type='method'><a href="module-util_csvUtil.html#.csvForEach">csvForEach</a></li><li data-type='method'><a href="module-util_csvUtil.html#.diffCSV">diffCSV</a></li><li data-type='method'><a href="module-util_csvUtil.html#.doCSVKeysMatch">doCSVKeysMatch</a></li><li data-type='method'><a href="module-util_csvUtil.html#.getLastCompletedCSV">getLastCompletedCSV</a></li></ul></li><li><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a><ul class='methods'><li data-type='method'><a href="module-util_senecaPluginAPI.html#.makeAPI">makeAPI</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="UpdateEmitter.html#event:completed">completed</a></li><li><a href="UpdateEmitter.html#event:progress">progress</a></li><li><a href="UpdateEmitter.html#event:started">started</a></li><li><a href="WebsocketUpdater.html#event:status">status</a></li></ul><h3>Interfaces</h3><ul><li><a href="TMSReader.html">TMSReader</a><ul class='methods'><li data-type='method'><a href="TMSReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSReader.html#next">next</a></li></ul></li><li><a href="UpdateEmitter.html">UpdateEmitter</a><ul class='methods'><li data-type='method'><a href="UpdateEmitter.html#completed">completed</a></li><li data-type='method'><a href="UpdateEmitter.html#progress">progress</a></li><li data-type='method'><a href="UpdateEmitter.html#started">started</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">ESCollection</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        ESCollection
+        </h2>
+        
+            <div class="class-description"><p>Manages the process of importing a CSV file into Elasticsearch. The <code>collection</code> index has two types,
+<code>meta</code> and <code>object</code>. The <code>meta</code> type stores information about the import process itself, including the
+timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
+currently synchronized with a CSV file (hasImportedCSV). The <code>object</code> type stores the collection objects
+themselves, and will have different fields depending on the headers of the imported CSV file</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="ESCollection"><span class="type-signature"></span>new ESCollection<span class="signature">(esHost, csvRootDirectory)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>esHost</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Host of the running elasticsearch server</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>csvRootDirectory</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Path to the directory containing csv_* directories with exports from TMS</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="status"><span class="type-signature"></span>status<span class="type-signature"></span></h4>
+
+
+
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ESCollection.html#~ESImportStatus">ESCollection~ESImportStatus</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="_analyzedData"><span class="type-signature"></span>_analyzedData<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Analyze a JSON object before sending it to be stored in ES, decorating it
+with additional KV pairs and filtering out bad characters</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_deleteCollectionIndex"><span class="type-signature"></span>_deleteCollectionIndex<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Removes the collection index</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line170">line 170</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolved when the elasticsearch request completes</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="_isIndexReadyForSync"><span class="type-signature"></span>_isIndexReadyForSync<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Whether or not the index is ready to sync with a CSV. Checks if the index exists
+and whether the meta object exists</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line212">line 212</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolved when the elasticsearch request complete, result is whether the index is ready</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="clearCollectionObjects"><span class="type-signature"></span>clearCollectionObjects<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Removes all objects from the collections index and resets the meta document</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line354">line 354</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolves to a description of the Elasticsearch index</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="description"><span class="type-signature"></span>description<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns a description of the Elasticsearch index.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line387">line 387</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolves to a description of the Elasticsearch index</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="initialize"><span class="type-signature"></span>initialize<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Public wrapper for _prepareIndexForSync, which creates the index and metadata document</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line425">line 425</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolved when the elasticsearch request completes</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="syncESToCSV"><span class="type-signature"></span>syncESToCSV<span class="signature">(csvExport)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Attempts to synchronize the Elasticsearch index with the given CSV export
+If the index has already been synchronized with a CSV file, then this function will compare the CSV
+file to be imported with the previous file. Only the differences between the two will be used to
+update Elasticsearch. If the previous file cannot be found, or if the two CSV files have different
+headers, then the Elasticsearch index will be cleared before updating.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>csvExport</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name of the CSV export to synchronize with ES</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line439">line 439</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        
+<span class="param-type">ESCollectionException</span>
+
+
+    
+    </div>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Resolved when the synchronization is complete</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="~ESImportStatus">ESImportStatus</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>hasImportedCSV</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Whether the ES index has imported a CSV</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lastCSVImportTimestamp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>UNIX timestamp of the last imported CSV</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lastImportedCSV</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name of the last imported CSV file</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 15:37:24 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>csv_es/src/service/esPluginAPI.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ArtObject.html">ArtObject</a><ul class='methods'><li data-type='method'><a href="ArtObject.html#descriptionWithFields">descriptionWithFields</a></li></ul></li><li><a href="CSVPluginAPI.html">CSVPluginAPI</a><ul class='methods'><li data-type='method'><a href="CSVPluginAPI.html#list">list</a></li></ul></li><li><a href="CSVWriter.html">CSVWriter</a><ul class='methods'><li data-type='method'><a href="CSVWriter.html#end">end</a></li><li data-type='method'><a href="CSVWriter.html#write">write</a></li></ul></li><li><a href="ESCollection.html">ESCollection</a><ul class='methods'><li data-type='method'><a href="ESCollection.html#_analyzedData">_analyzedData</a></li><li data-type='method'><a href="ESCollection.html#_deleteCollectionIndex">_deleteCollectionIndex</a></li><li data-type='method'><a href="ESCollection.html#_isIndexReadyForSync">_isIndexReadyForSync</a></li><li data-type='method'><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></li><li data-type='method'><a href="ESCollection.html#description">description</a></li><li data-type='method'><a href="ESCollection.html#initialize">initialize</a></li><li data-type='method'><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></li></ul></li><li><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></li><li><a href="ESPluginAPI.html">ESPluginAPI</a><ul class='methods'><li data-type='method'><a href="ESPluginAPI.html#desc">desc</a></li><li data-type='method'><a href="ESPluginAPI.html#sync">sync</a></li></ul></li><li><a href="ExportConfig.html">ExportConfig</a><ul class='methods'><li data-type='method'><a href="ExportConfig.html#fieldHasAlias">fieldHasAlias</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsEnumerated">fieldIsEnumerated</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsMask">fieldIsMask</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsRequired">fieldIsRequired</a></li><li data-type='method'><a href="ExportConfig.html#fieldMaskSelector">fieldMaskSelector</a></li></ul></li><li><a href="ExportMetadata.html">ExportMetadata</a><ul class='methods'><li data-type='method'><a href="ExportMetadata.html#description">description</a></li></ul></li><li><a href="ImagesPluginAPI.html">ImagesPluginAPI</a><ul class='methods'><li data-type='method'><a href="ImagesPluginAPI.html#info">info</a></li><li data-type='method'><a href="ImagesPluginAPI.html#tile">tile</a></li></ul></li><li><a href="ImageUploader.html">ImageUploader</a><ul class='methods'><li data-type='method'><a href="ImageUploader.html#process">process</a></li></ul></li><li><a href="module-util_senecaPluginAPI-SenecaPluginAPI.html">SenecaPluginAPI</a></li><li><a href="TMSExporter.html">TMSExporter</a><ul class='methods'><li data-type='method'><a href="TMSExporter.html#cancelExport">cancelExport</a></li><li data-type='method'><a href="TMSExporter.html#exportCSV">exportCSV</a></li></ul></li><li><a href="TMSFileReader.html">TMSFileReader</a><ul class='methods'><li data-type='method'><a href="TMSFileReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSFileReader.html#next">next</a></li></ul></li><li><a href="TMSURLReader.html">TMSURLReader</a><ul class='methods'><li data-type='method'><a href="TMSURLReader.html#getObjectCount">getObjectCount</a></li><li data-type='method'><a href="TMSURLReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSURLReader.html#next">next</a></li></ul></li><li><a href="WarningReporter.html">WarningReporter</a><ul class='methods'><li data-type='method'><a href="WarningReporter.html#appendFieldsForObject">appendFieldsForObject</a></li><li data-type='method'><a href="WarningReporter.html#end">end</a></li></ul></li><li><a href="WebsocketUpdater.html">WebsocketUpdater</a></li></ul><h3>Modules</h3><ul><li><a href="module-util_csvUtil.html">util/csvUtil</a><ul class='methods'><li data-type='method'><a href="module-util_csvUtil.html#.csvCompleted">csvCompleted</a></li><li data-type='method'><a href="module-util_csvUtil.html#.csvForEach">csvForEach</a></li><li data-type='method'><a href="module-util_csvUtil.html#.diffCSV">diffCSV</a></li><li data-type='method'><a href="module-util_csvUtil.html#.doCSVKeysMatch">doCSVKeysMatch</a></li><li data-type='method'><a href="module-util_csvUtil.html#.getLastCompletedCSV">getLastCompletedCSV</a></li></ul></li><li><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a><ul class='methods'><li data-type='method'><a href="module-util_senecaPluginAPI.html#.makeAPI">makeAPI</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="UpdateEmitter.html#event:completed">completed</a></li><li><a href="UpdateEmitter.html#event:progress">progress</a></li><li><a href="UpdateEmitter.html#event:started">started</a></li><li><a href="WebsocketUpdater.html#event:status">status</a></li></ul><h3>Interfaces</h3><ul><li><a href="TMSReader.html">TMSReader</a><ul class='methods'><li data-type='method'><a href="TMSReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSReader.html#next">next</a></li></ul></li><li><a href="UpdateEmitter.html">UpdateEmitter</a><ul class='methods'><li data-type='method'><a href="UpdateEmitter.html#completed">completed</a></li><li data-type='method'><a href="UpdateEmitter.html#progress">progress</a></li><li data-type='method'><a href="UpdateEmitter.html#started">started</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">csv_es/src/service/esPluginAPI.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const ESCollection = require('../script/esCollection.js');
+const WebsocketUpdater = require('../../../util/websocketUpdater.js');
+const { SenecaPluginAPI, makeAPI } = require('../../../util/senecaPluginAPI.js');
+
+const config = require('config');
+const fs = require('fs');
+const path = require('path');
+
+const port = config.Server.port;
+
+/**
+ * Seneca plugin for coordinating with the Elasticsearch importer
+ * @see {@link ESCollection}
+ * @param {string} options.host - Hostname for the Elasticsearch server
+ * @param {string} options.csvDir - Path to the root CSV export directory
+ */
+class ESPluginAPI extends SenecaPluginAPI {
+	constructor(seneca, options) {
+		super(seneca, options);
+		this._host = options.host;
+		this._csvDir = options.csvDir;
+	}
+
+	get name() { return "es"; }
+
+	/**
+	 * Returns a description of the Elasticsearch collection index
+	 * @see {@link ESCollection#description}
+	 * @return {Promise} Resolves to a description of the Elasticsearch collection index
+	 */
+	desc() {
+		const esCollection = new ESCollection(this._host, this._csvDir);
+		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
+		return esCollection.description();
+	}
+
+	/**
+	 * Synchronizes the Elasticsearch collection index with a given CSV file
+	 * @see {@link ESCollection#syncESToCSV}
+	 * @param {string} csv - Name of the CSV export with which to sync
+	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
+	 */
+	sync(csv) {
+		const esCollection = new ESCollection(this._host, this._csvDir);
+		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
+		return esCollection.syncESToCSV(csv)
+		 .then(() => esCollection.description());
+	}
+}
+
+module.exports = makeAPI('role:es', ESPluginAPI);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 15:37:24 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

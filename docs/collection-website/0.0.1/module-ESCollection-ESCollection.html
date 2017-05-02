@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Class: ESCollection</title>
+    
+    <meta name="description" content="Xebra.js API Documentation" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":false,"cleverLinks":false,"meta":{"titlePrefix":"Xebra.js Docs","description":"Xebra.js API Documentation"},"default":{"outputSourceFiles":true,"staticFiles":{"paths":["misc"],"includePattern":".+\\.png$","exclude":[]}},"applicationName":"TMS to Elasticsearch Import","footer":"TODO","copyright":"TODO","linenums":true};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">TMS to Elasticsearch Import</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="module:ESCollection.ESCollectionException">
+            <span class="title">
+                <a href="module-ESCollection.ESCollectionException.html">module:ESCollection.ESCollectionException</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="module:ESCollection~ESCollection">
+            <span class="title">
+                <a href="module-ESCollection-ESCollection.html">module:ESCollection~ESCollection</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="module:ESCollection~ESCollection#clearCollectionObjects"><a href="module-ESCollection-ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></li>
+            
+                <li data-name="module:ESCollection~ESCollection#description"><a href="module-ESCollection-ESCollection.html#description">description</a></li>
+            
+                <li data-name="module:ESCollection~ESCollection#init"><a href="module-ESCollection-ESCollection.html#init">init</a></li>
+            
+                <li data-name="module:ESCollection~ESCollection#syncESToCSV"><a href="module-ESCollection-ESCollection.html#syncESToCSV">syncESToCSV</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="module-ESCollection-ESCollection.html">Class: ESCollection</h1>
+        
+
+
+
+<section>
+    
+<header>
+    <h2>
+        <span class="ancestors"><a href="module-ESCollection.html">ESCollection</a>~</span>
+    
+    ESCollection
+    </h2>
+    
+        <div class="class-description"><p>Manages the process of importing a CSV file into Elasticsearch. The <code>collection</code> index has two types,
+<code>meta</code> and <code>object</code>. The <code>meta</code> type stores information about the import process itself, including the
+timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
+currently synchronized with a CSV file (hasImportedCSV). The <code>object</code> type stores the collection objects
+themselves, and will have different fields depending on the headers of the imported CSV file</p></div>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="ESCollection">
+            
+            new ESCollection<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line36">line 36</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="clearCollectionObjects">
+            
+            clearCollectionObjects<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Promise}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line249">line 249</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Remove all collection objects from the collection index and the object type</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Promise
+                        
+                    
+            </td>
+            <td class="description last">Resolved when the elasticsearch request completes</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="description">
+            
+            description<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Promise}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line287">line 287</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns a description of the Elasticsearch index.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Promise
+                        
+                    
+            </td>
+            <td class="description last">Resolves to a description of the Elasticsearch index</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="init">
+            
+            init<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Promise}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line329">line 329</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Must be called before trying to interact with the ES collection index. This
+will prepare the index by, for example, adding the collection metadata</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Promise
+                        
+                    
+            </td>
+            <td class="description last">Resolved when the elasticsearch request completes</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="syncESToCSV">
+            
+            syncESToCSV<span class="signature">(csvFilePath)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Promise}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="csv_es_src_script_esCollection.js.html">csv_es/src/script/esCollection.js</a>, <a href="csv_es_src_script_esCollection.js.html#line350">line 350</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Attempts to synchronize the Elasticsearch index with the given CSV file.
+If the index has already been synchronized with a CSV file, then this function will compare the CSV
+file to be imported with the previous file. Only the differences between the two will be used to
+update Elasticsearch. If the previous file cannot be found, or if the two CSV files have different
+headers, then the Elasticsearch index will be cleared before updating.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>csvFilePath</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Path to the CSV file to synchronize with ES</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    <h5>Throws:</h5>
+    
+            
+
+    <div class="param-desc">
+    
+        
+<span class="param-type">ESCollectionException</span>
+
+
+    
+    </div>
+
+
+        
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Promise
+                        
+                    
+            </td>
+            <td class="description last">Resolved when the synchronization is complete</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Apr 07 2017 13:09:33 GMT-0400 (EDT)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/jaguar.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>tms_csv/src/script/exportConfig.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ArtObject.html">ArtObject</a><ul class='methods'><li data-type='method'><a href="ArtObject.html#descriptionWithFields">descriptionWithFields</a></li></ul></li><li><a href="CSVPluginAPI.html">CSVPluginAPI</a><ul class='methods'><li data-type='method'><a href="CSVPluginAPI.html#list">list</a></li></ul></li><li><a href="CSVWriter.html">CSVWriter</a><ul class='methods'><li data-type='method'><a href="CSVWriter.html#end">end</a></li><li data-type='method'><a href="CSVWriter.html#write">write</a></li></ul></li><li><a href="ESCollection.html">ESCollection</a><ul class='methods'><li data-type='method'><a href="ESCollection.html#_analyzedData">_analyzedData</a></li><li data-type='method'><a href="ESCollection.html#_deleteCollectionIndex">_deleteCollectionIndex</a></li><li data-type='method'><a href="ESCollection.html#_isIndexReadyForSync">_isIndexReadyForSync</a></li><li data-type='method'><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></li><li data-type='method'><a href="ESCollection.html#description">description</a></li><li data-type='method'><a href="ESCollection.html#initialize">initialize</a></li><li data-type='method'><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></li></ul></li><li><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></li><li><a href="ESPluginAPI.html">ESPluginAPI</a><ul class='methods'><li data-type='method'><a href="ESPluginAPI.html#desc">desc</a></li><li data-type='method'><a href="ESPluginAPI.html#sync">sync</a></li></ul></li><li><a href="ExportConfig.html">ExportConfig</a><ul class='methods'><li data-type='method'><a href="ExportConfig.html#fieldHasAlias">fieldHasAlias</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsEnumerated">fieldIsEnumerated</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsMask">fieldIsMask</a></li><li data-type='method'><a href="ExportConfig.html#fieldIsRequired">fieldIsRequired</a></li><li data-type='method'><a href="ExportConfig.html#fieldMaskSelector">fieldMaskSelector</a></li></ul></li><li><a href="ExportMetadata.html">ExportMetadata</a><ul class='methods'><li data-type='method'><a href="ExportMetadata.html#description">description</a></li></ul></li><li><a href="ImagesPluginAPI.html">ImagesPluginAPI</a><ul class='methods'><li data-type='method'><a href="ImagesPluginAPI.html#info">info</a></li><li data-type='method'><a href="ImagesPluginAPI.html#tile">tile</a></li></ul></li><li><a href="ImageUploader.html">ImageUploader</a><ul class='methods'><li data-type='method'><a href="ImageUploader.html#process">process</a></li></ul></li><li><a href="module-util_senecaPluginAPI-SenecaPluginAPI.html">SenecaPluginAPI</a></li><li><a href="TMSExporter.html">TMSExporter</a><ul class='methods'><li data-type='method'><a href="TMSExporter.html#cancelExport">cancelExport</a></li><li data-type='method'><a href="TMSExporter.html#exportCSV">exportCSV</a></li></ul></li><li><a href="TMSFileReader.html">TMSFileReader</a><ul class='methods'><li data-type='method'><a href="TMSFileReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSFileReader.html#next">next</a></li></ul></li><li><a href="TMSURLReader.html">TMSURLReader</a><ul class='methods'><li data-type='method'><a href="TMSURLReader.html#getObjectCount">getObjectCount</a></li><li data-type='method'><a href="TMSURLReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSURLReader.html#next">next</a></li></ul></li><li><a href="WarningReporter.html">WarningReporter</a><ul class='methods'><li data-type='method'><a href="WarningReporter.html#appendFieldsForObject">appendFieldsForObject</a></li><li data-type='method'><a href="WarningReporter.html#end">end</a></li></ul></li><li><a href="WebsocketUpdater.html">WebsocketUpdater</a></li></ul><h3>Modules</h3><ul><li><a href="module-util_csvUtil.html">util/csvUtil</a><ul class='methods'><li data-type='method'><a href="module-util_csvUtil.html#.csvCompleted">csvCompleted</a></li><li data-type='method'><a href="module-util_csvUtil.html#.csvForEach">csvForEach</a></li><li data-type='method'><a href="module-util_csvUtil.html#.diffCSV">diffCSV</a></li><li data-type='method'><a href="module-util_csvUtil.html#.doCSVKeysMatch">doCSVKeysMatch</a></li><li data-type='method'><a href="module-util_csvUtil.html#.getLastCompletedCSV">getLastCompletedCSV</a></li></ul></li><li><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a><ul class='methods'><li data-type='method'><a href="module-util_senecaPluginAPI.html#.makeAPI">makeAPI</a></li></ul></li></ul><h3>Events</h3><ul><li><a href="UpdateEmitter.html#event:completed">completed</a></li><li><a href="UpdateEmitter.html#event:progress">progress</a></li><li><a href="UpdateEmitter.html#event:started">started</a></li><li><a href="WebsocketUpdater.html#event:status">status</a></li></ul><h3>Interfaces</h3><ul><li><a href="TMSReader.html">TMSReader</a><ul class='methods'><li data-type='method'><a href="TMSReader.html#hasNext">hasNext</a></li><li data-type='method'><a href="TMSReader.html#next">next</a></li></ul></li><li><a href="UpdateEmitter.html">UpdateEmitter</a><ul class='methods'><li data-type='method'><a href="UpdateEmitter.html#completed">completed</a></li><li data-type='method'><a href="UpdateEmitter.html#progress">progress</a></li><li data-type='method'><a href="UpdateEmitter.html#started">started</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">tms_csv/src/script/exportConfig.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const _ = require('lodash');
+
+/**
+ * Wrapper and validator for a JSON object implementing {@link TMSExporter~TMSExportConfiguration}
+ * @param {TMSExporter~TMSExportConfiguration} config - TMS export configuration
+ * @throws Error if the TMS export configuration is impropertly constructed
+ */
+class ExportConfig {
+	constructor(config) {
+		const jsonConfig = config;
+
+		const primaryKeyObj = _.find(jsonConfig.fields, entry => entry.primaryKey === true);
+
+		if (primaryKeyObj === undefined) {
+			const errObj = {
+				name: 'InvalidConfig',
+				message: 'CSV export config does not specify a primary key',
+			};
+			throw errObj;
+		} else {
+			this._primaryKey = primaryKeyObj.name;
+		}
+
+		const lastKeyObj = _.findLast(jsonConfig.fields, entry => entry.primaryKey === true);
+
+		if (lastKeyObj !== primaryKeyObj) {
+			const errObj = {
+				name: 'InvalidConfig',
+				message: `CSV export config designates more than one primary key: (${this._primaryKey}) and (${lastKeyObj.name})`,
+			};
+			throw errObj;
+		}
+
+		this._config = jsonConfig;
+
+		this._fields = {};
+		_.forEach(this._config.fields, (field) => {
+			this._fields[field.name] = field;
+		});
+	}
+
+	// @property {string} apiURL - The root URL of the TMS API
+	get apiURL() {
+		return this._config.apiURL;
+	}
+
+	// @property {string[]} fields - Which fields to retrieve for each collection object in TMS
+	get fields() {
+		return _.keys(this._fields);
+	}
+
+	// @property {object} debug - Any specified debug keys
+	get debug() {
+		return this._config.debug;
+	}
+
+	// @property {string} outputDirectory - The directory into which to write all TMS files
+	get outputDirectory() {
+		return this._config.outputDirectory;
+	}
+
+	// @property {string} outputHeaders - Headers for the output CSV
+	get outputHeaders() {
+		return _.keys(this._fields).map((key) => this.transformKey(key));
+	}
+
+	// @property {string} primaryKey - Field name to use as a unique identifier for each TMS collection object
+	get primaryKey() {
+		return this._primaryKey;
+	}
+
+	// @property {string} warnings - Which warnings to emit
+	get warnings() {
+		return this._config.warnings;
+	}
+
+	/**
+	 * Whether or not the field with the given name will have an aliased name in the export
+	 * @param {string} field - the name of the field
+	 */
+	fieldHasAlias(field) {
+		return this._fields[field] ? this._fields[field].alias !== undefined : false;
+	}
+
+	/**
+	 * Whether or not the field with a given name represents an enumerated value
+	 * @param {string} field - the name of the field
+	 */
+	fieldIsEnumerated(field) {
+		return this._fields[field] ? this._fields[field].enumerated === true : false;
+	}
+
+	/**
+	 * Whether or not the field with a given name represents a mask value
+	 * @param {string} field - the name of the field
+	 */
+	fieldIsMask(field) {
+		return this._fields[field] &amp;&amp; this._fields[field].dataType === "mask";
+	}
+
+	/**
+	 * Whether or not the field with a given name must be included
+	 * @param {string} field - the name of the field
+	 */
+	fieldIsRequired(field) {
+		return this._fields[field] ? this._fields[field].required === true : false;
+	}
+
+	/**
+	 * Returns the mask string to select given a field name
+	 * @param {string} field - the name of the field
+	 */
+	fieldMaskSelector(field) {
+		return this.fieldIsMask(field) ? this._fields[field].select : field;
+	}
+
+	transformKey(key) {
+		if (this.fieldHasAlias(key)) {
+			return this._fields[key].alias;
+		}
+		return key;
+	}
+
+};
+
+module.exports = ExportConfig;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue May 02 2017 15:37:24 GMT-0400 (EDT) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Source: util/makeAPI.js</title>
+    
+    <meta name="description" content="Xebra.js API Documentation" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":false,"cleverLinks":false,"meta":{"titlePrefix":"Xebra.js Docs","description":"Xebra.js API Documentation"},"default":{"outputSourceFiles":true,"staticFiles":{"paths":["misc"],"includePattern":".+\\.png$","exclude":[]}},"applicationName":"TMS to Elasticsearch Import","footer":"TODO","copyright":"TODO","linenums":true};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">TMS to Elasticsearch Import</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <li class="item" data-name="ESCollection">
+            <span class="title">
+                <a href="ESCollection.html">ESCollection</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ESCollection#clearCollectionObjects"><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></li>
+            
+                <li data-name="ESCollection#description"><a href="ESCollection.html#description">description</a></li>
+            
+                <li data-name="ESCollection#init"><a href="ESCollection.html#init">init</a></li>
+            
+                <li data-name="ESCollection#syncESToCSV"><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ESCollection.ESCollectionException">
+            <span class="title">
+                <a href="ESCollection.ESCollectionException.html">ESCollection.ESCollectionException</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ESPluginAPI">
+            <span class="title">
+                <a href="ESPluginAPI.html">ESPluginAPI</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="ESPluginAPI#desc"><a href="ESPluginAPI.html#desc">desc</a></li>
+            
+                <li data-name="ESPluginAPI#sync"><a href="ESPluginAPI.html#sync">sync</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="SenecaPluginAPI">
+            <span class="title">
+                <a href="SenecaPluginAPI.html">SenecaPluginAPI</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="SenecaPluginAPI#seneca"><a href="SenecaPluginAPI.html#seneca">seneca</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="util_makeAPI.js.html">Source: util/makeAPI.js</h1>
+        
+
+
+    
+    <section>
+        <article>
+            <pre id="source-code" class="prettyprint source linenums"><code>const _ = require('lodash');
+
+module.exports = {};
+
+const STRIP_COMMENTS = /(\/\/.*$)|(\/\*[\s\S]*?\*\/)|(\s*=[^,\)]*(('(?:\\'|[^'\r\n])*')|("(?:\\"|[^"\r\n])*"))|(\s*=[^,\)]*))/mg;
+const ARGUMENT_NAMES = /([^\s,]+)/g;
+function getParamNames(func) {
+  const fnStr = func.toString().replace(STRIP_COMMENTS, '');
+  let result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+  if (result === null)
+     result = [];
+  return result;
+}
+
+function getFunctionDescriptors(objClass) {
+	let descriptors = Object.getOwnPropertyDescriptors(objClass.prototype);
+	descriptors = _.filter(descriptors, (desc) => {
+		if (typeof (desc.value) !== 'function') return false;
+		if (desc.value.name === 'constructor') return false;
+		if (desc.value.name === objClass.name) return false;
+		return true;
+	});
+	return descriptors;
+}
+
+/**
+ * Abstract base class for Seneca API plugin services
+ * @abstract
+ * @param {object} seneca - The seneca object used to initialize the API plugin
+ * @param {object} options - Opitions to be passed to the plugin on initialization
+ */
+class SenecaPluginAPI {
+	constructor(seneca, options) {
+		this._seneca = seneca;
+	}
+
+	/**
+	 * The seneca object used to initialize the API plugin
+	 */
+	get seneca() {
+		return this._seneca;
+	}
+}
+
+/**
+ * Given a role and the name of a class extending {@link SenecaPluginAPI}, this function
+ * returns a function that Seneca can call to configure a plugin API.
+ * @function
+ * @param {string} role - A role string that will be prefixed to actions exposed by the plugin.
+ * @param {class} apiObjectClass - Classname that extends {@link SenecaPluginAPI}
+ * @return A function suitable for being required by Seneca.use
+ * @example
+ * // filename myCustomAPI.js
+ * class MyCustomAPI extends SenecaPluginAPI {
+ * 	constructor(seneca, options) {
+ * 		super(seneca, options);
+ *		this._something = options.something;
+ * 	}
+ *	description() {
+ *		return { status: 'OK', something: this._something };
+ * 	}
+ * }
+ * module.exports = makeAPI('role:custom', MyCustomAPI);
+ * // Returns an API that will respond to 'role:custom,cmd:description'
+ * // Use by calling require('seneca')().use('./myCustomAPI.js')
+ */
+function makeAPI(role, apiObjectClass) {
+	const f = function(options) {
+		const apiObject = new apiObjectClass(this, options);
+		const descriptors = getFunctionDescriptors(apiObjectClass);
+
+		_.forEach(descriptors, (d) => {
+			const argnames = getParamNames(d.value);
+
+			const handler = (msg, done) => {
+				const args = _.at(msg, argnames);
+				Promise.resolve(d.value.apply(apiObject, args)).then((res) => {
+					done(res)
+				});
+			}
+
+			this.add(role, { cmd:d.value.name }, handler);
+		});
+	}
+	return f;
+}
+
+module.exports.makeAPI = makeAPI;
+module.exports.SenecaPluginAPI = SenecaPluginAPI;</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Apr 10 2017 12:09:41 GMT-0400 (EDT)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/jaguar.js"></script>
+</body>
+</html>

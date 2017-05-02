@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Source: /Users/samtarakajian/git/CollectionWebsite/src/util/csvUtil.js</title>
+    
+    <meta name="description" content="Xebra.js API Documentation" />
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":false,"cleverLinks":false,"meta":{"titlePrefix":"Xebra.js Docs","description":"Xebra.js API Documentation"},"default":{"outputSourceFiles":true,"staticFiles":{"paths":["misc"],"includePattern":".+\\.png$","exclude":[]}},"applicationName":"TMS to Elasticsearch Import","footer":"TODO","copyright":"TODO","linenums":true};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">TMS to Elasticsearch Import</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="-_Users_samtarakajian_git_CollectionWebsite_src_util_csvUtil.js.html">Source: /Users/samtarakajian/git/CollectionWebsite/src/util/csvUtil.js</h1>
+        
+
+
+    
+    <section>
+        <article>
+            <pre id="source-code" class="prettyprint source linenums"><code>const fs = require('fs');
+const _ = require('lodash');
+const path = require('path');
+const tmp = require('tmp');
+const shell = require('shelljs');
+const csv = require('fast-csv');
+
+const output = shell.exec('which bash');
+const bashPath = output.stdout.trim();
+
+function logShellOutput(logger, op) {
+	if (op.code === 0) {
+		logger.info(op.stdout);
+	} else {
+		logger.error(op.sterr);
+	}
+}
+
+/**
+ * Read just the first line of a file (up to the first newline character)
+ * @private
+ * @param {string} path - File path
+ * @return {Promise} Resolves to the first line of the file
+ */
+_readFirstLine = function (path) {
+	return new Promise((resolve, reject) => {
+		const rs = fs.createReadStream(path, { encoding: 'utf8' });
+		let acc = '';
+		let pos = 0;
+		let index;
+		rs
+			.on('data', (chunk) => {
+				index = chunk.indexOf('\n');
+				acc += chunk;
+				index !== -1 ? rs.close() : pos += chunk.length;
+			})
+			.on('close', () => {
+				resolve(acc.slice(0, pos + index));
+			})
+			.on('error', (err) => {
+				reject(err);
+			});
+	});
+};
+
+/**
+ * Calls a callback function for each row of a CSV on the given CSV path.
+ * First row of the CSV must be headers. Callback function has one argument,
+ * an object whose keys are the header columns.
+ * @param {string} csvPath - Path to the csv file
+ * @param {function} cb - Function to call on each row
+ */
+module.exports.csvForEach = function (csvPath, cb, completedCb) {
+	const stream = fs.createReadStream(csvPath);
+	csv.fromStream(stream, { headers: true })
+		.on('data', cb)
+		.on('end', completedCb);
+};
+
+/**
+ * Whether or not the csv export contained in the given directory ran to completion or not
+ * @param {string} csvDirPath - Path to the folder containing the files exported by the
+ *  CSV export script
+ * @return {bool} True if the CSV export script ran to completion, false otherwise
+ */
+module.exports.csvCompleted = function (csvDirPath) {
+	const metapath = path.join(csvDirPath, 'meta.json');
+	try {
+		const status = JSON.parse(fs.readFileSync(metapath, 'utf8')).status;
+		return status.toLowerCase() === 'completed';
+	} catch (e) {
+		return false;
+	}
+};
+
+/**
+ * Whether or not the header keys for two CSV files are the same or different
+ * (the headers need not be in the same order to be the same)
+ * @param {string} csvFilePathA - Path to the first objects.csv file
+ * @param {string} csvFilePathB - Path to the second objects.csv file
+ * @return {Promise} Resolves to true if the headers match, false otherwires
+ */
+module.exports.doCSVKeysMatch = function (csvFilePathA, csvFilePathB, delim = ',') {
+	const proms = [];
+	proms.push(_readFirstLine(csvFilePathA));
+	proms.push(_readFirstLine(csvFilePathB));
+	const all = Promise.all(proms);
+	return all.then((res) => {
+		const keysA = res[0].split(delim);
+		const keysB = res[1].split(delim);
+		return _.difference(keysA, keysB).length === 0 &amp;&amp; _.difference(keysB, keysA).length === 0;
+	}, (err) => {
+		throw err;
+	});
+};
+
+/**
+ * Name of the most recent CSV directory, given the directory containing CSV directories
+ * @param {string} csvRootDir - Path to the directory containing csv_* directories,
+ *  as output by the CSV export script
+ * @return {string} Name of the most recent CSV directory
+ */
+module.exports.getLastCompletedCSV = function (csvRootDir) {
+	let dirs = fs.readdirSync(csvRootDir);
+	dirs = _.filter(dirs, d => d.startsWith('csv_')).sort();
+	dirs = _.filter(dirs, d => module.exports.csvCompleted(path.join(csvRootDir, d)));
+	if (dirs.length > 0) return dirs.pop();
+	return null;
+};
+
+/**
+ * Diffs two csvs and returns a JSON object of all fields changed, added, or removed
+ * using the python library csvdiff.
+ * @param {string} oldCSVPath - Path to the old CSV file
+ * @param {string} newCSVPath - Path to the new CSV file
+ * @param {logger} logger - instance of winston logger, specific to the microservice
+ * @return {object} the diff in JSON form
+ */
+module.exports.diffCSV = function (oldCSVPath, newCSVPath, logger) {
+	const pyDiff = path.resolve(__dirname, '../py_csv_diff/py_csv_diff.py');
+	const resolvedOldPath = path.relative('.', oldCSVPath);
+	const resolvedNewPath = path.relative('.', newCSVPath);
+	const tmpDir = tmp.dirSync();
+	const outputJsonFile = path.join(tmpDir.name, 'diff.json');
+	logger.info(`Running CSV diff python script on ${oldCSVPath} ${newCSVPath}`);
+	logShellOutput(logger, shell.exec('source activate tmsdiff', { shell: bashPath }));
+	logShellOutput(logger, shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
+	logShellOutput(logger, shell.exec('source deactivate', { shell: bashPath }));
+	return JSON.parse(fs.readFileSync(outputJsonFile));
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Apr 07 2017 13:08:23 GMT-0400 (EDT)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/jaguar.js"></script>
+</body>
+</html>
