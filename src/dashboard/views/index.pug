@@ -103,9 +103,7 @@ html
 
 			function handleImagesServiceUpdate(name, status, data) {
 				$("#images-running").text(data.isRunning);
-				$("#images-progress").text(`${data.numImagesUploaded} of ${data.totalImagesToUpload} images processed.`);
-				$("#images-tiled").text(data.numTiledImages);
-				$("#images-uploaded").text(data.numRawImages);
+				$("#images-progress").text(`${data.uploadIndex} of ${data.totalImagesToUpload} images processed.`);
 			}
 
 			function handleTMSServiceUpdate(name, status, data) {

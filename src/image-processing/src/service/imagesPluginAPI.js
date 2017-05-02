@@ -26,10 +26,10 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	get name() { return "images"; }
 
 	info() {
-		const tileUploaderStatus = this._tileUploader ? this._tileUploader.status : { isRunning: false };
-		const rawUploaderStatus = this._rawUploader ? this._rawUploader.status : { isRunning: false };
-		const imageUploaderStatus = this._imageUploader ? this._imageUploader.status : { isRunning: false };
-		return { tileUploader: tileUploaderStatus, rawUploader: rawUploaderStatus, imageUploader: imageUploaderStatus };
+		const tileUploaderStatus = this._tileUploader ? this._tileUploader.status : { type: 'tileUploader', isRunning: false };
+		const rawUploaderStatus = this._rawUploader ? this._rawUploader.status : { type: 'rawUploader', isRunning: false };
+		const imageUploaderStatus = this._imageUploader ? this._imageUploader.status : { type: 'imageUploader', isRunning: false };
+		return [tileUploaderStatus, rawUploaderStatus, imageUploaderStatus];
 	}
 
 	/**
