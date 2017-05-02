@@ -181,7 +181,7 @@ html
 				return socket;
 			}
 
-			var socket = createUpdateSocket(3000);
+			var socket = createUpdateSocket(window.location.port);
 			function updateSearchResults(data) {
 				$("#search_results").text(JSON.stringify(data));
 			}
