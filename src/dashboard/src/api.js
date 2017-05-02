@@ -34,6 +34,8 @@ function api(options) {
 	this.add('role:api,path:images', function (msg, respond) {
 		const validCommands = {
 			tile: 'tile',
+			upload: 'upload',
+			raw: 'raw'
 		};
 
 		const command = msg.args.params.cmd;

@@ -18,14 +18,18 @@ const port = config.Server.port;
 class ImagesPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
+		this._tileUploader = null;
+		this._rawUploader = null;
+		this._imageUploader = null;
 	}
 
 	get name() { return "images"; }
 
-	get status() {
-		return {
-			isRunning: this._isRunning
-		}
+	info() {
+		const tileUploaderStatus = this._tileUploader ? this._tileUploader.status : { isRunning: false };
+		const rawUploaderStatus = this._rawUploader ? this._rawUploader.status : { isRunning: false };
+		const imageUploaderStatus = this._imageUploader ? this._imageUploader.status : { isRunning: false };
+		return { tileUploader: tileUploaderStatus, rawUploader: rawUploaderStatus, imageUploader: imageUploaderStatus };
 	}
 
 	/**
@@ -35,41 +39,45 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	 */
 	tile() {
 		let websocketUpdater;
-		return fetchAvailableImages.then((outputPath) => {
-			const tileUploader = new TileUploader(outputPath, csvDir);
-			websocketUpdater = new WebsocketUpdater('images', port, tileUploader);
-			return tileUploader.init();
+		fetchAvailableImages().then((outputPath) => {
+			this._tileUploader = new TileUploader(outputPath, csvDir);
+			websocketUpdater = new WebsocketUpdater('images', port, this._tileUploader);
+			return this._tileUploader.init();
 		}).then(() => {
-			return tileUploader.process();
+			return this._tileUploader.process();
 		}).then(() => {
-			return { success: true };
+			this._tileUploader = null;
 		});
+		return { success: true };
 	}
 
 	raw() {
 		let websocketUpdater;
-		return fetchAvailableImages.then((outputPath) => {
-			const rawUploader = new RawUploader(outputPath, csvDir);
-			websocketUpdater = new WebsocketUpdater('images', port, rawUploader);
-			return rawUploader.init();
+		fetchAvailableImages().then((outputPath) => {
+			this._rawUploader = new RawUploader(outputPath, csvDir);
+			websocketUpdater = new WebsocketUpdater('images', port, this._rawUploader);
+			return this._rawUploader.init();
 		 }).then(() => {
-			return rawUploader.process();
+			return this._rawUploader.process();
 		 }).then(() => {
-			return { success: true };
+		 	this._rawUploader = null;
 		 });
+		return { success: true };
 	}
 
 	upload() {
+		console.log('called upload images');
 		let websocketUpdater;
-		return fetchAvailableImages.then((outputPath) => {
-			const imageUploader = new ImageUploader(outputPath, csvDir);
-			websocketUpdater = new WebsocketUpdater('images', port, imageUploader);
-			return imageUploader.init();
+		fetchAvailableImages().then((outputPath) => {
+			this._imageUploader = new ImageUploader(outputPath, csvDir);
+			websocketUpdater = new WebsocketUpdater('images', port, this._imageUploader);
+			return this._imageUploader.init();
 		}).then(() => {
-			return imageUploader.process();
+			return this._imageUploader.process();
 		}).then(() => {
-			return { success: true };
+			this._imageUploader = null;
 		});
+		return { success: true };
 	}
 }
 
