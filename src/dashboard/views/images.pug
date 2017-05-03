@@ -4,10 +4,10 @@ p
 	span#current-status
 p
 	span Running: 
-	span#images-running
+	span#images-running= imageInfo.isRunning
 p
 	span Progress: 
-	span#images-progress
+	span#images-progress= `${imageInfo.numImagesUploaded} of ${imageInfo.totalImagesToUpload} + images processed.`
 p 
 	span Images Tiled: 
 	span#images-tiled= imageInfo.numTiledImages

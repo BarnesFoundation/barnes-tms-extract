@@ -38,46 +38,6 @@ app.get('/', (req, res) => {
 	res.render('index');
 });
 
-app.get('/csvFiles', (req, res) => {
-	const infos = {};
-	act('role:csv,cmd:list').then((list) => {
-		infos.list = list;
-		infos.desc = {};
-		res.render('csvFiles', infos);
-	}).catch((errorDescription) => {
-		res.render('error', { desc: errorDescription });
-	});
-});
-
-app.get('/empty', (req, res) => {
-	res.render('empty');
-});
-
-app.get('/es', (req, res) => {
-	act('role:es,cmd:desc').then((desc) => {
-		console.log("No error");
-		res.render('es', { desc });
-	}).catch((errorDescription) => {
-		res.render('error', { desc: errorDescription });
-	});
-});
-
-app.get('/images', (req, res) => {
-	act('role:images,cmd:info').then((imageInfo) => {
-		res.render('images', { imageInfo });
-	}).catch((errorDescription) => {
-		res.render('error', { desc: errorDescription });
-	});
-});
-
-app.get('/tmsToCsv', (req, res) => {
-	act('role:tmstocsv,cmd:info').then((info) => {
-		res.render('tmsToCsv', { info, moment });
-	}).catch((errorDescription) => {
-		res.render('error', { desc: errorDescription });
-	});
-});
-
 app.post('/sync', (req, res) => {
 	const csv = req.body.csv;
 	if (csv) {

@@ -33,6 +33,7 @@ function api(options) {
 
 	this.add('role:api,path:images', function (msg, respond) {
 		const validCommands = {
+			info: 'info',
 			tile: 'tile',
 		};
 

@@ -32,13 +32,11 @@ class TMSExportAPI extends SenecaPluginAPI {
 	}
 
 	info() {
-		return {
+		return Object.assign({
 			startTime: lastStartTime(this._logfile),
 			completeTime: lastCompleteTime(this._logfile),
-			active: this._tmsExporter.status.active,
-			progress: this._tmsExporter.status,
-			updatePort: this._exportProcessPort,
-		};
+			updatePort: this._exportProcessPort
+		}, this._tmsExporter.status);
 	}
 
 	run() {

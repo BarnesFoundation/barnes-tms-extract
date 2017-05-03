@@ -23,7 +23,7 @@
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
-    "pug": "^2.0.0-beta.12",
+    "pug": "^2.0.0-rc.1",
     "s3": "^4.4.0",
     "seneca": "^3.3.0",
     "seneca-transport": "friedemannsommer/seneca-transport",

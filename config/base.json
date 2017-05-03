@@ -2,6 +2,10 @@
 	"CSV": {
 		"path": "src/dashboard/public/output"
 	},
+	"Dashboard": {
+		"public": "src/dashboard/public",
+		"views": "src/dashboard/views"
+	},
 	"Elasticsearch": {
 		"host": "localhost:9200",
 		"log": "src/csv_es/logs/all-logs.log"

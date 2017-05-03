@@ -30,7 +30,8 @@ mixin csvFilesMixin(list, desc)
 					a(href="/output/" + file.name + "/warnings.csv") Download Warnings
 				td
 					- var completed = (file.status === "COMPLETED")
-					if completed
+					- var esReady = desc.lastImportedCSV !== undefined
+					if completed && esReady
 						- var synced = (file.name === desc.lastImportedCSV)
 						if (synced)
 							strong= "Synced"
