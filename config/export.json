@@ -4,7 +4,7 @@
 			"apiURL": "https://emuseum.barnesfoundation.org",
 			"outputDirectory": "src/dashboard/public/output",
 			"debug": {
-				"limit": 10
+				"limit": 300
 			},
 			"fields": [
 				{

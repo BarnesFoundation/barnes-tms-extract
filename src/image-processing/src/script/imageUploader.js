@@ -63,7 +63,7 @@ class ImageUploader extends UpdateEmitter {
 			isRunning: this._isRunning,
 			currentStep: this._currentStep,
 			numImagesUploaded: this._uploadedImages ? this._uploadedImages.length : 0,
-			totaImagesToUpload: this._numImagesToUpload,
+			totalImagesToUpload: this._numImagesToUpload,
 			uploadIndex: this._uploadIndex
 
 		}
@@ -153,8 +153,9 @@ class ImageUploader extends UpdateEmitter {
 			this._numImagesToUpload = images.length;
 			this.progress();
 			let index = 1;
-			this._uploadIndex = index;
 			eachSeries(images, (image, cb) => {
+				this._uploadIndex = index;
+				this.progress();
 				const localImagePath = path.resolve(__dirname, `./${image.name}`);
 				const file = fs.createWriteStream(localImagePath);
 				
@@ -174,7 +175,6 @@ class ImageUploader extends UpdateEmitter {
 						})
 						.on('end', () => {
 							index += 1;
-							this.progress();
 							fs.unlink(localImagePath);
 							cb();
 						});
