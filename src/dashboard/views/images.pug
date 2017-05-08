@@ -1,15 +1,14 @@
-button#run-images Run
+button#upload-raw Upload Raw
+button#upload-images Upload JPGs
+button#tile-images Tile Images
 p
 	span Status: 
 	span#current-status
 p
-	span Running: 
-	span#images-running= imageInfo.isRunning
+	span Running:
+	each item in imageInfo
+		if item.isRunning
+			span= item.type
 p
 	span Progress: 
-	span#images-progress= `${imageInfo.numImagesUploaded} of ${imageInfo.totalImagesToUpload} + images processed.`
-p 
-	span Images Tiled: 
-	span#images-tiled= imageInfo.numTiledImages
-	span , Raw Images Uploaded: 
-	span#images-uploaded= imageInfo.numRawImages
+	span#images-progress

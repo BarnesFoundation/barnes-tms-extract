@@ -6,7 +6,7 @@ const config = require('config');
 const credentials = config.Credentials.aws;
 
 const csvDir = path.resolve(__dirname, '../dashboard/public/output');
-const fileExtension = '.tif';
+const fileExtension = '.jpg';
 
 //open csv
 //loop through each line of csv

@@ -12,6 +12,12 @@ const logger = require('../script/imageLogger.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
 const credentials = config.Credentials.aws;
 
+/**
+ * Uploads tiled images, by IIIF spec to Amazon s3 from TMS
+ * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
+ * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
+ *  The script will tile and upload images using the most recent complete export in the directory
+ */
 class TileUploader extends UpdateEmitter {
   constructor(pathToAvailableImages, csvDir) {
     super();
@@ -24,14 +30,48 @@ class TileUploader extends UpdateEmitter {
         region: credentials.awsRegion
       }
     });
-    this._tiledImages = null;
     this._csvDir = csvDir;
+    this._tiledImages = null;
+    this._numImagesToTile = 0;
+    this._currentStep = 'Not started';
+    this._isRunning = false;
+    this._uploadIndex = 0;
   }
 
   init() {
     return this._fetchTiledImages();
   }
 
+  /**
+   * @typedef {Object} TileUploaderStatus
+   * @description Current status of the Tile Uploader script
+   * @name TileUploader~TileUploaderStatus
+   * @property {string} type - Always 'tileUploader'
+   * @property {boolean} isRunning - Whether or not the script is running
+   * @property {string} currentStep - Current step in the tiling process
+   * @property {number} numImagesUploaded - Number of images tiled and uploaded
+   * @property {number} totalImagesToUpload - Number of images to tile and upload
+   * @property {number} uploadIndex - Number of images uploaded by the current task
+  */ 
+
+  /**
+   * @memberof TileUploader
+   * @member {TileUploader~TileUploaderStatus}
+   */
+  get status() {
+    return {
+      type: 'tileUploader',
+      isRunning: this._isRunning,
+      currentStep: this._currentStep,
+      numImagesUploaded: this._tiledImages ? this._tiledImages.length : 0,
+      totalImagesToUpload: this._numImagesToTile,
+      uploadIndex: this._uploadindex
+    }
+  }
+
+  /**
+   * Begin the process of tiling and uploading images to S3
+   */
   process() {
     return new Promise((resolve) => {
       this._isRunning = true;
@@ -117,6 +157,8 @@ class TileUploader extends UpdateEmitter {
   }
 
   _tileAndUpload(images) {
+    this._numImagesToTile = images.length;
+    this.progress();
     const configPath = this._tempConfigPath();
     const goPath = path.relative(process.cwd(), path.resolve(__dirname, '../../go-iiif/bin/iiif-tile-seed'));
     this._numImagesToProcess = images.length;
@@ -134,7 +176,7 @@ class TileUploader extends UpdateEmitter {
         logger.info(`stdout: ${stdout}`);
         logger.error(`stderr: ${stderr}`);
       });
-      this._numImagesProcessed = index + 1;
+      this._uploadIndex = index + 1;
       this.progress();
     });
   }

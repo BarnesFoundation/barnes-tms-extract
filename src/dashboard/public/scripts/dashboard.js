@@ -34,6 +34,7 @@ $(function() {
 		var data = services["images"].state || {};
 		$("#imageProcessingPanelBody").empty();
 		$("#imageProcessingPanelBody").append(window.images({ imageInfo:data, moment: moment }));
+		bindImageProcessingButtons();
 	}, 50);
 
 	var updateTMSExportView = debounce(function(services) {
@@ -106,6 +107,7 @@ $(function() {
 	}
 
 	function handleServiceAttached(name) {
+		console.log("Service attached");
 		if (services[name] !== undefined) {
 			fetchServiceInfo(name);
 		} else {
@@ -177,9 +179,18 @@ $(function() {
 		});
 	}
 
-	$("#run-images").click(function() {
-		$.get('api/images/tile', function(response) {
-			
+	function bindImageProcessingButtons() {
+		$("#tile-images").click(function() {
+			$.get('api/images/tile', function(response) { });
 		});
-	});
+
+		$("#upload-images").click(function() {
+			console.log('upload images!');
+			$.get('api/images/upload', function(response) { });
+		});
+
+		$("#upload-raw").click(function() {
+			$.get('api/images/raw', function(response) { });
+		});
+	}
 });

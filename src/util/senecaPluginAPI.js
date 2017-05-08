@@ -37,6 +37,7 @@ function getFunctionNames(objClass) {
  */
 class SenecaPluginAPI {
 	constructor(seneca, options) {
+		console.log("Setting up the thing");
 		this._seneca = seneca;
 		const port = options.port || 3000;
 		this._socket = io(`http://localhost:${port}`);
@@ -56,6 +57,7 @@ class SenecaPluginAPI {
 	}
 
 	_introduce() {
+		console.log("Introducing");
 		if (this._socket) {
 			this._socket.emit('name', this.name);
 		}

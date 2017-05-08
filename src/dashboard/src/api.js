@@ -35,6 +35,8 @@ function api(options) {
 		const validCommands = {
 			info: 'info',
 			tile: 'tile',
+			upload: 'upload',
+			raw: 'raw'
 		};
 
 		const command = msg.args.params.cmd;
