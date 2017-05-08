@@ -6,9 +6,14 @@ const Promise = require('bluebird');
 const SenecaWeb = require('seneca-web');
 const _ = require('lodash');
 const bodyParser = require('body-parser');
+const auth = require('http-auth');
 
 const Router = Express.Router;
 const context = new Router();
+
+const basicAuth = auth.basic({
+	file: config.Dashboard.htpasswd
+});
 
 const senecaWebConfig = {
 	context,
@@ -20,6 +25,7 @@ const app = Express();
 app.use(bodyParser.json());
 app.use(context);
 app.use(Express.static(path.resolve(`${__dirname}/../public`)));
+app.use(auth.connect(basicAuth));
 app.set('view engine', 'pug');
 app.set('views', path.resolve(`${__dirname}/../views`));
 

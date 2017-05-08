@@ -4,7 +4,8 @@
 	},
 	"Dashboard": {
 		"public": "src/dashboard/public",
-		"views": "src/dashboard/views"
+		"views": "src/dashboard/views",
+		"htpasswd": "config/users.htpasswd"
 	},
 	"Elasticsearch": {
 		"host": "localhost:9200",
