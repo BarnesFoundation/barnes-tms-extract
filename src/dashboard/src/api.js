@@ -12,11 +12,17 @@ function api(options) {
 		const validCommands = {
 			desc: 'desc',
 			sync: 'sync',
+			search: 'search'
 		};
 
 		const command = msg.args.params.cmd;
+		const actionMsg = { cmd: validCommands[command] };
 
-		this.act('role:es', { cmd: validCommands[command] }, respond);
+		if (command === 'search') {
+			actionMsg.query = msg.args.params.query;
+		}
+
+		this.act('role:es', actionMsg, respond);
 	});
 
 	this.add('role:api,path:tmstocsv', function (msg, respond) {

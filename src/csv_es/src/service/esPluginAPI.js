@@ -46,6 +46,19 @@ class ESPluginAPI extends SenecaPluginAPI {
 		return esCollection.syncESToCSV(csv)
 		 .then(() => esCollection.description());
 	}
+
+	/**
+	 * Performs an elasticsearch query and returns the results as JSON
+	 * @see {@link ESCollection#search}
+	 * @param {string} query - Query to pass to Elasticsearch simple search
+	 * @return {Promise} Resolves to the JSON returned from ES
+	 */
+	search(query) {
+		console.log("Got to the serach part with", query);
+		const esCollection = new ESCollection(this._host, this._csvDir);
+		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
+		return esCollection.search(query);
+	}
 }
 
 module.exports = makeAPI('role:es', ESPluginAPI);

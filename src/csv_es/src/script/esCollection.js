@@ -427,6 +427,19 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
+	 * Performs a simple query search using the given elasticsearch query
+	 * @param {string} query - The search query
+	 * @return {Promise} Resolves to the result of the elasticsearch query on completion
+	 */
+	search(query) {
+		console.log("Searching for ", query);
+		return this._client.search({
+			index: 'collection',
+			q: query
+		});
+	}
+
+	/**
 	 * Attempts to synchronize the Elasticsearch index with the given CSV export
 	 * If the index has already been synchronized with a CSV file, then this function will compare the CSV
 	 * file to be imported with the previous file. Only the differences between the two will be used to

@@ -141,8 +141,7 @@ $(function() {
 
 	function doSearchQuery() {
 		var query = $("#query")[0].value;
-		var port = 9200;
-		$.get(window.location.protocol + "//" + window.location.hostname + ":" + port + "/_search?pretty&q=" + query, updateSearchResults);
+		$.get('./api/es/search', { query: query }, updateSearchResults);
 	}
 
 	function bindESSearchButtons() {
