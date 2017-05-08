@@ -132,9 +132,11 @@ module.exports.diffCSV = function (oldCSVPath, newCSVPath, logger) {
 	const resolvedNewPath = path.relative('.', newCSVPath);
 	const tmpDir = tmp.dirSync();
 	const outputJsonFile = path.join(tmpDir.name, 'diff.json');
+	logger.info(`Conda installation at ${pypath}`);
 	logger.info(`Running CSV diff python script on ${oldCSVPath} ${newCSVPath}`);
-	logShellOutput(logger, shell.exec(`source ${pypath}/activate tmsdiff`, { shell: bashPath }));
-	logShellOutput(logger, shell.exec(`python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile}`, { shell: bashPath }));
-	logShellOutput(logger, shell.exec(`source ${pypath}/deactivate`, { shell: bashPath }));
+	logShellOutput(logger, shell.exec(
+		`source ${pypath}/activate tmsdiff;
+		python ${pyDiff} ${resolvedOldPath} ${resolvedNewPath} ${outputJsonFile};
+		source ${pypath}/deactivate`, { shell: bashPath }));
 	return JSON.parse(fs.readFileSync(outputJsonFile));
 };
