@@ -39,7 +39,7 @@ class TMSExportAPI extends SenecaPluginAPI {
 		}, this._tmsExporter.status);
 	}
 
-	run() {
+	runNightly() {
 		if (this._tmsExporter.active) {
 			return { time: lastStartTime(this._logfile) };
 		} else {
@@ -51,11 +51,20 @@ class TMSExportAPI extends SenecaPluginAPI {
 							logger.info('ES Sync completed');
 							logger.info(result);
 						});
-						this.seneca.act('role:images,cmd:tile', () => {
-							logger.info('Images tile and sync begun');
-						});
+						// this.seneca.act('role:images,cmd:tile', () => {
+						// 	logger.info('Images tile and sync begun');
+						// });
 					}
 				});
+			return { time: lastStartTime(this._logfile) };
+		}
+	}
+
+	run() {
+		if (this._tmsExporter.active) {
+			return { time: lastStartTime(this._logfile) };
+		} else {
+			this._tmsExporter.exportCSV(this._exportConfig);
 			return { time: lastStartTime(this._logfile) };
 		}
 	}

@@ -11,6 +11,6 @@ exec(['node', path.resolve(__dirname, './oldCSVClean.js'), '-d', source].join(' 
 // Run the CSV processing script
 const seneca = require('seneca')() // eslint-disable-line
 	.client({ type: 'tcp', pin: 'role:tmstocsv' })
-	.act('role:tmstocsv,cmd:run', () => {
+	.act('role:tmstocsv,cmd:runNightly', () => {
 		process.exit(0);
 	});
