@@ -7,6 +7,7 @@ const SenecaWeb = require('seneca-web');
 const _ = require('lodash');
 const bodyParser = require('body-parser');
 const auth = require('http-auth');
+const passport = require('passport');
 
 const Router = Express.Router;
 const context = new Router();
@@ -14,6 +15,7 @@ const context = new Router();
 const basicAuth = auth.basic({
 	file: config.Dashboard.htpasswd
 });
+passport.use(auth.passport(basicAuth));
 
 const senecaWebConfig = {
 	context,
@@ -26,6 +28,7 @@ app.use(bodyParser.json());
 app.use(context);
 app.use(Express.static(path.resolve(`${__dirname}/../public`)));
 // app.use(auth.connect(basicAuth));
+app.use(passport.authenticate('http', {session: false}));
 app.set('view engine', 'pug');
 app.set('views', path.resolve(`${__dirname}/../views`));
 
