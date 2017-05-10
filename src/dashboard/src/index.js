@@ -32,13 +32,13 @@ app.set('view engine', 'pug');
 app.set('views', path.resolve(`${__dirname}/../views`));
 
 // redirect http to https
-app.enable('trust proxy');
-app.use(function(req, res, next) {
-    if (req.secure){
-        return next();
-    }
-    res.redirect("https://" + req.headers.host + req.url);
-});
+// app.enable('trust proxy');
+// app.use(function(req, res, next) {
+//     if (req.secure){
+//         return next();
+//     }
+//     res.redirect("https://" + req.headers.host + req.url);
+// });
 
 
 app.get('/health', (req, res) => {
