@@ -31,12 +31,21 @@ app.use(Express.static(path.resolve(`${__dirname}/../public`)) );
 app.set('view engine', 'pug');
 app.set('views', path.resolve(`${__dirname}/../views`));
 
+// redirect http to https
+app.enable('trust proxy');
+app.use(function(req, res, next) {
+    if (req.secure){
+        return next();
+    }
+    res.redirect("https://" + req.headers.host + req.url);
+});
+
 
 app.get('/health', (req, res) => {
 	res.json({ success: true });
 });
 
-app.use(passport.authenticate('http', {session: false}));
+// app.use(passport.authenticate('http', {session: false}));
 
 const seneca = require('seneca')()
 			.use(SenecaWeb, senecaWebConfig)
