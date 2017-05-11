@@ -30,15 +30,15 @@ app.use(Express.static(path.resolve(`${__dirname}/../public`)) );
 app.set('view engine', 'pug');
 app.set('views', path.resolve(`${__dirname}/../views`));
 
+
 // redirect http to https
 app.enable('trust proxy');
 app.use(function(req, res, next) {
-  if (req.get('X-Forwarded-Proto') !== 'https'){
-    res.redirect("https://" + req.headers.host + req.url);
-  }
-  return next();
+	if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'].toLowerCase() === 'http') {
+		return res.redirect('https://' + req.headers.host + req.url);
+	}
+	return next();
 });
-
 
 app.get('/health', (req, res) => {
 	res.json({ success: true });
