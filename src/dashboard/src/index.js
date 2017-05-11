@@ -27,7 +27,6 @@ const app = Express();
 app.use(bodyParser.json());
 app.use(context);
 app.use(Express.static(path.resolve(`${__dirname}/../public`)) );
-app.use(auth.connect(basicAuth));
 app.set('view engine', 'pug');
 app.set('views', path.resolve(`${__dirname}/../views`));
 
@@ -45,7 +44,7 @@ app.get('/health', (req, res) => {
 	res.json({ success: true });
 });
 
-// app.use(passport.authenticate('http', {session: false}));
+app.use(passport.authenticate('http', {session: false}));
 
 const seneca = require('seneca')()
 			.use(SenecaWeb, senecaWebConfig)
