@@ -32,19 +32,23 @@ app.set('views', path.resolve(`${__dirname}/../views`));
 
 
 // redirect http to https
-app.enable('trust proxy');
-app.use(function(req, res, next) {
-	if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'].toLowerCase() === 'http') {
-		return res.redirect('https://' + req.headers.host + req.url);
-	}
-	return next();
-});
+if (process.env.NODE_ENV === "production") {
+	app.enable('trust proxy');
+	app.use(function(req, res, next) {
+		if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'].toLowerCase() === 'http') {
+			return res.redirect('https://' + req.headers.host + req.url);
+		}
+		return next();
+	});
+}
 
 app.get('/health', (req, res) => {
 	res.json({ success: true });
 });
 
-app.use(passport.authenticate('http', {session: false}));
+if (process.env.NODE_ENV === "production") {
+	app.use(passport.authenticate('http', {session: false}));
+}
 
 const seneca = require('seneca')()
 			.use(SenecaWeb, senecaWebConfig)
