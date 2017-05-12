@@ -26,10 +26,14 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	get name() { return "images"; }
 
 	info() {
-		const tileUploaderStatus = this._tileUploader ? this._tileUploader.status : { type: 'tileUploader', isRunning: false };
-		const rawUploaderStatus = this._rawUploader ? this._rawUploader.status : { type: 'rawUploader', isRunning: false };
-		const imageUploaderStatus = this._imageUploader ? this._imageUploader.status : { type: 'imageUploader', isRunning: false };
-		return [tileUploaderStatus, rawUploaderStatus, imageUploaderStatus];
+		if (this._tileUploader) {
+			return this._tileUploader.status;
+		} else if(this._imageUploader) {
+			return this._imageUploader.status;
+		} else if (this._rawUploader) {
+			return this._rawUploader.status;
+		}
+		return { isRunning: false };
 	}
 
 	/**
@@ -39,11 +43,9 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	 */
 	tile() {
 		let websocketUpdater;
-		fetchAvailableImages().then((outputPath) => {
-			this._tileUploader = new TileUploader(outputPath, csvDir);
-			websocketUpdater = new WebsocketUpdater('images', port, this._tileUploader);
-			return this._tileUploader.init();
-		}).then(() => {
+		this._tileUploader = new TileUploader(csvDir);
+		websocketUpdater = new WebsocketUpdater('images', port, this._tileUploader);
+		this._tileUploader.init().then(() => {
 			return this._tileUploader.process();
 		}).then(() => {
 			this._tileUploader = null;
@@ -52,12 +54,9 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	raw() {
-		let websocketUpdater;
-		fetchAvailableImages().then((outputPath) => {
-			this._rawUploader = new RawUploader(outputPath, csvDir);
-			websocketUpdater = new WebsocketUpdater('images', port, this._rawUploader);
-			return this._rawUploader.init();
-		 }).then(() => {
+		this._rawUploader = new RawUploader(csvDir);
+		const websocketUpdater = new WebsocketUpdater('images', port, this._rawUploader);
+		this._rawUploader.init().then(() => {
 			return this._rawUploader.process();
 		 }).then(() => {
 		 	this._rawUploader = null;
@@ -66,18 +65,20 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	upload() {
-		console.log('called upload images');
-		let websocketUpdater;
-		fetchAvailableImages().then((outputPath) => {
-			this._imageUploader = new ImageUploader(outputPath, csvDir);
-			websocketUpdater = new WebsocketUpdater('images', port, this._imageUploader);
-			return this._imageUploader.init();
-		}).then(() => {
+		this._imageUploader = new ImageUploader(csvDir);
+		const websocketUpdater = new WebsocketUpdater('images', port, this._imageUploader);
+		this._imageUploader.init().then(() => {
 			return this._imageUploader.process();
 		}).then(() => {
 			this._imageUploader = null;
 		});
 		return { success: true };
+	}
+
+	cancel() {
+		this._imageUploader = null;
+		this._rawUploader = null;
+		this._tileUploader = null;
 	}
 }
 

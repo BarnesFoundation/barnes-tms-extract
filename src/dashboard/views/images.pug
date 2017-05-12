@@ -1,14 +1,16 @@
 button#upload-raw Upload Raw
 button#upload-images Upload JPGs
 button#tile-images Tile Images
+button#cancel-images Cancel
+p 
+	span Service: 
+	span= imageInfo.type || "None running."
 p
 	span Status: 
-	span#current-status
+	span#current-status= imageInfo.currentStep
 p
-	span Running:
-	each item in imageInfo
-		if item.isRunning
-			span= item.type
+	span Running: 
+	span= imageInfo.isRunning
 p
 	span Progress: 
-	span#images-progress
+	span#images-progress= imageInfo.uploadIndex ? `Processing ${imageInfo.uploadIndex} of ${imageInfo.totalImagesToUpload} images.` : "" 

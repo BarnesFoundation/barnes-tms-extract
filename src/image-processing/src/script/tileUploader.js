@@ -10,6 +10,7 @@ const { exec, execSync } = require('child_process');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const logger = require('../script/imageLogger.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
+const fetchAvailableImages = require('./tmsImageFetch.js');
 const credentials = config.Credentials.aws;
 
 /**
@@ -19,10 +20,8 @@ const credentials = config.Credentials.aws;
  *  The script will tile and upload images using the most recent complete export in the directory
  */
 class TileUploader extends UpdateEmitter {
-  constructor(pathToAvailableImages, csvDir) {
+  constructor(csvDir) {
     super();
-    const resolvedPath = path.resolve(pathToAvailableImages);
-    this._availableImages = require(resolvedPath).images;
     this._s3Client = s3.createClient({
       s3Options: {
         accessKeyId: credentials.awsAccessKeyId,
@@ -38,8 +37,21 @@ class TileUploader extends UpdateEmitter {
     this._uploadIndex = 0;
   }
 
+  /**
+   * Initializes the Tile Uploader by fetching all images available on TMS and all images already
+   * uploaded to Amazon S3.
+   */
   init() {
-    return this._fetchTiledImages();
+    this._isRunning = true;
+    this._currentStep = "Fetching image listing on TMS.";
+    this.started();
+    return fetchAvailableImages().then((outputPath) => {
+      const resolvedPath = path.resolve(outputPath);
+      this._availableImages = require(resolvedPath).images;
+      this._currentStep = "Fetching image listing on S3.";
+      this.progress();
+      return this._fetchTiledImages();
+    });
   }
 
   /**
@@ -74,8 +86,8 @@ class TileUploader extends UpdateEmitter {
    */
   process() {
     return new Promise((resolve) => {
-      this._isRunning = true;
-      this.started();
+      this._currentStep = "Determining which images need to be tiled and uploaded to S3.";
+      this.progress();
       const lastCSV = getLastCompletedCSV(this._csvDir);
       const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
       const imagesToTile = [];
@@ -86,8 +98,22 @@ class TileUploader extends UpdateEmitter {
         }
       },
       () => {
-        this._tileAndUpload(imagesToTile);
-        this._updateTiledList(imagesToTile).then(() => {
+        this._numImagesToUpload = imagesToTile.length;
+        this.progress();
+        let index = 1;
+        eachSeries(imagesToTile, (image, cb) => {
+          this._currentStep = `Tiling and uploading image ${image.name}.`;
+          this._uploadIndex = index;
+          this.progress();
+          this._tileAndUpload(image).then((err) => {
+            if (err) {
+              logger.error(err);
+            }
+            index += 1;
+          });
+        }, () => {
+          logger.info('Finished tiling and uploading all images.');
+          this._currentStep = `Finished tiling and uploading all images.`;
           this._isRunning = false;
           this.completed();
           resolve();
@@ -156,32 +182,23 @@ class TileUploader extends UpdateEmitter {
     return outPath;
   }
 
-  _tileAndUpload(images) {
-    this._numImagesToTile = images.length;
-    this.progress();
+  _tileAndUpload(image) {
     const configPath = this._tempConfigPath();
     const goPath = path.relative(process.cwd(), path.resolve(__dirname, '../../go-iiif/bin/iiif-tile-seed'));
-    this._numImagesToProcess = images.length;
-    this.progress();
-    images.forEach((image, index) => {
-      this._currentStep = `Tiling image: ${image.name}`;
-      this.progress();
-      logger.info(`Tiling image: ${image.name}, ${index + 1} of ${this._numImagesToProcess}`);
-      const cmd = `${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.name}`;
-      execSync(cmd, (error, stdout, stderr) => {
-        if (error) {
-          logger.error(`exec error: ${error}`);
-          return;
-        }
-        logger.info(`stdout: ${stdout}`);
-        logger.error(`stderr: ${stderr}`);
-      });
-      this._uploadIndex = index + 1;
-      this.progress();
+    logger.info(`Tiling image: ${image.name}`);
+    const cmd = `${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.name}`;
+    execSync(cmd, (error, stdout, stderr) => {
+      if (error) {
+        logger.error(`exec error: ${error}`);
+        return;
+      }
+      logger.info(`stdout: ${stdout}`);
+      logger.error(`stderr: ${stderr}`);
     });
   }
 
-  _updateTiledList(images) {
+  _updateTiledList(image) {
+    logger.info('Uploading tiled.csv to S3 bucket.');
     const csvStream = csv.createWriteStream({ headers: true });
     const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../tiled.csv'));
 
@@ -200,7 +217,8 @@ class TileUploader extends UpdateEmitter {
       });
 
       csvStream.pipe(writableStream);
-      this._tiledImages.concat(images).forEach((img) => {
+      this._tiledImages.push(image);
+      this._tiledImages.forEach((img) => {
         csvStream.write(img);
       });
       csvStream.end();

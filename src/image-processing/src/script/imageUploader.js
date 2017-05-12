@@ -9,20 +9,18 @@ const eachSeries = require('async/eachSeries');
 const logger = require('../script/imageLogger.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
+const fetchAvailableImages = require('./tmsImageFetch.js');
 const credentials = config.Credentials.aws;
 
 /**
  * Uploads images (jpgs) to Amazon s3 from TMS
- * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
  * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
  *  The script will tile and upload images using the most recent complete export in the directory
  */
 class ImageUploader extends UpdateEmitter {
-	constructor(pathToAvailableImages, csvDir) {
+	constructor(csvDir) {
 		super();
 		this._csvDir = csvDir;
-		const resolvedPath = path.resolve(pathToAvailableImages);
-		this._availableImages = require(resolvedPath).images;
 		this._s3Client = s3.createClient({
 			s3Options: {
 				accessKeyId: credentials.awsAccessKeyId,
@@ -37,8 +35,21 @@ class ImageUploader extends UpdateEmitter {
 		this._uploadIndex = 0;
 	}
 
+	/**
+	 * Initializes the Image Uploader by fetching all images available on TMS and all images already
+	 * uploaded to Amazon S3.
+	 */
 	init() {
-		return this._fetchUploadedImages();
+		this._isRunning = true;
+		this._currentStep = "Fetching image listing on TMS.";
+		this.started();
+		return fetchAvailableImages().then((outputPath) => {
+			const resolvedPath = path.resolve(outputPath);
+			this._availableImages = require(resolvedPath).images;
+			this._currentStep = "Fetching image listing on S3.";
+			this.progress();
+			return this._fetchUploadedImages();
+		});
 	}
 
 	/**
@@ -74,8 +85,8 @@ class ImageUploader extends UpdateEmitter {
 	 */
 	process() {
 		return new Promise((resolve) => {
-			this._isRunning = true;
-			this.started()
+			this._currentStep = "Determining which images need to be uploaded to S3.";
+			this.progress();
 			const lastCSV = getLastCompletedCSV(this._csvDir);
 			const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
 			const imagesToUpload = [];
@@ -86,14 +97,30 @@ class ImageUploader extends UpdateEmitter {
 				}
 			},
 			() => {
-				this._upload(imagesToUpload).then(() => {
-					return this._updateUploadedList(imagesToUpload);
-				}).then(() => {
+				this._numImagesToUpload = imagesToUpload.length;
+				this.progress();
+				let index = 1;
+				eachSeries(imagesToUpload, (image, cb) => {
+					this._currentStep = `Uploading image ${image.name}.`;
+					this._uploadIndex = index;
+					this.progress();
+					this._upload(image).then((err) => {
+						if (err) {
+							logger.error(err);
+						}
+						index += 1;
+						return this._updateUploadedList(image);
+					}).then(() => {
+						cb();
+					});
+				}, () => {
+					logger.info('Finished uploading all images.');
+					this._currentStep = `Finished uploading all images.`;
 					this._isRunning = false;
 					this.completed();
 					resolve();
 				});
-			})
+			});
 		});
 	}
 
@@ -148,51 +175,34 @@ class ImageUploader extends UpdateEmitter {
 		return false;
 	}
 
-	_upload(images) {
+	_upload(image) {
 		return new Promise((resolve) => {
-			this._numImagesToUpload = images.length;
-			this.progress();
-			let index = 1;
-			eachSeries(images, (image, cb) => {
-				this._uploadIndex = index;
-				this.progress();
-				const localImagePath = path.resolve(__dirname, `./${image.name}`);
-				const file = fs.createWriteStream(localImagePath);
-				
-				https.get(`${credentials.barnesImagesUrl}${image.name}`, (response) => {
-					response.pipe(file);
-					file.on('finish', () => {
-						logger.info(`Uploading image ${image.name}`);
-						this._s3Client.uploadFile({
-							s3Params: {
-								Bucket: credentials.awsBucket,
-								Key: `assets/${image.name}`,
-							},
-							localFile: localImagePath,
-						})
-						.on('err', (err) => {
-							cb(err);
-						})
-						.on('end', () => {
-							index += 1;
-							fs.unlink(localImagePath);
-							cb();
-						});
+			const localImagePath = path.resolve(__dirname, `./${image.name}`);
+			const file = fs.createWriteStream(localImagePath);
+			https.get(`${credentials.barnesImagesUrl}${image.name}`, (response) => {
+				response.pipe(file);
+				file.on('finish', () => {
+					logger.info(`Uploading image ${image.name}`);
+					this._s3Client.uploadFile({
+						s3Params: {
+							Bucket: credentials.awsBucket,
+							Key: `assets/${image.name}`,
+						},
+						localFile: localImagePath,
+					})
+					.on('err', (err) => {
+						resolve(err);
+					})
+					.on('end', () => {
+						fs.unlink(localImagePath);
+						resolve();
 					});
 				});
-			}, (err) => {
-				console.log('in final callback of upload');
-				if (err) {
-					logger.error(err);
-				} else {
-					logger.info('Finished uploaded all images.');
-					resolve();
-				}
 			});
 		});
 	}
 
-	_updateUploadedList(images) {
+	_updateUploadedList(image) {
 		logger.info('Uploading uploaded.csv to S3 bucket.');
 		const csvStream = csv.createWriteStream({ headers: true });
 		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../uploaded.csv'));
@@ -212,7 +222,8 @@ class ImageUploader extends UpdateEmitter {
 			});
 
 			csvStream.pipe(writableStream);
-			this._uploadedImages.concat(images).forEach((img) => {
+			this._uploadedImages.push(image);
+			this._uploadedImages.forEach((img) => {
 				csvStream.write(img);
 			});
 			csvStream.end();
