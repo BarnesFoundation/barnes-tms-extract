@@ -105,7 +105,7 @@ class RawUploader extends UpdateEmitter {
 							logger.error(err);
 						}
 						index += 1;
-						return this._updateRawList(images);
+						return this._updateRawList(image);
 					}).then(cb);
 				}, () => {
 					logger.info('Finished uploading all images.');
@@ -187,8 +187,9 @@ class RawUploader extends UpdateEmitter {
 						resolve(err);
 					})
 					.on('end', () => {
-						fs.unlink(path.resolve(__dirname, `./${image.name}`), cb);
-						resolve();
+						fs.unlink(path.resolve(__dirname, `./${image.name}`), () => {
+							resolve();
+						});
 					});
 				});
 			});
@@ -196,6 +197,7 @@ class RawUploader extends UpdateEmitter {
 	}
 
 	_updateRawList(image) {
+		logger.info('uploading raw.csv to S3 bucket.');
 		const csvStream = csv.createWriteStream({ headers: true });
 		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../raw.csv'));
 
