@@ -10,6 +10,7 @@
 	"Elasticsearch": {
 		"credentials": "elasticcloud",
 		"host": "a3bf81f3efa82d7e9a6b1c6fcc91e1d3.us-east-1.aws.found.io",
+		"kibana": "https://b289f66f9c19402e7ce08eb03e56b486.us-east-1.aws.found.io",
 		"protocol": "https",
 		"port": 9243,
 		"apiVersion": "5.3",

@@ -40,6 +40,7 @@ class ESCollection extends UpdateEmitter {
 		Promise.promisifyAll(this._client.cat);
 		Promise.promisifyAll(this._client.indices);
 		this._csvRootDir = csvRootDirectory;
+		this._running = false;
 	}
 
 	/** @property {ESCollection~ESImportStatus} status
@@ -153,11 +154,14 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_createDocumentWithData(data) {
 		const dataCopy = this._analyzedData(data);
-		return this._client.createAsync({
+		return this._client.updateAsync({
 			index: 'collection',
 			type: 'object',
 			id: dataCopy.id,
-			body: dataCopy,
+			body: {
+				doc: dataCopy,
+				doc_as_upsert: true
+			}
 		});
 	}
 
@@ -378,11 +382,17 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 
+	completed() {
+		this._running = false;
+		super.completed();
+	}
+
 	/**
 	 * Returns a description of the Elasticsearch index.
 	 * @return {Promise} Resolves to a description of the Elasticsearch index
 	 */
 	description() {
+		logger.info("Description began");
 		return this._collectionIndexExists().then((res) => {
 			if (!res) {
 				return { status: 'uninitialized' };
@@ -410,7 +420,8 @@ class ESCollection extends UpdateEmitter {
 
 				return Promise.all([metaGetter, countGetter]).then((res) => {
 					const [meta, count] = res;
-					return Object.assign({}, meta, count);
+					logger.info("Description complete");
+					return Object.assign({running: this._running}, meta, count);
 				});
 			}
 		})
@@ -435,6 +446,11 @@ class ESCollection extends UpdateEmitter {
 			index: 'collection',
 			q: query
 		});
+	}
+
+	started() {
+		this._running = true;
+		super.started();
 	}
 
 	/**

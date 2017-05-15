@@ -64,8 +64,9 @@ class ESPluginAPI extends SenecaPluginAPI {
 	sync(csv) {
 		const esCollection = new ESCollection(this._makeOptionsForClient(), this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		return esCollection.syncESToCSV(csv)
-		 .then(() => esCollection.description());
+		esCollection.syncESToCSV(csv);
+		console.log("Returning description");
+		return esCollection.description();
 	}
 
 	/**
@@ -75,7 +76,6 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to the JSON returned from ES
 	 */
 	search(query) {
-		console.log("Got to the serach part with", query);
 		const esCollection = new ESCollection(this._makeOptionsForClient(), this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
 		return esCollection.search(query);
