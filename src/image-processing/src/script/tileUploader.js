@@ -110,7 +110,8 @@ class TileUploader extends UpdateEmitter {
               logger.error(err);
             }
             index += 1;
-          });
+            return this._updateTiledList(image);
+          }).then(cb);
         }, () => {
           logger.info('Finished tiling and uploading all images.');
           this._currentStep = `Finished tiling and uploading all images.`;
@@ -183,17 +184,24 @@ class TileUploader extends UpdateEmitter {
   }
 
   _tileAndUpload(image) {
-    const configPath = this._tempConfigPath();
-    const goPath = path.relative(process.cwd(), path.resolve(__dirname, '../../go-iiif/bin/iiif-tile-seed'));
-    logger.info(`Tiling image: ${image.name}`);
-    const cmd = `${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.name}`;
-    execSync(cmd, (error, stdout, stderr) => {
-      if (error) {
-        logger.error(`exec error: ${error}`);
-        return;
-      }
-      logger.info(`stdout: ${stdout}`);
-      logger.error(`stderr: ${stderr}`);
+    return new Promise((resolve) => {
+      const configPath = this._tempConfigPath();
+      const goPath = path.relative(process.cwd(), path.resolve(__dirname, '../../go-iiif/bin/iiif-tile-seed'));
+      logger.info(`Tiling image: ${image.name}`);
+      const cmd = `AWS_ACCESS_KEY=${credentials.awsAccessKeyId} AWS_SECRET_KEY=${credentials.awsSecretAccessKey} ${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.name}`;
+      exec(cmd, null, (error, stdout, stderr) => {
+        if (error) {
+          logger.error(`exec error: ${error}`);
+          return;
+        }
+        if (stdout) {
+          logger.info(`stdout: ${stdout}`);
+        }
+        if (stderr) {
+          logger.error(`stderr: ${stderr}`);
+        }
+        resolve();
+      });
     });
   }
 
