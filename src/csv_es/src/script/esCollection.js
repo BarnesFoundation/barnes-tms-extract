@@ -7,6 +7,7 @@ const {
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 
 const csv = require('fast-csv');
+const config = require('config');
 const Promise = require('bluebird');
 const elasticsearch = require('elasticsearch');
 const fs = require('fs');
@@ -28,16 +29,13 @@ const _ = require('lodash');
  * timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
  * currently synchronized with a CSV file (hasImportedCSV). The `object` type stores the collection objects
  * themselves, and will have different fields depending on the headers of the imported CSV file
- * @param {string} esHost - Host of the running elasticsearch server
+ * @param {string} esOptions - Options dictionary used to initialize an elasticsearch client
  * @param {string} csvRootDirectory - Path to the directory containing csv_* directories with exports from TMS
  */
 class ESCollection extends UpdateEmitter {
-	constructor(esHost, csvRootDirectory) {
+	constructor(esOptions, csvRootDirectory) {
 		super();
-		this._esHost = esHost;
-		this._client = new elasticsearch.Client({
-			host: this._esHost,
-		});
+		this._client = new elasticsearch.Client( esOptions );
 		Promise.promisifyAll(this._client);
 		Promise.promisifyAll(this._client.cat);
 		Promise.promisifyAll(this._client.indices);

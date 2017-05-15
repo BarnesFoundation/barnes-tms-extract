@@ -17,7 +17,25 @@ const port = config.Server.port;
 class ESPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
-		this._host = options.host;
+
+		const esCredentials = null;
+		if (options.credentials) {
+			const upass = config.credentials[options.credentials];
+			esCredentials = `${upass.username}:${upass.password}`;
+		}
+
+		this._esOptions = {
+			host: [
+				{
+					host: options.host,
+					auth: esCredentials || undefined,
+					protocol: options.protocol || 'http',
+					port: options.port || 9200
+				}
+			]
+		};
+
+		this._esOptions = options.esOptions;
 		this._csvDir = options.csvDir;
 	}
 
@@ -29,7 +47,7 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to a description of the Elasticsearch collection index
 	 */
 	desc() {
-		const esCollection = new ESCollection(this._host, this._csvDir);
+		const esCollection = new ESCollection(this._esOptions, this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
 		return esCollection.description();
 	}
@@ -41,7 +59,7 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
 	 */
 	sync(csv) {
-		const esCollection = new ESCollection(this._host, this._csvDir);
+		const esCollection = new ESCollection(this._esOptions, this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
 		return esCollection.syncESToCSV(csv)
 		 .then(() => esCollection.description());
@@ -55,7 +73,7 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 */
 	search(query) {
 		console.log("Got to the serach part with", query);
-		const esCollection = new ESCollection(this._host, this._csvDir);
+		const esCollection = new ESCollection(this._esOptions, this._csvDir);
 		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
 		return esCollection.search(query);
 	}

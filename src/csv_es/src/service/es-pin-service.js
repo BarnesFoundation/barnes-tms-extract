@@ -6,7 +6,7 @@ const config = require('config');
 require('seneca')()
 
   .use('./esPluginAPI.js', {
-  	host: config.Elasticsearch.host,
+  	esOptions: config.Elasticsearch,
   	csvDir: config.CSV.path
   })
 
