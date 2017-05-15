@@ -11,7 +11,7 @@
 		"credentials": "elasticcloud",
 		"host": "a3bf81f3efa82d7e9a6b1c6fcc91e1d3.us-east-1.aws.found.io",
 		"protocol": "https",
-		"port": 9234,
+		"port": 9243,
 		"apiVersion": "5.3",
 		"log": "src/csv_es/logs/all-logs.log"
 	},
