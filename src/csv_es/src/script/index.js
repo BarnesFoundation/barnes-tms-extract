@@ -4,29 +4,44 @@ const { getLastCompletedCSV } = require('../../../util/csvUtil.js');
 
 const path = require('path');
 
-const esHost = 'localhost:9200';
+const config = require('config');
 
 const argv = require('minimist')(process.argv.slice(2));
 
 const csvRootDir = argv._[0];
 
+const options = _makeOptionsForClient(config.Elasticsearch);
+
 let targetCSV = argv._[1];
 
-const esCollection = new ESCollection(esHost, csvRootDir);
+const esCollection = new ESCollection(options, csvRootDir);
 
 if (targetCSV === 'latest') {
 	targetCSV = getLastCompletedCSV(csvRootDir);
 }
 
-esCollection._deleteCollectionIndex().then(() => {
-	console.log(`Synchronizing ES to CSV ${targetCSV}`);
-	return esCollection.syncESToCSV(targetCSV);
-}).then(() => {
-	return esCollection.description();
-}).then((desc) => {
-	console.log("Finished export");
-	console.dir(desc);
-});
+esCollection.validateForCSV(targetCSV).then((valid) => {
+	console.log(`CSV and ES are ${valid ? "equal" : "not equal"}`);
+}).catch((error) => console.log(error));
+
+function _makeOptionsForClient(options) {
+		let esCredentials = null;
+		if (options.credentials) {
+			const upass = config.Credentials.es[options.credentials];
+			esCredentials = `${upass.username}:${upass.password}`;
+		}
+
+		return {
+			host: [
+				{
+					host: options.host,
+					auth: esCredentials || undefined,
+					protocol: options.protocol || 'http',
+					port: options.port || 9200
+				}
+			]
+		};
+	}
 
 // esCollection.description().then(() => {
 // 	console.log("Getting description");

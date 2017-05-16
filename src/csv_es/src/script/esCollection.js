@@ -118,6 +118,57 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
+	 * Just a plain deep object comparison, for now. We may want to get fancier if the
+	 * data stored in ES gets fancier
+	 * @private
+	 * @param {object} csvRow - Key value pairs from the CSV export document
+	 * @param {object} esSource - _source field of an ES object
+	 * @return {boolean} True if the two objects are deep equal
+	 */
+	_compareCSVDataWithESSource(csvRow, esSource) {
+		return _.isEqual(csvRow, esSource);
+	}
+
+	/**
+	 * Walks through all of the data in a CSV, and asserts that each row is reflected
+	 * exactly in the ES index
+	 * @private
+	 * @param {string} csvExport - Name of the CSV export to compare with the ES index
+	 * @return {Promise} True if all of the CSV data is the same as in ES, false otherwise
+	 */
+	_compareCSVDataWithIndex(csvExport) {
+		return new Promise((resolve, reject) => {
+			const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
+			let foundMismatch = false;
+			try {
+				csv
+					.fromPath(csvFilePath, { headers: true })
+					.on('data', (data) => {
+						if (!foundMismatch) {
+							const analyzedData = this._analyzedData(data);
+							this._client.get({
+								index: 'collection',
+								type: 'object',
+								id: analyzedData.id
+							}, (function(error, res) {
+								if (error) throw error;
+								if (!this._compareCSVDataWithESSource(analyzedData, res._source)) {
+									foundMismatch = true;
+								}
+							}).bind(this));
+						}
+					})
+					.on('end', () => {
+						resolve(!foundMismatch);
+					});
+			} catch (e) {
+				reject(e);
+				return;
+			}
+		});
+	}
+
+	/**
 	 * Creates the index for the collection
 	 * @private
 	 * @return {Promise} Resolved when the elasticsearch request completes
@@ -188,6 +239,67 @@ class ESCollection extends UpdateEmitter {
 			index: 'collection',
 			type: 'object',
 			id: docId,
+		});
+	}
+
+	/**
+	 * Return an ES6 Set containing all of the IDs of all the objects in a CSV file
+	 * @private
+	 * @param {string} csvExport - Name of the CSV export to pull IDs from
+	 * @return {Promise} Resolves to the ES6 Set containing all ids
+	 */
+	_getAllCSVIds(csvExport) {
+		return new Promise((resolve, reject) => {
+			const allCSVIds = new Set();
+			const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
+			try {
+				csv
+					.fromPath(csvFilePath, { headers: true })
+					.on('data', (data) => {
+						allCSVIds.add(parseInt(data.id));
+					})
+					.on('end', () => {
+						resolve(allCSVIds);
+					});
+			} catch (e) {
+				reject(e);
+			}
+		});
+	}
+
+	/**
+	 * Return an ES6 Set containing all of the IDs of all the objects in the index
+	 * @private
+	 * @return {Promise} Resolves to the ES6 Set containing all ids
+	 */
+	_getAllObjectIds() {
+		return new Promise((resolve, reject) => {
+			const allEsIds = new Set();
+
+			this._client.search({
+				index: 'collection',
+				type: 'object',
+				scroll: '30s',
+				_source: ['id'],
+				sort: '_doc',
+				size: 250
+			}, (function getMoreUntilDone(error, response) {
+				if (error) {
+					reject(error);
+				} else {
+					response.hits.hits.forEach((hit) => {
+						allEsIds.add(hit._source.id);
+					});
+					if (response.hits.total > allEsIds.size) {
+						this._client.scroll({
+							scrollId: response._scroll_id,
+							scroll: '30s'
+						}, getMoreUntilDone.bind(this));
+					} else {
+						resolve(allEsIds);
+					}
+				}
+			}).bind(this));
 		});
 	}
 
@@ -496,6 +608,33 @@ class ESCollection extends UpdateEmitter {
 			logger.info(`Initializing with CSV ${csvFilePath}`);
 			return this.clearCollectionObjects().then(res => this._syncESWithCSV(csvExport));
 		});
+	}
+
+	/**
+	 * Verifies that the Elasticsearch index is exactly in sync with a given CSV file.
+	 * @param {string} csvExport - Name of the CSV export to synchronize with ES
+	 * @return {Promise} Resolves to true if the two documents are in sync and false otherwise
+	 */
+	validateForCSV(csvExport) {
+
+		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
+		let allEsIds, allCSVIds;
+
+		// First, collect the IDs from Elasticsearch
+		return this._getAllObjectIds().then((ids) => {
+			allEsIds = ids;
+			return this._getAllCSVIds(csvExport);
+		}).then((ids) => {
+			allCSVIds = ids;
+			return _.isEqual(allEsIds, allCSVIds);
+		}).then((idsAreEqual) => {
+			if (!idsAreEqual) {
+				return false;
+			} else {
+				const allDataPresent = this._compareCSVDataWithIndex(csvExport);
+				return allDataPresent;
+			}
+		})
 	}
 };
 
