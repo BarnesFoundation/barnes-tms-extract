@@ -94,7 +94,11 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 */
 	validateAndResync(csv) {
 		this._esCollection.validateForCSV(csv).then((valid) => {
-			if (!valid) this._esCollection.syncESToCSV(csv);
+			if (!valid) {
+				this._esCollection.clearCollectionObjects().then(() => {
+					this._esCollection.syncESToCSV(csv);
+				});
+			}
 		});
 		return this._esCollection.description();
 	}
