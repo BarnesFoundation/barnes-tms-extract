@@ -16,6 +16,12 @@ const shell = require('shelljs');
 const tmp = require('tmp');
 const _ = require('lodash');
 
+const ESCollectionStatus = Object.freeze({
+	READY: "READY",
+	SYNCING: "SYNCING",
+	VALIDATING: "VALIDATING"
+});
+
 /**
  * @typedef {object} ESCollection~ESImportStatus
  * @property {boolean} hasImportedCSV - Whether the ES index has imported a CSV
@@ -40,7 +46,8 @@ class ESCollection extends UpdateEmitter {
 		Promise.promisifyAll(this._client.cat);
 		Promise.promisifyAll(this._client.indices);
 		this._csvRootDir = csvRootDirectory;
-		this._running = false;
+		this._status = ESCollectionStatus.READY;
+		this._message = "";
 	}
 
 	/** @property {ESCollection~ESImportStatus} status
@@ -356,18 +363,18 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_syncESWithCSV(csvExport) {
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
-		this.started();
+		let processed = 0;
 		return new Promise((resolve, reject) => {
 			try {
 				csv
 					.fromPath(csvFilePath, { headers: true })
 					.on('data', (data) => {
 						this._createDocumentWithData(data, this._client);
+						this.progress(`Synchronizing with ${csvExport}, ${++processed} documents uploaded`);
 					})
 					.on('end', () => {
 						this._updateMetaForCSVFile(csvExport).then(() => {
 							logger.info('Finished export');
-							this.completed();
 							resolve();
 						});
 					});
@@ -396,7 +403,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_updateESWithCSV(csvExport) {
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
-		this.started();
+		this.started(ESCollectionStatus.SYNCING, `Updating index to match ${csvExport}`);
 		const csvDir = path.resolve(path.dirname(csvFilePath), '..');
 		const tmpDir = tmp.dirSync();
 		const outputJsonFile = path.join(tmpDir.name, 'diff.json');
@@ -409,7 +416,7 @@ class ESCollection extends UpdateEmitter {
 			logger.info('Finished import, updating index metadata');
 			return this._updateMetaForCSVFile(csvExport).then(() => {
 				logger.info('Index metadata updated');
-				this.completed();
+				this.completed(`Synchronized with ${csvExport}`);
 			});
 		});
 	}
@@ -494,8 +501,9 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 
-	completed() {
-		this._running = false;
+	completed(message) {
+		this._status = ESCollectionStatus.READY;
+		this._message = message;
 		super.completed();
 	}
 
@@ -504,7 +512,7 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolves to a description of the Elasticsearch index
 	 */
 	description() {
-		logger.info("Description began");
+		logger.info("Gathering description");
 		return this._collectionIndexExists().then((res) => {
 			if (!res) {
 				return { status: 'uninitialized' };
@@ -532,8 +540,11 @@ class ESCollection extends UpdateEmitter {
 
 				return Promise.all([metaGetter, countGetter]).then((res) => {
 					const [meta, count] = res;
-					logger.info("Description complete");
-					return Object.assign({running: this._running}, meta, count);
+					logger.info("Description complete, returning");
+					return Object.assign({
+						status: this._status,
+						message: this._message
+					}, meta, count);
 				});
 			}
 		})
@@ -545,6 +556,11 @@ class ESCollection extends UpdateEmitter {
 	 */
 	initialize() {
 		return this._prepareIndexForSync();
+	}
+
+	progress(message) {
+		this._message = message;
+		super.progress();
 	}
 
 	/**
@@ -560,8 +576,9 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 
-	started() {
-		this._running = true;
+	started(status, message) {
+		this._status = status;
+		this._message = message;
 		super.started();
 	}
 
@@ -577,6 +594,8 @@ class ESCollection extends UpdateEmitter {
 	 */
 	syncESToCSV(csvExport) {
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
+
+		this.started(ESCollectionStatus.SYNCING, `Synchronizing with ${csvExport}`);
 
 		return this._prepareIndexForSync().then(() => {
 			return this._getLastCSVName();
@@ -607,6 +626,9 @@ class ESCollection extends UpdateEmitter {
 			}
 			logger.info(`Initializing with CSV ${csvFilePath}`);
 			return this.clearCollectionObjects().then(res => this._syncESWithCSV(csvExport));
+		}).then((res) => {
+			this.completed(`Synchronized fith ${csvExport}`);
+			return res;
 		});
 	}
 
@@ -616,11 +638,11 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolves to true if the two documents are in sync and false otherwise
 	 */
 	validateForCSV(csvExport) {
-
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
+
 		let allEsIds, allCSVIds;
 
-		// First, collect the IDs from Elasticsearch
+		this.started(ESCollectionStatus.VALIDATING, `Validating index to match ${csvExport}`);
 		return this._getAllObjectIds().then((ids) => {
 			allEsIds = ids;
 			return this._getAllCSVIds(csvExport);
@@ -634,7 +656,10 @@ class ESCollection extends UpdateEmitter {
 				const allDataPresent = this._compareCSVDataWithIndex(csvExport);
 				return allDataPresent;
 			}
-		})
+		}).then((valid) => {
+			this.completed(`Index ${valid ? "matches" : "does not match"} ${csvExport}`);
+			return valid;
+		});
 	}
 };
 

@@ -153,6 +153,16 @@ $(function() {
 				return false;    //<---- Add this line
 			}
 		});
+
+		$("#esValidateButton").click( function() {
+			$.ajax({
+				contentType: 'application/json',
+				data: JSON.stringify({ csv:this.name }),
+				dataType: 'json',
+				type: 'POST',
+				url: './validate'
+			});
+		});
 	}
 
 	function bindESSyncButtons() {

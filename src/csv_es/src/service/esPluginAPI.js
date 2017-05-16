@@ -17,10 +17,10 @@ const port = config.Server.port;
 class ESPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
-
 		this._esOptions = options.esOptions;
-
 		this._csvDir = options.csvDir;
+		this._esCollection = new ESCollection(this._makeOptionsForClient(), this._csvDir);
+		this._websocketUpdater = new WebsocketUpdater('es', port, this._esCollection);
 	}
 
 	get name() { return "es"; }
@@ -50,9 +50,7 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to a description of the Elasticsearch collection index
 	 */
 	desc() {
-		const esCollection = new ESCollection(this._makeOptionsForClient(), this._csvDir);
-		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		return esCollection.description();
+		return this._esCollection.description();
 	}
 
 	/**
@@ -62,11 +60,8 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
 	 */
 	sync(csv) {
-		const esCollection = new ESCollection(this._makeOptionsForClient(), this._csvDir);
-		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		esCollection.syncESToCSV(csv);
-		console.log("Returning description");
-		return esCollection.description();
+		this._esCollection.syncESToCSV(csv);
+		return this._esCollection.description();
 	}
 
 	/**
@@ -76,9 +71,15 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to the JSON returned from ES
 	 */
 	search(query) {
-		const esCollection = new ESCollection(this._makeOptionsForClient(), this._csvDir);
-		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		return esCollection.search(query);
+		return this._esCollection.search(query);
+	}
+
+	/**
+	 * Checks whether or not the elasticsearch index is in sync with a given CSV
+	 */
+	validate(csv) {
+		this._esCollection.validateForCSV(csv);
+		return this._esCollection.description();
 	}
 }
 
