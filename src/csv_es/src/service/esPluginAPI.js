@@ -76,9 +76,26 @@ class ESPluginAPI extends SenecaPluginAPI {
 
 	/**
 	 * Checks whether or not the elasticsearch index is in sync with a given CSV
+	 * @see {@link ESCollection#validateForCSV}
+	 * @param {string} csv - Name of the CSV export with which to sync
+	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
 	 */
 	validate(csv) {
 		this._esCollection.validateForCSV(csv);
+		return this._esCollection.description();
+	}
+
+	/**
+	 * Checks whether or not the elasticsearch index is in sync with a given CSV. If the CSV is not valid,
+	 * attempt another sync
+	 * @see {@link ESCollection#validateForCSV}
+	 * @param {string} csv - Name of the CSV export with which to sync
+	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
+	 */
+	validateAndResync(csv) {
+		this._esCollection.validateForCSV(csv).then((valid) => {
+			if (!valid) this._esCollection.syncESToCSV(csv);
+		});
 		return this._esCollection.description();
 	}
 }

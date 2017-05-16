@@ -41,14 +41,14 @@ class TMSExportAPI extends SenecaPluginAPI {
 
 	runNightly() {
 		if (this._tmsExporter.active) {
-			return { time: lastStartTime(this._logfile) };
+			return Promise.resolve({ time: lastStartTime(this._logfile) });
 		} else {
 			this._tmsExporter.exportCSV(this._exportConfig)
 				.then((res) => {
 					if (res.status === 'COMPLETED') {
 						const csv = path.basename(path.dirname(res.csv));
 						this.seneca.act('role:es,cmd:sync', { csv }, (err, result) => {
-							logger.info('ES Sync completed');
+							logger.info('ES sync started');
 							logger.info(result);
 						});
 						// this.seneca.act('role:images,cmd:tile', () => {

@@ -504,6 +504,7 @@ class ESCollection extends UpdateEmitter {
 	completed(message) {
 		this._status = ESCollectionStatus.READY;
 		this._message = message;
+		logger.info(message);
 		super.completed();
 	}
 
@@ -579,6 +580,7 @@ class ESCollection extends UpdateEmitter {
 	started(status, message) {
 		this._status = status;
 		this._message = message;
+		logger.info(this._message);
 		super.started();
 	}
 
@@ -627,7 +629,7 @@ class ESCollection extends UpdateEmitter {
 			logger.info(`Initializing with CSV ${csvFilePath}`);
 			return this.clearCollectionObjects().then(res => this._syncESWithCSV(csvExport));
 		}).then((res) => {
-			this.completed(`Synchronized fith ${csvExport}`);
+			this.completed(`Synchronized with ${csvExport}`);
 			return res;
 		});
 	}
