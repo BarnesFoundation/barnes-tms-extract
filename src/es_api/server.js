@@ -50,6 +50,37 @@ if (process.env.NODE_ENV === "production") {
 	app.use(passport.authenticate('http', {session: false}));
 }
 
+app.get('/objects/:object_id', (req, res) => {
+	const client = new elasticsearch.Client(makeElasticsearchOptions());
+	client.get({
+		index: "collection",
+		type: "object",
+		id: req.params.object_id
+	}, function(error, esRes) {
+		if (error) {
+			res.json(error);
+		} else {
+			res.json(esRes._source);
+		}
+	});
+});
+
+app.get('/search', (req, res) => {
+	const client = new elasticsearch.Client(makeElasticsearchOptions());
+	const query = req.params.query;
+	client.search({
+		index: "collection",
+		q: query
+	}, function(error, esRes) {
+		if (error) {
+			res.json(error);
+		} else {
+			res.json(esRes);
+		}
+	});
+});
+
 // Start the server
 const server = require('http').createServer(app);
 server.listen(config.ElasticsearchAPI.port);
+console.log(`Listening on port ${config.ElasticsearchAPI.port}`);
