@@ -3,7 +3,7 @@ const {
 	ExportMetadata,
 	ExportStatus,
 } = require('./exportMetadata.js');
-const CSVWriter = require('./csvWriter.js');
+const CSVWriter = require('../../../csvWriter.js');
 const TMSURLReader = require('./tmsURLReader.js');
 const WarningReporter = require('./warningReporter.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
@@ -119,7 +119,7 @@ class TMSExporter extends UpdateEmitter {
 		this._tms.rootURL = exportConfig.apiURL;
 		logger.info(`Exporting TMS API from URL ${this._tms.collectionURL}`);
 		this._csvFilePath = `${csvOutputDir}/objects.csv`;
-		this._csv = new CSVWriter(this._csvFilePath, exportConfig.outputHeaders);
+		this._csv = new CSVWriter(this._csvFilePath, exportConfig.outputHeaders, logger);
 		this._warningReporter = new WarningReporter(csvOutputDir, exportConfig);
 		this._exportMeta = new ExportMetadata(`${csvOutputDir}/meta.json`);
 		this._exportMeta.status = ExportStatus.INCOMPLETE;
