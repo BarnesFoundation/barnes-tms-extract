@@ -17,32 +17,13 @@ const port = config.Server.port;
 class ESPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
-		this._esOptions = options.esOptions;
+		this._esOptions = options;
 		this._csvDir = options.csvDir;
-		this._esCollection = new ESCollection(this._makeOptionsForClient(), this._csvDir);
+		this._esCollection = new ESCollection(this._esOptions, this._csvDir);
 		this._websocketUpdater = new WebsocketUpdater('es', port, this._esCollection);
 	}
 
 	get name() { return "es"; }
-
-	_makeOptionsForClient() {
-		let esCredentials = null;
-		if (this._esOptions.credentials) {
-			const upass = config.Credentials.es[this._esOptions.credentials];
-			esCredentials = `${upass.username}:${upass.password}`;
-		}
-
-		return {
-			host: [
-				{
-					host: this._esOptions.host,
-					auth: esCredentials || undefined,
-					protocol: this._esOptions.protocol || 'http',
-					port: this._esOptions.port || 9200
-				}
-			]
-		};
-	}
 
 	/**
 	 * Returns a description of the Elasticsearch collection index

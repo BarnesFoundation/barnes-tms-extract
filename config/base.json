@@ -16,6 +16,10 @@
 		"apiVersion": "5.3",
 		"log": "src/csv_es/logs/all-logs.log"
 	},
+	"ElasticsearchAPI": {
+		"htpasswd": "config/esapi.htpasswd",
+		"port": 3001
+	},
 	"Images": {
 		"log": "src/image-processing/logs/all-logs.log"
 	},

@@ -1,6 +1,7 @@
 const ESCollection = require('./esCollection.js');
 const logger = require('./esLogger.js');
 const { getLastCompletedCSV } = require('../../../util/csvUtil.js');
+const { makeElasticsearchOptions } = require('../../../util/elasticOptions.js');
 
 const path = require('path');
 
@@ -10,7 +11,7 @@ const argv = require('minimist')(process.argv.slice(2));
 
 const csvRootDir = argv._[0];
 
-const options = _makeOptionsForClient(config.Elasticsearch);
+const options = makeElasticsearchOptions();
 
 let targetCSV = argv._[1];
 
