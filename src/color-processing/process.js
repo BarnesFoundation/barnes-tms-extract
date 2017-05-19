@@ -5,7 +5,7 @@ const s3 = require('s3');
 const csv = require('fast-csv');
 const fs = require('fs');
 const https = require('https');
-const eachSeries = require('async/eachSeries');
+const eachLimit = require('async/eachLimit');
 const _ = require('lodash');
 const CSVWriter = require('../util/csvWriter.js');
 const logger = require('../util/logger.js')(path.join(__dirname, './logs/all-logs.txt'));
@@ -28,6 +28,8 @@ function flattenColorCalculationResult(color) {
 
 	return ret;
 }
+
+const parallelRequests = 100;
 
 const credentials = config.Credentials.colorAnalysis;
 
@@ -66,8 +68,8 @@ s3Client.listObjects({
 	});
 
 function processColorForImages(images) {
-	let csv = null;
-	eachSeries(images, (image, next) => {
+	let csv = null, warn = null;
+	eachLimit(images, parallelRequests, (image, next) => {
 		const options = {
 			hostname: colorProcessingHost,
 			path: `${colorProcessingPath}?bucket=${bucketName}&object=${image.Key}`,
@@ -81,6 +83,10 @@ function processColorForImages(images) {
 		logger.info("Making request for image " + image.Key);
 		https.request(options, (res) => {
 			let d = '';
+			res.on('socket', (socket) => {
+				logger.info('Setting socket timeout');
+				socket.setTimeout(0);
+			});
 			res.on('data', (data) => {
 				d += data;
 			});
@@ -90,7 +96,10 @@ function processColorForImages(images) {
 				if (f === null) {
 					logger.warn("Got a weird result for " + image.Key);
 					logger.warn(d);
+					if (warn === null) warn = new CSVWriter("./warnings.csv", ["message", "key"]);
+					warn.write({message: d, key: image.Key});
 				} else {
+					f.key = image.Key;
 					if (csv === null) csv = new CSVWriter(csvOutput, _.keys(f));
 					csv.write(f);
 				}
@@ -101,5 +110,6 @@ function processColorForImages(images) {
 		if (err) console.dir(err);
 		logger.info("All done!");
 		if (csv) csv.end();
+		if (warn) warn.end();
 	});
 }

@@ -1,4 +1,4 @@
-const CSVWriter = require('../../../csvWriter.js');
+const CSVWriter = require('../../../util/csvWriter.js');
 const logger = require('./logger.js');
 
 const _ = require('lodash');

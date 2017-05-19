@@ -3,7 +3,7 @@ const {
 	ExportMetadata,
 	ExportStatus,
 } = require('./exportMetadata.js');
-const CSVWriter = require('../../../csvWriter.js');
+const CSVWriter = require('../../../util/csvWriter.js');
 const TMSURLReader = require('./tmsURLReader.js');
 const WarningReporter = require('./warningReporter.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
