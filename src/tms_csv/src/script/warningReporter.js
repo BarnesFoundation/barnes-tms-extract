@@ -1,4 +1,4 @@
-const CSVWriter = require('./csvWriter.js');
+const CSVWriter = require('../../../csvWriter.js');
 const logger = require('./logger.js');
 
 const _ = require('lodash');
@@ -20,7 +20,7 @@ class WarningReporter {
 		const warningPath = `${this._outputDirectory}/warnings.csv`;
 
 		logger.info(`Writing warnings to ${warningPath}`);
-		this._csv = new CSVWriter(warningPath);
+		this._csv = new CSVWriter(warningPath, [], logger);
 	}
 
 	_checkMissingFields(objectId, fields) {

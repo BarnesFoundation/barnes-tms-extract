@@ -4,13 +4,14 @@ const fs = require('fs');
 const csv = require('fast-csv');
 
 /**
- * Manages the objects.csv file that holds the collection objects exported from TMS
+ * Manages writing to a CSV file
  * @param {string} path - Path to the `objects.csv` file that will contain the export
  * @throws Error if the file cannot be created or opened for some reason
  */
 class CSVWriter {
-	constructor(path, headers) {
-		logger.info(`Opening CSV file at ${path}`);
+	constructor(path, headers, logger=null) {
+		this._logger = logger;
+		if (this._logger) this._logger.info(`Opening CSV file at ${path}`);
 		this._path = path;
 		this._csvStream = csv.createWriteStream({ headers: headers });
 		this._writableStream = fs.createWriteStream(path);
@@ -24,7 +25,7 @@ class CSVWriter {
 	 * @throws Error if the write stream fails for some reason
 	 */
 	write(rowDict) {
-		logger.debug(`Writing CSV row with data ${JSON.stringify(rowDict)}`);
+		if (this._logger) this._logger.debug(`Writing CSV row with data ${JSON.stringify(rowDict)}`);
 		this._csvStream.write(rowDict);
 	}
 
@@ -33,7 +34,7 @@ class CSVWriter {
 	 * @throws Error if closing the file fails for some reason
 	 */
 	end() {
-		logger.info(`Closing CSV file at ${this._path}`);
+		if (this._logger) this._logger.info(`Closing CSV file at ${this._path}`);
 		this._csvStream.end();
 	}
 };

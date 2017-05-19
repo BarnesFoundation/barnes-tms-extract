@@ -1,3 +1,7 @@
+p
+	span Status:
+	span= desc.status + ": " + desc.message
+
 div.row
 	div.col-lg-6
 		text#es_status= `ES synchronized with ${desc.lastImportedCSV}`
@@ -11,6 +15,7 @@ div.row
 				button#query_button.btn.btn-default(type="button") Search
 	div.col-lg-6
 		a(href="/app/kibana") View on Kibana
+		button#esValidateButton.btn.btn-default(type="button" name=desc.lastImportedCSV) Validate
 div.row
 	div.col-lg-12
 		text#search_results

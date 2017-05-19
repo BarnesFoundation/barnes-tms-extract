@@ -136,7 +136,8 @@ $(function() {
 
 	var socket = createUpdateSocket(window.location.port);
 	function updateSearchResults(data) {
-		$("#search_results").text(JSON.stringify(data));
+		$("#search_results").innerHTML = ''
+		$("#search_results").append(renderjson(data));
 	}
 
 	function doSearchQuery() {
@@ -152,6 +153,16 @@ $(function() {
 				doSearchQuery();
 				return false;    //<---- Add this line
 			}
+		});
+
+		$("#esValidateButton").click( function() {
+			$.ajax({
+				contentType: 'application/json',
+				data: JSON.stringify({ csv:this.name }),
+				dataType: 'json',
+				type: 'POST',
+				url: './validate'
+			});
 		});
 	}
 

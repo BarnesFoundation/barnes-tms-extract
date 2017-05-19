@@ -17,8 +17,10 @@ const port = config.Server.port;
 class ESPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
-		this._host = options.host;
+		this._esOptions = options;
 		this._csvDir = options.csvDir;
+		this._esCollection = new ESCollection(this._esOptions, this._csvDir);
+		this._websocketUpdater = new WebsocketUpdater('es', port, this._esCollection);
 	}
 
 	get name() { return "es"; }
@@ -29,9 +31,7 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to a description of the Elasticsearch collection index
 	 */
 	desc() {
-		const esCollection = new ESCollection(this._host, this._csvDir);
-		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		return esCollection.description();
+		return this._esCollection.description();
 	}
 
 	/**
@@ -41,10 +41,8 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
 	 */
 	sync(csv) {
-		const esCollection = new ESCollection(this._host, this._csvDir);
-		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		return esCollection.syncESToCSV(csv)
-		 .then(() => esCollection.description());
+		this._esCollection.syncESToCSV(csv);
+		return this._esCollection.description();
 	}
 
 	/**
@@ -54,10 +52,36 @@ class ESPluginAPI extends SenecaPluginAPI {
 	 * @return {Promise} Resolves to the JSON returned from ES
 	 */
 	search(query) {
-		console.log("Got to the serach part with", query);
-		const esCollection = new ESCollection(this._host, this._csvDir);
-		const websocketUpdater = new WebsocketUpdater('es', port, esCollection);
-		return esCollection.search(query);
+		return this._esCollection.search(query);
+	}
+
+	/**
+	 * Checks whether or not the elasticsearch index is in sync with a given CSV
+	 * @see {@link ESCollection#validateForCSV}
+	 * @param {string} csv - Name of the CSV export with which to sync
+	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
+	 */
+	validate(csv) {
+		this._esCollection.validateForCSV(csv);
+		return this._esCollection.description();
+	}
+
+	/**
+	 * Checks whether or not the elasticsearch index is in sync with a given CSV. If the CSV is not valid,
+	 * attempt another sync
+	 * @see {@link ESCollection#validateForCSV}
+	 * @param {string} csv - Name of the CSV export with which to sync
+	 * @return {Promise} Resolves to a description of the Elasticsearch collection index after sync
+	 */
+	validateAndResync(csv) {
+		this._esCollection.validateForCSV(csv).then((valid) => {
+			if (!valid) {
+				this._esCollection.clearCollectionObjects().then(() => {
+					this._esCollection.syncESToCSV(csv);
+				});
+			}
+		});
+		return this._esCollection.description();
 	}
 }
 

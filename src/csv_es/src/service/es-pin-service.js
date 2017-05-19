@@ -1,12 +1,13 @@
 const argv = require('minimist')(process.argv.slice(2));
 const path = require('path');
+const { makeElasticsearchOptions } = require('../../../util/elasticOptions.js');
 
 const config = require('config');
 
 require('seneca')()
 
   .use('./esPluginAPI.js', {
-  	host: config.Elasticsearch.host,
+  	esOptions: makeElasticsearchOptions(),
   	csvDir: config.CSV.path
   })
 

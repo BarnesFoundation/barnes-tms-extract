@@ -79,6 +79,20 @@ app.post('/sync', (req, res) => {
 	}
 });
 
+app.post('/validate', (req, res) => {
+	const csv = req.body.csv;
+	if (csv) {
+		act('role:es,cmd:validate', { csv }).then(() => {
+			res.send(JSON.stringify({
+				success:true,
+				csv: csv
+			}));
+		});
+	} else {
+		res.send(JSON.stringify({ success:false }));
+	}
+});
+
 app.get('/:csv_id/objects', (req, res) => {
 	res.render('csv', { csvId: req.params.csv_id, csvType: 'objects' });
 });
