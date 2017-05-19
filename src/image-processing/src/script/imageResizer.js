@@ -20,7 +20,7 @@ function randomHexValue (len) {
 }
 
 class ImageResizer extends UpdateEmitter {
-	constructor(csvDir, esHost) {
+	constructor(csvDir, esOptions) {
 		super();
 		this._csvDir = csvDir;
 		this._s3Client = s3.createClient({
@@ -30,7 +30,7 @@ class ImageResizer extends UpdateEmitter {
 				region: credentials.awsRegion
 			}
 		});
-		this._esClient = new ESCollection(esHost, csvDir);
+		this._esClient = new ESCollection(esOptions, csvDir);
 		this._availableImages = null;
 		this._currentStep = 'Not started.';
 	}

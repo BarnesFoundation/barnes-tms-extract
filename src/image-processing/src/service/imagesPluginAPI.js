@@ -4,13 +4,13 @@ const { SenecaPluginAPI, makeAPI } = require('../../../util/senecaPluginAPI.js')
 const TileUploader = require('../script/tileUploader.js');
 const RawUploader = require('../script/rawUploader.js');
 const ImageResizer = require('../script/imageResizer.js');
+const { makeElasticsearchOptions } = require('../../../util/elasticOptions.js');
 
 const config = require('config');
 const path = require('path');
 
 const csvDir = config.CSV.path;
 const port = config.Server.port;
-const esHost = config.Elasticsearch.host;
 
 /**
  * Seneca plugin for coordinating with the image tiling and upload scripts
@@ -80,7 +80,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	resize() {
-		this._imageResizer = new ImageResizer(csvDir, esHost);
+		this._imageResizer = new ImageResizer(csvDir, makeElasticsearchOptions());
 		const websocketUpdater = new WebsocketUpdater('images', port, this._imageResizer);
 		this._imageResizer.init().then(() => {
 			return this._imageResizer.process();
