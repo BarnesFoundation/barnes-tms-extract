@@ -3,4 +3,4 @@ output/csv_*
 _output
 logs
 output
-scripts/templates.js
+public/scripts/templates.js
