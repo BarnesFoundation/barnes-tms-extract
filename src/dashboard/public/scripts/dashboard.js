@@ -191,5 +191,9 @@ $(function() {
 		$("#upload-raw").click(function() {
 			$.get('api/images/raw', function(response) { });
 		});
+
+		$("#resize-images").click(function() {
+			$.get('api/images/resize', function(response) { });
+		});
 	}
 });

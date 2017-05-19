@@ -1,7 +1,10 @@
-button#upload-raw Upload Raw
-button#upload-images Upload JPGs
-button#tile-images Tile Images
-button#cancel-images Cancel
+if !imageInfo.isRunning
+	button#upload-raw Upload Raw
+	button#upload-images Upload JPGs
+	button#tile-images Tile Images
+	button#resize-images Resize Images
+else
+	button#cancel-images Cancel
 p 
 	span Service: 
 	span= imageInfo.type || "None running."

@@ -3,13 +3,14 @@ const WebsocketUpdater = require('../../../util/websocketUpdater.js');
 const { SenecaPluginAPI, makeAPI } = require('../../../util/senecaPluginAPI.js');
 const TileUploader = require('../script/tileUploader.js');
 const RawUploader = require('../script/rawUploader.js');
-const fetchAvailableImages = require('../script/tmsImageFetch.js');
+const ImageResizer = require('../script/imageResizer.js');
 
 const config = require('config');
 const path = require('path');
 
 const csvDir = config.CSV.path;
 const port = config.Server.port;
+const esHost = config.Elasticsearch.host;
 
 /**
  * Seneca plugin for coordinating with the image tiling and upload scripts
@@ -21,6 +22,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 		this._tileUploader = null;
 		this._rawUploader = null;
 		this._imageUploader = null;
+		this._imageResizer = null;
 	}
 
 	get name() { return "images"; }
@@ -32,6 +34,8 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 			return this._imageUploader.status;
 		} else if (this._rawUploader) {
 			return this._rawUploader.status;
+		} else if (this._imageResizer) {
+			return this._imageResizer.status;
 		}
 		return { isRunning: false };
 	}
@@ -71,6 +75,17 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 			return this._imageUploader.process();
 		}).then(() => {
 			this._imageUploader = null;
+		});
+		return { success: true };
+	}
+
+	resize() {
+		this._imageResizer = new ImageResizer(csvDir, esHost);
+		const websocketUpdater = new WebsocketUpdater('images', port, this._imageResizer);
+		this._imageResizer.init().then(() => {
+			return this._imageResizer.process();
+		}).then(() => {
+			this._imageResizer = null;
 		});
 		return { success: true };
 	}

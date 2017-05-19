@@ -42,7 +42,9 @@ function api(options) {
 			info: 'info',
 			tile: 'tile',
 			upload: 'upload',
-			raw: 'raw'
+			raw: 'raw',
+			resize: 'resize',
+			cancel: 'cancel'
 		};
 
 		const command = msg.args.params.cmd;

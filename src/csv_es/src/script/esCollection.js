@@ -348,6 +348,22 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	/**
+	 * Reindexes the collection index based on the mappings file.
+	 * @return {Promise} Resolves to a description of the Elasticsearch index
+	 */
+	_updateMappings() {
+		return this._collectionIndexExists().then((res) => {
+			if (res) {
+				return this._client.indices.putMapping({
+					index: 'collection',
+					body: { properties: mapping.mappings.object.properties },
+					type: 'document'
+				});
+			}
+		});
+	}
+
+	/**
 	 * Removes all objects from the collections index and resets the meta document
 	 * @return {Promise} Resolves to a description of the Elasticsearch index
 	 */
