@@ -1,5 +1,5 @@
-const config = require('config');
+const { makeElasticsearchOptions } = require('../util/elasticOptions.js');
 const ESCollection = require('../csv_es/src/script/esCollection.js');
 
-const esCollection = new ESCollection( config.Elasticsearch.host, config.CSV.path);
+const esCollection = new ESCollection( makeElasticsearchOptions(), config.CSV.path);
 esCollection._updateMappings();
