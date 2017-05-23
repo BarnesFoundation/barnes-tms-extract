@@ -78,13 +78,13 @@
 				"copyright": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "text", "analyzer": "keyword" }
+						"keyword": { "type": "keyword" }
 					}
 				},
 				"culture": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "text", "analyzer": "keyword" }
+						"keyword": { "type": "keyword" }
 					}
 				},
 				"description": {
@@ -126,14 +126,14 @@
 				"people": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "text", "analyzer": "keyword" }
+						"keyword": { "type": "keyword" }
 					}
 				},
 				"period": {
 					"type": "text",
 					"analyzer": "period_analyzer"
 				},
-				"room": { "type": "text", "analyzer": "lowercase_keyword_analyzer" },
+				"room": { "type": "keyword" },
 				"shortDescription": {
 					"type": "text",
 					"fields": {
@@ -144,7 +144,7 @@
 				"title": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "text", "analyzer": "keyword" }
+						"keyword": { "type": "keyword" }
 					}
 				},
 				"wall": { "type": "keyword" },
