@@ -12,7 +12,7 @@ esCollection.description().then((desc) => {
 		throw {message: "ES is unsynchronized and cannot be rebuilt"}
 	}
 }).then(() => {
-	return esCollection._createCollectionIndex();
+	return esCollection._prepareIndexForSync();
 }).then(() => {
 	return esCollection.syncESToCSV(rebuildCSVTarget);
 }).then(() => {
