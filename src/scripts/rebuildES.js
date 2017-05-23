@@ -4,7 +4,7 @@ const ESCollection = require('../csv_es/src/script/esCollection.js');
 
 const esCollection = new ESCollection( makeElasticsearchOptions(), config.CSV.path);
 let rebuildCSVTarget = null;
-esCollection.description.then((desc) => {
+esCollection.description().then((desc) => {
 	if (desc.lastImportedCSV !== null) {
 		rebuildCSVTarget = desc.lastImportedCSV;
 		return esCollection._deleteCollectionIndex();
