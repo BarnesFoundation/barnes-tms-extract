@@ -55,7 +55,7 @@ class ImageResizer extends UpdateEmitter {
 			const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
 			const imagesToResize = [];
 			logger.info('Determining which images need to be resized.');
-			this._currentStep = 'Deterining which images need to be resized.';
+			this._currentStep = 'Determining which images need to be resized.';
 			this.progress();
 			csvForEach(csvPath, (row) => {
 				const availableImage = this._availableImages.find((image) => image.key === `${row.invno}.jpg`);

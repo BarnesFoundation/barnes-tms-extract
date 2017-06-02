@@ -3,50 +3,82 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https');
 const config = require('config');
+const s3 = require('s3');
 const credentials = config.Credentials.aws;
 
 const csvDir = path.resolve(__dirname, '../dashboard/public/output');
 const fileExtension = '.jpg';
 
-//open csv
-//loop through each line of csv
-//push each highlight into the array
-//loop through each highlight
-//download it to folder
-//zip folder
+const s3Client = s3.createClient({
+  s3Options: {
+    accessKeyId: credentials.awsAccessKeyId,
+    secretAccessKey: credentials.awsSecretAccessKey,
+    region: credentials.awsRegion
+  }
+});
+
+function getResizedImages() {
+  return new Promise((resolve) => {
+    let resizedImages = [];
+    const getResizedImages = s3Client.listObjects({
+      s3Params: {
+        Bucket: credentials.awsBucket,
+        Prefix: 'images/'
+      }
+    });
+    getResizedImages.on('data', (data) => {
+      const objects = data['Contents'];
+      resizedImages = resizedImages.concat(objects.map((image) => {
+        return {
+          key: image['Key'].split('/')[1],
+          lastModified: image['LastModified']
+        };
+      }));
+    });
+
+    getResizedImages.on('end', () => {
+      resolve(resizedImages);
+    });
+  });
+}
 
 const lastCSV = getLastCompletedCSV(csvDir);
 const highlights = [];
 csvForEach(path.resolve(csvDir, lastCSV + '/objects.csv'), (line) => {
-  if (line.Highlight === 'true') {
-    highlights.push(line.invno);
+  if (line.highlight === 'true') {
+    highlights.push(line.id);
   }
 }, () => {
   console.log(highlights);
-  let requests = highlights.reduce((promiseChain, invno) => {
-    return promiseChain.then(() => {
-      return new Promise((resolve) => {
-        const url = credentials.barnesImagesUrl + invno + fileExtension;
-        const imageName = path.resolve(__dirname, '../../highlights/' + invno);
-        if (fs.existsSync(imageName + '.jpg')) {
-          resolve();
-          return;
-        }
-        const file = fs.createWriteStream(imageName + fileExtension);
-        file.on('finish', () => {
-          console.log('finished downloading ' + invno + fileExtension);
-          resolve();
-        });
-        https.get(url, (response) => {
-          if (response.statusCode === 404) {
-            fs.unlink(imageName + fileExtension);
-            file.end();
-          } else {
-            response.pipe(file);
+  getResizedImages().then((resizedImages) => {
+    let requests = highlights.reduce((promiseChain, id) => {
+      return promiseChain.then(() => {
+        return new Promise((resolve) => {
+          try {
+            const imageExists = resizedImages.find((image) => image.key.includes(id) && image.key.includes('_b'));
+            if (imageExists) {
+              const imageName = path.resolve(__dirname, '../../highlights/' + imageExists.key);
+              if (fs.existsSync(imageName)) resolve();
+              s3Client.downloadFile({
+                localFile: imageName,
+                s3Params: {
+                  Bucket: credentials.awsBucket,
+                  Key: `images/${imageExists.key}`
+                }
+              }).on('end', () => {
+                console.log('finished downloading ' + imageExists.key);
+                resolve();
+              })
+            } else {
+              resolve();
+            }
+          } catch(e) {
+            console.log(e);
           }
         });
-      });
-    }); 
-  }, Promise.resolve());
-  requests.then(() => console.log('done'));
+      }); 
+    }, Promise.resolve());
+    requests.then(() => console.log('done'));
+  });
+
 });
