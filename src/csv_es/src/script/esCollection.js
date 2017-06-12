@@ -48,6 +48,7 @@ class ESCollection extends UpdateEmitter {
 		this._csvRootDir = csvRootDirectory;
 		this._status = ESCollectionStatus.READY;
 		this._message = "";
+		this._kibanaUrl = config.Elasticsearch.kibana;
 	}
 
 	/** @property {ESCollection~ESImportStatus} status
@@ -560,7 +561,8 @@ class ESCollection extends UpdateEmitter {
 					logger.info("Description complete, returning");
 					return Object.assign({
 						status: this._status,
-						message: this._message
+						message: this._message,
+						kibanaUrl: this._kibanaUrl
 					}, meta, count);
 				});
 			}
