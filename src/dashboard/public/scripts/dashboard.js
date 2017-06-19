@@ -15,6 +15,13 @@ function debounce(func, wait, immediate) {
 
 $(function() {
 
+	var updateColorProcessView = debounce(function(services) {
+		var data = services["color"].state || {};
+		$("#colorProcessingPanelBody").empty();
+		$("#colorProcessingPanelBody").append(window.color({ desc: data }));
+		bindColorProcessingButtons();
+	}, 50);
+
 	var updateCSVView = debounce(function(services) {
 		var data = services["csv"].state || {};
 		var esDesc = services["es"].state || {};
@@ -45,6 +52,12 @@ $(function() {
 	}, 50);
 
 	var services = {
+		color: {
+			route: './api/color/desc',
+			state: null,
+			updates: [updateColorProcessView],
+			view: "#colorProcessingPanelBody"
+		},
 		csv: {
 			route: './api/csv/list',
 			state: null,
@@ -187,6 +200,12 @@ $(function() {
 				$.get('api/tmstocsv/cancel');
 			});
 		});
+	}
+
+	function bindColorProcessingButtons() {
+		$('#colorProcessButton').click(function() {
+			$.get('api/color/process', function(response) { });
+		})
 	}
 
 	function bindImageProcessingButtons() {

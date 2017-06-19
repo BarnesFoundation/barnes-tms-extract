@@ -1,4 +1,13 @@
 function api(options) {
+	this.add('role:api,path:color', function (msg, respond) {
+		const validCommands = {
+			desc: 'desc',
+			process: 'process'
+		};
+		const command = msg.args.params.cmd;
+		this.act('role:color', { cmd: validCommands[command] }, respond);
+	});
+
 	this.add('role:api,path:csv', function (msg, respond) {
 		const validCommands = {
 			list: 'list',
@@ -57,6 +66,7 @@ function api(options) {
 			pin: 'role:api,path:*',
       // this is where we add the route to the microservice
 			map: {
+				color: { GET: true, suffix: '/:cmd' },
 				csv: { GET: true, suffix: '/:cmd' },
 				es: { GET: true, suffix: '/:cmd' },
 				tmstocsv: { GET: true, suffix: '/:cmd' },

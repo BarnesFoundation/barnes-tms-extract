@@ -59,6 +59,17 @@ module.exports = {
 				NODE_ENV: 'production'
 			}
 		},
+
+		{
+			name      : 'COLOR_PROCESSING',
+			script    : 'src/color-processing/color-pin-service.js',
+			env: {
+				NODE_ENV: 'development'
+			},
+			env_production : {
+				NODE_ENV: 'production'
+			}
+		},
 	],
 
 	/**
