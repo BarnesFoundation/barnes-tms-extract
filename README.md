@@ -16,7 +16,7 @@ If you plan on using the encrypted keys contained in this repository, then you w
 
 This repository is dependent on a submodule called [go-iiif](https://github.com/thisisaaronland/go-iiif). To initialize it, run `git submodule init`. 
 
-Run `npm install` to install Node dependencies and to setup the python environment.
+Run `git submodule init` and `npm install` to install Node dependencies and to setup the python environment.
 
 This repository contains encrypted keys for connecting to the Barnes TMS as well as the Amazon s3 instance used to upload tiled images. If you plan to use the Barnes credentials for TMS and s3, then you will need to unlock the repository using git-crypt. You will need to contact the repository admins for a copy of the key needed to unlock the repository. With that key available somewhere on the machine, type:
 
