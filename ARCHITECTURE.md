@@ -143,14 +143,29 @@ We've implemented each layer outlined in _First Principles_ using the following 
 
 Folders in this repository are organized as follows
 
-* src/csv_es - A node.js script (and Seneca.js microservice) that synchronizes an Elasticsearch index with the contents of an exported CSV file
-* src/csv_viewer - A javascript tool for rendering a CSV file in a searchable, filterable format
-* src.dashboard - A Seneca.js microservice with an Express.js server that displays the current state of the Collection Spelunker
-* src/image-processing - A node.js script (and Seneca.js microservice) that pulls images from TMS and exports tiled versions of those images to an Amazon s3 bucket
-* src/python_scripts - Contains python scripts, specifically one that can compute the difference between two CSV files, and one that will extract a color palette
-* src/scripts - Miscellaneous scripts
-* src/tms_csv - A node.js script (and Seneca.js microservice) that pulls object data from TMS and outputs data in a CSV format
-* src/util - Shared javascript utilities
+* `src/csv_es` - A node.js script (and Seneca.js microservice) that synchronizes an Elasticsearch index with the contents of an exported CSV file
+* `src/csv_viewer` - A javascript tool for rendering a CSV file in a searchable, filterable format
+* `src/dashboard` - A Seneca.js microservice with an Express.js server that displays the current state of the Collection Spelunker
+* `src/image-processing` - Node scripts (and Seneca.js microservice) for image processing:
+  * `imageUploader` - Downloads JPG's from TMS and uploads them to S3, in the `assets/` directory as `<invno>.jpg`
+  * `rawUploader` - Downloads TIFF's from TMS and uplods them to S3, in the `raw/` directory as `<invno>.tif`
+  * `imageResizer` - Downloads JPG's from S3 in `assets/` and resizes them according to the [Flickr standard](https://www.flickr.com/services/api/misc.urls.html), uploads them to `images/` as `<tmsId>_<key>_<size>.jpg`
+  * `tileUploader` - Downloads JPG's from S3 in `assets/`, tiles them using [go-iiif](https://github.com/thisisaaronland/go-iiif), and uploads them to `tiles/` as `<invno>`
+* `src/python_scripts` - Contains python scripts, specifically one that can compute the difference between two CSV files, and one that will extract a color palette
+* `src/scripts` - Miscellaneous scripts:
+  * `collectHighlights` - Creates a directory in the root of this repository called `highlights` with all images that are tagged as highlights
+  * `compilePug` - Compiles all pug templates into one file to be used in the dashboard. It is necessary to run this any time the templates are changed.
+  * `nightlyRun` - Runs nightly to pull in new data from TMS and clean up old CSV's
+  * `nightlyValidate` - Validates latest CSV and syncs it with Elasticsearch
+  * `oldCSVClean` - Removes CSV's older than 15 days
+  * `printConfig` - Prints the entire configuration for the project.
+  * `pythonenv.sh` - Bash script to set up the python environment
+  * `rebuildES` - Empties Elasticsearch index and rebuilds it from scratch
+  * `saveImageKeysToEs` - Restores `imageSecret` and `imageOriginalSecret` keys from S3 if they are deleted from Elasticsearch
+  * `startEs.sh` - Starts Elastcisearch if it is not running
+  * `updateMappings` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
+* `src/tms_csv` - A node.js script (and Seneca.js microservice) that pulls object data from TMS and outputs data in a CSV format
+* `src/util` - Shared javascript utilities
 
 ## Export tools
 
