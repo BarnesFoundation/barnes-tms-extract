@@ -67,13 +67,18 @@ class ImageResizer extends UpdateEmitter {
 					imagesToResize.push(Object.assign({}, row, availableImage));
 					return;
 				}
+				const imageSecret = resizedImage.key.split('_')[1];
+				const imageOriginalSecret = originalImage.key.split('_')[1];
 				if (new Date(resizedImage.lastModified) - new Date(availableImage.lastModified) < 0) {
 					//get secret key from S3
-					const imageSecret = resizedImage.key.split('_')[1];
-					const imageOriginalSecret = originalImage.key.split('_')[1];
 					imagesToResize.push(Object.assign({}, row, availableImage, { imageSecret, imageOriginalSecret }));
 					return;
 				}
+				// save keys to ES for already resized images
+				this._esClient._updateDocumentWithData(row.id, {
+					imageSecret: secretKey,
+					imageOriginalSecret: originalSecretKey
+				});
 			}, () => {
 				logger.info('Interating through all images that need to be resized.');
 				this._currentStep = 'Iterating through all images that need to be resized.';
@@ -102,6 +107,19 @@ class ImageResizer extends UpdateEmitter {
 		}
 	}
 
+	_getImageKeys(image) {
+		let secretKey;
+		let originalSecretKey;
+		if (image.secretKey) {
+			secretKey = image.secretKey;
+			originalSecretKey = image.originalSecretKey;
+		} else {
+			secretKey = randomHexValue(16);
+			originalSecretKey = randomHexValue(16);
+		}
+		return {secretKey, originalSecretKey};
+	}
+
 	_downloadImage(image, dir) {
 		return new Promise((resolve) => {
 			const imagePath = path.resolve(dir, image.key);
@@ -123,15 +141,7 @@ class ImageResizer extends UpdateEmitter {
 			const tmpDir = tmp.dirSync().name;
 			const sizes = [{side: 320, suffix: 'n'}, {side: 1024, suffix: 'b'}, {side: 4096, suffix: 'o'}];
 			this._downloadImage(image, tmpDir).then((imagePath) => {
-				let secretKey;
-				let originalSecretKey;
-				if (image.secretKey) {
-					secretKey = image.secretKey;
-					originalSecretKey = image.originalSecretKey;
-				} else {
-					secretKey = randomHexValue(16);
-					originalSecretKey = randomHexValue(16);
-				}
+				const { secretKey, originalSecretKey } = this._getImageKeys(image);
 				this._esClient._updateDocumentWithData(image.id, {
 					imageSecret: secretKey,
 					imageOriginalSecret: originalSecretKey
