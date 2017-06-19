@@ -74,11 +74,6 @@ class ImageResizer extends UpdateEmitter {
 					imagesToResize.push(Object.assign({}, row, availableImage, { imageSecret, imageOriginalSecret }));
 					return;
 				}
-				// save keys to ES for already resized images
-				this._esClient._updateDocumentWithData(row.id, {
-					imageSecret: imageSecret,
-					imageOriginalSecret: imageOriginalSecret
-				});
 			}, () => {
 				logger.info('Interating through all images that need to be resized.');
 				this._currentStep = 'Iterating through all images that need to be resized.';
