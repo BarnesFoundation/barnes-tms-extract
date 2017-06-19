@@ -34,6 +34,6 @@ make bin
 
 From the repository root, run
 
-`npm run serve`
+`pm2 start ecosystem.config.json`, or `pm2 start ecosystem.config.json --env production` in production.
 
-to start the dashboard server, the tms-to-csv microservice, the csv-list microservice, the iiif microservice and the csv-to-elasticsearch microservice. Visit `http://localhost:3000` to access the dashboard. From here, you should be able to initiate the export-import process.
+to start the dashboard server and all microservices. Visit `http://localhost:3000` to access the dashboard. From here, you will be able to initiate the export-import process.
