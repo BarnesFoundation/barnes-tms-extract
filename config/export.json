@@ -3,7 +3,7 @@
 		"export": {
 			"apiURL": "https://emuseum.barnesfoundation.org",
 			"outputDirectory": "src/dashboard/public/output",
-			"debug": {
+			"debug": {	
 			},
 			"fields": [
 				{

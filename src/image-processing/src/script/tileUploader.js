@@ -35,6 +35,7 @@ class TileUploader extends UpdateEmitter {
     this._currentStep = 'Not started';
     this._isRunning = false;
     this._uploadIndex = 0;
+    this._availableImages = null;
   }
 
   /**
@@ -43,13 +44,10 @@ class TileUploader extends UpdateEmitter {
    */
   init() {
     this._isRunning = true;
-    this._currentStep = "Fetching image listing on TMS.";
+    this._currentStep = "Fetching available image listing from S3.";
     this.started();
-    return fetchAvailableImages().then((outputPath) => {
-      const resolvedPath = path.resolve(outputPath);
-      this._availableImages = require(resolvedPath).images;
-      this._currentStep = "Fetching image listing on S3.";
-      this.progress();
+    return this._getAvailableImages().then(() => {
+      this._currentStep = "Fetching tiled image listing on S3.";
       return this._fetchTiledImages();
     });
   }
@@ -92,9 +90,9 @@ class TileUploader extends UpdateEmitter {
       const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
       const imagesToTile = [];
       csvForEach(csvPath, (row) => {
-        const img = this._imageNeedsUpload(`${row.invno}.jpg`);
+        const img = this._imageNeedsUpload(row.invno, row.id, row.objRightsTypeId);
         if (img) {
-          imagesToTile.push(img);
+          imagesToTile.push(Object.assign({}, img, row));
         }
       },
       () => {
@@ -102,7 +100,7 @@ class TileUploader extends UpdateEmitter {
         this.progress();
         let index = 1;
         eachSeries(imagesToTile, (image, cb) => {
-          this._currentStep = `Tiling and uploading image ${image.name}.`;
+          this._currentStep = `Tiling and uploading image ${image.invno}.`;
           this._uploadIndex = index;
           this.progress();
           this._tileAndUpload(image).then((err) => {
@@ -119,6 +117,31 @@ class TileUploader extends UpdateEmitter {
           this.completed();
           resolve();
         });
+      });
+    });
+  }
+
+  _getAvailableImages() {
+    return new Promise((resolve) => {
+      this._availableImages = [];
+      const getAllImages = this._s3Client.listObjects({
+        s3Params: {
+          Bucket: credentials.awsBucket,
+          Prefix: 'images/'
+        }
+      });
+      getAllImages.on('data', (data) => {
+        const objects = data['Contents'];
+        this._availableImages = this._availableImages.concat(objects.map((image) => {
+          return {
+            key: image['Key'].split('/')[1],
+            lastModified: image['LastModified']
+          };
+        }));
+      });
+
+      getAllImages.on('end', () => {
+        resolve();
       });
     });
   }
@@ -155,23 +178,33 @@ class TileUploader extends UpdateEmitter {
     });
   }
 
-  _imageNeedsUpload(imgName) {
-    logger.info(`Checking if image ${imgName} needs upload.`);
-    const s3Found = this._tiledImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
-    const tmsFound = this._availableImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
+  _imageNeedsUpload(invno, id, objRightsTypeId) {
+    logger.info(`Checking if image ${invno} needs upload.`);
+    const tiledFound = this._tiledImages.find(element => element.name.toLowerCase() === `${invno}.jpg`.toLowerCase());
+    const s3Found = this._availableImages.find(element => element.key.startsWith(id) && element.key.includes('_b'));
+    const originalFound = this._availableImages.find(element => element.key.startsWith(id) && element.key.includes('_o'));
 
-    if (tmsFound) {
-      if (s3Found && (s3Found.size !== tmsFound.size || s3Found.modified !== tmsFound.modified)) {
-        logger.info(`${imgName} is available on TMS, has already been tiled, but has changed.`);
-        return tmsFound;
-      } else if (!s3Found) {
-        logger.info(`${imgName} is available on TMS, but never has been tiled.`);
-        return tmsFound;
+    if (tiledFound) {
+      if (s3Found && new Date(s3Found.lastModified) - new Date(tiledFound.lastModified) > 0) {
+        logger.info(`${invno} has already been tiled but is stale.`);
+        if (this._imageInCopyright(objRightsTypeId)) {
+          return s3Found;
+        }
+        return originalFound;
       }
-      logger.info(`${imgName} is available on TMS, has been tiled, and has not changed.`);
+      logger.info(`${invno} has already been tiled.`);
       return false;
     }
-    logger.info(`${imgName} is not available on TMS.`);
+
+    if (s3Found) {
+      logger.info(`${invno} has never been tiled.`);
+      if (this._imageInCopyright(objRightsTypeId)) {
+        return s3Found;
+      }
+      return originalFound;
+    }
+
+    logger.info(`${invno} is not available.`)
     return false;
   }
 
@@ -183,12 +216,20 @@ class TileUploader extends UpdateEmitter {
     return outPath;
   }
 
+  _imageInCopyright(objRightsTypeId) {
+    const copyrightTypes = config.Images.inCopyright;
+    if (copyrightTypes.includes(objRightsTypeId) || !objRightsTypeId) {
+      return true;
+    }
+    return false;
+  }
+
   _tileAndUpload(image) {
     return new Promise((resolve) => {
       const configPath = this._tempConfigPath();
       const goPath = path.relative(process.cwd(), path.resolve(__dirname, '../../go-iiif/bin/iiif-tile-seed'));
-      logger.info(`Tiling image: ${image.name}`);
-      const cmd = `AWS_ACCESS_KEY=${credentials.awsAccessKeyId} AWS_SECRET_KEY=${credentials.awsSecretAccessKey} ${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.name}`;
+      logger.info(`Tiling image: ${image.key}`);
+      const cmd = `AWS_ACCESS_KEY=${credentials.awsAccessKeyId} AWS_SECRET_KEY=${credentials.awsSecretAccessKey} ${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -verbose -loglevel debug ${image.key},${image.invno}`;
       exec(cmd, null, (error, stdout, stderr) => {
         if (error) {
           logger.error(`exec error: ${error}`);
@@ -225,7 +266,7 @@ class TileUploader extends UpdateEmitter {
       });
 
       csvStream.pipe(writableStream);
-      this._tiledImages.push(image);
+      this._tiledImages.push({name: `${image.invno}.jpg`, lastModified: image.lastModified});
       this._tiledImages.forEach((img) => {
         csvStream.write(img);
       });

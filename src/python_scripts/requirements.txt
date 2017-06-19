@@ -13,5 +13,3 @@ pycparser==2.17
 pyOpenSSL==16.2.0
 requests==2.12.4
 six==1.10.0
-git+https://github.com/workergnome/py-cooperhewitt-roboteyes-colors#egg=cooperhewitt.roboteyes.colors
-git+https://github.com/workergnome/py-cooperhewitt-swatchbook#egg=cooperhewitt_swatchbook
