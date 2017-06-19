@@ -9,12 +9,15 @@ const UpdateEmitter = require('../../../util/updateEmitter.js');
 const csv = require('fast-csv');
 const config = require('config');
 const Promise = require('bluebird');
+const eachLimit = require('async/eachLimit');
 const elasticsearch = require('elasticsearch');
 const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
 const tmp = require('tmp');
 const _ = require('lodash');
+
+const rateLimit = 50;
 
 const ESCollectionStatus = Object.freeze({
 	READY: "READY",
@@ -365,17 +368,24 @@ class ESCollection extends UpdateEmitter {
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
 		let processed = 0;
 		return new Promise((resolve, reject) => {
+			const todos = [];
 			try {
 				csv
 					.fromPath(csvFilePath, { headers: true })
 					.on('data', (data) => {
-						this._createDocumentWithData(data, this._client);
-						this.progress(`Synchronizing with ${csvExport}, ${++processed} documents uploaded`);
+						todos.push(data);
 					})
 					.on('end', () => {
-						this._updateMetaForCSVFile(csvExport).then(() => {
-							logger.info('Finished export');
-							resolve();
+						eachLimit(todos, rateLimit, (data, cb) => {
+							this._createDocumentWithData(data, this._client).then(() => {
+								this.progress(`Synchronizing with ${csvExport}, ${++processed} documents uploaded`);
+								cb();
+							});
+						}, () => {
+							this._updateMetaForCSVFile(csvExport).then(() => {
+								logger.info('Finished export');
+								resolve();
+							});
 						});
 					});
 			} catch (e) {
@@ -422,28 +432,38 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	_updateESWithDiffJSON(diffJson) {
-		const todos = [];
 		logger.info(
 			`Updating to new CSV. 
 			${diffJson.added.length} new documents, 
 			${diffJson.changed.length} changed documents, 
 			${diffJson.removed.length} removed documents.`
 		);
-		_.forEach(diffJson.added, (added) => {
-			todos.push(this._createDocumentWithData(added));
-		});
-		_.forEach(diffJson.changed, (changed) => {
-			const id = parseInt(changed.key[0]);
-			_.forEach(changed.fields, (v, k) => {
-				todos.push(this._updateDocumentWithData(id, { k: v.to }));
-			});
-		});
-		_.forEach(diffJson.removed, (removed) => {
-			const id = parseInt(removed.id);
-			todos.push(this._deleteDocumentWithId(id));
+
+		const adds = new Promise((resolve, reject) => {
+			eachLimit(diffJson.added, rateLimit, (added, cb) => {
+				this._createDocumentWithData(added).then(cb);
+			}, () => resolve())
 		});
 
-		return Promise.all(todos);
+		const changes = new Promise((resolve, reject) => {
+			eachLimit(diffJson.changed, rateLimit, (changed, cb) => {
+				const id = parseInt(changed.key[0]);
+				const todos = [];
+				_.forEach(changed.fields, (v, k) => {
+					todos.push(this._updateDocumentWithData(id, { k: v.to }));
+				});
+				Promise.all(todos).then(cb);
+			}, () => resolve())
+		});
+
+		const removes = new Promise((resolve, reject) => {
+			eachLimit(diffJson.removed, (removed, cb) => {
+				const id = parseInt(removed.id);
+				this._deleteDocumentWithId(id).then(cb);
+			}, () => resolve())
+		});
+
+		return Promise.all([adds, changes, removes]);
 	}
 
 	/**

@@ -75,6 +75,22 @@
 			"properties": {
 				"bibliography": { "type": "text" },
 				"classification": { "type": "keyword" },
+				"color": {
+					"dynamic": false,
+					"properties": {
+						"reference-closest": { "type": "keyword" },
+						"average-color": { "type": "keyword" },
+						"average-closest": { "type": "keyword" },
+						"palette-closest-0": { "type": "keyword" },
+						"palette-color-0": { "type": "keyword" },
+						"palette-closest-1": { "type": "keyword" },
+						"palette-color-1": { "type": "keyword" },
+						"palette-closest-2": { "type": "keyword" },
+						"palette-color-2": { "type": "keyword" },
+						"palette-closest-3": { "type": "keyword" },
+						"palette-color-3": { "type": "keyword" }
+					}
+				},
 				"copyright": {
 					"type": "text",
 					"fields": {
