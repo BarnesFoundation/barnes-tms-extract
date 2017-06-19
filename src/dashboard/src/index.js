@@ -56,7 +56,8 @@ const seneca = require('seneca')()
 			.client({ type: 'tcp', pin: 'role:tmstocsv' })
 			.client({ type: 'tcp', pin: 'role:csv', port: 10202 })
 			.client({ type: 'tcp', pin: 'role:es', port: 10203 })
-			.client({ type: 'tcp', pin: 'role:images', port: 10204 });
+			.client({ type: 'tcp', pin: 'role:images', port: 10204 })
+			.client({ type: 'tcp', pin: 'role:color', port: 10205 });
 
 // Promisify Seneca functions
 const act = Promise.promisify(seneca.act, { context: seneca });
