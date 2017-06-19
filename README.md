@@ -8,8 +8,6 @@ that you have Python 2.7 installed, along with pip and conda.
 
 The image processor requires go-ifff. Installation instructions can be found at https://github.com/thisisaaronland/go-iiif
 
-The image processor also requires phantomjs. Install as appropriate for your system.
-
 If you plan on using the encrypted keys contained in this repository, then you will need to unlock the repo using git-crypt. Install git-crypt as appropriate for your system, then contact the repository admins for the key needed to unlock the repository.
 
 ## Setup
