@@ -76,8 +76,8 @@ class ImageResizer extends UpdateEmitter {
 				}
 				// save keys to ES for already resized images
 				this._esClient._updateDocumentWithData(row.id, {
-					imageSecret: secretKey,
-					imageOriginalSecret: originalSecretKey
+					imageSecret: imageSecret,
+					imageOriginalSecret: imageOriginalSecret
 				});
 			}, () => {
 				logger.info('Interating through all images that need to be resized.');
@@ -108,16 +108,16 @@ class ImageResizer extends UpdateEmitter {
 	}
 
 	_getImageKeys(image) {
-		let secretKey;
-		let originalSecretKey;
-		if (image.secretKey) {
-			secretKey = image.secretKey;
-			originalSecretKey = image.originalSecretKey;
+		let imageSecret;
+		let imageOriginalSecret;
+		if (image.imageSecret) {
+			imageSecret = image.imageSecret;
+			imageOriginalSecret = image.imageOriginalSecret;
 		} else {
-			secretKey = randomHexValue(16);
-			originalSecretKey = randomHexValue(16);
+			imageSecret = randomHexValue(16);
+			imageOriginalSecret = randomHexValue(16);
 		}
-		return {secretKey, originalSecretKey};
+		return {imageSecret, imageOriginalSecret};
 	}
 
 	_downloadImage(image, dir) {
@@ -141,14 +141,14 @@ class ImageResizer extends UpdateEmitter {
 			const tmpDir = tmp.dirSync().name;
 			const sizes = [{side: 320, suffix: 'n'}, {side: 1024, suffix: 'b'}, {side: 4096, suffix: 'o'}];
 			this._downloadImage(image, tmpDir).then((imagePath) => {
-				const { secretKey, originalSecretKey } = this._getImageKeys(image);
+				const { imageSecret, imageOriginalSecret } = this._getImageKeys(image);
 				this._esClient._updateDocumentWithData(image.id, {
-					imageSecret: secretKey,
-					imageOriginalSecret: originalSecretKey
+					imageSecret: imageSecret,
+					imageOriginalSecret: imageOriginalSecret
 				});
 				const shouldResize = execSync(`identify -format '%[fx:(h>4096 || w>4096)]\n' ${imagePath}`).toString().trim();
 				each(sizes, (size, cb) => {
-					const key = size.suffix === 'o' ? originalSecretKey : secretKey;
+					const key = size.suffix === 'o' ? imageOriginalSecret : imageSecret;
 					const resize = size.suffix === 'o' && shouldResize === '0' ? '' : `-thumbnail ${size.side}`
 					const newImageName = `${image.id}_${key}_${size.suffix}.jpg`;
 					const newImagePath = path.resolve(tmpDir, newImageName);
