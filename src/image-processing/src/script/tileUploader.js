@@ -169,7 +169,7 @@ class TileUploader extends UpdateEmitter {
       .on('end', () => {
         logger.info('tiles.csv has been downloaded--loading into memory.');
         csvForEach(path.resolve(__dirname, '../../tiled.csv'), (data) => {
-          this._tiledImages.push({ name: data.name, size: data.size, modified: data.modified });
+          this._tiledImages.push({ name: data.name, lastModified: data.lastModified });
         }, () => {
           this.progress();
           resolve();

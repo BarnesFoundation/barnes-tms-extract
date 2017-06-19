@@ -67,10 +67,10 @@ class ImageResizer extends UpdateEmitter {
 					imagesToResize.push(Object.assign({}, row, availableImage));
 					return;
 				}
+				const imageSecret = resizedImage.key.split('_')[1];
+				const imageOriginalSecret = originalImage.key.split('_')[1];
 				if (new Date(resizedImage.lastModified) - new Date(availableImage.lastModified) < 0) {
 					//get secret key from S3
-					const imageSecret = resizedImage.key.split('_')[1];
-					const imageOriginalSecret = originalImage.key.split('_')[1];
 					imagesToResize.push(Object.assign({}, row, availableImage, { imageSecret, imageOriginalSecret }));
 					return;
 				}
@@ -102,6 +102,19 @@ class ImageResizer extends UpdateEmitter {
 		}
 	}
 
+	_getImageKeys(image) {
+		let imageSecret;
+		let imageOriginalSecret;
+		if (image.imageSecret) {
+			imageSecret = image.imageSecret;
+			imageOriginalSecret = image.imageOriginalSecret;
+		} else {
+			imageSecret = randomHexValue(16);
+			imageOriginalSecret = randomHexValue(16);
+		}
+		return {imageSecret, imageOriginalSecret};
+	}
+
 	_downloadImage(image, dir) {
 		return new Promise((resolve) => {
 			const imagePath = path.resolve(dir, image.key);
@@ -123,22 +136,14 @@ class ImageResizer extends UpdateEmitter {
 			const tmpDir = tmp.dirSync().name;
 			const sizes = [{side: 320, suffix: 'n'}, {side: 1024, suffix: 'b'}, {side: 4096, suffix: 'o'}];
 			this._downloadImage(image, tmpDir).then((imagePath) => {
-				let secretKey;
-				let originalSecretKey;
-				if (image.secretKey) {
-					secretKey = image.secretKey;
-					originalSecretKey = image.originalSecretKey;
-				} else {
-					secretKey = randomHexValue(16);
-					originalSecretKey = randomHexValue(16);
-				}
+				const { imageSecret, imageOriginalSecret } = this._getImageKeys(image);
 				this._esClient._updateDocumentWithData(image.id, {
-					imageSecret: secretKey,
-					imageOriginalSecret: originalSecretKey
+					imageSecret: imageSecret,
+					imageOriginalSecret: imageOriginalSecret
 				});
 				const shouldResize = execSync(`identify -format '%[fx:(h>4096 || w>4096)]\n' ${imagePath}`).toString().trim();
 				each(sizes, (size, cb) => {
-					const key = size.suffix === 'o' ? originalSecretKey : secretKey;
+					const key = size.suffix === 'o' ? imageOriginalSecret : imageSecret;
 					const resize = size.suffix === 'o' && shouldResize === '0' ? '' : `-thumbnail ${size.side}`
 					const newImageName = `${image.id}_${key}_${size.suffix}.jpg`;
 					const newImagePath = path.resolve(tmpDir, newImageName);
