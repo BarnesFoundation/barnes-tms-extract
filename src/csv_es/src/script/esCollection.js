@@ -550,7 +550,6 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolves to a description of the Elasticsearch index
 	 */
 	description() {
-		logger.info("Gathering description");
 		return this._collectionIndexExists().then((res) => {
 			if (!res) {
 				return { status: 'uninitialized' };
@@ -578,7 +577,6 @@ class ESCollection extends UpdateEmitter {
 
 				return Promise.all([metaGetter, countGetter]).then((res) => {
 					const [meta, count] = res;
-					logger.info("Description complete, returning");
 					return Object.assign({
 						status: this._status,
 						message: this._message,
