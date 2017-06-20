@@ -108,9 +108,6 @@ class ColorProcessor extends UpdateEmitter {
 		super.completed();
 	}
 
-	/**
-	 * Begin the Cooper-Hewitt color processing operation
-	 */
 	process() {
 		logger.info("Beginning to process");
 		let results = [];
@@ -141,6 +138,9 @@ class ColorProcessor extends UpdateEmitter {
 	}
 }
 
+/**
+ * Seneca plugin for processing TMS images using the Cooper Hewitt palette extractor
+ */
 class ColorProcessAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
