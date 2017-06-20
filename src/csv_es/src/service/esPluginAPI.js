@@ -17,7 +17,7 @@ const port = config.Server.port;
 class ESPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
-		this._esOptions = options;
+		this._esOptions = options.esOptions;
 		this._csvDir = options.csvDir;
 		this._esCollection = new ESCollection(this._esOptions, this._csvDir);
 		this._websocketUpdater = new WebsocketUpdater('es', port, this._esCollection);
