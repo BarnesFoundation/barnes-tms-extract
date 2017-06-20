@@ -153,17 +153,6 @@ Folders in this repository are organized as follows
   * `tileUploader` - Downloads JPG's from S3 in `assets/`, tiles them using [go-iiif](https://github.com/thisisaaronland/go-iiif), and uploads them to `tiles/` as `<invno>`
 * `src/python_scripts` - Contains python scripts, specifically one that can compute the difference between two CSV files, and one that will extract a color palette
 * `src/scripts` - Miscellaneous scripts:
-  * `collectHighlights` - Creates a directory in the root of this repository called `highlights` with all images that are tagged as highlights
-  * `compilePug` - Compiles all pug templates into one file to be used in the dashboard. It is necessary to run this any time the templates are changed.
-  * `nightlyRun` - Runs nightly to pull in new data from TMS and clean up old CSV's
-  * `nightlyValidate` - Validates latest CSV and syncs it with Elasticsearch
-  * `oldCSVClean` - Removes CSV's older than 15 days
-  * `printConfig` - Prints the entire configuration for the project.
-  * `pythonenv.sh` - Bash script to set up the python environment
-  * `rebuildES` - Empties Elasticsearch index and rebuilds it from scratch
-  * `saveImageKeysToEs` - Restores `imageSecret` and `imageOriginalSecret` keys from S3 if they are deleted from Elasticsearch
-  * `startEs.sh` - Starts Elastcisearch if it is not running
-  * `updateMappings` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
 * `src/tms_csv` - A node.js script (and Seneca.js microservice) that pulls object data from TMS and outputs data in a CSV format
 * `src/util` - Shared javascript utilities
   * `csvUtil` - CSV utilities, for reading and writing CSV's
