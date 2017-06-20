@@ -52,3 +52,17 @@ This repo includes a number of utility scripts that come in handy for taking car
 * `saveImageKeysToEs.js` - Restores `imageSecret` and `imageOriginalSecret` keys from S3 if they are deleted from Elasticsearch
 * `startEs.sh` - Starts Elastcisearch on the local machine if it is not running
 * `updateMappings.js` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
+
+## Example crontab
+
+Here's an example of a crontab that might work with this repo
+
+```
+
+SHELL=/bin/bash
+PATH=$PATH:/home/ubuntu/.nvm/versions/node/v6.2.2/bin
+00 00 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyRun.js
+00 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyValidate.js
+15 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyColorProcess.js
+20 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/saveImageKeysToEs.js
+```
