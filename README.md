@@ -66,3 +66,7 @@ PATH=$PATH:/home/ubuntu/.nvm/versions/node/v6.2.2/bin
 15 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyColorProcess.js
 20 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/saveImageKeysToEs.js
 ```
+
+## Dashboard password protection
+
+By default, access to the admin dashboard is protected by a simple username-password scheme. The username and password are stored in `config/users.htpasswd`, which is encrypted using git-crypt. Decrypt this file and edit it if you want to add your own username and password.
