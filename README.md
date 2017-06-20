@@ -70,3 +70,13 @@ PATH=$PATH:/home/ubuntu/.nvm/versions/node/v6.2.2/bin
 ## Dashboard password protection
 
 By default, access to the admin dashboard is protected by a simple username-password scheme. The username and password are stored in `config/users.htpasswd`, which is encrypted using git-crypt. Decrypt this file and edit it if you want to add your own username and password.
+
+## JSDoc Code Documentation
+
+All of the backend code is documented using JSDoc. To generate documentation, simply run
+
+```
+npm run docs
+```
+
+which should build the documentation in `docs`. View `docs/collection-website/0.0.1/index.html` in any browser.
