@@ -61,12 +61,20 @@ getAvailableImages().then(availableImages => {
     }, resolve);
   });
 }).then(() => {
+  console.log(imagesToUpdate.length);
   eachSeries(imagesToUpdate, (image, cb) => {
+    console.log('updating image ' + image.id);
     esClient._updateDocumentWithData(image.id, {
       imageSecret: image.imageSecret,
       imageOriginalSecret: image.imageOriginalSecret
-    }).then(cb);
-  }, () => {
-    console.log('updated all documents!');
+    }).then(() => { 
+      cb(null);
+    });
+  }, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('updated all documents successfully!');
+    }
   });
 });
