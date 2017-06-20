@@ -77,6 +77,10 @@ class ColorProcessor extends UpdateEmitter {
 		this._message = "Ready to process";
 	}
 
+	get status() {
+		return this.desc();
+	}
+
 	desc() {
 		return {
 			status: this._status,
