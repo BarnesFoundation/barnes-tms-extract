@@ -187,6 +187,7 @@ class ImageUploader extends UpdateEmitter {
 						s3Params: {
 							Bucket: credentials.awsBucket,
 							Key: `assets/${image.name.toUpperCase()}`,
+							ACL: 'authenticated-read'
 						},
 						localFile: localImagePath,
 					})
