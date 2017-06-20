@@ -166,6 +166,13 @@ Folders in this repository are organized as follows
   * `updateMappings` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
 * `src/tms_csv` - A node.js script (and Seneca.js microservice) that pulls object data from TMS and outputs data in a CSV format
 * `src/util` - Shared javascript utilities
+  * `csvUtil` - CSV utilities, for reading and writing CSV's
+  * `csvWriter` - Class to write to a CSV
+  * `elasticOptions` - Exports a function called `makeElasticsearchOptions` which forms the configuration object for an `ESCollection` instance
+  * `logger` - Configures a instance of a winston logger
+  * `senecaPluginAPI` - A base class to configure all Seneca API instances, and maps method names to API routes
+  * `updateEmitter` - A base class that allows a Seneca microservice to send updates via an EventEmitter
+  * `websocketUpdater` - A class that can subscribe to an updateEmitter derived class and send updates via a websocket connection
 
 ## Export tools
 
@@ -185,12 +192,13 @@ The Barnes Collection has the following keys. The data model itself is limited b
 * Dimensions[dimensions]
 * Object Number [invno]
 * Object Location [locations]
-* Copyright Status [copyright]
+* Copyright Status [objRightsTypeId]
 * Exhibition History [exhHistory]
 * Bibliography [bibliography]
 * Short Description [shortDescription]
 * Long Description [longDescription]
 * Visual Description [visualDescription]
+* Highlight [highlight]
 
 ## Import
 
