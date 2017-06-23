@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>tms_csv/src/script/tmsExporter.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ArtObject.html">ArtObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ArtObject.html#descriptionWithFields">descriptionWithFields</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ColorProcessAPI.html">ColorProcessAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ColorProcessAPI.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CSVPluginAPI.html">CSVPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVPluginAPI.html#list">list</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CSVWriter.html">CSVWriter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVWriter.html#end">end</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVWriter.html#write">write</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESCollection.html">ESCollection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_analyzedData">_analyzedData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_deleteCollectionIndex">_deleteCollectionIndex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_isIndexReadyForSync">_isIndexReadyForSync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_updateMappings">_updateMappings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#description">description</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#initialize">initialize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#validateForCSV">validateForCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESPluginAPI.html">ESPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#desc">desc</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#sync">sync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#validate">validate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#validateAndResync">validateAndResync</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ExportConfig.html">ExportConfig</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldHasAlias">fieldHasAlias</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsEnumerated">fieldIsEnumerated</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsMask">fieldIsMask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsRequired">fieldIsRequired</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldMaskSelector">fieldMaskSelector</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ExportMetadata.html">ExportMetadata</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportMetadata.html#description">description</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ImagesPluginAPI.html">ImagesPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImagesPluginAPI.html#tile">tile</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ImageUploader.html">ImageUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImageUploader.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImageUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI-SenecaPluginAPI.html">SenecaPluginAPI</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="RawUploader.html">RawUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="RawUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TileUploader.html">TileUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TileUploader.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TileUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSExporter.html">TMSExporter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSExporter.html#cancelExport">cancelExport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSExporter.html#exportCSV">exportCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSFileReader.html">TMSFileReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSFileReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSFileReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSURLReader.html">TMSURLReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#getObjectCount">getObjectCount</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WarningReporter.html">WarningReporter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WarningReporter.html#appendFieldsForObject">appendFieldsForObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WarningReporter.html#end">end</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WebsocketUpdater.html">WebsocketUpdater</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_csvUtil.html">util/csvUtil</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.csvCompleted">csvCompleted</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.csvForEach">csvForEach</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.diffCSV">diffCSV</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.doCSVKeysMatch">doCSVKeysMatch</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.getLastCompletedCSV">getLastCompletedCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI.html#.makeAPI">makeAPI</a></span></li><li class="nav-heading">Events</li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:completed">completed</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:progress">progress</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:started">started</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="WebsocketUpdater.html#event:status">status</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="TMSReader.html">TMSReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="UpdateEmitter.html">UpdateEmitter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#completed">completed</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#progress">progress</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#started">started</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">tms_csv/src/script/tmsExporter.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const ExportConfig = require('./exportConfig.js');
+const {
+	ExportMetadata,
+	ExportStatus,
+} = require('./exportMetadata.js');
+const CSVWriter = require('../../../util/csvWriter.js');
+const TMSURLReader = require('./tmsURLReader.js');
+const WarningReporter = require('./warningReporter.js');
+const UpdateEmitter = require('../../../util/updateEmitter.js');
+const logger = require('./logger.js');
+
+const config = require('config');
+const fs = require('fs');
+const path = require('path');
+const _ = require('lodash');
+const iconv = require('iconv-lite');
+
+function decodeUTF8InterpretedAsWin(str) {
+	if (typeof str !== 'string') return str;
+	const buf = new Buffer(str);
+	const newnewbuf = iconv.encode(buf, 'win-1252');
+	return newnewbuf.toString();
+}
+
+/**
+ * @typedef {object} TMSExporter~TMSCredentials
+ * @description Credentials for connecting to a TMS API
+ * @property {string} key - TMS key
+ * @property {string} username - TMS username
+ * @property {string} password - TMS password
+ */
+
+/**
+ * @typedef {object} TMSExporter~TMSExportStatus
+ * @description Status of a running TMS export
+ * @property {boolean} active - Whether or not the TMS export script is currently running
+ * @property {string} csv - Path to the objects.csv file containing the exported collection objects
+ * @property {number} processed - Number of collection objects that have been processed
+ * @property {number} total - Totl number of collection objects that will be exported
+ * @property {ExportMetadata~ExportStatus} status - Status of the TMS export
+ */
+
+/**
+ * @typedef {object} TMSExporter~TMSExportConfiguration
+ * @description Configures the TMS export process. Specifies the root TMS API URL, the output directory,
+ *  debug configuration, which fields to export, and which warnings to generate
+ * @property {string} apiURL - The root TMS API URL
+ * @property {string} outputDirectory - The directory into which the exported CSV file will be placed
+ * @property {object} debug - Debug values (optional)
+ * @property {number} debug.limit - Exit after exporting this many collection objects (optional)
+ * @property {TMSExporter~TMSFieldExportConfiguration[]} fields - Export configuration for each field that is to be exported
+ * @property {object} warnings - Warning flags. Warnings are written to `warnings.csv`
+ * @property {boolean} warnings.singletonFields - Emit a warning for fields that only appear a very small number of times
+ * @default false
+ * @property {boolean} warnings.missingFields - Emit a warning for objects that do not expose a required field
+ * @default false
+ * @property {boolean} warnings.unusedFields - Emit a warning for fields that are not exported
+ * @default false
+ */
+
+/**
+ * @typedef {object} TMSExporter~TMSFieldExportConfiguration
+ * @description Export configuration for a particular TMS field
+ * @property {string} name - The name of the field to be exported
+ * @property {boolean} primaryKey - Whether this field should be used as a unique identifier for the object (one required)
+ * @property {boolean} required - Whether the field must be present (when absent a warning will be generated)
+ * @property {boolean} enumerated - Whether the field is expected to have one of a small number of values
+ */
+
+/**
+ * Manages the export from TMS to a CSV file.
+ * @implements {@link UpdateEmitter}
+ * @param {TMSCredentials} credentials - Credentials for connecting to the TMS API. These are typically
+ *  loaded from `config/credentials.json`, which is encrypted by default
+ */
+class TMSExporter extends UpdateEmitter {
+	constructor(credentials) {
+		super();
+		this._credentials = credentials;
+		this._processedObjectCount = 0;
+		this._totalObjectCount = 0;
+		this._active = false;
+	}
+
+	/**
+	 * @property {boolean} active - Whether or not the TMS export script is currently running
+	 */
+	get active() {
+		return this._active;
+	}
+
+	/**
+	 * @property {string} csvFilePath - Path to the objects.csv file containing the exported collection objects
+	 */
+	get csvFilePath() {
+		return this._csvFilePath;
+	}
+
+	/**
+	 * @property {TMSExporter~TMSExportStatus} status - Status of the currently running TMSExport status
+	 * @override
+	 */
+	get status() {
+		return {
+			active: this._active,
+			csv: this._csvFilePath,
+			processed: this._processedObjectCount,
+			total: this._totalObjectCount,
+			status: (this._exportMeta ? this._exportMeta.status : null),
+		};
+	}
+
+	_beginExport(credentials, exportConfig, csvOutputDir) {
+		this._active = true;
+		this._processedObjectCount = 0;
+		this._totalObjectCount = 0;
+		this._limitOutput = false;
+		this._tms = new TMSURLReader(credentials, exportConfig);
+		this._tms.rootURL = exportConfig.apiURL;
+		logger.info(`Exporting TMS API from URL ${this._tms.collectionURL}`);
+		this._csvFilePath = `${csvOutputDir}/objects.csv`;
+		this._csv = new CSVWriter(this._csvFilePath, exportConfig.outputHeaders, logger);
+		this._warningReporter = new WarningReporter(csvOutputDir, exportConfig);
+		this._exportMeta = new ExportMetadata(`${csvOutputDir}/meta.json`);
+		this._exportMeta.status = ExportStatus.INCOMPLETE;
+		this._exportMeta.processedObjects = 0;
+		this.started();
+
+		return this._countObjects(exportConfig);
+	}
+
+	_countObjects(exportConfig) {
+		if (exportConfig.debug &amp;&amp; exportConfig.debug.limit) {
+			this._limitOutput = true;
+			this._totalObjectCount = exportConfig.debug.limit;
+			this._exportMeta.totalObjects = this._totalObjectCount;
+			logger.info(`Limiting output to ${exportConfig.debug.limit} entires`);
+			logger.info(`Processing ${this._totalObjectCount} collection objects`);
+			return Promise.resolve();
+		} else {
+			return this._tms.getObjectCount().then((res) => {
+				this._totalObjectCount = res;
+				this._exportMeta.totalObjects = this._totalObjectCount;
+				logger.info(`Processing ${this._totalObjectCount} collection objects`);
+			}).catch((err) => {
+				logger.error(err);
+				this._exportMeta.status = ExportStatus.ERROR;
+				return Promise.reject(error);
+			});
+		}
+	}
+
+	_finishExport(config, status) {
+		this._active = false;
+		this._csv.end();
+		this._warningReporter.end();
+		this.completed();
+		logger.info('CSV export completed', { tag: 'tag:complete' });
+		this._exportMeta.status = status;
+	}
+
+	_processArtObject(credentials, exportConfig, csvOutputDir, artObject) {
+		const id = artObject.descriptionWithFields([exportConfig.primaryKey])[exportConfig.primaryKey];
+
+		const description = artObject.descriptionWithFields(exportConfig.fields);
+
+		if (id === 5189) {
+			debugger;
+		}
+
+		_.forOwn(description, (value, key) => {
+			description[key] = decodeUTF8InterpretedAsWin(value);
+		});
+		logger.debug(description);
+		this._csv.write(description);
+		this._warningReporter.appendFieldsForObject(id, artObject, description);
+		this._processedObjectCount += 1;
+		this._exportMeta.processedObjects = this._processedObjectCount;
+		this.progress();
+		if (this._processedObjectCount % 100 === 0) {
+			logger.info(`Processed ${this._processedObjectCount} of ${this._totalObjectCount} collection objects`);
+		}
+	}
+
+	_processTMSHelper(credentials, exportConfig, csvOutputDir) {
+		if (!this._active) {
+			return this._finishExport(exportConfig, ExportStatus.CANCELLED);
+		}
+
+		return this._tms.hasNext().then((hasNext) => {
+			if (hasNext) {
+				return this._tms.next();
+			} else {
+				this._finishExport(exportConfig, ExportStatus.COMPLETED);
+				return null;
+			}
+		}).catch((error) => {
+			logger.error(error);
+			logger.info('Error fetching collection data, finishing');
+			return this._finishExport(exportConfig, ExportStatus.ERROR);
+		}).then((artObject) => {
+			if (artObject !== null) {
+				this._processArtObject(credentials, exportConfig, csvOutputDir, artObject);
+				const reachedLimit = this._limitOutput &amp;&amp; this._processedObjectCount >= exportConfig.debug.limit;
+				if (reachedLimit) {
+					logger.info(`Reached ${this._processedObjectCount} collection objects processed, finishing`);
+					this._finishExport(exportConfig, ExportStatus.COMPLETED);
+				} else {
+					return this._processTMSHelper(credentials, exportConfig, csvOutputDir);
+				}
+			} else {
+				logger.info('Reached the end of the collection, finishing');
+			}
+		}).catch((error) => {
+			logger.warn(error);
+			logger.info('Error fetching collection object, skipping');
+			return this._processTMSHelper(credentials, exportConfig, csvOutputDir);
+		});
+	}
+
+	_processTMS(credentials, exportConfig, csvOutputDir) {
+		return this._beginExport(credentials, exportConfig, csvOutputDir).then(() => {
+			return this._processTMSHelper(credentials, exportConfig, csvOutputDir);
+		}).catch((error) => {
+			return this._finishExport(exportConfig, ExportStatus.ERROR);
+		});
+	}
+
+	/**
+	 * Stop the running TMS export
+	 */
+	cancelExport() {
+		logger.info('Cancelling CSV export', { tag: 'tag:cancel' });
+		this._active = false;
+		this._exportMeta.status = ExportStatus.CANCELLED;
+	}
+
+	/**
+	 * Begin the TMS export process
+	 * @param {TMSExporter~TMSExportConfiguration} configJSON - Export configuration
+	 * @fires UpdateEmitter#started
+	 * @fires UpdateEmitter#progress
+	 * @fires UpdateEmitter#completed
+	 * @return {Promise} - Resolves when completed
+	 */
+	exportCSV(configJSON) {
+		logger.info('Beginning CSV export', { tag: 'tag:start' });
+
+		const exportConfig = new ExportConfig(configJSON);
+
+		const outputFolderName = `csv_${new Date().getTime()}`;
+
+		const outputPath = path.join(exportConfig.outputDirectory, outputFolderName);
+
+		logger.info(`Reading TMS API from root URL ${exportConfig.apiURL}`);
+		logger.info(`Creating CSV output directory ${outputPath}`);
+		fs.mkdirSync(outputPath);
+
+		return this._processTMS(this._credentials, exportConfig, outputPath).then(() => this.status);
+	}
+};
+
+module.exports = TMSExporter;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Jun 23 2017 09:59:55 GMT+0200 (CEST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

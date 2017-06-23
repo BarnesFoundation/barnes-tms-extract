@@ -3,30 +3,89 @@ The Barnes Foundation Collection Spelunker exports data from a TMS server and im
 
 ## Requirements
 
-One or two scripts require Python to run. Before running `npm install`, make sure
-that you have Python 2.7 installed, along with pip and conda.
+One or two scripts require Python to run. Before continuing with setup, be sure to install Python 2.7. On Ubuntu run:
 
-The image processor requires go-ifff. Installation instructions can be found at https://github.com/thisisaaronland/go-iiif
+```
+sudo apt-get install python-setuptools
+```
 
-If you plan on using the encrypted keys contained in this repository, then you will need to unlock the repo using git-crypt. Install git-crypt as appropriate for your system, then contact the repository admins for the key needed to unlock the repository.
+Next, update pip and add the AWS command line interface tools for python
+
+```
+sudo pip install --upgrade pip
+sudo pip install awscli --upgrade
+```
+
+Finally, install miniconda, a small package and environment manager for Python.
+
+```
+wget -O ~/miniconda.sh https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+bash ~/miniconda.sh -b -p $HOME/.miniconda
+rm -rf ~/miniconda.sh
+```
+
+Processing and tiling the images from TMS requires go-iiif, a discrete Go implementation of the IIIF Image API. Installation steps are platform specific and can be found at https://github.com/thisisaaronland/go-iiif
+
+Parts of the repository contain sensitive information and so are stored in version control as encrypted files. These files can be unlocked and viewed using git-crypt, a tool that facilitates storing encrypted files using git. If you want to see the encrypted files in this repository, then you will need first to install git-crypt. Installation steps are platform specific. On Ubuntu you can run:
+
+```
+git clone git@github.com:AGWA/git-crypt.git /your/path/to/git-crypt
+cd /your/path/to/git-crypt
+make
+sudo make install
+```
+
+With git-crypt installed, the repository can be unlocked using the symmetric key. Contact the repository admins to get this key, then from the repository root run:
+
+```
+git-crypt unlock /path/to/key
+```
+
+Finally, the Collection Export tool is written in node, so ensure that node and npm are installed. The easiest way to install these tools is with nvm, which is a version manager for node and npm that makes it easy to switch between different versions of node.
+
+```
+# install NVM
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# install Node v6.2.2
+nvm install v6.2.2
+
+# reload bash
+source $HOME/.bashrc
+```
+
+To be able to run the project microservices, be sure to install pm2, a node.js process manager.
+
+```
+npm install -g pm2
+```
+
+The Collection Export code is documented inline using jsdoc. The jsdoc and jsdoc-to-markdown tools must be installed globally to turn these code comments into documentation. To install, run:
+
+```
+npm install -g jsdoc
+npm install -g jsdoc-to-markdown
+```
 
 ## Setup
 
-This repository is dependent on a submodule called [go-iiif](https://github.com/thisisaaronland/go-iiif). To initialize it, run `git submodule init`. 
+This repository is dependent on a submodule called [go-iiif](https://github.com/thisisaaronland/go-iiif). To initialize it, run `git submodule init`.
 
-Run `git submodule init` and `npm install` to install Node dependencies and to setup the python environment.
+To build the `go-iiif` submodule, run:
+```
+cd src/image-processing/go-iiif
+make bin
+```
+
+With the submodule loaded, run `npm install` to install Node dependencies and to setup the python environment.
 
 This repository contains encrypted keys for connecting to the Barnes TMS as well as the Amazon s3 instance used to upload tiled images. If you plan to use the Barnes credentials for TMS and s3, then you will need to unlock the repository using git-crypt. You will need to contact the repository admins for a copy of the key needed to unlock the repository. With that key available somewhere on the machine, type:
 
 `git-crypt unlock path/to/your/key`
 
 to unlock the repository. This should decrypt the files `config/credentials.json` and `config/iiif.json`.
-
-You will also need to build the `go-iiif` submodule. To this, run
-```bash
-cd src/image-processing/go-iiif
-make bin
-```
 
 ## Run
 
@@ -73,10 +132,16 @@ By default, access to the admin dashboard is protected by a simple username-pass
 
 ## JSDoc Code Documentation
 
-All of the backend code is documented using JSDoc. To generate documentation, simply run
+All of the backend code is documented using JSDoc. To generate documentation, first ensure that jsdoc and jsdoc-to-markdown are installed globally. Then run
 
 ```
 npm run docs
 ```
 
-which should build the documentation in `docs`. View `docs/collection-website/0.0.1/index.html` in any browser.
+which should build the documentation in `docs`. View `docs/collection-website/0.0.1/index.html` in any browser. Documentation can also be generated in markdown format:
+
+```
+npm run docs-md
+```
+
+which will generate the file `docs.md`

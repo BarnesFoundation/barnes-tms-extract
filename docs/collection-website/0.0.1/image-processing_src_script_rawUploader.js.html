@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>image-processing/src/script/rawUploader.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ArtObject.html">ArtObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ArtObject.html#descriptionWithFields">descriptionWithFields</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ColorProcessAPI.html">ColorProcessAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ColorProcessAPI.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CSVPluginAPI.html">CSVPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVPluginAPI.html#list">list</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CSVWriter.html">CSVWriter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVWriter.html#end">end</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVWriter.html#write">write</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESCollection.html">ESCollection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_analyzedData">_analyzedData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_deleteCollectionIndex">_deleteCollectionIndex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_isIndexReadyForSync">_isIndexReadyForSync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_updateMappings">_updateMappings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#description">description</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#initialize">initialize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#validateForCSV">validateForCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESPluginAPI.html">ESPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#desc">desc</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#sync">sync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#validate">validate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#validateAndResync">validateAndResync</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ExportConfig.html">ExportConfig</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldHasAlias">fieldHasAlias</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsEnumerated">fieldIsEnumerated</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsMask">fieldIsMask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsRequired">fieldIsRequired</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldMaskSelector">fieldMaskSelector</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ExportMetadata.html">ExportMetadata</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportMetadata.html#description">description</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ImagesPluginAPI.html">ImagesPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImagesPluginAPI.html#tile">tile</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ImageUploader.html">ImageUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImageUploader.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImageUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI-SenecaPluginAPI.html">SenecaPluginAPI</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="RawUploader.html">RawUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="RawUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TileUploader.html">TileUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TileUploader.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TileUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSExporter.html">TMSExporter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSExporter.html#cancelExport">cancelExport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSExporter.html#exportCSV">exportCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSFileReader.html">TMSFileReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSFileReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSFileReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSURLReader.html">TMSURLReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#getObjectCount">getObjectCount</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WarningReporter.html">WarningReporter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WarningReporter.html#appendFieldsForObject">appendFieldsForObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WarningReporter.html#end">end</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WebsocketUpdater.html">WebsocketUpdater</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_csvUtil.html">util/csvUtil</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.csvCompleted">csvCompleted</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.csvForEach">csvForEach</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.diffCSV">diffCSV</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.doCSVKeysMatch">doCSVKeysMatch</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.getLastCompletedCSV">getLastCompletedCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI.html#.makeAPI">makeAPI</a></span></li><li class="nav-heading">Events</li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:completed">completed</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:progress">progress</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:started">started</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="WebsocketUpdater.html#event:status">status</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="TMSReader.html">TMSReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="UpdateEmitter.html">UpdateEmitter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#completed">completed</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#progress">progress</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#started">started</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">image-processing/src/script/rawUploader.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const path = require('path');
+const config = require('config');
+const eachSeries = require('async/eachSeries');
+const s3 = require('s3');
+const csv = require('fast-csv');
+const fs = require('fs');
+const https = require('https');
+
+const UpdateEmitter = require('../../../util/updateEmitter.js');
+const logger = require('../script/imageLogger.js');
+const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
+const fetchAvailableImages = require('./tmsImageFetch.js');
+const credentials = config.Credentials.aws;
+
+/**
+ * Uploads raw images (tifs) to Amazon s3 from TMS
+ * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
+ * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
+ *  The script will tile and upload images using the most recent complete export in the directory
+ */
+class RawUploader extends UpdateEmitter {
+	constructor(csvDir) {
+		super();
+		this._s3Client = s3.createClient({
+			s3Options: {
+				accessKeyId: credentials.awsAccessKeyId,
+				secretAccessKey: credentials.awsSecretAccessKey,
+				region: credentials.awsRegion
+			}
+		});
+		this._csvDir = csvDir;
+		this._rawImages = null;
+		this._numImagesToUpload = 0;
+		this._currentStep = 'Not started';
+		this._isRunning = false;
+		this._uploadIndex = 0;
+	}
+
+	init() {
+		this._isRunning = true;
+		this._currentStep = "Fetching image listing on TMS.";
+		this.started();
+		return fetchAvailableImages().then((outputPath) => {
+			const resolvedPath = path.resolve(outputPath);
+			this._availableImages = require(resolvedPath).images;
+			this._currentStep = "Fetching image listing on S3.";
+			this.progress();
+			return this._fetchRawImages();
+		});
+	}
+
+	/**
+	 * @typedef {Object} RawUploaderStatus
+	 * @description Current status of the Raw Uploader script
+	 * @name RawUploader~RawUploaderStatus
+	 * @property {string} type - Always 'rawUploader'
+	 * @property {boolean} isRunning - Whether or not the script is running
+	 * @property {string} currentStep - Current step in the tiling process
+	 * @property {number} numImagesUploaded - Number of images tiled and uploaded
+	 * @property {number} totalImagesToUpload - Number of images to tile and upload
+	*/ 
+
+	/**
+	 * @memberof TileUploader
+	 * @member {TileUploader~TileUploaderStatus}
+	 */
+
+	get status() {
+		return {
+			type: 'rawUploader',
+			isRunning: this._isRunning,
+			currentStep: this._currentStep,
+			numImagesUploaded: this._rawImages ? this._rawImages.length : 0,
+			totalImagesToUpload: this._numImagesToUpload,
+			uploadIndex: this._uploadIndex
+		}
+	}
+
+	/**
+	 * Begin the process of uploading raw images to S3
+	 */
+	process() {
+		return new Promise((resolve) => {
+			this._currentStep = "Determining which images need to be uploaded to S3.";
+			this.progress();
+			const lastCSV = getLastCompletedCSV(this._csvDir);
+			const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
+			const imagesToUpload = [];
+			csvForEach(csvPath, (row) => {
+				const rawImg = this._rawImageNeedsUpload(`${row.invno}.tif`);
+				if (rawImg) {
+					imagesToUpload.push(rawImg);
+				}
+			},
+			() => {
+				this._numImagesToUpload = imagesToUpload.length;
+				this.progress();
+				let index = 1;
+				eachSeries(imagesToUpload, (image, cb) => {
+					this._currentStep = `Uploading image ${image.name}.`;
+					this._uploadIndex = index;
+					this.progress();
+					this._uploadRaw(image).then((err) => {
+						if (err) {
+							logger.error(err);
+						}
+						index += 1;
+						return this._updateRawList(image);
+					}).then(cb);
+				}, () => {
+					logger.info('Finished uploading all images.');
+					this._currentStep = `Finished uploading all images.`;
+					this._isRunning = false;
+					this.completed();
+					resolve();
+				});
+			});
+		});
+	}
+
+	_fetchRawImages() {
+		logger.info('Starting to fetch raw images uploaded.');
+		this._rawImages = [];
+		return new Promise((resolve) => {
+			this._s3Client.downloadFile({
+				s3Params: {
+					Bucket: credentials.awsBucket,
+					Key: 'raw.csv',
+				},
+				localFile: path.resolve(__dirname, '../../raw.csv'),
+			})
+			.on('error', (err) => {
+				if (err.message.includes('404')) {
+					logger.info('Can\'t fetch list of raw images--hasn\'t been created yet.');
+					this._rawImages = [];
+					resolve();
+				} else {
+					throw err;
+				}
+			})
+			.on('end', () => {
+				logger.info('raw.csv has been downloaded--loading into memory.');
+				csvForEach(path.resolve(__dirname, '../../raw.csv'), (data) => {
+					this._rawImages.push({ name: data.name, size: data.size, modified: data.modified });
+				}, () => {
+					resolve();
+				});
+			});
+		});
+	}
+
+	_rawImageNeedsUpload(imgName) {
+		logger.info(`Checking if raw image ${imgName} needs upload.`);
+		const s3Found = this._rawImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
+		const tmsFound = this._availableImages.find(element => element.name.toLowerCase() === imgName.toLowerCase());
+
+		if (tmsFound) {
+			if (s3Found &amp;&amp; (s3Found.size !== tmsFound.size || s3Found.modified !== tmsFound.modified)) {
+				logger.info(`${imgName} is available on TMS, has already been uploaded, but has changed.`);
+				return tmsFound;
+			} else if (!s3Found) {
+				logger.info(`${imgName} is available on TMS, but never has been uploaded.`);
+				return tmsFound;
+			}
+			logger.info(`${imgName} is available on TMS, has been uploaded, and has not changed.`);
+			return false;
+		}
+		logger.info(`${imgName} is not available on TMS.`);
+		return false;
+	}
+
+	_uploadRaw(image) {
+		return new Promise((resolve) => {
+			const file = fs.createWriteStream(path.resolve(__dirname, `./${image.name}`));
+			https.get(`${credentials.barnesImagesUrl}${image.name}`, (response) => {
+				response.pipe(file);
+				file.on('finish', () => {
+					logger.info(`Uploading raw image ${image.name}.`);
+					this._s3Client.uploadFile({
+						s3Params: {
+							Bucket: credentials.awsBucket,
+							Key: `raw/${image.name}`,
+						},
+						localFile: path.resolve(__dirname, `./${image.name}`),
+					})
+					.on('err', (err) => {
+						resolve(err);
+					})
+					.on('end', () => {
+						fs.unlink(path.resolve(__dirname, `./${image.name}`), () => {
+							resolve();
+						});
+					});
+				});
+			});
+		});
+	}
+
+	_updateRawList(image) {
+		logger.info('uploading raw.csv to S3 bucket.');
+		const csvStream = csv.createWriteStream({ headers: true });
+		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../raw.csv'));
+
+		return new Promise((resolve) => {
+			writableStream.on('finish', () => {
+				this._s3Client.uploadFile({
+					localFile: path.resolve(__dirname, '../../raw.csv'),
+					s3Params: {
+						Bucket: credentials.awsBucket,
+						Key: 'raw.csv',
+					},
+				})
+				.on('end', () => {
+					resolve();
+				});
+			});
+
+			csvStream.pipe(writableStream);
+			this._rawImages.push(image);
+			this._rawImages.forEach((img) => {
+				csvStream.write(img);
+			});
+			csvStream.end();
+		});
+	}
+
+}
+
+module.exports = RawUploader;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Jun 23 2017 09:59:55 GMT+0200 (CEST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

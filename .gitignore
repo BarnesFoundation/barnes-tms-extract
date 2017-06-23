@@ -1,7 +1,6 @@
 barnes-crypt-key
 npm-debug.log*
 node_modules/
-docs/
 highlights/
 highlights.zip
 src/cooperhewitt-swatchbook/

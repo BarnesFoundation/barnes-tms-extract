@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>tms_csv/src/script/exportMetadata.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ArtObject.html">ArtObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ArtObject.html#descriptionWithFields">descriptionWithFields</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ColorProcessAPI.html">ColorProcessAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ColorProcessAPI.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CSVPluginAPI.html">CSVPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVPluginAPI.html#list">list</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="CSVWriter.html">CSVWriter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVWriter.html#end">end</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="CSVWriter.html#write">write</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESCollection.html">ESCollection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_analyzedData">_analyzedData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_deleteCollectionIndex">_deleteCollectionIndex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_isIndexReadyForSync">_isIndexReadyForSync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#_updateMappings">_updateMappings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#clearCollectionObjects">clearCollectionObjects</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#description">description</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#initialize">initialize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#syncESToCSV">syncESToCSV</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESCollection.html#validateForCSV">validateForCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESCollection.ESCollectionException.html">ESCollectionException</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ESPluginAPI.html">ESPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#desc">desc</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#search">search</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#sync">sync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#validate">validate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ESPluginAPI.html#validateAndResync">validateAndResync</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ExportConfig.html">ExportConfig</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldHasAlias">fieldHasAlias</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsEnumerated">fieldIsEnumerated</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsMask">fieldIsMask</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldIsRequired">fieldIsRequired</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportConfig.html#fieldMaskSelector">fieldMaskSelector</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ExportMetadata.html">ExportMetadata</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExportMetadata.html#description">description</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ImagesPluginAPI.html">ImagesPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImagesPluginAPI.html#tile">tile</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ImageUploader.html">ImageUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImageUploader.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ImageUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI-SenecaPluginAPI.html">SenecaPluginAPI</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="RawUploader.html">RawUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="RawUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TileUploader.html">TileUploader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TileUploader.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TileUploader.html#process">process</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSExporter.html">TMSExporter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSExporter.html#cancelExport">cancelExport</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSExporter.html#exportCSV">exportCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSFileReader.html">TMSFileReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSFileReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSFileReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TMSURLReader.html">TMSURLReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#getObjectCount">getObjectCount</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSURLReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WarningReporter.html">WarningReporter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WarningReporter.html#appendFieldsForObject">appendFieldsForObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="WarningReporter.html#end">end</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="WebsocketUpdater.html">WebsocketUpdater</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_csvUtil.html">util/csvUtil</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.csvCompleted">csvCompleted</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.csvForEach">csvForEach</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.diffCSV">diffCSV</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.doCSVKeysMatch">doCSVKeysMatch</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_csvUtil.html#.getLastCompletedCSV">getLastCompletedCSV</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI.html">util/senecaPluginAPI</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-util_senecaPluginAPI.html#.makeAPI">makeAPI</a></span></li><li class="nav-heading">Events</li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:completed">completed</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:progress">progress</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="UpdateEmitter.html#event:started">started</a></span></li><li class="nav-heading"><span class="nav-item-type type-event">E</span><span class="nav-item-name"><a href="WebsocketUpdater.html#event:status">status</a></span></li><li class="nav-heading">Interfaces</li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="TMSReader.html">TMSReader</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSReader.html#hasNext">hasNext</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TMSReader.html#next">next</a></span></li><li class="nav-heading"><span class="nav-item-type type-interface">I</span><span class="nav-item-name"><a href="UpdateEmitter.html">UpdateEmitter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#completed">completed</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#progress">progress</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UpdateEmitter.html#started">started</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">tms_csv/src/script/exportMetadata.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const fs = require('fs');
+
+/**
+ * @alias ExportMetadata~ExportStatus
+ * @enum {string}
+ */
+const ExportStatus = Object.freeze({
+	INCOMPLETE: 'INCOMPLETE',
+	CANCELLED: 'CANCELLED',
+	COMPLETED: 'COMPLETED',
+	ERROR: 'ERROR',
+});
+
+/**
+ * Synchronizes the state of a TMS export process with a `meta.json` file.
+ * @param {string} jsonExportPath - Path where the `meta.json` file will be created
+ * @throws Error if the file cannot be created for some reason
+ */
+class ExportMetadata {
+	constructor(jsonExportPath) {
+		this._outputFilePath = jsonExportPath;
+		const fd = fs.openSync(this._outputFilePath, 'w+');
+		fs.closeSync(fd);
+		fs.accessSync(this._outputFilePath, 'W_OK');
+		this._status = ExportStatus.INCOMPLETE;
+		this._createdAt = `${new Date()}`;
+		this._updateOutput();
+	}
+
+	/** @property {ExportMetadata~ExportStatus} status */
+	get status() {
+		return this._status;
+	}
+
+	set status(s) {
+		if (this._status !== s) {
+			this._status = s;
+			this._updateOutput();
+		}
+	}
+
+	/** @property {number} createdAt- UNIX timestamp for the start of the TMS export process */
+	get createdAt() {
+		return this._createdAt;
+	}
+
+	/** @property {number} processedObjects - Number of objects that have been exported */
+	get processedObjects() {
+		return this._processedObjects;
+	}
+
+	set processedObjects(objects) {
+		this._processedObjects = objects;
+		this._updateOutput();
+	}
+
+	/** @property {number} totalObjects - Number of objects that will be exported */
+	get totalObjects() {
+		return this._totalObjects;
+	}
+
+	set totalObjects(objects) {
+		this._totalObjects = objects;
+		this._updateOutput();
+	}
+
+	_updateOutput() {
+		fs.writeFileSync(this._outputFilePath, this.description(), 'utf8');
+	}
+
+	/**
+	 * Structured description of the current status of the TMS export
+	 * @return {object} Structured status
+	 */
+	description() {
+		const desc = {};
+		desc.status = this.status;
+		desc.createdAt = this.createdAt;
+		desc.processedObjects = this.processedObjects;
+		desc.totalObjects = this.totalObjects;
+		return JSON.stringify(desc);
+	}
+}
+
+module.exports = {
+	ExportMetadata,
+	ExportStatus,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Jun 23 2017 09:59:55 GMT+0200 (CEST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
