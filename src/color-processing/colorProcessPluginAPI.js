@@ -188,7 +188,7 @@ function processColorForImages(images, progressCb, esClient) {
 					});
 					res.on('end', () => {
 						logger.info("Received data for image " + image.Key);
-						handleImageJSONData(d, image, esClient, csv).then(() => {
+						handleImageJSONData(d, image, esClient).then(() => {
 							progressCb("Finished handling data for image " + image.Key);
 							next();
 						}).catch((err) => {
@@ -205,7 +205,7 @@ function processColorForImages(images, progressCb, esClient) {
 	});
 }
 
-function handleImageJSONData(d, image, esClient, ) {
+function handleImageJSONData(d, image, esClient) {
 	let imageData;
 
 	try {
