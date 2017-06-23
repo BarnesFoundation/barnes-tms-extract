@@ -1,6 +1,14 @@
 # Collection Spelunker
 The Barnes Foundation Collection Spelunker exports data from a TMS server and imports that data into an Elasticsearch index. The Spelunker will also pull images from TMS, tile those images, and then upload them to Amazon s3 for later viewing. These processes can be initiated by the user or configured to run automatically as part of a nightly cron. A dashboard reports the state of all running microservices.
 
+## Passwords
+
+Usernames and passwords are stored, encrypted, in this repository. After decrypting, they can be found in the `config` directory.
+
+- config/credentials.json -- Access keys for s2, AWS, Kibana and TMS
+- config/esapi.htpasswd -- Username and password for accessing the elasticsearch API wrapper
+- config/users.htpasswd -- Username and password for viewing the admin dashboard
+
 ## Requirements
 
 One or two scripts require Python to run. Before continuing with setup, be sure to install Python 2.7. On Ubuntu run:
@@ -126,9 +134,53 @@ PATH=$PATH:/home/ubuntu/.nvm/versions/node/v6.2.2/bin
 20 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/saveImageKeysToEs.js
 ```
 
-## Dashboard password protection
+## Elasticsearch
 
-By default, access to the admin dashboard is protected by a simple username-password scheme. The username and password are stored in `config/users.htpasswd`, which is encrypted using git-crypt. Decrypt this file and edit it if you want to add your own username and password.
+The file located at `config/mapping.json` details the structure of the Elasticsearch index. The index is named `collection` and contains two object types, `meta` and `object`. The `meta` type object is a singleton, and contains the following fields:
+
+- hasImportedCSV -- Boolean, whether or not the elasticsearch index has ever successfully imported a CSV file
+- lastCSVImportTimestamp -- timestamp matching the name of the TMS export CSV last imported
+
+The `object` type describes a piece in the collection, and includes the following fields:
+
+- bibliography
+- classification -- eg Painting, Sculpture
+- copyright -- Unused, see `objRightsTypeId`
+- culture
+- description
+- dimensions -- Stored as plain text, so it's not possible to search for pieces with a specific width
+- exhHistory -- Exhibition history
+- highlight -- Whether or not the piece is currently highlighted
+- id -- Matches the TMS id, and is also the value of the _id field for this document
+- invno -- The inventory number of this collection object
+- locations -- Where in the Barnes this piece is stored
+- longDescription
+- medium
+- objRightsTypeId -- Enumerated constant, indicating the object rights bin into which this object falls
+- onView -- Whether or not the object is currently on view
+- people -- The creators of the work
+- period -- Estimated date. Stored as text and not used for sorting
+- room
+- shortDescription
+- provenance
+- title
+- wall -- north, south, east or west
+- visualDescription
+- imageSecret
+- imageOriginalSecret
+
+If at any time the Elasticsearch index becomes corrupted and needs to be rebuild, it can be reconstructed from a TMS export and by running a few analysis scripts.
+
+- run `src/scripts/rebuildES.js --csv csv_***`, replacing csv_*** with the name of the CSV to rebuild from
+- run `pm2 start ecosystem.config.js` if the COLOR_PROCESSING microservice is not running
+- run `src/scripts/nightlyColorProcess.js` to run Cooper-Hewitt color processing on all of the images
+- run `src/scripts/saveImageKeysToEs.js` to store all of the image keys in Elasticsearch
+
+## Kibana
+
+We are using Elasticcloud to provide a Kibana dashboard, which can be used to view and explore data in the Elasticsearch index. The web address, username and password for that dashboard are not needed by any scripts in this repository, and so are not stored here.
+
+In order to load the Kibana dashboard, it is necessary to click on the Management tab, and then to use `collection` as the index pattern, since this is the name of the index holding the collection objects.
 
 ## JSDoc Code Documentation
 
