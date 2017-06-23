@@ -284,8 +284,28 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolves to the ES6 Set containing all ids
 	 */
 	_getAllObjectIds() {
+		logger.info("Fetching object IDs from Elasticsearch");
 		return new Promise((resolve, reject) => {
 			const allEsIds = new Set();
+
+			const getMoreUntilDone = (function(error, response) {
+				if (error) {
+					reject(error);
+				} else {
+					response.hits.hits.forEach((hit) => {
+						allEsIds.add(hit._source.id);
+					});
+					logger.info(`Fetched ${allEsIds.size} ids so far`);
+					if (response.hits.total > allEsIds.size) {
+						this._client.scroll({
+							scrollId: response._scroll_id,
+							scroll: '30s'
+						}, getMoreUntilDone);
+					} else {
+						resolve(allEsIds);
+					}
+				}
+			}).bind(this);
 
 			this._client.search({
 				index: 'collection',
@@ -294,23 +314,7 @@ class ESCollection extends UpdateEmitter {
 				_source: ['id'],
 				sort: '_doc',
 				size: 250
-			}, (function getMoreUntilDone(error, response) {
-				if (error) {
-					reject(error);
-				} else {
-					response.hits.hits.forEach((hit) => {
-						allEsIds.add(hit._source.id);
-					});
-					if (response.hits.total > allEsIds.size) {
-						this._client.scroll({
-							scrollId: response._scroll_id,
-							scroll: '30s'
-						}, getMoreUntilDone.bind(this));
-					} else {
-						resolve(allEsIds);
-					}
-				}
-			}).bind(this));
+			}, getMoreUntilDone);
 		});
 	}
 
@@ -368,6 +372,7 @@ class ESCollection extends UpdateEmitter {
 	_syncESWithCSV(csvExport) {
 		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
 		let processed = 0;
+		logger.info("Beginning CSV sync");
 		return new Promise((resolve, reject) => {
 			const todos = [];
 			try {
@@ -684,9 +689,11 @@ class ESCollection extends UpdateEmitter {
 		this.started(ESCollectionStatus.VALIDATING, `Validating index to match ${csvExport}`);
 		return this._getAllObjectIds().then((ids) => {
 			allEsIds = ids;
+			this.progress(`Fetched ${allEsIds.size} from Elasticsearch`);
 			return this._getAllCSVIds(csvExport);
 		}).then((ids) => {
 			allCSVIds = ids;
+			this.progress(`Fetched ${allCSVIds.size} from CSV export`);
 			return _.isEqual(allEsIds, allCSVIds);
 		}).then((idsAreEqual) => {
 			if (!idsAreEqual) {
