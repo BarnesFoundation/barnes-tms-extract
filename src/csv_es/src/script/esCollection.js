@@ -442,8 +442,8 @@ class ESCollection extends UpdateEmitter {
 
 		const adds = new Promise((resolve, reject) => {
 			eachLimit(diffJson.added, rateLimit, (added, cb) => {
-				this._createDocumentWithData(added).then(cb);
-			}, () => resolve())
+				this._createDocumentWithData(added).then(() => cb());
+			}, () => { logger.info("Finished all adds"); resolve()})
 		});
 
 		const changes = new Promise((resolve, reject) => {
@@ -451,17 +451,18 @@ class ESCollection extends UpdateEmitter {
 				const id = parseInt(changed.key[0]);
 				const todos = [];
 				_.forEach(changed.fields, (v, k) => {
+					logger.info("Updating document: " + id);
 					todos.push(this._updateDocumentWithData(id, { k: v.to }));
 				});
-				Promise.all(todos).then(cb);
-			}, () => resolve())
+				Promise.all(todos).then(() => {cb()} );
+			}, () => { logger.info("Finished all changes"); resolve(); })
 		});
 
 		const removes = new Promise((resolve, reject) => {
-			eachLimit(diffJson.removed, (removed, cb) => {
+			eachLimit(diffJson.removed, rateLimit, (removed, cb) => {
 				const id = parseInt(removed.id);
-				this._deleteDocumentWithId(id).then(cb);
-			}, () => resolve())
+				this._deleteDocumentWithId(id).then(() => cb());
+			}, () => { logger.info("Finished all removes"); resolve(); })
 		});
 
 		return Promise.all([adds, changes, removes]);
