@@ -73,7 +73,12 @@
 		"object": {
 			"dynamic": false,
 			"properties": {
-				"bibliography": { "type": "text" },
+				"bibliography": {
+					"type": "text",
+					"fields": {
+						"keyword": { "type": "keyword" }
+					}
+				},
 				"classification": { "type": "keyword" },
 				"color": {
 					"dynamic": false,
