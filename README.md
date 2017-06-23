@@ -146,8 +146,8 @@ The `object` type describes a piece in the collection, and includes the followin
 - bibliography
 - classification -- eg Painting, Sculpture
 - copyright -- Unused, see `objRightsTypeId`
-- culture
-- description
+- culture -- The culture that is the creator of the work, used in place of people sometimes
+- description -- Unused, but left in temporarily until short and long descriptions are filled in
 - dimensions -- Stored as plain text, so it's not possible to search for pieces with a specific width
 - exhHistory -- Exhibition history
 - highlight -- Whether or not the piece is currently highlighted
@@ -166,8 +166,8 @@ The `object` type describes a piece in the collection, and includes the followin
 - title
 - wall -- north, south, east or west
 - visualDescription
-- imageSecret
-- imageOriginalSecret
+- imageSecret -- Uses the [Flickr API](https://www.flickr.com/services/api/misc.urls.html) standard, a key for all smaller than copyright size images
+- imageOriginalSecret - Uses the [Flickr API](https://www.flickr.com/services/api/misc.urls.html) standard, a key for the larger image size (4096 px)
 
 If at any time the Elasticsearch index becomes corrupted and needs to be rebuild, it can be reconstructed from a TMS export and by running a few analysis scripts.
 
