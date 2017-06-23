@@ -47,8 +47,6 @@ const bucketName = credentials.awsBucket;
 
 const awsFolderPath = credentials.awsFolderPath;
 
-const csvOutput = './colors.csv';
-
 const ColorProcessAPIStatus = Object.freeze({
 	READY: "READY",
 	RUNNING: "RUNNING"
@@ -165,7 +163,6 @@ class ColorProcessAPI extends SenecaPluginAPI {
 }
 
 function processColorForImages(images, progressCb, esClient) {
-	let csv = null, warn = null;
 	return new Promise((resolve, reject) => {
 		eachLimit(images, parallelRequests, (image, next) => {
 			if (image.Key.indexOf('_b.') === -1) {
@@ -191,7 +188,7 @@ function processColorForImages(images, progressCb, esClient) {
 					});
 					res.on('end', () => {
 						logger.info("Received data for image " + image.Key);
-						handleImageJSONData(d, image, esClient).then(() => {
+						handleImageJSONData(d, image, esClient, csv).then(() => {
 							progressCb("Finished handling data for image " + image.Key);
 							next();
 						}).catch((err) => {
@@ -204,13 +201,11 @@ function processColorForImages(images, progressCb, esClient) {
 		}, (err) => {
 			if (err) console.dir(err);
 			resolve();
-			if (csv) csv.end();
-			if (warn) warn.end();
 		});
 	});
 }
 
-function handleImageJSONData(d, image, esClient) {
+function handleImageJSONData(d, image, esClient, ) {
 	let imageData;
 
 	try {
@@ -224,13 +219,9 @@ function handleImageJSONData(d, image, esClient) {
 	if (f === null) {
 		logger.warn("Got a weird result for " + image.Key);
 		logger.warn(d);
-		if (warn === null) warn = new CSVWriter("./warnings.csv", ["message", "key"]);
-		warn.write({message: d, key: image.Key});
 		return new Promise.resolve();
 	} else {
 		const fields = Object.assign({}, f, { key: image.Key });
-		if (csv === null) csv = new CSVWriter(csvOutput, _.keys(fields));
-		csv.write(fields);
 		const tmsId = path.basename(image.Key).split('_')[0];
 		return writeDataToES(tmsId, f, esClient);
 	}
