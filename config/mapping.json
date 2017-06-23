@@ -76,7 +76,7 @@
 				"bibliography": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "keyword" }
+						"keyword": { "type": "keyword", "store": true }
 					}
 				},
 				"classification": { "type": "keyword" },
