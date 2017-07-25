@@ -4,18 +4,46 @@ The Barnes Foundation Collection Spelunker exports data from a TMS server and im
 ## Passwords
 
 Usernames and passwords are stored, encrypted, in this repository. After decrypting, they can be found in the `config` directory.
+Parts of the repository contain sensitive information and so are stored in version control as encrypted files:
 
 - config/credentials.json -- Access keys for s2, AWS, Kibana and TMS
 - config/esapi.htpasswd -- Username and password for accessing the elasticsearch API wrapper
 - config/users.htpasswd -- Username and password for viewing the admin dashboard
 
+These files can be unlocked and viewed using [git-crypt](https://www.agwa.name/projects/git-crypt/), a tool that facilitates storing encrypted files using git. If you want to see the encrypted files in this repository, then you will need first to install git-crypt. Installation steps are platform specific.
+
+##### On Ubuntu
+```
+git clone git@github.com:AGWA/git-crypt.git /your/path/to/git-crypt
+cd /your/path/to/git-crypt
+make
+sudo make install
+```
+
+##### On a Mac, using Homebrew
+```
+brew install git-crypt
+```
+
+With git-crypt installed, the repository can be unlocked using the symmetric key. Contact the repository admins to get this key. Then, from the repository root run:
+
+```
+git-crypt unlock /path/to/key
+```
+
 ## Requirements
 
-One or two scripts require Python to run. Before continuing with setup, be sure to install Python 2.7. On Ubuntu run:
+One or two scripts require Python to run. Before continuing with setup, be sure to install Python 2.7.
+
+##### On Ubuntu:
 
 ```
 sudo apt-get install python-setuptools
 ```
+
+##### On a Mac:
+
+
 
 Next, update pip and add the AWS command line interface tools for python
 
@@ -26,28 +54,19 @@ sudo pip install awscli --upgrade
 
 Finally, install miniconda, a small package and environment manager for Python.
 
+##### On Ubuntu:
 ```
 wget -O ~/miniconda.sh https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
 bash ~/miniconda.sh -b -p $HOME/.miniconda
 rm -rf ~/miniconda.sh
 ```
 
+##### On a Mac:
+Follow the instructions [here](https://conda.io/docs/install/quick.html#id4).
+
 Processing and tiling the images from TMS requires go-iiif, a discrete Go implementation of the IIIF Image API. Installation steps are platform specific and can be found at https://github.com/thisisaaronland/go-iiif
 
-Parts of the repository contain sensitive information and so are stored in version control as encrypted files. These files can be unlocked and viewed using git-crypt, a tool that facilitates storing encrypted files using git. If you want to see the encrypted files in this repository, then you will need first to install git-crypt. Installation steps are platform specific. On Ubuntu you can run:
 
-```
-git clone git@github.com:AGWA/git-crypt.git /your/path/to/git-crypt
-cd /your/path/to/git-crypt
-make
-sudo make install
-```
-
-With git-crypt installed, the repository can be unlocked using the symmetric key. Contact the repository admins to get this key, then from the repository root run:
-
-```
-git-crypt unlock /path/to/key
-```
 
 Finally, the Collection Export tool is written in node, so ensure that node and npm are installed. The easiest way to install these tools is with nvm, which is a version manager for node and npm that makes it easy to switch between different versions of node.
 
