@@ -85,13 +85,11 @@ source $HOME/.bashrc
 ```
 
 To be able to run the project microservices, be sure to install pm2, a node.js process manager.
-
 ```
 npm install -g pm2
 ```
 
 The Collection Export code is documented inline using jsdoc. The jsdoc and jsdoc-to-markdown tools must be installed globally to turn these code comments into documentation. To install, run:
-
 ```
 npm install -g jsdoc
 npm install -g jsdoc-to-markdown
@@ -99,15 +97,24 @@ npm install -g jsdoc-to-markdown
 
 ## Setup
 
-This repository is dependent on a submodule called [go-iiif](https://github.com/thisisaaronland/go-iiif). To initialize it, run `git submodule init`.
+This repository is dependent on a submodule called [go-iiif](https://github.com/thisisaaronland/go-iiif). To initialize it, run:
+```
+git submodule init
+git submodule update
+```
 
-To build the `go-iiif` submodule, run:
+To build the `go-iiif` submodule, you'll first need to have libvips installed:
+```
+brew install vips
+```
+
+Then build the submodule:
 ```
 cd src/image-processing/go-iiif
 make bin
 ```
 
-With the submodule loaded, run `npm install` to install Node dependencies and to setup the python environment.
+With the submodule loaded, run `sudo npm install` to install Node dependencies and to setup the python environment.
 
 This repository contains encrypted keys for connecting to the Barnes TMS as well as the Amazon s3 instance used to upload tiled images. If you plan to use the Barnes credentials for TMS and s3, then you will need to unlock the repository using git-crypt. You will need to contact the repository admins for a copy of the key needed to unlock the repository. With that key available somewhere on the machine, type:
 
@@ -119,7 +126,7 @@ to unlock the repository. This should decrypt the files `config/credentials.json
 
 From the repository root, run
 
-`pm2 start ecosystem.config.json`, or `pm2 start ecosystem.config.json --env production` in production.
+`pm2 start ecosystem.config.js`, or `pm2 start ecosystem.config.js --env production` in production.
 
 to start the dashboard server and all microservices. Visit `http://localhost:3000` to access the dashboard. From here, you will be able to initiate the export-import process.
 
