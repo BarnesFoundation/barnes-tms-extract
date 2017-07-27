@@ -4,20 +4,46 @@ The Barnes Foundation Collection Spelunker exports data from a TMS server and im
 ## Passwords
 
 Usernames and passwords are stored, encrypted, in this repository. After decrypting, they can be found in the `config` directory.
+Parts of the repository contain sensitive information and so are stored in version control as encrypted files:
 
 - config/credentials.json -- Access keys for s2, AWS, Kibana and TMS
 - config/esapi.htpasswd -- Username and password for accessing the elasticsearch API wrapper
 - config/users.htpasswd -- Username and password for viewing the admin dashboard
 
+These files can be unlocked and viewed using [git-crypt](https://www.agwa.name/projects/git-crypt/), a tool that facilitates storing encrypted files using git. If you want to see the encrypted files in this repository, then you will need first to install git-crypt. Installation steps are platform specific.
+
+##### On Ubuntu
+```
+git clone git@github.com:AGWA/git-crypt.git /your/path/to/git-crypt
+cd /your/path/to/git-crypt
+make
+sudo make install
+```
+
+##### On a Mac, using Homebrew
+```
+brew install git-crypt
+```
+
+With git-crypt installed, the repository can be unlocked using the symmetric key. Contact the repository admins to get this key. Then, from the repository root run:
+
+```
+git-crypt unlock /path/to/key
+```
+
 ## Requirements
 
-One or two scripts require Python to run. Before continuing with setup, be sure to install Python 2.7. On Ubuntu run:
+One or two scripts require Python to run. Before continuing with setup, be sure to install Python 2.7.
+
+##### On Ubuntu:
 
 ```
 sudo apt-get install python-setuptools
 ```
 
 Next, update pip and add the AWS command line interface tools for python
+
+##### On Ubuntu or Mac:
 
 ```
 sudo pip install --upgrade pip
@@ -26,36 +52,30 @@ sudo pip install awscli --upgrade
 
 Finally, install miniconda, a small package and environment manager for Python.
 
+##### On Ubuntu:
 ```
 wget -O ~/miniconda.sh https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
 bash ~/miniconda.sh -b -p $HOME/.miniconda
 rm -rf ~/miniconda.sh
 ```
 
+##### On a Mac:
+Follow the instructions [here](https://conda.io/docs/install/quick.html#id4).
+
 Processing and tiling the images from TMS requires go-iiif, a discrete Go implementation of the IIIF Image API. Installation steps are platform specific and can be found at https://github.com/thisisaaronland/go-iiif
-
-Parts of the repository contain sensitive information and so are stored in version control as encrypted files. These files can be unlocked and viewed using git-crypt, a tool that facilitates storing encrypted files using git. If you want to see the encrypted files in this repository, then you will need first to install git-crypt. Installation steps are platform specific. On Ubuntu you can run:
-
-```
-git clone git@github.com:AGWA/git-crypt.git /your/path/to/git-crypt
-cd /your/path/to/git-crypt
-make
-sudo make install
-```
-
-With git-crypt installed, the repository can be unlocked using the symmetric key. Contact the repository admins to get this key, then from the repository root run:
-
-```
-git-crypt unlock /path/to/key
-```
 
 Finally, the Collection Export tool is written in node, so ensure that node and npm are installed. The easiest way to install these tools is with nvm, which is a version manager for node and npm that makes it easy to switch between different versions of node.
 
 ```
 # install NVM
+
+##### On Ubuntu:
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+##### On a Mac:
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
 
 # install Node v6.2.2
 nvm install v6.2.2
@@ -65,13 +85,11 @@ source $HOME/.bashrc
 ```
 
 To be able to run the project microservices, be sure to install pm2, a node.js process manager.
-
 ```
 npm install -g pm2
 ```
 
 The Collection Export code is documented inline using jsdoc. The jsdoc and jsdoc-to-markdown tools must be installed globally to turn these code comments into documentation. To install, run:
-
 ```
 npm install -g jsdoc
 npm install -g jsdoc-to-markdown
@@ -79,15 +97,24 @@ npm install -g jsdoc-to-markdown
 
 ## Setup
 
-This repository is dependent on a submodule called [go-iiif](https://github.com/thisisaaronland/go-iiif). To initialize it, run `git submodule init`.
+This repository is dependent on a submodule called [go-iiif](https://github.com/thisisaaronland/go-iiif). To initialize it, run:
+```
+git submodule init
+git submodule update
+```
 
-To build the `go-iiif` submodule, run:
+To build the `go-iiif` submodule, you'll first need to have libvips installed:
+```
+brew install vips
+```
+
+Then build the submodule:
 ```
 cd src/image-processing/go-iiif
 make bin
 ```
 
-With the submodule loaded, run `npm install` to install Node dependencies and to setup the python environment.
+With the submodule loaded, run `sudo npm install` to install Node dependencies and to setup the python environment.
 
 This repository contains encrypted keys for connecting to the Barnes TMS as well as the Amazon s3 instance used to upload tiled images. If you plan to use the Barnes credentials for TMS and s3, then you will need to unlock the repository using git-crypt. You will need to contact the repository admins for a copy of the key needed to unlock the repository. With that key available somewhere on the machine, type:
 
@@ -99,7 +126,7 @@ to unlock the repository. This should decrypt the files `config/credentials.json
 
 From the repository root, run
 
-`pm2 start ecosystem.config.json`, or `pm2 start ecosystem.config.json --env production` in production.
+`pm2 start ecosystem.config.js`, or `pm2 start ecosystem.config.js --env production` in production.
 
 to start the dashboard server and all microservices. Visit `http://localhost:3000` to access the dashboard. From here, you will be able to initiate the export-import process.
 
