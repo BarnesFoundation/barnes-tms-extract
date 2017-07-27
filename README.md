@@ -41,11 +41,9 @@ One or two scripts require Python to run. Before continuing with setup, be sure 
 sudo apt-get install python-setuptools
 ```
 
-##### On a Mac:
-
-
-
 Next, update pip and add the AWS command line interface tools for python
+
+##### On Ubuntu or Mac:
 
 ```
 sudo pip install --upgrade pip
@@ -66,15 +64,18 @@ Follow the instructions [here](https://conda.io/docs/install/quick.html#id4).
 
 Processing and tiling the images from TMS requires go-iiif, a discrete Go implementation of the IIIF Image API. Installation steps are platform specific and can be found at https://github.com/thisisaaronland/go-iiif
 
-
-
 Finally, the Collection Export tool is written in node, so ensure that node and npm are installed. The easiest way to install these tools is with nvm, which is a version manager for node and npm that makes it easy to switch between different versions of node.
 
 ```
 # install NVM
+
+##### On Ubuntu:
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+##### On a Mac:
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
 
 # install Node v6.2.2
 nvm install v6.2.2
