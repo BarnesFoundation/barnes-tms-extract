@@ -103,9 +103,10 @@ git submodule init
 git submodule update
 ```
 
-To build the `go-iiif` submodule, you'll first need to have libvips installed:
+To build the `go-iiif` submodule, you'll first need to install some things:
 ```
 brew install vips
+brew install go
 ```
 
 Then build the submodule:
