@@ -102,6 +102,12 @@
 						"keyword": { "type": "keyword" }
 					}
 				},
+				"creditLine": {
+					"type": "text",
+					"fields": {
+						"keyword": { "type": "keyword" }
+					}
+				},
 				"culture": {
 					"type": "text",
 					"fields": {
