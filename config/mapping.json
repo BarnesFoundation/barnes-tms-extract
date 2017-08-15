@@ -108,12 +108,6 @@
 						"keyword": { "type": "keyword" }
 					}
 				},
-				"description": {
-					"type": "text",
-					"fields": {
-						"text": { "type": "text", "analyzer": "text_description_analyzer" }
-					}
-				},
 				"dimensions": { "type": "keyword", "index": false },
 				"displayDate": {
 					"type": "text",
