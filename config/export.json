@@ -84,6 +84,9 @@
 					"required": true
 				},
 				{
+					"name": "primaryImageAltText"
+				},
+				{
 					"name": "flags",
 					"dataType": "mask",
 					"select": "Highlight",
