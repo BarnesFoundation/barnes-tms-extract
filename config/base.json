@@ -1,6 +1,7 @@
 {
 	"CSV": {
-		"path": "src/dashboard/public/output"
+		"path": "src/dashboard/public/output",
+		"dataPath": "src/dashboard/public/data"
 	},
 	"Dashboard": {
 		"public": "src/dashboard/public",
