@@ -49,6 +49,7 @@ class ESCollection extends UpdateEmitter {
 		Promise.promisifyAll(this._client.cat);
 		Promise.promisifyAll(this._client.indices);
 		this._csvRootDir = csvRootDirectory;
+		this._csvDataDir = path.join(path.dirname(csvRootDirectory), 'data');
 		this._status = ESCollectionStatus.READY;
 		this._message = "";
 		this._kibanaUrl = config.Elasticsearch.kibana;
@@ -439,9 +440,9 @@ class ESCollection extends UpdateEmitter {
 
 	_updateESWithDiffJSON(diffJson) {
 		logger.info(
-			`Updating to new CSV. 
-			${diffJson.added.length} new documents, 
-			${diffJson.changed.length} changed documents, 
+			`Updating to new CSV.
+			${diffJson.added.length} new documents,
+			${diffJson.changed.length} changed documents,
 			${diffJson.removed.length} removed documents.`
 		);
 
@@ -673,6 +674,141 @@ class ESCollection extends UpdateEmitter {
 		}).then((res) => {
 			this.completed(`Synchronized with ${csvExport}`);
 			return res;
+		});
+	}
+
+	/**
+	 * Attempts to import a data CSV into the Elasticsearch index.
+	 * @param {string} importCSV - Name of the data CSV to import into ES
+	 * @return {Promise} Resolved when the synchronization is complete
+	 * @throws {ESCollectionException}
+	 */
+	importDataCSVToES(importCSV) {
+		const csvFilePath = path.join(this._csvDataDir, importCSV);
+		// this.started(ESCollectionStatus.SYNCING, `Importing ${importCSV}`);
+
+		if (!fs.existsSync(csvFilePath)) {
+			logger.info("Can't find CSV to import. Stopping.");
+			return false;
+		}
+
+		return this._updateESWithDataCSV(csvFilePath).then((res) => {
+			logger.info(res);
+		});
+	}
+
+	/**
+	 * Returns array of headers for specified CSV type.
+	 * @param {string} csvType - Type of CSV data to import.
+	 * @return {array} headers
+	 */
+	_getDataHeaders(csvType) {
+		let headers = ['id'];
+
+		switch(csvType) {
+			case 'generic_descriptor.csv':
+				for (let i = 1; i < 21; i++) {
+					headers.push('generic_desc_'+i);
+				}
+				return headers;
+			case 'light_descriptor.csv':
+				for (let i = 1; i < 11; i++) {
+					headers.push('light_desc_'+i);
+				}
+				return headers;
+			case 'color_descriptor.csv':
+				for (let i = 1; i < 61; i++) {
+					headers.push('color_desc_'+i);
+				}
+				return headers;
+			case 'composition_descriptor.csv':
+				for (let i = 1; i < 41; i++) {
+					headers.push('comp_desc_'+i);
+				}
+				return headers;
+			case 'light_line_space_indicators.csv':
+				return ['id', 'light', 'line', 'space'];
+			case 'line_HVDC_indicators.csv':
+				return ['id', 'horizontal', 'vertical', 'diagonal', 'curvy'];
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * Returns object structured for import into ES index.
+	 * If no data is provided, returns empty object.
+	 * @param {string} csvType - Type of CSV data to import.
+	 * @param {object} data - Data in row of CSV.
+	 * @return {object} formattedDoc - Object containing CSV data.
+	 */
+	_getFormattedDoc(csvType, data) {
+		let formattedDoc = {};
+		const headers = this._getDataHeaders(csvType);
+
+		if (headers) {
+			for (let i = 1; i < headers.length; i++) {
+				const header = headers[i];
+				formattedDoc[header] = data[header];
+			}
+		}
+
+		return formattedDoc;
+	}
+
+	/**
+	 * Update the elasticsearch index with the given CSV file
+	 * @private
+	 * @param {string} csvFilePath - File path of the CSV to import.
+	 */
+	_updateESWithDataCSV(csvFilePath) {
+		const csvType = path.basename(csvFilePath);
+		const headers = this._getDataHeaders(csvType);
+
+		let processed = 0;
+		logger.info("Beginning CSV import");
+		return new Promise((resolve, reject) => {
+			const lines = [];
+			try {
+				csv
+					.fromPath(csvFilePath, {
+						headers: headers,
+						ignoreEmpty: true
+					})
+					.on('data', (data) => {
+						lines.push(data);
+					})
+					.on('end', () => {
+						eachLimit(lines, rateLimit, (data, cb) => {
+							const formattedDoc = this._getFormattedDoc(csvType, data);
+							const docId = parseInt(data.id);
+
+							this._updateDocumentWithPartialDoc(docId, formattedDoc).then(() => {
+								logger.info(`Synchronizing with ${csvFilePath}, ${++processed} documents uploaded`);
+								cb();
+							});
+						}, () => {
+							logger.info('imported');
+							resolve();
+			// 				this._updateMetaForCSVFile(csvExport).then(() => {
+			// 					logger.info('Finished export');
+			// 					resolve();
+						});
+					});
+			} catch (e) {
+				reject(e);
+			}
+		});
+	}
+
+	_updateDocumentWithPartialDoc(docId, partialDoc) {
+		return this._client.updateAsync({
+			index: 'collection',
+			type: 'object',
+			id: docId,
+			body: {
+				doc: partialDoc,
+			},
 		});
 	}
 

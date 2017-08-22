@@ -102,16 +102,16 @@
 						"keyword": { "type": "keyword" }
 					}
 				},
-				"culture": {
+				"creditLine": {
 					"type": "text",
 					"fields": {
 						"keyword": { "type": "keyword" }
 					}
 				},
-				"description": {
+				"culture": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "text_description_analyzer" }
+						"keyword": { "type": "keyword" }
 					}
 				},
 				"dimensions": { "type": "keyword", "index": false },

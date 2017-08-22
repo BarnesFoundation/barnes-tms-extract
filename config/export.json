@@ -3,7 +3,7 @@
 		"export": {
 			"apiURL": "https://emuseum.barnesfoundation.org",
 			"outputDirectory": "src/dashboard/public/output",
-			"debug": {	
+			"debug": {
 			},
 			"fields": [
 				{
@@ -27,6 +27,10 @@
 					"required": true
 				},
 				{
+					"name": "creditLine",
+					"required": true
+				},
+				{
 					"name": "period"
 				},
 				{
@@ -42,9 +46,6 @@
 				{
 					"name": "locations",
 					"required": true
-				},
-				{
-					"name": "description"
 				},
 				{
 					"name": "shortDescription",
@@ -81,6 +82,9 @@
 				{
 					"name": "objRightsTypeId",
 					"required": true
+				},
+				{
+					"name": "primaryImageAltText"
 				},
 				{
 					"name": "flags",
