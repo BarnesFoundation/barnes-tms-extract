@@ -687,20 +687,21 @@ class ESCollection extends UpdateEmitter {
 		const csvFilePath = path.join(this._csvDataDir, importCSV);
 		// this.started(ESCollectionStatus.SYNCING, `Importing ${importCSV}`);
 
-		// If the file's not there, stop.
 		if (!fs.existsSync(csvFilePath)) {
 			logger.info("Can't find CSV to import. Stopping.");
 			return false;
 		}
-
-		// Read the CSV line by line and import it
-
 
 		return this._updateESWithDataCSV(csvFilePath).then((res) => {
 			logger.info(res);
 		});
 	}
 
+	/**
+	 * Returns array of headers for specified CSV type.
+	 * @param {string} csvType - Type of CSV data to import.
+	 * @return {array} headers
+	 */
 	_getDataHeaders(csvType) {
 		let headers = ['id'];
 
@@ -711,12 +712,12 @@ class ESCollection extends UpdateEmitter {
 				}
 				return headers;
 			case 'light_descriptor.csv':
-				for (let i =1; i < 21; i++) {
+				for (let i = 1; i < 11; i++) {
 					headers.push('light_desc_'+i);
 				}
 				return headers;
 			case 'color_descriptor.csv':
-				for (let i=1;i<61;i++) {
+				for (let i = 1; i < 61; i++) {
 					headers.push('color_desc_'+i);
 				}
 				return headers;
@@ -734,6 +735,13 @@ class ESCollection extends UpdateEmitter {
 		}
 	}
 
+	/**
+	 * Returns object structured for import into ES index.
+	 * If no data is provided, returns empty object.
+	 * @param {string} csvType - Type of CSV data to import.
+	 * @param {object} data - Data in row of CSV.
+	 * @return {object} formattedDoc - Object containing CSV data.
+	 */
 	_getFormattedDoc(csvType, data) {
 		let formattedDoc = {};
 		const headers = this._getDataHeaders(csvType);
@@ -748,6 +756,11 @@ class ESCollection extends UpdateEmitter {
 		return formattedDoc;
 	}
 
+	/**
+	 * Update the elasticsearch index with the given CSV file
+	 * @private
+	 * @param {string} csvFilePath - File path of the CSV to import.
+	 */
 	_updateESWithDataCSV(csvFilePath) {
 		const csvType = path.basename(csvFilePath);
 		const headers = this._getDataHeaders(csvType);
@@ -758,7 +771,10 @@ class ESCollection extends UpdateEmitter {
 			const lines = [];
 			try {
 				csv
-					.fromPath(csvFilePath, { headers: headers, ignoreEmpty: true })
+					.fromPath(csvFilePath, {
+						headers: headers,
+						ignoreEmpty: true
+					})
 					.on('data', (data) => {
 						lines.push(data);
 					})

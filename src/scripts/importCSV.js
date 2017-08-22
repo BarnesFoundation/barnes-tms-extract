@@ -8,7 +8,6 @@ const argv = require('minimist')(process.argv.slice(2));
 
 logger.info(argv.csv);
 
-
 let importCSVTarget = argv.csv || null;
 
 const esCollection = new ESCollection( makeElasticsearchOptions(), config.CSV.path );
