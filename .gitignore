@@ -3,6 +3,7 @@ npm-debug.log*
 node_modules/
 highlights/
 highlights.zip
+src/dashboard/public/data/*.csv
 src/cooperhewitt-swatchbook/
 src/cooperhewitt.roboteyes.colors/
 .DS_Store

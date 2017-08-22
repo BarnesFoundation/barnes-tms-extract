@@ -501,15 +501,39 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolves to a description of the Elasticsearch index
 	 */
 	_updateMappings() {
+		var mappings = mapping.mappings.object.properties;
+		mappings = this._addDataPropsToMappings(mappings);
+
 		return this._collectionIndexExists().then((res) => {
 			if (res) {
 				return this._client.indices.putMapping({
 					index: 'collection',
-					body: { properties: mapping.mappings.object.properties },
+					body: { properties: mappings },
 					type: 'document'
 				});
 			}
 		});
+	}
+
+	_addDataPropsToMappings(mappings) {
+		const csvTypes = [
+			'color_descriptor.csv',
+			'generic_descriptor.csv',
+			'light_line_space_indicators.csv',
+			'composition_descriptor.csv',
+			'light_descriptor.csv',
+			'line_HVDC_indicators.csv'
+		];
+		csvTypes.forEach((csvType) => {
+			let headers = this._getDataHeaders(csvType);
+			headers.splice(0, 1);
+
+			headers.forEach((header) => {
+				mappings[header] = { type: "float" };
+			});
+		});
+
+		return mappings;
 	}
 
 	/**
