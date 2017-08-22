@@ -716,9 +716,15 @@ class ESCollection extends UpdateEmitter {
 			return false;
 		}
 
-		return this._updateESWithDataCSV(csvFilePath).then((res) => {
-			logger.info(res);
-		});
+		if (importCSV === 'custom-1-results.csv' || importCSV === 'custom-2-results.csv') {
+			return this._updateESwithDocumentTags(csvFilePath).then((res) => {
+				logger.info(res);
+			});
+		} else {
+			return this._updateESWithDataCSV(csvFilePath).then((res) => {
+				logger.info(res);
+			});
+		}
 	}
 
 	/**
@@ -754,6 +760,9 @@ class ESCollection extends UpdateEmitter {
 				return ['id', 'light', 'line', 'space'];
 			case 'line_HVDC_indicators.csv':
 				return ['id', 'horizontal', 'vertical', 'diagonal', 'curvy'];
+			// case 'custom-1-results.csv':
+			// case 'custom-2-results.csv':
+			// 	return ['id', 'invno', 'service', 'tag', 'confidence'];
 			default:
 				return false;
 		}
@@ -823,6 +832,45 @@ class ESCollection extends UpdateEmitter {
 				reject(e);
 			}
 		});
+	}
+
+	_updateESwithDocumentTags(csvFilePath) {
+		const csvType = path.basename(csvFilePath);
+
+		let processed = 0;
+		logger.info("Beginning tag import");
+		return new Promise((resolve, reject) => {
+			const objectTags = {};
+			try {
+				csv
+					.fromPath(csvFilePath, {
+						headers: ['id', 'invno', 'service', 'tag', 'confidence'],
+						ignoreEmpty: true
+					})
+					.on('data', (data) => {
+						objectTags[data.id] = objectTags[data.id] || {'id': data.id};
+						objectTags[data.id]['tags'] = objectTags[data.id]['tags'] || [];
+						objectTags[data.id]['tags'].push({"tag": data.tag, "confidence": data.confidence});
+					})
+					.on('end', () => {
+						eachLimit(objectTags, rateLimit, (data, cb) => {
+							const tagSet = csvType === 'custom-1-results.csv' ? 'tags_1' : 'tags_2';
+							let formattedDoc = {};
+							formattedDoc[tagSet] = objectTags[data.id]['tags'];
+
+							this._updateDocumentWithPartialDoc(data.id, formattedDoc).then(() => {
+								logger.info(`${++processed} tags uploaded`);
+								cb();
+							});
+						}, () => {
+							logger.info('imported tags');
+							resolve();
+						})
+					});
+			} catch (e) {
+				reject(e);
+			}
+		})
 	}
 
 	_updateDocumentWithPartialDoc(docId, partialDoc) {

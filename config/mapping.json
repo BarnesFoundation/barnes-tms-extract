@@ -168,6 +168,20 @@
 						"keyword": { "type": "keyword" }
 					}
 				},
+				"tags_1": {
+					"type": "nested",
+					"properties": {
+						"tag": { "type": "text" },
+						"confidence": { "type": "float" }
+					}
+				},
+				"tags_2": {
+					"type": "nested",
+					"properties": {
+						"tag": { "type": "text" },
+						"confidence": { "type": "float" }
+					}
+				},
 				"wall": { "type": "keyword" },
 				"visualDescription": {
 					"type": "text",
