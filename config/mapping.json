@@ -71,7 +71,7 @@
 			}
 		},
 		"object": {
-			"dynamic": false,
+			"dynamic": true,
 			"properties": {
 				"bibliography": {
 					"type": "text",
