@@ -93,7 +93,7 @@
 					"alias": "highlight"
 				},
 				{
-					"name": "EnsembleIndex"
+					"name": "ensembleIndex"
 				}
 			],
 			"warnings": {
