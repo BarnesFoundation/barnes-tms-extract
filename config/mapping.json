@@ -120,7 +120,7 @@
 					"analyzer": "keyword",
 					"index": false
 				},
-				"EnsembleIndex": {
+				"ensembleIndex": {
 					"type": "text"
 				},
 				"exhHistory": {
