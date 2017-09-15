@@ -120,6 +120,9 @@
 					"analyzer": "keyword",
 					"index": false
 				},
+				"EnsembleIndex": {
+					"type": "text"
+				},
 				"exhHistory": {
 					"type": "text",
 					"fields": {

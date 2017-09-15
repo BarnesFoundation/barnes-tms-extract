@@ -91,6 +91,9 @@
 					"dataType": "mask",
 					"select": "Highlight",
 					"alias": "highlight"
+				},
+				{
+					"name": "EnsembleIndex"
 				}
 			],
 			"warnings": {
