@@ -79,8 +79,11 @@ class ESCollection extends UpdateEmitter {
 
 		// Add a KV pair for onView, if the data has a field called locations
 		if (_.has(dataCopy, 'locations')) {
+			let onView = false;
 			const location = dataCopy.locations;
-			const onView = location.includes(onViewPrefix);
+			if (location) {
+				onView = location.includes(onViewPrefix);
+			}
 			dataCopy.onView = onView;
 		}
 
