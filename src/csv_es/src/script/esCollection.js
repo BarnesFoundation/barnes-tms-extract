@@ -768,9 +768,8 @@ class ESCollection extends UpdateEmitter {
 				return ['id', 'light', 'line', 'space'];
 			case 'line_HVDC_indicators.csv':
 				return ['id', 'horizontal', 'vertical', 'diagonal', 'curvy'];
-			// case 'custom-1-results.csv':
-			// case 'custom-2-results.csv':
-			// 	return ['id', 'invno', 'service', 'tag', 'confidence'];
+			case 'tags.csv':
+				return ['id', 'tag', 'category', 'confidence'];
 			default:
 				return false;
 		}
@@ -852,19 +851,17 @@ class ESCollection extends UpdateEmitter {
 			try {
 				csv
 					.fromPath(csvFilePath, {
-						headers: ['id', 'invno', 'service', 'tag', 'confidence'],
+						headers: ['id', 'tag', 'category', 'confidence'],
 						ignoreEmpty: true
 					})
 					.on('data', (data) => {
 						objectTags[data.id] = objectTags[data.id] || {'id': data.id};
-						objectTags[data.id]['tags'] = objectTags[data.id]['tags'] || [];
-						objectTags[data.id]['tags'].push({"tag": data.tag, "confidence": data.confidence});
+						objectTags[data.id]['tags'][data.category][] = { tag: data.tag, confidence: data.confidence };
 					})
 					.on('end', () => {
 						eachLimit(objectTags, rateLimit, (data, cb) => {
-							const tagSet = csvType === 'custom-1-results.csv' ? 'tags_1' : 'tags_2';
 							let formattedDoc = {};
-							formattedDoc[tagSet] = objectTags[data.id]['tags'];
+							formattedDoc.tags = objectTags[data.id]['tags'];
 
 							this._updateDocumentWithPartialDoc(data.id, formattedDoc).then(() => {
 								logger.info(`${++processed} tags uploaded`);
