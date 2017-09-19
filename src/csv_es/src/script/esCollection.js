@@ -529,7 +529,12 @@ class ESCollection extends UpdateEmitter {
 			headers.splice(0, 1);
 
 			headers.forEach((header) => {
-				mappings[header] = { type: "float" };
+				mappings[header] = {
+					type: "multi_field",
+					fields: {}
+				};
+				mappings[header]['fields'][header] = { type: "float" };
+				mappings[header]['fields'][`string-${header}`] = { type: "string" };
 			});
 		});
 
