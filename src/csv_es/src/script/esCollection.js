@@ -724,7 +724,7 @@ class ESCollection extends UpdateEmitter {
 			return false;
 		}
 
-		if (importCSV === 'custom-1-results.csv' || importCSV === 'custom-2-results.csv') {
+		if (importCSV === 'tags.csv') {
 			return this._updateESwithDocumentTags(csvFilePath).then((res) => {
 				logger.info(res);
 			});
@@ -846,6 +846,7 @@ class ESCollection extends UpdateEmitter {
 
 		let processed = 0;
 		logger.info("Beginning tag import");
+
 		return new Promise((resolve, reject) => {
 			const objectTags = {};
 			try {
@@ -855,13 +856,17 @@ class ESCollection extends UpdateEmitter {
 						ignoreEmpty: true
 					})
 					.on('data', (data) => {
-						objectTags[data.id] = objectTags[data.id] || {'id': data.id};
-						objectTags[data.id]['tags'][data.category][] = { tag: data.tag, confidence: data.confidence };
+						if (data.confidence >= 0.2) {
+							objectTags[data.id] = objectTags[data.id] || {};
+							objectTags[data.id].tags = objectTags[data.id].tags || {};
+							objectTags[data.id].tags[data.category] = objectTags[data.id].tags[data.category] || [];
+							objectTags[data.id]['tags'][data.category].push(data.tag);
+						}
 					})
 					.on('end', () => {
 						eachLimit(objectTags, rateLimit, (data, cb) => {
 							let formattedDoc = {};
-							formattedDoc.tags = objectTags[data.id]['tags'];
+							formattedDoc.tags = objectTags[data.id].tags;
 
 							this._updateDocumentWithPartialDoc(data.id, formattedDoc).then(() => {
 								logger.info(`${++processed} tags uploaded`);
