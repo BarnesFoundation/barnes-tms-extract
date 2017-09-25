@@ -53,6 +53,7 @@ class ESCollection extends UpdateEmitter {
 		this._status = ESCollectionStatus.READY;
 		this._message = "";
 		this._kibanaUrl = config.Elasticsearch.kibana;
+		this._index = config.Elasticsearch.index;
 	}
 
 	/** @property {ESCollection~ESImportStatus} status
@@ -115,7 +116,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_collectionIndexExists() {
 		return this._client.indices.existsAsync({
-			index: 'collection'
+			index: this._index
 		});
 	}
 
@@ -126,7 +127,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_collectionMetadataExists() {
 		return this._client.existsAsync({
-			index: 'collection',
+			index: this._index,
 			type: 'meta',
 			id: 1
 		});
@@ -190,7 +191,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_createCollectionIndex() {
 		return this._client.indices.createAsync({
-			index: 'collection',
+			index: this._index,
 			body: mapping
 		});
 	}
@@ -202,7 +203,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_createCollectionMetadata() {
 		return this._client.createAsync({
-			index: 'collection',
+			index: this._index,
 			type: 'meta',
 			id: 1,
 			body: {
@@ -221,7 +222,7 @@ class ESCollection extends UpdateEmitter {
 	_createDocumentWithData(data) {
 		const dataCopy = this._analyzedData(data);
 		return this._client.updateAsync({
-			index: 'collection',
+			index: this._index,
 			type: 'object',
 			id: dataCopy.id,
 			body: {
@@ -238,7 +239,7 @@ class ESCollection extends UpdateEmitter {
 	_deleteCollectionIndex() {
 		return this._collectionIndexExists().then((res) => {
 			if (res) {
-				return this._client.indices.deleteAsync({ index: 'collection' });
+				return this._client.indices.deleteAsync({ index: this._index });
 			}
 		});
 	}
@@ -251,7 +252,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_deleteDocumentWithId(docId) {
 		return this._client.deleteAsync({
-			index: 'collection',
+			index: this._index,
 			type: 'object',
 			id: docId,
 		});
@@ -312,7 +313,7 @@ class ESCollection extends UpdateEmitter {
 			}).bind(this);
 
 			this._client.search({
-				index: 'collection',
+				index: this._index,
 				type: 'object',
 				scroll: '30s',
 				_source: ['id'],
@@ -328,7 +329,7 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_getLastCSVName() {
 		return this._client.getAsync({
-			index: 'collection',
+			index: this._index,
 			type: 'meta',
 			id: 1,
 		}).then((res) => {
@@ -407,7 +408,7 @@ class ESCollection extends UpdateEmitter {
 	_updateDocumentWithData(docId, data) {
 		const dataCopy = this._analyzedData(data);
 		return this._client.updateAsync({
-			index: 'collection',
+			index: this._index,
 			type: 'object',
 			id: docId,
 			body: {
@@ -487,7 +488,7 @@ class ESCollection extends UpdateEmitter {
 		const bn = path.dirname(csvFilePath).split(path.sep).pop();
 		const timestamp = parseInt(bn.split('_')[1]);
 		return this._client.updateAsync({
-			index: 'collection',
+			index: this._index,
 			type: 'meta',
 			id: 1,
 			body: {
@@ -510,7 +511,7 @@ class ESCollection extends UpdateEmitter {
 		return this._collectionIndexExists().then((res) => {
 			if (res) {
 				return this._client.indices.putMapping({
-					index: 'collection',
+					index: this._index,
 					body: { properties: mappings },
 					type: 'document'
 				});
@@ -552,7 +553,7 @@ class ESCollection extends UpdateEmitter {
 		return this._collectionIndexExists().then((res) => {
 			if (res) {
 				return this._client.updateAsync({
-					index: 'collection',
+					index: this._index,
 					type: 'meta',
 					id: 1,
 					body: {
@@ -564,7 +565,7 @@ class ESCollection extends UpdateEmitter {
 				}).then((res) => {
 					return this._client.deleteByQueryAsync({
 						conflicts: 'proceed',
-						index: 'collection',
+						index: this._index,
 						type: 'object',
 						body: {
 							query: {
@@ -594,7 +595,7 @@ class ESCollection extends UpdateEmitter {
 				return { status: 'uninitialized' };
 			} else {
 				const metaGetter = this._client.getAsync({
-					index: 'collection',
+					index: this._index,
 					type: 'meta',
 					id: 1,
 				}).then((response) => {
@@ -606,7 +607,7 @@ class ESCollection extends UpdateEmitter {
 				});
 
 				const countGetter = this._client.countAsync({
-					index: 'collection',
+					index: this._index,
 					type: 'object',
 				}).then((response) => {
 					return {
@@ -619,7 +620,8 @@ class ESCollection extends UpdateEmitter {
 					return Object.assign({
 						status: this._status,
 						message: this._message,
-						kibanaUrl: this._kibanaUrl
+						kibanaUrl: this._kibanaUrl,
+						index: this._index
 					}, meta, count);
 				});
 			}
@@ -647,7 +649,7 @@ class ESCollection extends UpdateEmitter {
 	search(query) {
 		console.log("Searching for ", query);
 		return this._client.search({
-			index: 'collection',
+			index: this._index,
 			q: query
 		});
 	}
@@ -724,7 +726,7 @@ class ESCollection extends UpdateEmitter {
 			return false;
 		}
 
-		if (importCSV === 'custom-1-results.csv' || importCSV === 'custom-2-results.csv') {
+		if (importCSV === 'tags.csv') {
 			return this._updateESwithDocumentTags(csvFilePath).then((res) => {
 				logger.info(res);
 			});
@@ -768,9 +770,8 @@ class ESCollection extends UpdateEmitter {
 				return ['id', 'light', 'line', 'space'];
 			case 'line_HVDC_indicators.csv':
 				return ['id', 'horizontal', 'vertical', 'diagonal', 'curvy'];
-			// case 'custom-1-results.csv':
-			// case 'custom-2-results.csv':
-			// 	return ['id', 'invno', 'service', 'tag', 'confidence'];
+			case 'tags.csv':
+				return ['id', 'tag', 'category', 'confidence'];
 			default:
 				return false;
 		}
@@ -847,24 +848,34 @@ class ESCollection extends UpdateEmitter {
 
 		let processed = 0;
 		logger.info("Beginning tag import");
+
 		return new Promise((resolve, reject) => {
 			const objectTags = {};
 			try {
 				csv
 					.fromPath(csvFilePath, {
-						headers: ['id', 'invno', 'service', 'tag', 'confidence'],
+						headers: ['id', 'tag', 'category', 'confidence'],
 						ignoreEmpty: true
 					})
 					.on('data', (data) => {
-						objectTags[data.id] = objectTags[data.id] || {'id': data.id};
-						objectTags[data.id]['tags'] = objectTags[data.id]['tags'] || [];
-						objectTags[data.id]['tags'].push({"tag": data.tag, "confidence": data.confidence});
+						if (parseFloat(data.confidence) >= 0.2) {
+
+							const tag = { "tag": data.tag, "confidence": data.confidence };
+
+							objectTags[data.id] = objectTags[data.id] || { 'id': data.id };
+
+							objectTags[data.id]['tags'] = objectTags[data.id]['tags'] || {};
+							// objectTags[data.id]['tags'] = objectTags[data.id]['tags'] || [];
+
+							objectTags[data.id]['tags'][data.category] = objectTags[data.id]['tags'][data.category] || [];
+							objectTags[data.id]['tags'][data.category].push(data.tag);
+						}
 					})
 					.on('end', () => {
 						eachLimit(objectTags, rateLimit, (data, cb) => {
-							const tagSet = csvType === 'custom-1-results.csv' ? 'tags_1' : 'tags_2';
 							let formattedDoc = {};
-							formattedDoc[tagSet] = objectTags[data.id]['tags'];
+							formattedDoc['tags'] = objectTags[data.id]['tags'];
+							console.log(formattedDoc);
 
 							this._updateDocumentWithPartialDoc(data.id, formattedDoc).then(() => {
 								logger.info(`${++processed} tags uploaded`);
@@ -883,7 +894,7 @@ class ESCollection extends UpdateEmitter {
 
 	_updateDocumentWithPartialDoc(docId, partialDoc) {
 		return this._client.updateAsync({
-			index: 'collection',
+			index: this._index,
 			type: 'object',
 			id: docId,
 			body: {
