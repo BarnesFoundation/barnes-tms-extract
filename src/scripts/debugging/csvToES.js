@@ -1,4 +1,4 @@
-const csvTimestamp = 1506366977108;
+const csvTimestamp = 1505493156502;
 
 const config = require('config');
 const path = require('path');
