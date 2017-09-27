@@ -1,4 +1,4 @@
-const csvTimestamp = 1505491700669;
+const csvTimestamp = 1506366977108;
 
 const config = require('config');
 const path = require('path');
@@ -21,5 +21,3 @@ const options = makeElasticsearchOptions();
 const esCollection = new ESCollection(options, csvRootDir);
 
 esCollection.syncESToCSV(csvPath);
-
-// 'src/dashboard/public/output/csv_1502813474684'
