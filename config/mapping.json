@@ -12,30 +12,33 @@
 					"type":				"stemmer",
 					"language":		"english"
 				},
-				"period_stop": {
+				"possibly_stop": {
 					"type":				"stop",
 					"stopwords":	["possibly"]
 				}
 			},
 			"analyzer": {
-				"html_description_analyzer": {
+				"html": {
 					"type": "custom",
-					"char_filter": "html_strip",
 					"tokenizer": "standard",
+					"char_filter": "html_strip",
 					"filter": [
 						"lowercase",
 						"english_stop",
 						"english_stemmer"
 					]
 				},
-				"lowercase_keyword_analyzer": {
-					"type": "custom",
-					"tokenizer": "keyword",
+				"folding_html": {
+					"tokenizer": "standard",
+					"char_filter": "html_strip",
 					"filter": [
-						"lowercase"
+						"lowercase",
+						"asciifolding",
+						"english_stop",
+						"english_stemmer"
 					]
 				},
-				"medium_analyzer": {
+				"text": {
 					"type": "custom",
 					"tokenizer": "standard",
 					"filter": [
@@ -43,21 +46,38 @@
 						"english_stop"
 					]
 				},
-				"period_analyzer": {
+				"text_possibly": {
 					"type": "custom",
 					"tokenizer": "keyword",
 					"filter": [
 						"lowercase",
-						"period_stop"
+						"possibly_stop"
 					]
 				},
-				"text_description_analyzer": {
+				"stemming": {
 					"type": "custom",
 					"tokenizer": "standard",
 					"filter": [
 						"lowercase",
 						"english_stop",
 						"english_stemmer"
+					]
+				},
+				"folding": {
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					]
+				},
+				"stemming_folding": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"english_stop",
+						"english_stemmer",
+						"asciifolding"
 					]
 				}
 			}
@@ -76,10 +96,16 @@
 				"bibliography": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "keyword" }
+						"keyword": { "type": "keyword" },
+						"folded": {
+							"type": "text",
+							"analyzer": "folding"
+						}
 					}
 				},
-				"classification": { "type": "keyword" },
+				"classification": {
+					"type": "keyword"
+				},
 				"color": {
 					"properties": {
 						"reference-closest": { "type": "keyword" },
@@ -123,78 +149,156 @@
 					"index": false
 				},
 				"ensembleIndex": {
-					"type": "integer",
+					"type": "keyword",
 					"include_in_all": false
 				},
 				"exhHistory": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "text_description_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "stemming"
+						},
+						"folded": {
+							"type": "text",
+							"analyzer": "folding"
+						}
 					}
 				},
-				"highlight": { "type": "boolean" },
-				"id": { "type": "long" },
-				"invno": { "type": "keyword" },
-				"locations": { "type": "keyword", "index": false },
+				"highlight": {
+					"type": "boolean"
+				},
+				"id": {
+					"type": "long"
+				},
+				"invno": {
+					"type": "keyword"
+				},
+				"locations": {
+					"type": "keyword",
+					"index": false
+				},
 				"longDescription": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "html"
+						},
+						"folded": {
+							"type": "text",
+							"analyzer": "folding_html"
+						}
 					}
 				},
 				"medium": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "medium_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "text"
+						}
 					}
 				},
-				"objRightsTypeId": { "type": "long" },
-				"onView": { "type": "boolean" },
+				"objRightsTypeId": {
+					"type": "long"
+				},
+				"onView": {
+					"type": "boolean"
+				},
 				"people": {
 					"type": "text",
 					"fields": {
-						"raw": { "type": "keyword" },
-						"en": { "type": "text", "analyzer": "english" },
-						"fr": { "type": "text", "analyzer": "french" }
+						"text": { "type": "keyword" },
+						"folded": {
+							"type": "text",
+							"analyzer": "folding"
+						}
 					}
 				},
 				"period": {
 					"type": "text",
-					"analyzer": "period_analyzer"
+					"analyzer": "text_possibly"
 				},
-				"room": { "type": "keyword" },
+				"room": {
+					"type": "keyword"
+				},
 				"shortDescription": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "html"
+						},
+						"folded": {
+							"type": "text",
+							"analyzer": "folding_html"
+						}
 					}
 				},
 				"provenance": { "type": "text" },
 				"tags": {
 					"type": "nested",
 					"properties": {
-						"tag": { "type": "text", "analyzer": "english" },
-						"confidence": { "type": "float" },
-						"category": { "type": "text", "analyzer": "english" }
+						"tag": {
+							"type": "text",
+							"fields": {
+								"raw": { "type": "text" },
+								"stemmed": {
+									"type": "text",
+									"analyzer": "stemming"
+								}
+							}
+						},
+						"confidence": {
+							"type": "float"
+						},
+						"category": {
+							"type": "text",
+							"fields": {
+								"raw": { "type": "text" },
+								"stemmed": {
+									"type": "text",
+									"analyzer": "stemming"
+								}
+							}
+						}
 					}
 				},
 				"title": {
 					"type": "text",
 					"fields": {
-						"raw": { "type": "keyword" },
-						"en": { "type": "text", "analyzer": "english" },
-						"fr": { "type": "text", "analyzer": "french" }
+						"raw": {
+							"type": "keyword"
+						},
+						"folded": {
+							"type": "text",
+							"analyzer": "folding"
+						}
 					}
 				},
-				"wall": { "type": "keyword" },
+				"wall": {
+					"type": "keyword"
+				},
 				"visualDescription": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "html"
+						},
+						"folding": {
+							"type": "text",
+							"analyzer": "folding_html"
+						}
 					}
 				},
-				"imageSecret": { "type": "keyword" },
-				"imageOriginalSecret": { "type": "keyword" }
+				"imageSecret": {
+					"type": "keyword"
+				},
+				"imageOriginalSecret": {
+					"type": "keyword"
+				}
 			}
 		}
 	}
