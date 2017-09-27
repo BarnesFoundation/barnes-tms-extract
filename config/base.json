@@ -1,7 +1,9 @@
 {
 	"CSV": {
 		"path": "src/dashboard/public/output",
-		"dataPath": "src/dashboard/public/data"
+		"dataPath": "src/dashboard/public/data",
+		"imageSecretsPath": "src/data",
+		"imageSecretsFilename": "imageSecretsProcessed.csv"
 	},
 	"Dashboard": {
 		"public": "src/dashboard/public",
