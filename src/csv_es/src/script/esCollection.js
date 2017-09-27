@@ -843,6 +843,51 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 
+	_updateESWithImageSecrets(csvFilePath) {
+		let processed = 0;
+		const imageSecrets = [];
+
+		logger.info("Beginning image secrets import...");
+		console.log('(Updating index ',this._index,')');
+
+		return new Promise((resolve, reject) => {
+			try {
+				csv.fromPath(csvFilePath, {
+					headers: false,
+					ignoreEmpty: true
+				})
+				.on('data', (data) => {
+					const image = {
+						id: data[0],
+						imageSecret: data[1],
+						imageOriginalSecret: data[2]
+					};
+					imageSecrets.push(image);
+				})
+				.on('end', (data) => {
+					eachLimit(imageSecrets, rateLimit, (image, cb) => {
+						let formattedDoc = {};
+						formattedDoc['imageSecret'] = image.imageSecret;
+						formattedDoc['imageOriginalSecret'] = image.imageOriginalSecret;
+						console.log(formattedDoc);
+
+						this._updateDocumentWithPartialDoc(image.id, formattedDoc).then(() => {
+							logger.info(`${++processed} tags uploaded`);
+							cb();
+						});
+					}, () => {
+						logger.info('imported image secrets');
+						resolve();
+					})
+				})
+			} catch (e) {
+				reject(e);
+			}
+		})
+	}
+
+
+
 	_updateESwithDocumentTags(csvFilePath) {
 		const csvType = path.basename(csvFilePath);
 
