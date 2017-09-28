@@ -1,12 +1,9 @@
-// const config = require('config');
-// const s3 = require('s3');
+const config = require('config');
+const path = require('path');
+const ESCollection = require('../../csv_es/src/script/esCollection.js');
+const { makeElasticsearchOptions } = require('../../util/elasticOptions.js');
 
-// const credentials = config.Credentials.colorAnalysis;
+const esClient = new ESCollection(makeElasticsearchOptions(), config.CSV.dataPath);
+const csvPath = path.join(config.CSV.dataPath, config.CSV.colorDataFilename);
 
-// const { ColorProcessor } = require('../../color-processing/colorProcessPluginAPI.js');
-
-// const logger = require('../../csv_es/src/script/esLogger.js');
-
-// const colorProcessor = new ColorProcessor();
-
-// colorProcessor.desc().then(res => logger.info(res));
+esClient._updateESWithColorData(csvPath);
