@@ -238,12 +238,11 @@
 				},
 				"provenance": { "type": "text" },
 				"tags": {
-					"type": "nested",
 					"properties": {
 						"tag": {
 							"type": "text",
 							"fields": {
-								"raw": { "type": "text" },
+								"raw": { "type": "keyword" },
 								"stemmed": {
 									"type": "text",
 									"analyzer": "stemming"
@@ -256,7 +255,7 @@
 						"category": {
 							"type": "text",
 							"fields": {
-								"raw": { "type": "text" },
+								"raw": { "type": "keyword" },
 								"stemmed": {
 									"type": "text",
 									"analyzer": "stemming"
