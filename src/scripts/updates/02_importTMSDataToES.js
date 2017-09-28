@@ -9,7 +9,7 @@ const logger = require('../../csv_es/src/script/esLogger.js');
 const argv = require('minimist')(process.argv.slice(2));
 const csvRootDir = 'src/dashboard/public/output/';
 const csvFileName = csvRootDir+'csv_'+argv.timestamp+'/objects.csv';
-const csvPath = path.basename(path.dirname(csv));
+const csvPath = path.basename(path.dirname(csvFileName));
 
 logger.info(csvPath);
 logger.info('Beginning import of', csvPath, '...');

@@ -9,7 +9,7 @@ const tmsExporter = new TMSExporter(credentials);
 
 const argv = require('minimist')(process.argv.slice(2));
 
-const source = argv.d || path.resolve(__dirname, '../../dashboard/public/output');
+const source = argv.d || path.resolve(__dirname, '../../data/objects');
 
 const logger = require('../../util/logger.js')(path.join(__dirname, "logs/cron_logs.txt"));
 
