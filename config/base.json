@@ -3,7 +3,16 @@
 		"path": "src/dashboard/public/output",
 		"dataPath": "src/data",
 		"imageSecretsFilename": "imageSecrets.csv",
-		"colorDataFilename": "colors.csv"
+		"colorsFilename": "colors.csv",
+		"tagsFilename": "tags.csv",
+		"dataFilenames" : [
+			"color_descriptor.csv",
+			"composition_descriptor.csv",
+			"generic_descriptor.csv",
+			"light_descriptor.csv",
+			"light_line_space_indicators.csv",
+			"line_HVDC_indicators.csv"
+		]
 	},
 	"Dashboard": {
 		"public": "src/dashboard/public",
