@@ -229,13 +229,15 @@ function handleImageJSONData(d, image, esClient) {
 
 function writeDataToES(tmsId, flattenedData, esClient) {
 	return esClient.exists({
-		index: 'collection',
+		// index: 'collection',
+		index: config.Elasticsearch.index,
 		type: 'object',
 		id: tmsId
 	}).then((res) => {
 		if (res) {
 			return esClient.update({
-				index: 'collection',
+				// index: 'collection',
+				index: config.Elasticsearch.index,
 				type: 'object',
 				id: tmsId,
 				body: {

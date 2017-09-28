@@ -843,6 +843,89 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 
+	_updateESWithImageSecrets(csvFilePath) {
+		let processed = 0;
+		const imageSecrets = [];
+
+		logger.info("Beginning image secrets import...");
+		console.log('(Updating index ',this._index,')');
+
+		return new Promise((resolve, reject) => {
+			try {
+				csv.fromPath(csvFilePath, {
+					headers: false,
+					ignoreEmpty: true
+				})
+				.on('data', (data) => {
+					const image = {
+						id: data[0],
+						imageSecret: data[1],
+						imageOriginalSecret: data[2]
+					};
+					imageSecrets.push(image);
+				})
+				.on('end', (data) => {
+					eachLimit(imageSecrets, rateLimit, (image, cb) => {
+						let formattedDoc = {};
+						formattedDoc['imageSecret'] = image.imageSecret;
+						formattedDoc['imageOriginalSecret'] = image.imageOriginalSecret;
+						console.log(formattedDoc);
+
+						this._updateDocumentWithPartialDoc(image.id, formattedDoc).then(() => {
+							logger.info(`${++processed} tags uploaded`);
+							cb();
+						});
+					}, () => {
+						logger.info('imported image secrets');
+						resolve();
+					})
+				})
+			} catch (e) {
+				reject(e);
+			}
+		})
+	}
+
+	_updateESWithColorData(csvFilePath) {
+		let processed = 0;
+		const colorData = [];
+
+		logger.info("Beginning color data import...");
+		console.log('(Updating index ',this._index,')');
+
+		return new Promise((resolve, reject) => {
+			try {
+				csv.fromPath(csvFilePath, {
+					headers: true,
+					ignoreEmpty: true
+				})
+				.on('data', (data) => {
+					const colorObject = data;
+					colorObject.id = data._id;
+					delete colorObject._id;
+					delete colorObject._index;
+					delete colorObject._score;
+					delete colorObject._type;
+
+					colorData.push(colorObject);
+				})
+				.on('end', (data) => {
+					eachLimit(colorData, rateLimit, (object, cb) => {
+						this._updateDocumentWithPartialDoc(object.id, object).then(() => {
+							logger.info(`${++processed} objects updated`);
+							cb();
+						});
+					}, () => {
+						logger.info('imported color data');
+						resolve();
+					})
+				})
+			} catch (e) {
+				reject(e);
+			}
+		})
+	}
+
 	_updateESwithDocumentTags(csvFilePath) {
 		const csvType = path.basename(csvFilePath);
 

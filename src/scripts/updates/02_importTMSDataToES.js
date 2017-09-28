@@ -1,5 +1,3 @@
-const csvTimestamp = 1505493156502;
-
 const config = require('config');
 const path = require('path');
 
@@ -8,16 +6,15 @@ const { makeElasticsearchOptions } = require('../../util/elasticOptions.js');
 
 const logger = require('../../csv_es/src/script/esLogger.js');
 
+const argv = require('minimist')(process.argv.slice(2));
 const csvRootDir = 'src/dashboard/public/output/';
-const csv = csvRootDir+'csv_'+csvTimestamp+'/objects.csv';
-const csvDate = new Date(csvTimestamp);
+const csvFileName = csvRootDir+'csv_'+argv.timestamp+'/objects.csv';
 const csvPath = path.basename(path.dirname(csv));
 
 logger.info(csvPath);
 logger.info('Beginning import of', csvPath, '...');
 
-const options = makeElasticsearchOptions();
-
-const esCollection = new ESCollection(options, csvRootDir);
+const esOptions = makeElasticsearchOptions();
+const esCollection = new ESCollection(esOptions, csvRootDir);
 
 esCollection.syncESToCSV(csvPath);

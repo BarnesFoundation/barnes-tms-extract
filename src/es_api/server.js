@@ -53,7 +53,7 @@ if (process.env.NODE_ENV === "production") {
 app.get('/objects/:object_id', (req, res) => {
 	const client = new elasticsearch.Client(makeElasticsearchOptions());
 	client.get({
-		index: "collection",
+		index: config.Elasticsearch.index,
 		type: "object",
 		id: req.params.object_id
 	}, function(error, esRes) {
@@ -69,7 +69,7 @@ app.get('/search', (req, res) => {
 	const client = new elasticsearch.Client(makeElasticsearchOptions());
 	const query = req.params.query;
 	client.search({
-		index: "collection",
+		index: config.Elasticsearch.index,
 		q: query
 	}, function(error, esRes) {
 		if (error) {

@@ -12,30 +12,33 @@
 					"type":				"stemmer",
 					"language":		"english"
 				},
-				"period_stop": {
+				"possibly_stop": {
 					"type":				"stop",
 					"stopwords":	["possibly"]
 				}
 			},
 			"analyzer": {
-				"html_description_analyzer": {
+				"html": {
 					"type": "custom",
-					"char_filter": "html_strip",
 					"tokenizer": "standard",
+					"char_filter": "html_strip",
 					"filter": [
 						"lowercase",
 						"english_stop",
 						"english_stemmer"
 					]
 				},
-				"lowercase_keyword_analyzer": {
-					"type": "custom",
-					"tokenizer": "keyword",
+				"folding_html": {
+					"tokenizer": "standard",
+					"char_filter": "html_strip",
 					"filter": [
-						"lowercase"
+						"lowercase",
+						"asciifolding",
+						"english_stop",
+						"english_stemmer"
 					]
 				},
-				"medium_analyzer": {
+				"text": {
 					"type": "custom",
 					"tokenizer": "standard",
 					"filter": [
@@ -43,21 +46,38 @@
 						"english_stop"
 					]
 				},
-				"period_analyzer": {
+				"text_possibly": {
 					"type": "custom",
 					"tokenizer": "keyword",
 					"filter": [
 						"lowercase",
-						"period_stop"
+						"possibly_stop"
 					]
 				},
-				"text_description_analyzer": {
+				"stemming": {
 					"type": "custom",
 					"tokenizer": "standard",
 					"filter": [
 						"lowercase",
 						"english_stop",
 						"english_stemmer"
+					]
+				},
+				"folding": {
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					]
+				},
+				"stemming_folding": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"english_stop",
+						"english_stemmer",
+						"asciifolding"
 					]
 				}
 			}
@@ -76,12 +96,17 @@
 				"bibliography": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "keyword", "store": true }
+						"keyword": { "type": "keyword" },
+						"folded": {
+							"type": "text",
+							"analyzer": "folding"
+						}
 					}
 				},
-				"classification": { "type": "keyword" },
+				"classification": {
+					"type": "keyword"
+				},
 				"color": {
-					"dynamic": false,
 					"properties": {
 						"reference-closest": { "type": "keyword" },
 						"average-color": { "type": "keyword" },
@@ -114,86 +139,166 @@
 						"keyword": { "type": "keyword" }
 					}
 				},
-				"dimensions": { "type": "keyword", "index": false },
+				"dimensions": {
+					"type": "keyword",
+					"index": false
+				},
 				"displayDate": {
 					"type": "text",
 					"analyzer": "keyword",
 					"index": false
 				},
 				"ensembleIndex": {
-					"type": "text"
+					"type": "keyword",
+					"include_in_all": false
 				},
 				"exhHistory": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "text_description_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "stemming"
+						},
+						"folded": {
+							"type": "text",
+							"analyzer": "folding"
+						}
 					}
 				},
-				"highlight": { "type": "boolean" },
-				"id": { "type": "long" },
-				"invno": { "type": "keyword" },
-				"locations": { "type": "keyword", "index": false },
+				"highlight": {
+					"type": "boolean"
+				},
+				"id": {
+					"type": "long"
+				},
+				"invno": {
+					"type": "keyword"
+				},
+				"locations": {
+					"type": "keyword",
+					"index": false
+				},
 				"longDescription": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "html"
+						},
+						"folded": {
+							"type": "text",
+							"analyzer": "folding_html"
+						}
 					}
 				},
 				"medium": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "medium_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "text"
+						}
 					}
 				},
-				"objRightsTypeId": { "type": "long" },
-				"onView": { "type": "boolean" },
+				"objRightsTypeId": {
+					"type": "long"
+				},
+				"onView": {
+					"type": "boolean"
+				},
 				"people": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "keyword" }
+						"text": { "type": "keyword" },
+						"folded": {
+							"type": "text",
+							"analyzer": "folding"
+						}
 					}
 				},
 				"period": {
 					"type": "text",
-					"analyzer": "period_analyzer"
+					"analyzer": "text_possibly"
 				},
-				"room": { "type": "keyword" },
+				"room": {
+					"type": "keyword"
+				},
 				"shortDescription": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "html"
+						},
+						"folded": {
+							"type": "text",
+							"analyzer": "folding_html"
+						}
 					}
 				},
 				"provenance": { "type": "text" },
+				"tags": {
+					"type": "nested",
+					"properties": {
+						"tag": {
+							"type": "text",
+							"fields": {
+								"raw": { "type": "text" },
+								"stemmed": {
+									"type": "text",
+									"analyzer": "stemming"
+								}
+							}
+						},
+						"confidence": {
+							"type": "float"
+						},
+						"category": {
+							"type": "text",
+							"fields": {
+								"raw": { "type": "text" },
+								"stemmed": {
+									"type": "text",
+									"analyzer": "stemming"
+								}
+							}
+						}
+					}
+				},
 				"title": {
 					"type": "text",
 					"fields": {
-						"keyword": { "type": "keyword" }
+						"raw": {
+							"type": "keyword"
+						},
+						"folded": {
+							"type": "text",
+							"analyzer": "folding"
+						}
 					}
 				},
-				"tags_1": {
-					"type": "nested",
-					"properties": {
-						"tag": { "type": "text" },
-						"confidence": { "type": "float" }
-					}
+				"wall": {
+					"type": "keyword"
 				},
-				"tags_2": {
-					"type": "nested",
-					"properties": {
-						"tag": { "type": "text" },
-						"confidence": { "type": "float" }
-					}
-				},
-				"wall": { "type": "keyword" },
 				"visualDescription": {
 					"type": "text",
 					"fields": {
-						"text": { "type": "text", "analyzer": "html_description_analyzer" }
+						"text": {
+							"type": "text",
+							"analyzer": "html"
+						},
+						"folding": {
+							"type": "text",
+							"analyzer": "folding_html"
+						}
 					}
 				},
-				"imageSecret": { "type": "keyword" },
-				"imageOriginalSecret": { "type": "keyword" }
+				"imageSecret": {
+					"type": "keyword"
+				},
+				"imageOriginalSecret": {
+					"type": "keyword"
+				}
 			}
 		}
 	}
