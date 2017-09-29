@@ -62,5 +62,47 @@ When this is done, you should see that many of the objects (not all) have a nest
 10. A few notes:
 - The bash script in `update_collection_data.sh` doesn't work yet, so don't run it.
 - Kibana's search function can take some time to catch up, but the Dev Tools query tools should show you right away that you get the same results for a query in each of the indexes.
+- Here's a good test search:
+```
+GET /collection_a/_search
+{
+  "from": 0,
+  "size": 50,
+  "sort": {
+    "_score": {
+      "order": "desc"
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": {
+        "exists": {
+          "field": "imageSecret"
+        }
+      },
+      "must": {
+        "multi_match": {
+          "query": "french",
+          "fields": [
+            "tags.tag.*",
+            "tags.category.*",
+            "title.*",
+            "people.*",
+            "medium.*",
+            "shortDescription.*",
+            "longDescription.*",
+            "visualDescription.*",
+            "culture",
+            "exhHistory.*",
+            "bibliography.*",
+            "period"
+          ]
+        }
+      }
+    }
+  },
+  "explain": "true"
+}
+```
 - Have a nice day!
 
