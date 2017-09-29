@@ -59,5 +59,8 @@ When this is done, you should see that many of the objects (not all) have a nest
 
 9. Switch the `ELASTICSEARCH_INDEX` environment variable in `barnes-collection-www` to the new index name, and rebuild.
 
-10. The bash script in `update_collection_data.sh` doesn't work yet, so don't run it. Have a nice day!
+10. A few notes:
+- The bash script in `update_collection_data.sh` doesn't work yet, so don't run it.
+- Kibana's search function can take some time to catch up, but the Dev Tools query tools should show you right away that you get the same results for a query in each of the indexes.
+- Have a nice day!
 
