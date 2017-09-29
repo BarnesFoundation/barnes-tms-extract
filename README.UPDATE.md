@@ -1,29 +1,63 @@
 # Quick Steps to Manually Update the Site
 
-This is a temporary process to get us ready for launch in time. We need to update all of this in the future.
+It's important to run these commands at the root of this repo on the admin server, so that you have the correct data CSVs in place.
 
-On the production server, from the root of this repo:
+1. Set the name of the collection index in `local.json`. For now we are toggling between `collection_a` and `collection_b`, but you can also make it whatever you want.
+```
+{
+  "Elasticsearch": {
+    "index": "collection_a"
+  }
+}
+```
+It is very important that you set this collection index name to something new. If you don't, you will overwrite the live index and create some downtime.
 
-1. Export a new CSV from TMS.
-```
-node src/scripts/debugging/tmsToCSV.js
-```
-2. Note the name of the CSV logged by the previous step. It should look like `csv_1505491700669`.
+If this is a new collection index name, you'll need to add it to Kibana manually in order to look at it. In Kibana, go to Management > Index Patterns > +, and put the new collection index name in the field for *Index name or pattern*. Uncheck the box for time-based events. Click Create.
 
-3. Import this CSV into ES. This step will clear all the images from the front-end of the site, so be careful.
+2. Prepare the new ES index.
 ```
-node src/scripts/rebuildES.js --csv=csv_1505491700669
+node src/scripts/updates/00_prepareESIndex.js
 ```
-4. Save the image keys to ES. After this step, you should see images once again.
+This builds a new index with the given name in Elasticsearch, adds our mapping, and adds some metadata. When this step is complete, you should see that new index in Kibana, with 1 hit for the meta object.
+
+3. Export a new CSV from TMS.
 ```
-node src/scripts/saveImageKeysToEs.js
+node src/scripts/updates/01_exportTMSToCSV.js
 ```
-5. Run the color processing scripts to add CH-style color data back. It'll take a few minutes to see the color filters working properly again.
+This will take a while. When it's done, you can check to see that there's a new set of CSVs in `dashboard/src/public/output`. Eventually we should have this write to a better location, but I didn't want to mess with that yet.
+
+4. Import this new CSV into ES.
 ```
-node src/scripts/nightlyColorProcess.js
+node src/scripts/updates/02_importTMSDataToES.js
 ```
-6. Import Ahmed's and Sam's computer vision data. This will import all CSVs in the `src/dashboard/public/data` directory. If the CSV isn't in the directory, it's not going into ES.
+When this is done, you should see 2220 hits in the appropriate index on Kibana.
+You might see some errors while this is running, but it should be fine.
+
+5. Add the image secrets to ES.
 ```
-node src/scripts/importCSV.js --all
+node src/scripts/updates/03_addImageSecretsToES.js
 ```
+When this is done, you should see that 1873 objects in this index have `imageSecret` and `imageOriginalSecret` in Kibana.
+
+6. Add the color data to ES.
+```
+node src/scripts/updates/04_addColorDataToES.js
+```
+When this is done, you should see that objects have blobbed `color` data in Kibana.
+
+7. Import the computer vision data CSVs to ES.
+```
+node src/scripts/updates/05_importDataCSVsToES.js
+```
+When this is done, you should see that many of the objects (not all) have a variety of float descriptors attached to them.
+
+8. Add the tags to ES.
+```
+node src/scripts/updates/06_addTagsToES.js
+```
+When this is done, you should see that many of the objects (not all) have a nested `tags` property in Kibana.
+
+9. Switch the `ELASTICSEARCH_INDEX` environment variable in `barnes-collection-www` to the new index name, and rebuild.
+
+10. The bash script in `update_collection_data.sh` doesn't work yet, so don't run it. Have a nice day!
 
