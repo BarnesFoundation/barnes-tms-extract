@@ -172,7 +172,13 @@
 					"type": "long"
 				},
 				"invno": {
-					"type": "keyword"
+					"type": "keyword",
+					"fields": {
+						"text": {
+							"type":"text",
+							"analyzer":"text"
+						}
+					}
 				},
 				"locations": {
 					"type": "keyword",
