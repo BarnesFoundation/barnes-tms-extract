@@ -49,7 +49,6 @@ class ESCollection extends UpdateEmitter {
 		Promise.promisifyAll(this._client.cat);
 		Promise.promisifyAll(this._client.indices);
 		this._csvRootDir = csvRootDirectory;
-		this._csvDataDir = path.join(path.dirname(csvRootDirectory), 'data');
 		this._status = ESCollectionStatus.READY;
 		this._message = "";
 		this._kibanaUrl = config.Elasticsearch.kibana;
@@ -718,23 +717,16 @@ class ESCollection extends UpdateEmitter {
 	 * @throws {ESCollectionException}
 	 */
 	importDataCSVToES(importCSV) {
-		const csvFilePath = path.join(this._csvDataDir, importCSV);
-		// this.started(ESCollectionStatus.SYNCING, `Importing ${importCSV}`);
+		const csvFilePath = path.join(this._csvRootDir, importCSV);
 
 		if (!fs.existsSync(csvFilePath)) {
 			logger.info("Can't find CSV to import. Stopping.");
 			return false;
 		}
 
-		if (importCSV === 'tags.csv') {
-			return this._updateESwithDocumentTags(csvFilePath).then((res) => {
-				logger.info(res);
-			});
-		} else {
-			return this._updateESWithDataCSV(csvFilePath).then((res) => {
-				logger.info(res);
-			});
-		}
+		return this._updateESWithDataCSV(csvFilePath).then((res) => {
+			logger.info(res);
+		});
 	}
 
 	/**
@@ -872,11 +864,11 @@ class ESCollection extends UpdateEmitter {
 						console.log(formattedDoc);
 
 						this._updateDocumentWithPartialDoc(image.id, formattedDoc).then(() => {
-							logger.info(`${++processed} tags uploaded`);
+							logger.info(`Image secrets added to ${++processed} objects`);
 							cb();
 						});
 					}, () => {
-						logger.info('imported image secrets');
+						logger.info('Imported image secrets!');
 						resolve();
 					})
 				})
@@ -912,7 +904,7 @@ class ESCollection extends UpdateEmitter {
 				.on('end', (data) => {
 					eachLimit(colorData, rateLimit, (object, cb) => {
 						this._updateDocumentWithPartialDoc(object.id, object).then(() => {
-							logger.info(`${++processed} objects updated`);
+							logger.info(`Added color data to ${++processed} objects`);
 							cb();
 						});
 					}, () => {
@@ -927,8 +919,6 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	_updateESwithDocumentTags(csvFilePath) {
-		const csvType = path.basename(csvFilePath);
-
 		let processed = 0;
 		logger.info("Beginning tag import");
 
@@ -940,28 +930,24 @@ class ESCollection extends UpdateEmitter {
 						headers: ['id', 'tag', 'category', 'confidence'],
 						ignoreEmpty: true
 					})
-					.on('data', (data) => {
-						if (parseFloat(data.confidence) >= 0.2) {
+					.on('data', (tag) => {
+						if (parseFloat(tag.confidence) >= 0.2) {
+							let id = tag.id;
+							const tagObject = {
+								tag: tag.tag,
+								category: tag.category,
+								confidence: tag.confidence
+							};
 
-							const tag = { "tag": data.tag, "confidence": data.confidence };
-
-							objectTags[data.id] = objectTags[data.id] || { 'id': data.id };
-
-							objectTags[data.id]['tags'] = objectTags[data.id]['tags'] || {};
-							// objectTags[data.id]['tags'] = objectTags[data.id]['tags'] || [];
-
-							objectTags[data.id]['tags'][data.category] = objectTags[data.id]['tags'][data.category] || [];
-							objectTags[data.id]['tags'][data.category].push(data.tag);
+							objectTags[id] = objectTags[id] || { 'id': id };
+							objectTags[id]['tags'] = objectTags[id]['tags'] || [];
+							objectTags[id]['tags'].push(tagObject);
 						}
 					})
 					.on('end', () => {
-						eachLimit(objectTags, rateLimit, (data, cb) => {
-							let formattedDoc = {};
-							formattedDoc['tags'] = objectTags[data.id]['tags'];
-							console.log(formattedDoc);
-
-							this._updateDocumentWithPartialDoc(data.id, formattedDoc).then(() => {
-								logger.info(`${++processed} tags uploaded`);
+						eachLimit(objectTags, rateLimit, (object, cb) => {
+							this._updateDocumentWithPartialDoc(object.id, object).then(() => {
+								logger.info(`${++processed} objects tagged`);
 								cb();
 							});
 						}, () => {
