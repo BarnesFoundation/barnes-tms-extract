@@ -172,7 +172,7 @@
 					"type": "long"
 				},
 				"invno": {
-					"type": "keyword",
+					"type": "text",
 					"fields": {
 						"text": {
 							"type":"text",
