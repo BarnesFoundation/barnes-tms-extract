@@ -77,7 +77,8 @@
 					"required": true
 				},
 				{
-					"name": "provenance"
+					"name": "publishedProvenance",
+					"alias": "provenance"
 				},
 				{
 					"name": "objRightsTypeId",
