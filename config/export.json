@@ -65,7 +65,8 @@
 					"enumerated": true
 				},
 				{
-					"name": "exhHistory"
+					"name": "exhHistory",
+					"alias": "exhibitionHistory"
 				},
 				{
 					"name": "classification",

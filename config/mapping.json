@@ -152,7 +152,7 @@
 					"type": "keyword",
 					"include_in_all": false
 				},
-				"exhHistory": {
+				"exhibitionHistory": {
 					"type": "text",
 					"fields": {
 						"text": {
