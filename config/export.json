@@ -65,6 +65,9 @@
 					"enumerated": true
 				},
 				{
+					"name": "onview"
+				},
+				{
 					"name": "exhHistory",
 					"alias": "exhibitionHistory"
 				},
