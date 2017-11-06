@@ -31,7 +31,7 @@
     "pug": "^2.0.0-rc.1",
     "s3": "^4.4.0",
     "seneca": "^3.3.0",
-    "seneca-transport": "friedemannsommer/seneca-transport",
+    "seneca-transport": "^2.1.1",
     "seneca-web": "^2.0.0",
     "seneca-web-adapter-express": "^1.0.2",
     "shelljs": "^0.7.6",

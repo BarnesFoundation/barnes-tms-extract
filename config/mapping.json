@@ -152,7 +152,10 @@
 					"type": "keyword",
 					"include_in_all": false
 				},
-				"exhHistory": {
+				"onview": {
+					"type": "boolean"
+				},
+				"exhibitionHistory": {
 					"type": "text",
 					"fields": {
 						"text": {
