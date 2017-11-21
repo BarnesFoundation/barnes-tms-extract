@@ -105,14 +105,3 @@ GET /collection_a/_search
 }
 ```
 - Have a nice day!
-
-### Improvements TK
-- Archive documentation for unused pieces of this codebase. And archive unused pieces of this codebase. (SENECA)
-- Double check that we're logging all errors (ex: CSV formatting or file names not correct) -- more verbose error logging
-- Automate index swapping. (We'd need to know what index is currently live on production in order to do this.)
-  - Timestamp pattern for new index name. (temp name until completed)
-  - pm2 automatically picks the newest index on restart
-  - cron clearing of all but newest 3 indexes to keep things clean
-- npm run script to update the DB; runs queued series of scripts, triggered by a button of sorts (Slack command or dashboard)
-- If any steps fail, clear temp index and reset everything; wait for human to retrigger process.
-- Parallelize TMS data extraction (pie in the sky).
