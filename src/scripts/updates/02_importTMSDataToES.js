@@ -25,7 +25,7 @@ const importDataFromCSV = (csv) => {
   const esOptions = makeElasticsearchOptions();
   const esCollection = new ESCollection(esOptions, csvRootDir);
 
-  esCollection.syncESToCSV(csvPath);
+  esCollection.syncESWithCSV(csvPath);
 }
 
 if (argv.csv) {

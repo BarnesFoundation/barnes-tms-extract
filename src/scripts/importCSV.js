@@ -25,7 +25,6 @@ if (argv.all) {
   esCollection.description().then((desc) => {
     if ( importCSVTarget ) {
       logger.info('Preparing index to import ', importCSVTarget);
-      return esCollection._prepareIndexForSync();
     } else {
       logger.error('You need to indicate a CSV for import.');
       logger.error('To import specific CSV: node src/scripts/importCSV.js --csv=test.csv');

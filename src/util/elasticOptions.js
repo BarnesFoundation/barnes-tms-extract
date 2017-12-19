@@ -16,6 +16,6 @@ module.exports.makeElasticsearchOptions = function() {
 				protocol: rawOptions.protocol || 'http',
 				port: rawOptions.port || 9200
 			}
-		]
+    ]
 	};
 }

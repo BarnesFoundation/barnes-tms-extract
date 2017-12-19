@@ -26,17 +26,9 @@ const ESCollectionStatus = Object.freeze({
 });
 
 /**
- * @typedef {object} ESCollection~ESImportStatus
- * @property {boolean} hasImportedCSV - Whether the ES index has imported a CSV
- * @property {number} lastCSVImportTimestamp - UNIX timestamp of the last imported CSV
- * @property {string} lastImportedCSV - Name of the last imported CSV file
- */
-
-/**
- * Manages the process of importing a CSV file into Elasticsearch. The `collection` index has two types,
- * `meta` and `object`. The `meta` type stores information about the import process itself, including the
- * timestamp of the last CSV file to be imported (lastCSVImportTimestamp) and whether or not the index is
- * currently synchronized with a CSV file (hasImportedCSV). The `object` type stores the collection objects
+ * FIXME:
+ * Manages the process of importing a CSV file into Elasticsearch. The `collection` index has one type,
+ * `object`. The `object` type stores the collection objects
  * themselves, and will have different fields depending on the headers of the imported CSV file
  * @param {string} esOptions - Options dictionary used to initialize an elasticsearch client
  * @param {string} csvRootDirectory - Path to the directory containing csv_* directories with exports from TMS
@@ -52,7 +44,7 @@ class ESCollection extends UpdateEmitter {
 		this._status = ESCollectionStatus.READY;
 		this._message = "";
 		this._kibanaUrl = config.Elasticsearch.kibana;
-		this._index = config.Elasticsearch.index;
+    this._prefix = config.Elasticsearch.prefix || 'collection';
 	}
 
 	/** @property {ESCollection~ESImportStatus} status
@@ -109,78 +101,17 @@ class ESCollection extends UpdateEmitter {
 		return dataCopy;
 	}
 
-	/**
-	 * Whether or not the collection index exists
-	 * @private
-	 */
-	_collectionIndexExists() {
-		return this._client.indices.existsAsync({
-			index: this._index
-		});
-	}
-
-	/**
-	 * Check whether or not the collection metadata exists
-	 * @private
-	 * @return {Promise} Resolved when the elasticsearch request completes
-	 */
-	_collectionMetadataExists() {
-		return this._client.existsAsync({
-			index: this._index,
-			type: 'meta',
-			id: 1
-		});
-	}
-
-	/**
-	 * Just a plain deep object comparison, for now. We may want to get fancier if the
-	 * data stored in ES gets fancier
-	 * @private
-	 * @param {object} csvRow - Key value pairs from the CSV export document
-	 * @param {object} esSource - _source field of an ES object
-	 * @return {boolean} True if the two objects are deep equal
-	 */
-	_compareCSVDataWithESSource(csvRow, esSource) {
-		return _.isEqual(csvRow, esSource);
-	}
-
-	/**
-	 * Walks through all of the data in a CSV, and asserts that each row is reflected
-	 * exactly in the ES index
-	 * @private
-	 * @param {string} csvExport - Name of the CSV export to compare with the ES index
-	 * @return {Promise} True if all of the CSV data is the same as in ES, false otherwise
-	 */
-	_compareCSVDataWithIndex(csvExport) {
-		return new Promise((resolve, reject) => {
-			const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
-			let foundMismatch = false;
-			try {
-				csv
-					.fromPath(csvFilePath, { headers: true })
-					.on('data', (data) => {
-						if (!foundMismatch) {
-							const analyzedData = this._analyzedData(data);
-							this._client.get({
-								index: 'collection',
-								type: 'object',
-								id: analyzedData.id
-							}, (function(error, res) {
-								if (error) throw error;
-								if (!this._compareCSVDataWithESSource(analyzedData, res._source)) {
-									foundMismatch = true;
-								}
-							}).bind(this));
-						}
-					})
-					.on('end', () => {
-						resolve(!foundMismatch);
-					});
-			} catch (e) {
-				reject(e);
-				return;
-			}
-		});
+	_latestCollection() {
+    return this._client.cat
+      .indices({index: 'collection_*', s: 'creation.date:desc', h: ['i']})
+      .then(index => {
+        if (index) {
+          const name = index.split('\n')[0]
+          return name
+        } else {
+          throw new Error("no index made");
+        }
+      })
 	}
 
 	/**
@@ -188,28 +119,12 @@ class ESCollection extends UpdateEmitter {
 	 * @private
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
-	_createCollectionIndex() {
+	_createCollectionIndex(index) {
+    console.log(`creating index ${index}`)
 		return this._client.indices.createAsync({
-			index: this._index,
+			index: index,
 			body: mapping
-		});
-	}
-
-	/**
-	 * Creates a meta type for the collection index
-	 * @private
-	 * @return {Promise} Resolved when the elasticsearch request completes
-	 */
-	_createCollectionMetadata() {
-		return this._client.createAsync({
-			index: this._index,
-			type: 'meta',
-			id: 1,
-			body: {
-				hasImportedCSV: false,
-				lastCSVImportTimestamp: 0
-			}
-		});
+		})
 	}
 
 	/**
@@ -220,42 +135,19 @@ class ESCollection extends UpdateEmitter {
 	 */
 	_createDocumentWithData(data) {
 		const dataCopy = this._analyzedData(data);
-		return this._client.updateAsync({
-			index: this._index,
-			type: 'object',
-			id: dataCopy.id,
-			body: {
-				doc: dataCopy,
-				doc_as_upsert: true
-			}
-		});
-	}
-
-	/**
-	 * Removes the collection index
-	 * @return {Promise} Resolved when the elasticsearch request completes
-	 */
-	_deleteCollectionIndex() {
-		return this._collectionIndexExists().then((res) => {
-			if (res) {
-				return this._client.indices.deleteAsync({ index: this._index });
-			}
-		});
-	}
-
-	/**
-	 * Delete a document by id
-	 * @private
-	 * @param {number} docId - ID of the document to delete
-	 * @return {Promise} Resolved when the elasticsearch request completes
-	 */
-	_deleteDocumentWithId(docId) {
-		return this._client.deleteAsync({
-			index: this._index,
-			type: 'object',
-			id: docId,
-		});
-	}
+    return this._latestCollection().then(index => {
+      console.log(`createDocumentWithData index is ${index}`)
+      this._client.updateAsync({
+        index: index,
+        type: 'object',
+        id: dataCopy.id,
+        body: {
+          doc: dataCopy,
+          doc_as_upsert: true
+        }
+      })
+    })
+  }
 
 	/**
 	 * Return an ES6 Set containing all of the IDs of all the objects in a CSV file
@@ -282,221 +174,64 @@ class ESCollection extends UpdateEmitter {
 		});
 	}
 
-	/**
-	 * Return an ES6 Set containing all of the IDs of all the objects in the index
-	 * @private
-	 * @return {Promise} Resolves to the ES6 Set containing all ids
-	 */
-	_getAllObjectIds() {
-		logger.info("Fetching object IDs from Elasticsearch");
-		return new Promise((resolve, reject) => {
-			const allEsIds = new Set();
-
-			const getMoreUntilDone = (function(error, response) {
-				if (error) {
-					reject(error);
-				} else {
-					response.hits.hits.forEach((hit) => {
-						allEsIds.add(hit._source.id);
-					});
-					logger.info(`Fetched ${allEsIds.size} ids so far`);
-					if (response.hits.total > allEsIds.size) {
-						this._client.scroll({
-							scrollId: response._scroll_id,
-							scroll: '30s'
-						}, getMoreUntilDone);
-					} else {
-						resolve(allEsIds);
-					}
-				}
-			}).bind(this);
-
-			this._client.search({
-				index: this._index,
-				type: 'object',
-				scroll: '30s',
-				_source: ['id'],
-				sort: '_doc',
-				size: 250
-			}, getMoreUntilDone);
-		});
-	}
-
-	/**
-	 * Get the name of the last CSV to be imported
-	 * @private
-	 */
-	_getLastCSVName() {
-		return this._client.getAsync({
-			index: this._index,
-			type: 'meta',
-			id: 1,
-		}).then((res) => {
-			if (res._source.hasImportedCSV === false) return null;
-			return `csv_${res._source.lastCSVImportTimestamp}`;
-		});
-	}
-
-	/**
-	 * Whether or not the index is ready to sync with a CSV. Checks if the index exists
-	 * and whether the meta object exists
-	 * @return {Promise} Resolved when the elasticsearch request complete, result is whether the index is ready
-	 */
-	_isIndexReadyForSync() {
-		return this._collectionIndexExists().then((res) => {
-			if (!res) return false;
-			return this._collectionMetadataExists();
-		});
-	}
-
-	/**
-	 * Creates the index if it doesn't exists, and creates the meta object if it doesn't exist
-	 * @private
-	 * @return {Promise} Resolved when the elasticsearch request complete
-	 */
-	_prepareIndexForSync() {
-		return this._collectionIndexExists().then((res) => {
-			if (!res) {
-				return this._createCollectionIndex();
-			}
-		}).then(() => {
-			return this._collectionMetadataExists();
-		}).then((res) => {
-			if (!res) {
-				return this._createCollectionMetadata();
-			}
-		});
-	}
+  /**
+   * Create a new index with the current timestamp
+   * @private
+   * @return {Promise} the index name
+   */
+  _prepareIndexForSync() {
+    const timestamp = Date.now()
+    const index = `${this._prefix}_${timestamp}`
+    return this._createCollectionIndex(index)
+  }
 
 	/**
 	 * Synchronize the elasticsearch index with the given CSV file
 	 * @private
 	 * @param {string} csvExport - Name of the CSV export with which to synchronize
 	 */
-	_syncESWithCSV(csvExport) {
-		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
-		let processed = 0;
-		logger.info("Beginning CSV sync");
-		return new Promise((resolve, reject) => {
-			const todos = [];
-			try {
-				csv
-					.fromPath(csvFilePath, { headers: true })
-					.on('data', (data) => {
-						todos.push(data);
-					})
-					.on('end', () => {
-						eachLimit(todos, rateLimit, (data, cb) => {
-							this._createDocumentWithData(data, this._client).then(() => {
-								this.progress(`Synchronizing with ${csvExport}, ${++processed} documents uploaded`);
-								cb();
-							});
-						}, () => {
-							this._updateMetaForCSVFile(csvExport).then(() => {
-								logger.info('Finished export');
-								resolve();
-							});
-						});
-					});
-			} catch (e) {
-				reject(e);
-			}
-		});
+	syncESWithCSV(csvExport) {
+    this._prepareIndexForSync().then(index => {
+      const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
+      let processed = 0;
+      logger.info("Beginning CSV sync");
+      return new Promise((resolve, reject) => {
+        const todos = [];
+        try {
+          csv
+            .fromPath(csvFilePath, { headers: true })
+            .on('data', (data) => {
+              todos.push(data);
+            })
+            .on('end', () => {
+              eachLimit(todos, rateLimit, (data, cb) => {
+                this._createDocumentWithData(data, this._client).then(() => {
+                  this.progress(`Synchronizing with ${csvExport}, ${++processed} documents uploaded`);
+                  cb();
+                });
+                logger.info('Finished export');
+                resolve();
+              })
+            });
+        } catch (e) {
+          reject(e)
+        }
+      })
+    })
 	}
 
 	_updateDocumentWithData(docId, data) {
 		const dataCopy = this._analyzedData(data);
-		return this._client.updateAsync({
-			index: this._index,
-			type: 'object',
-			id: docId,
-			body: {
-				doc: dataCopy,
-			},
-		});
-	}
-
-	/**
-	 * Update the elasticsearch index with the given CSV file
-	 * @private
-	 * @param {string} csvExport - Name of the CSV export
-	 */
-	_updateESWithCSV(csvExport) {
-		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
-		this.started(ESCollectionStatus.SYNCING, `Updating index to match ${csvExport}`);
-		const csvDir = path.resolve(path.dirname(csvFilePath), '..');
-		const tmpDir = tmp.dirSync();
-		const outputJsonFile = path.join(tmpDir.name, 'diff.json');
-		return this._getLastCSVName().then((oldCsvName) => {
-			logger.info(`Previously imported csv ${oldCsvName}`);
-			const oldCsvPath = path.join(csvDir, oldCsvName, 'objects.csv');
-			const res = diffCSV(oldCsvPath, csvFilePath, logger);
-			return this._updateESWithDiffJSON(res);
-		}).then(() => {
-			logger.info('Finished import, updating index metadata');
-			return this._updateMetaForCSVFile(csvExport).then(() => {
-				logger.info('Index metadata updated');
-				this.completed(`Synchronized with ${csvExport}`);
-			});
-		});
-	}
-
-	_updateESWithDiffJSON(diffJson) {
-		logger.info(
-			`Updating to new CSV.
-			${diffJson.added.length} new documents,
-			${diffJson.changed.length} changed documents,
-			${diffJson.removed.length} removed documents.`
-		);
-
-		const adds = new Promise((resolve, reject) => {
-			eachLimit(diffJson.added, rateLimit, (added, cb) => {
-				this._createDocumentWithData(added).then(() => cb());
-			}, () => { logger.info("Finished all adds"); resolve()})
-		});
-
-		const changes = new Promise((resolve, reject) => {
-			eachLimit(diffJson.changed, rateLimit, (changed, cb) => {
-				const id = parseInt(changed.key[0]);
-				const todos = [];
-				_.forEach(changed.fields, (v, k) => {
-					logger.info("Updating document: " + id);
-					todos.push(this._updateDocumentWithData(id, { k: v.to }));
-				});
-				Promise.all(todos).then(() => {cb()} );
-			}, () => { logger.info("Finished all changes"); resolve(); })
-		});
-
-		const removes = new Promise((resolve, reject) => {
-			eachLimit(diffJson.removed, rateLimit, (removed, cb) => {
-				const id = parseInt(removed.id);
-				this._deleteDocumentWithId(id).then(() => cb());
-			}, () => { logger.info("Finished all removes"); resolve(); })
-		});
-
-		return Promise.all([adds, changes, removes]);
-	}
-
-	/**
-	 * Update the elasticsearch metadata type for the given CSV file
-	 * @private
-	 * @param {string} csvExport - Name of the CSV export
-	 */
-	_updateMetaForCSVFile(csvExport) {
-		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
-		const bn = path.dirname(csvFilePath).split(path.sep).pop();
-		const timestamp = parseInt(bn.split('_')[1]);
-		return this._client.updateAsync({
-			index: this._index,
-			type: 'meta',
-			id: 1,
-			body: {
-				doc: {
-					hasImportedCSV: true,
-					lastCSVImportTimestamp: timestamp,
-				},
-			},
-		});
+    return this._latestCollection().then(index => {
+      this._client.updateAsync({
+        index: index,
+        type: 'object',
+        id: docId,
+        body: {
+          doc: dataCopy,
+        },
+      })
+    })
 	}
 
 	/**
@@ -507,15 +242,13 @@ class ESCollection extends UpdateEmitter {
 		var mappings = mapping.mappings.object.properties;
 		mappings = this._addDataPropsToMappings(mappings);
 
-		return this._collectionIndexExists().then((res) => {
-			if (res) {
-				return this._client.indices.putMapping({
-					index: this._index,
-					body: { properties: mappings },
-					type: 'document'
-				});
-			}
-		});
+		return this._latestCollection().then((index) => {
+      return this._client.indices.putMapping({
+        index: index,
+        body: { properties: mappings },
+        type: 'document'
+      });
+		})
 	}
 
 	_addDataPropsToMappings(mappings) {
@@ -544,39 +277,6 @@ class ESCollection extends UpdateEmitter {
 		return mappings;
 	}
 
-	/**
-	 * Removes all objects from the collections index and resets the meta document
-	 * @return {Promise} Resolves to a description of the Elasticsearch index
-	 */
-	clearCollectionObjects() {
-		return this._collectionIndexExists().then((res) => {
-			if (res) {
-				return this._client.updateAsync({
-					index: this._index,
-					type: 'meta',
-					id: 1,
-					body: {
-						doc: {
-							hasImportedCSV: false,
-							lastCSVImportTimestamp: 0,
-						},
-					},
-				}).then((res) => {
-					return this._client.deleteByQueryAsync({
-						conflicts: 'proceed',
-						index: this._index,
-						type: 'object',
-						body: {
-							query: {
-								match_all: {},
-							},
-						},
-					});
-				});
-			}
-		});
-	}
-
 	completed(message) {
 		this._status = ESCollectionStatus.READY;
 		this._message = message;
@@ -589,46 +289,35 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolves to a description of the Elasticsearch index
 	 */
 	description() {
-		return this._collectionIndexExists().then((res) => {
-			if (!res) {
+    return this._latestCollection()
+      .catch(() => {
 				return { status: 'uninitialized' };
-			} else {
-				const metaGetter = this._client.getAsync({
-					index: this._index,
-					type: 'meta',
-					id: 1,
-				}).then((response) => {
-					return {
-						hasImportedCSV: response._source.hasImportedCSV,
-						lastCSVImportTimestamp: response._source.lastCSVImportTimestamp,
-						lastImportedCSV: response._source.hasImportedCSV ? `csv_${response._source.lastCSVImportTimestamp}` : null,
-					};
-				});
+      })
+      .then(index => {
+        const countGetter =
+          this._client.countAsync({
+              index: index,
+              type: 'object',
+          }).then(response => {
+            return {
+              count: response.count || 0
+            }
+          })
 
-				const countGetter = this._client.countAsync({
-					index: this._index,
-					type: 'object',
-				}).then((response) => {
-					return {
-						count: response.count || 0
-					}
-				});
-
-				return Promise.all([metaGetter, countGetter]).then((res) => {
-					const [meta, count] = res;
+				return Promise.all([countGetter]).then((res) => {
+					const [count] = res;
 					return Object.assign({
 						status: this._status,
 						message: this._message,
 						kibanaUrl: this._kibanaUrl,
-						index: this._index
-					}, meta, count);
+						index: index
+					}, count);
 				});
-			}
-		})
+			})
 	}
 
 	/**
-	 * Public wrapper for _prepareIndexForSync, which creates the index and metadata document
+	 * Public wrapper for _prepareIndexForSync, which creates the index document
 	 * @return {Promise} Resolved when the elasticsearch request completes
 	 */
 	initialize() {
@@ -646,11 +335,13 @@ class ESCollection extends UpdateEmitter {
 	 * @return {Promise} Resolves to the result of the elasticsearch query on completion
 	 */
 	search(query) {
-		console.log("Searching for ", query);
-		return this._client.search({
-			index: this._index,
-			q: query
-		});
+		console.log("Searching for ", query)
+    return this.latestCollection().then(index => {
+      this._client.search({
+        index: index,
+        q: query
+      })
+    })
 	}
 
 	started(status, message) {
@@ -658,56 +349,6 @@ class ESCollection extends UpdateEmitter {
 		this._message = message;
 		logger.info(this._message);
 		super.started();
-	}
-
-	/**
-	 * Attempts to synchronize the Elasticsearch index with the given CSV export
-	 * If the index has already been synchronized with a CSV file, then this function will compare the CSV
-	 * file to be imported with the previous file. Only the differences between the two will be used to
-	 * update Elasticsearch. If the previous file cannot be found, or if the two CSV files have different
-	 * headers, then the Elasticsearch index will be cleared before updating.
-	 * @param {string} csvExport - Name of the CSV export to synchronize with ES
-	 * @return {Promise} Resolved when the synchronization is complete
-	 * @throws {ESCollectionException}
-	 */
-	syncESToCSV(csvExport) {
-		const csvFilePath = path.join(this._csvRootDir, csvExport, 'objects.csv');
-
-		this.started(ESCollectionStatus.SYNCING, `Synchronizing with ${csvExport}`);
-
-		return this._prepareIndexForSync().then(() => {
-			return this._getLastCSVName();
-		}).then((lastCSVName) => {
-			const canDiff = (lastCSVName !== null);
-			if (canDiff) {
-				const lastCSVFilePath = path.join(this._csvRootDir, lastCSVName, 'objects.csv');
-				if (!fs.existsSync(lastCSVFilePath)) {
-					logger.info("Can't find previously imported CSV --- importing all objects from " + csvExport);
-					return false;
-				}
-
-				return doCSVKeysMatch(lastCSVFilePath, csvFilePath).then((res) => {
-					if (res) {
-						logger.info('CSV keys match');
-					} else {
-						logger.info('CSV keys do not match');
-					}
-					return res;
-				});
-			}
-			logger.info('No previous CSV file has been imported --- importing all objects from ' + csvExport);
-			return false;
-		}).then((tryToDiff) => {
-			if (tryToDiff) {
-				logger.info('Updating from previously imported CSV');
-				return this._updateESWithCSV(csvExport);
-			}
-			logger.info(`Initializing with CSV ${csvFilePath}`);
-			return this.clearCollectionObjects().then(res => this._syncESWithCSV(csvExport));
-		}).then((res) => {
-			this.completed(`Synchronized with ${csvExport}`);
-			return res;
-		});
 	}
 
 	/**
@@ -824,9 +465,6 @@ class ESCollection extends UpdateEmitter {
 						}, () => {
 							logger.info('imported');
 							resolve();
-			// 				this._updateMetaForCSVFile(csvExport).then(() => {
-			// 					logger.info('Finished export');
-			// 					resolve();
 						});
 					});
 			} catch (e) {
@@ -839,43 +477,42 @@ class ESCollection extends UpdateEmitter {
 		let processed = 0;
 		const imageSecrets = [];
 
-		logger.info("Beginning image secrets import...");
-		console.log('(Updating index ',this._index,')');
+    logger.info("Beginning image secrets import...");
 
-		return new Promise((resolve, reject) => {
-			try {
-				csv.fromPath(csvFilePath, {
-					headers: false,
-					ignoreEmpty: true
-				})
-				.on('data', (data) => {
-					const image = {
-						id: data[0],
-						imageSecret: data[1],
-						imageOriginalSecret: data[2]
-					};
-					imageSecrets.push(image);
-				})
-				.on('end', (data) => {
-					eachLimit(imageSecrets, rateLimit, (image, cb) => {
-						let formattedDoc = {};
-						formattedDoc['imageSecret'] = image.imageSecret;
-						formattedDoc['imageOriginalSecret'] = image.imageOriginalSecret;
-						console.log(formattedDoc);
+    return new Promise((resolve, reject) => {
+      try {
+        csv.fromPath(csvFilePath, {
+          headers: false,
+          ignoreEmpty: true
+        })
+        .on('data', (data) => {
+          const image = {
+            id: data[0],
+            imageSecret: data[1],
+            imageOriginalSecret: data[2]
+          };
+          imageSecrets.push(image);
+        })
+        .on('end', (data) => {
+          eachLimit(imageSecrets, rateLimit, (image, cb) => {
+            let formattedDoc = {};
+            formattedDoc['imageSecret'] = image.imageSecret;
+            formattedDoc['imageOriginalSecret'] = image.imageOriginalSecret;
+            console.log(formattedDoc);
 
-						this._updateDocumentWithPartialDoc(image.id, formattedDoc).then(() => {
-							logger.info(`Image secrets added to ${++processed} objects`);
-							cb();
-						});
-					}, () => {
-						logger.info('Imported image secrets!');
-						resolve();
-					})
-				})
-			} catch (e) {
-				reject(e);
-			}
-		})
+            this._updateDocumentWithPartialDoc(image.id, formattedDoc).then(() => {
+              logger.info(`Image secrets added to ${++processed} objects`);
+              cb();
+            });
+          }, () => {
+            logger.info('Imported image secrets!');
+            resolve();
+          })
+        })
+      } catch (e) {
+        reject(e);
+      }
+    })
 	}
 
 	_updateESWithColorData(csvFilePath) {
@@ -883,7 +520,6 @@ class ESCollection extends UpdateEmitter {
 		const colorData = [];
 
 		logger.info("Beginning color data import...");
-		console.log('(Updating index ',this._index,')');
 
 		return new Promise((resolve, reject) => {
 			try {
@@ -892,12 +528,12 @@ class ESCollection extends UpdateEmitter {
 					ignoreEmpty: true
 				})
 				.on('data', (data) => {
-					const colorObject = data;
-					colorObject.id = data._id;
-					delete colorObject._id;
-					delete colorObject._index;
-					delete colorObject._score;
-					delete colorObject._type;
+					const colorObject = data
+					colorObject.id = data._id
+					delete colorObject._id
+					delete colorObject._index
+					delete colorObject._score
+					delete colorObject._type
 
 					colorData.push(colorObject);
 				})
@@ -962,14 +598,18 @@ class ESCollection extends UpdateEmitter {
 	}
 
 	_updateDocumentWithPartialDoc(docId, partialDoc) {
-		return this._client.updateAsync({
-			index: this._index,
-			type: 'object',
-			id: docId,
-			body: {
-				doc: partialDoc,
-			},
-		});
+    return this._latestCollection()
+      .then((index) => {
+        console.log(`(Updating index ${index})`)
+        return this._client.updateAsync({
+          index: index,
+          type: 'object',
+          id: docId,
+          body: {
+            doc: partialDoc,
+          },
+        })
+      })
 	}
 
 	/**

@@ -84,12 +84,6 @@
 		}
 	},
 	"mappings": {
-		"meta": {
-			"properties":{
-				"hasImportedCSV": { "type": "boolean", "index": false, "include_in_all": false },
-				"lastCSVImportTimestamp": { "type": "long", "index": false, "include_in_all": false }
-			}
-		},
 		"object": {
 			"dynamic": true,
 			"properties": {
@@ -149,8 +143,7 @@
 					"index": false
 				},
 				"ensembleIndex": {
-					"type": "keyword",
-					"include_in_all": false
+					"type": "keyword"
 				},
 				"onview": {
 					"type": "boolean"
