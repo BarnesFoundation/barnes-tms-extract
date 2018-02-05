@@ -2,7 +2,7 @@
 
 Scripts to import the barnes eMuseum api into elasticsearch to be used by [barnes-collection-www][].
 
-We have [elasticsearch][] and [kibana][] v5.4 running on aws. Contact Micah Walter for credentials.
+We have [elasticsearch][] and [kibana][] v5.4 running on aws. Contact Steven Brady for credentials.
 
 For more context into the early decision making of the system, see the [architecture doc](./ARCHITECTURE.md).
 For more information about how the CSV files for image information are created, see the [datascience doc](./DATASCIENCE.md).
@@ -20,7 +20,7 @@ On a nightly basis, the scripts in [scripts/update][] run on the admin server to
 
 These scripts rely on the existence of a series of CSV files to add image secrets, computer vision data, etc. Those files must be stored in the directory referenced in [`config/base.json`](./config/base.json) in `CSV.dataPath`. If these files are missing, the update scripts will not finish running, and the collection index will be considered incomplete and ignored by the front-end.
 
-## using elasticserch
+## Using elasticserch
 
 The [barnes-collection-www][] application is a good example for reading from the most recent complete Elasticsearch index.
 It looks for indices named `collection_*` and selects the index with the *latest* timestamp that also has content in the `tags` field on individual objects.
