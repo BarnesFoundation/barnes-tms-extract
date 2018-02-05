@@ -8,7 +8,7 @@ require('seneca')()
 
   .use('./esPluginAPI.js', {
   	esOptions: makeElasticsearchOptions(),
-  	csvDir: config.CSV.path
+  	csvRootDirectory: config.CSV.rootDirectory
   })
 
   // listen for role:math messages

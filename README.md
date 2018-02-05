@@ -1,24 +1,145 @@
-# barnes TMS extract
+# Barnes TMS extract
 
 Scripts to import the barnes eMuseum api into elasticsearch to be used by [barnes-collection-www][].
 
-We have [elasticsearch][] and [kibana][] v5.4 running on aws. Contact Steven Brady for credentials.
+For more context into what all the code is doing, see the [architecture doc](./ARCHITECTURE.md).
 
-For more context into the early decision making of the system, see the [architecture doc](./ARCHITECTURE.md).
-For more information about how the CSV files for image information are created, see the [datascience doc](./DATASCIENCE.md).
+Most of the scripts are in `src/scripts`, `src/scripts/updates`, and can be run with node.
 
-## Data Pipeline
+- `collectHighlights.js` - Creates a directory in the root of this repository called `highlights` with all images that are tagged as highlights
+- `nightlyColorProcess.js` - Run to perform Cooper-Hewitt color processing on all TMS images. Intended to be run as part of a nightly cron
+- `pythonenv.sh` - Bash script to set up the python environment
+- `updateMappings.js` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
 
-On a nightly basis, the scripts in [scripts/update][] run on the admin server to:
-1. Export TMS data from the eMuseum API.
-2. Create a new, timestamped index in Elasticsearch. The naming pattern for Elasticsearch indices is `collection_<timestamp>`.
-3. Ingest the TMS data exported from eMuseum into the new Elasticsearch index.
-4. Add color data to all documents in the Elasticsearch index.
-5. Add image secrets to all documents, which allows the client to access images in S3.
-6. Add computer vision data to all documents.
-7. Add tags to all documents.
+## Setup
+
+Usernames and passwords are encrypted and stored in [**config/**](./config). They can be decrypted and viewed using [git-crypt](https://github.com/agwa/git-crypt) via `git-crypt unlock /path/to/key`, and include:
+
+- **config/credentials.json** -- Access keys for s2, AWS, Kibana and TMS
+- **config/esapi.htpasswd** -- Username and password for accessing the elasticsearch API wrapper
+- **config/users.htpasswd** -- Username and password for viewing the admin dashboard
+
+Scripts in this repository are written in node.js, python and go. We use [miniconda](https://conda.io/miniconda.html) to manage python and [nvm](https://github.com/creationix/nvm) to manage node. To install nvm, node stable, and miniconda:
+
+```bash
+# install nvm and switch to node stable
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+nvm install stable
+nvm alias default stable
+nvm use stable
+
+# install miniconda
+curl -o- https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh | bash
+```
+
+Once you have miniconda and nodejs stable working, install python requirements, node.js packages, and go-ifff
+
+```bash
+# install the node.js dependencies for most scripts
+npm install
+
+# install python dependencies for the csv diffing and palette extraction scripts
+[[ -e `which conda` ]] && bash src/scripts/pythonenv.sh || {
+[[ -e `which pip` ]] && pip install -r src/python_scripts/requirements.txt }
+
+# install go-iiif for the tile creation scripts
+git submodule update --remote --recursive
+cd src/image-processing/go-iiif && make bin
+```
+
+# Running
+
+To update the collection index, every night the following scripts from [`scripts/update`](./scripts/update):
+
+**00_prepareESIndex.js** creates the timestamped index
+
+This builds a new index with the given name in Elasticsearch, adds our mapping, and adds some metadata. When this step is complete, you should see that new index in Kibana, with 1 hit for the meta object.
+
+**01_exportTMSToCSV.js** extracts object csv files from tms emuseum api
+
+This will take a while. When it's done, you can check to see that there's a new set of CSVs in `dashboard/src/public/output`.
+
+**02_importTMSDataToES.js** parses object csvs and adds them to elasticsearch
+
+You may see errors while running, but thats okay, as long as there are around 2200 hits in the index
+
+**03_processAndUploadImagesToS3.js**
+
+- upload original images to s3 bucket (src/image-processing/src/script/imageUploader.js)
+- create tiles from images in bucket
+- upload tiles to s3 bucket (src/image-processing/src/script/tileUploader.js)
+- NOTE: do we need to esCollection._updateESWithColorData ? whats the difference between `writeDataToES` and the csvs we create?
+
+**04_addImageSecretsToES.js** add image secrets from s3 images bucket
+
+About 1873 objects should have `imageSecret` and `imageOriginalSecret`, grabbed from s3
+
+**04_addColorDataToES.js** grab color data
+
+When this is done, objects should have blobbed `color` data attached
+
+// _NOTE_: does this currently grab from csv or not?
+
+**05_importDataCSVsToES.js** add a variety of image descriptors to all the objects
+
+// _NOTE_: does this currently grab from csv or not?
+
+**06_addTagsToES.js** add tags to some of the objects
+
+// _NOTE_: does this currently grab from csv or not?
 
 These scripts rely on the existence of a series of CSV files to add image secrets, computer vision data, etc. Those files must be stored in the directory referenced in [`config/base.json`](./config/base.json) in `CSV.dataPath`. If these files are missing, the update scripts will not finish running, and the collection index will be considered incomplete and ignored by the front-end.
+
+
+## Deployment
+
+Contact Micah Walter for access to our [elasticsearch][] and [kibana][] 5.4 machines running on aws.
+
+### Live crontab
+
+```cron
+SHELL=/bin/bash
+PATH=$PATH:/home/ubuntu/.nvm/versions/node/v9.2.1/bin
+00 00 * * * cd /usr/local/barnes/projects/barnes-tms-extract && /bin/bash src/scripts/update_collection_data.sh
+```
+
+## Data Model
+
+The file located at [`config/mapping.json`](./config/mapping.json) details the structure of the Elasticsearch index. The index is named `collection` and contains two object types, `meta` and `object`.
+
+#### `meta` is a singleton
+
+- **hasImportedCSV**(Boolean) whether or not the elasticsearch index has ever successfully imported a CSV file
+- **lastCSVImportTimestamp**(timestamp) time of TMS export CSV that was last imported
+
+#### `object` describes a piece in the collection
+
+- bibliography
+- classification -- eg Painting, Sculpture
+- copyright -- Unused, see `objRightsTypeId`
+- culture -- The culture that is the creator of the work, used in place of people sometimes
+- description -- Unused, but left in temporarily until short and long descriptions are filled in
+- dimensions -- Stored as plain text, so it's not possible to search for pieces with a specific width
+- exhHistory -- Exhibition history
+- highlight -- Whether or not the piece is currently highlighted
+- id -- Matches the TMS id, and is also the value of the _id field for this document
+- invno -- The inventory number of this collection object
+- locations -- Where in the Barnes this piece is stored
+- longDescription
+- medium
+- objRightsTypeId -- Enumerated constant, indicating the object rights bin into which this object falls
+- onView -- Whether or not the object is currently on view
+- people -- The creators of the work
+- period -- Estimated date. Stored as text and not used for sorting
+- room
+- shortDescription
+- provenance
+- title
+- wall -- north, south, east or west
+- visualDescription
+- imageSecret -- Uses the [Flickr API](https://www.flickr.com/services/api/misc.urls.html) standard, a key for all smaller than copyright size images
+- imageOriginalSecret - Uses the [Flickr API](https://www.flickr.com/services/api/misc.urls.html) standard, a key for the larger image size (4096 px)
+
 
 ## Using elasticserch
 
@@ -29,17 +150,7 @@ You can get a sorted list of the collection indices by running in Kibana Dev Too
 
     GET _cat/indices/collection_*?v&s=index
 
-
 The most recent index will be at the bottom of the list. It should contain around 2265 documents.
-
-## Data Mapping
-
-The mapping for the collection data stored in Elasticsearch is defined in [`config/mapping.json`](./config/mapping.json).
-
-You can also retrieve the mapping for a specific index by running in Kibana Dev Tools:
-```
-GET collection_<timestamp>/_mapping
-```
 
 ## Resources
 

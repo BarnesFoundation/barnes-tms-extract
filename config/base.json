@@ -1,6 +1,6 @@
 {
 	"CSV": {
-		"path": "src/dashboard/public/output",
+		"rootDirectory": "src/dashboard/public/output/",
 		"dataPath": "src/data",
 		"imageSecretsFilename": "imageSecrets.csv",
 		"colorsFilename": "colors.csv",

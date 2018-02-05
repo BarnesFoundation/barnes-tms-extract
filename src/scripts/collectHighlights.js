@@ -6,7 +6,7 @@ const config = require('config');
 const s3 = require('s3');
 const credentials = config.Credentials.aws;
 
-const csvDir = path.resolve(__dirname, '../dashboard/public/output');
+const csvRootDirectory = config.CSV.rootDirectory || path.resolve(__dirname, '../dashboard/public/output');
 const fileExtension = '.jpg';
 
 const s3Client = s3.createClient({
@@ -42,9 +42,9 @@ function getResizedImages() {
   });
 }
 
-const lastCSV = getLastCompletedCSV(csvDir);
+const lastCSV = getLastCompletedCSV(csvRootDirectory);
 const highlights = [];
-csvForEach(path.resolve(csvDir, lastCSV + '/objects.csv'), (line) => {
+csvForEach(path.resolve(csvRootDirectory, lastCSV + '/objects.csv'), (line) => {
   if (line.highlight === 'true') {
     highlights.push(line.id);
   }
@@ -76,7 +76,7 @@ csvForEach(path.resolve(csvDir, lastCSV + '/objects.csv'), (line) => {
             console.log(e);
           }
         });
-      }); 
+      });
     }, Promise.resolve());
     requests.then(() => console.log('done'));
   });

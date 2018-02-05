@@ -28,10 +28,16 @@ function parsePageData(data) {
 		}
 	});
 
+	if (retVal.length == 0) {
+	  logger.error('Empty images list from tms')
+	  logger.error(data)
+	  process.exit(-1)
+	}
+
 	const o = {
 		images: retVal,
 	};
-
+	
 	logger.info("Got the data");
 	return o;
 }

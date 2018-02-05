@@ -20,9 +20,9 @@ function randomHexValue (len) {
 }
 
 class ImageResizer extends UpdateEmitter {
-	constructor(csvDir, esOptions) {
+	constructor(csvRootDirectory, esOptions) {
 		super();
-		this._csvDir = csvDir;
+		this._csvRootDirectory = csvRootDirectory;
 		this._s3Client = s3.createClient({
 			s3Options: {
 				accessKeyId: credentials.awsAccessKeyId,
@@ -30,7 +30,7 @@ class ImageResizer extends UpdateEmitter {
 				region: credentials.awsRegion
 			}
 		});
-		this._esClient = new ESCollection(esOptions, csvDir);
+		this._esClient = new ESCollection(esOptions, csvRootDirectory);
 		this._availableImages = null;
 		this._currentStep = 'Not started.';
 	}
@@ -40,10 +40,15 @@ class ImageResizer extends UpdateEmitter {
 		this._currentStep = 'Initializing image resizer.';
 		this._isRunning = true;
 		this.started();
-		return this._getAvailableImages().then(() => {
-			logger.info('Fetching listing of all images already resized.');
-			return this._getResizedImages();
-		});
+		return this._getAvailableImages()
+      .then(() => {
+        logger.info('Fetching listing of all images already resized.');
+        return this._getResizedImages();
+      })
+      .catch(e => {
+        logger.error(e);
+        process.exit(-1)
+      });
 	}
 
 	process() {
@@ -51,8 +56,8 @@ class ImageResizer extends UpdateEmitter {
 		this._currentStep = 'Starting to generate multiple image sizes.';
 		this.progress();
 		return new Promise((resolve) => {
-			const lastCSV = getLastCompletedCSV(this._csvDir);
-			const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
+			const lastCSV = getLastCompletedCSV(this._csvRootDirectory);
+			const csvPath = path.join(this._csvRootDirectory, lastCSV, 'objects.csv');
 			const imagesToResize = [];
 			logger.info('Determining which images need to be resized.');
 			this._currentStep = 'Determining which images need to be resized.';
@@ -67,6 +72,7 @@ class ImageResizer extends UpdateEmitter {
 					imagesToResize.push(Object.assign({}, row, availableImage));
 					return;
 				}
+				// check for originalImage here wtf...
 				const imageSecret = resizedImage.key.split('_')[1];
 				const imageOriginalSecret = originalImage.key.split('_')[1];
 				if (new Date(resizedImage.lastModified) - new Date(availableImage.lastModified) < 0) {

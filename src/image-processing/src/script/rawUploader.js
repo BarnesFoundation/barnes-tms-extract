@@ -1,10 +1,10 @@
 const path = require('path');
 const config = require('config');
-const eachSeries = require('async/eachSeries');
 const s3 = require('s3');
 const csv = require('fast-csv');
 const fs = require('fs');
 const https = require('https');
+const eachSeries = require('async/eachSeries');
 
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const logger = require('../script/imageLogger.js');
@@ -15,12 +15,13 @@ const credentials = config.Credentials.aws;
 /**
  * Uploads raw images (tifs) to Amazon s3 from TMS
  * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
- * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
+ * @param {string} csvRootDirectory - Path to the directory containing csv_* directories exported from TMS
  *  The script will tile and upload images using the most recent complete export in the directory
  */
 class RawUploader extends UpdateEmitter {
-	constructor(csvDir) {
+	constructor(csvRootDirectory) {
 		super();
+		this._csvRootDirectory = csvRootDirectory;
 		this._s3Client = s3.createClient({
 			s3Options: {
 				accessKeyId: credentials.awsAccessKeyId,
@@ -28,7 +29,6 @@ class RawUploader extends UpdateEmitter {
 				region: credentials.awsRegion
 			}
 		});
-		this._csvDir = csvDir;
 		this._rawImages = null;
 		this._numImagesToUpload = 0;
 		this._currentStep = 'Not started';
@@ -58,7 +58,7 @@ class RawUploader extends UpdateEmitter {
 	 * @property {string} currentStep - Current step in the tiling process
 	 * @property {number} numImagesUploaded - Number of images tiled and uploaded
 	 * @property {number} totalImagesToUpload - Number of images to tile and upload
-	*/ 
+	*/
 
 	/**
 	 * @memberof TileUploader
@@ -83,8 +83,8 @@ class RawUploader extends UpdateEmitter {
 		return new Promise((resolve) => {
 			this._currentStep = "Determining which images need to be uploaded to S3.";
 			this.progress();
-			const lastCSV = getLastCompletedCSV(this._csvDir);
-			const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
+			const lastCSV = getLastCompletedCSV(this._csvRootDirectory);
+			const csvPath = path.join(this._csvRootDirectory, lastCSV, 'objects.csv');
 			const imagesToUpload = [];
 			csvForEach(csvPath, (row) => {
 				const rawImg = this._rawImageNeedsUpload(`${row.invno}.tif`);
@@ -108,8 +108,8 @@ class RawUploader extends UpdateEmitter {
 						return this._updateRawList(image);
 					}).then(cb);
 				}, () => {
-					logger.info('Finished uploading all images.');
-					this._currentStep = `Finished uploading all images.`;
+					logger.info('Finished uploading all raw images.');
+					this._currentStep = `Finished uploading all raw images.`;
 					this._isRunning = false;
 					this.completed();
 					resolve();
@@ -132,7 +132,6 @@ class RawUploader extends UpdateEmitter {
 			.on('error', (err) => {
 				if (err.message.includes('404')) {
 					logger.info('Can\'t fetch list of raw images--hasn\'t been created yet.');
-					this._rawImages = [];
 					resolve();
 				} else {
 					throw err;
@@ -143,6 +142,7 @@ class RawUploader extends UpdateEmitter {
 				csvForEach(path.resolve(__dirname, '../../raw.csv'), (data) => {
 					this._rawImages.push({ name: data.name, size: data.size, modified: data.modified });
 				}, () => {
+				  this.progress();
 					resolve();
 				});
 			});

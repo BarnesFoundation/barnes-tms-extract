@@ -7,12 +7,12 @@ const { makeElasticsearchOptions } = require('../../util/elasticOptions.js');
 
 const logger = require('../../csv_es/src/script/esLogger.js');
 
-const csvRootDir = 'src/dashboard/public/output/';
+const csvRootDirectory = config.CSV.rootDirectory || 'src/dashboard/public/output/';
 const argv = require('minimist')(process.argv.slice(2));
 
 const importLastCSV = () => {
-  fs.readdir(csvRootDir, (err, files) => {
-    const csv = csvRootDir + files.pop() + '/objects.csv';
+  fs.readdir(csvRootDirectory, (err, files) => {
+    const csv = csvRootDirectory + files.pop() + '/objects.csv';
     importDataFromCSV(csv);
   });
 }
@@ -23,7 +23,7 @@ const importDataFromCSV = (csv) => {
   logger.info('Beginning import of', csvPath, '...');
 
   const esOptions = makeElasticsearchOptions();
-  const esCollection = new ESCollection(esOptions, csvRootDir);
+  const esCollection = new ESCollection(esOptions, csvRootDirectory);
 
   esCollection.syncESWithCSV(csvPath);
 }

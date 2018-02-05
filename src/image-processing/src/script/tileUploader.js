@@ -1,11 +1,11 @@
 const path = require('path');
 const config = require('config');
-const eachSeries = require('async/eachSeries');
 const s3 = require('s3');
 const csv = require('fast-csv');
 const fs = require('fs');
 const tmp = require('tmp');
 const { exec, execSync } = require('child_process');
+const eachSeries = require('async/eachSeries');
 
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const logger = require('../script/imageLogger.js');
@@ -16,12 +16,13 @@ const credentials = config.Credentials.aws;
 /**
  * Uploads tiled images, by IIIF spec to Amazon s3 from TMS
  * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
- * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
+ * @param {string} csvRootDirectory - Path to the directory containing csv_* directories exported from TMS
  *  The script will tile and upload images using the most recent complete export in the directory
  */
 class TileUploader extends UpdateEmitter {
-  constructor(csvDir) {
+  constructor(csvRootDirectory) {
     super();
+    this._csvRootDirectory = csvRootDirectory;
     this._s3Client = s3.createClient({
       s3Options: {
         accessKeyId: credentials.awsAccessKeyId,
@@ -29,7 +30,6 @@ class TileUploader extends UpdateEmitter {
         region: credentials.awsRegion
       }
     });
-    this._csvDir = csvDir;
     this._tiledImages = null;
     this._numImagesToTile = 0;
     this._currentStep = 'Not started';
@@ -47,7 +47,10 @@ class TileUploader extends UpdateEmitter {
     this._currentStep = "Fetching available image listing from S3.";
     this.started();
     return this._getAvailableImages().then(() => {
+      const resolvedPath = path.resolve(outputPath);
+      this._availableImages = require(resolvedPath).images;
       this._currentStep = "Fetching tiled image listing on S3.";
+      this.progress();
       return this._fetchTiledImages();
     });
   }
@@ -62,7 +65,7 @@ class TileUploader extends UpdateEmitter {
    * @property {number} numImagesUploaded - Number of images tiled and uploaded
    * @property {number} totalImagesToUpload - Number of images to tile and upload
    * @property {number} uploadIndex - Number of images uploaded by the current task
-  */ 
+  */
 
   /**
    * @memberof TileUploader
@@ -86,8 +89,8 @@ class TileUploader extends UpdateEmitter {
     return new Promise((resolve) => {
       this._currentStep = "Determining which images need to be tiled and uploaded to S3.";
       this.progress();
-      const lastCSV = getLastCompletedCSV(this._csvDir);
-      const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
+      const lastCSV = getLastCompletedCSV(this._csvRootDirectory);
+      const csvPath = path.join(this._csvRootDirectory, lastCSV, 'objects.csv');
       const imagesToTile = [];
       csvForEach(csvPath, (row) => {
         const img = this._imageNeedsUpload(row.invno, row.id, row.objRightsTypeId);
@@ -167,7 +170,7 @@ class TileUploader extends UpdateEmitter {
         }
       })
       .on('end', () => {
-        logger.info('tiles.csv has been downloaded--loading into memory.');
+        logger.info('tiled.csv has been downloaded--loading into memory.');
         csvForEach(path.resolve(__dirname, '../../tiled.csv'), (data) => {
           this._tiledImages.push({ name: data.name, lastModified: data.lastModified });
         }, () => {
@@ -229,6 +232,7 @@ class TileUploader extends UpdateEmitter {
       const configPath = this._tempConfigPath();
       const goPath = path.relative(process.cwd(), path.resolve(__dirname, '../../go-iiif/bin/iiif-tile-seed'));
       logger.info(`Tiling image: ${image.key}`);
+
       const cmd = `AWS_ACCESS_KEY=${credentials.awsAccessKeyId} AWS_SECRET_KEY=${credentials.awsSecretAccessKey} ${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -scale-factors 8,4,2,1 -refresh -verbose -loglevel debug ${image.key},${image.invno}`;
       exec(cmd, null, (error, stdout, stderr) => {
         if (error) {
