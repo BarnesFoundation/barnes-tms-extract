@@ -4,6 +4,9 @@ Scripts to import the barnes eMuseum api into elasticsearch to be used by [barne
 
 We have [elasticsearch][] and [kibana][] v5.4 running on aws. Contact Micah Walter for credentials.
 
+For more context into the early decision making of the system, see the [architecture doc][./ARCHITECTURE.md].
+For more information about how the CSV files for image information are created, see the [datascience doc](./DATASCIENCE.md).
+
 ## Data Pipeline
 
 On a nightly basis, the scripts in [scripts/update][] run on the admin server to:
