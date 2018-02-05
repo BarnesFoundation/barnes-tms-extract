@@ -4,7 +4,7 @@ Scripts to import the barnes eMuseum api into elasticsearch to be used by [barne
 
 We have [elasticsearch][] and [kibana][] v5.4 running on aws. Contact Micah Walter for credentials.
 
-For more context into the early decision making of the system, see the [architecture doc][./ARCHITECTURE.md].
+For more context into the early decision making of the system, see the [architecture doc](./ARCHITECTURE.md).
 For more information about how the CSV files for image information are created, see the [datascience doc](./DATASCIENCE.md).
 
 ## Data Pipeline
@@ -18,7 +18,7 @@ On a nightly basis, the scripts in [scripts/update][] run on the admin server to
 6. Add computer vision data to all documents.
 7. Add tags to all documents.
 
-These scripts rely on the existence of a series of CSV files to add image secrets, computer vision data, etc. Those files must be stored in the directory referenced in [`config/base.json`](./blob/master/config/base.json) in `CSV.dataPath`. If these files are missing, the update scripts will not finish running, and the collection index will be considered incomplete and ignored by the front-end.
+These scripts rely on the existence of a series of CSV files to add image secrets, computer vision data, etc. Those files must be stored in the directory referenced in [`config/base.json`](./config/base.json) in `CSV.dataPath`. If these files are missing, the update scripts will not finish running, and the collection index will be considered incomplete and ignored by the front-end.
 
 ## using elasticserch
 
@@ -34,7 +34,7 @@ The most recent index will be at the bottom of the list. It should contain aroun
 
 ## Data Mapping
 
-The mapping for the collection data stored in Elasticsearch is defined in [`config/mapping.json`][].
+The mapping for the collection data stored in Elasticsearch is defined in [`config/mapping.json`](./config/mapping.json).
 
 You can also retrieve the mapping for a specific index by running in Kibana Dev Tools:
 ```
@@ -52,5 +52,5 @@ Clicking “View in Console” on any example queries in the docs will take you 
 [Kibana]: https://b289f66f9c19402e7ce08eb03e56b486.us-east-1.aws.found.io
 [scripts/update]: ./scripts/update
 
-[`config/mapping.json`]: https://github.com/BarnesFoundation/barnes-tms-extract/blob/master/config/mapping.json
 [Elasticsearch v5.4 documentation]: https://www.elastic.co/guide/en/elasticsearch/reference/5.4/index.html
+
