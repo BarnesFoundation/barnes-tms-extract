@@ -7,6 +7,71 @@ We have [elasticsearch][] and [kibana][] v5.4 running on aws. Contact Micah Walt
 For more context into the early decision making of the system, see the [architecture doc](./ARCHITECTURE.md).
 For more information about how the CSV files for image information are created, see the [datascience doc](./DATASCIENCE.md).
 
+## Passwords
+
+Usernames and passwords are stored, encrypted, in this repository. They can be decrypted and viewed using [git-crypt](https://github.com/agwa/git-crypt), which can be installed via homebrew, apt, or manually. After decrypting with `git-crypt unlock /path/to/key`, they can be found in the `config` directory.
+
+- config/credentials.json -- Access keys for s2, AWS, Kibana and TMS
+- config/esapi.htpasswd -- Username and password for accessing the elasticsearch API wrapper
+- config/users.htpasswd -- Username and password for viewing the admin dashboard
+
+## Setup
+
+There are a number of scripts in this repository, written in javascript, python, and go.
+
+    # install nvm and conda
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+    curl -o- https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh | bash
+
+    # install node stable, python requirements, and go image tiling dependencies
+    nvm install stable
+    nvm alias default stable
+    nvm use default
+    git submodule update --remote --recursive
+    [[ -e `which conda` ]] && bash src/scripts/pythonenv.sh || pip install -r src/python_scripts/requirements.txt
+    cd src/image-processing/go-iiif && make bin
+
+The csv diff and palette extraction scripts are built on python 2, and have dependencies that can be installed via `pip install -r src/python_scripts/requirements.txt`. We recommend using `miniconda` to make sure your python environment is up to date - `src/scripts/pythonenv.sh` will create an miniconda environment, activate it, and install the requirements there.
+
+The image tile creation scripts depend on [go-iiif](https://github.com/thisisaaronland/go-iiif) which has [its own wonky setup](https://github.com/aaronland/go-iiif#setup). We have included it as a submodule.
+
+All the rest of the scripts are written and tested on node.js stable. We recommend using [nvm](https://github.com/creationix/nvm) which can be installed with `curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash`.
+
+## Scripts
+
+This repo includes a number of utility scripts that come in handy for taking care of various tasks. These can be found in `src/scripts` and most can be run with node.
+
+* `collectHighlights.js` - Creates a directory in the root of this repository called `highlights` with all images that are tagged as highlights
+* `compilePug.js` - Compiles all pug templates into one file to be used in the dashboard. *It is necessary to run this any time the templates are changed*.
+* `nightlyColorProcess.js` - Run to perform Cooper-Hewitt color processing on all TMS images. Intended to be run as part of a nightly cron
+* `nightlyRun.js` - Runs to pull in new data from TMS and clean up old CSV's. Intended to be run as part of a nightly cron.
+* `nightlyValidate.js` - Validates latest CSV and syncs it with Elasticsearch. Intended to be run as part of a nightly cron.
+* `oldCSVClean.js` - Removes CSV's older than 15 days
+* `printConfig.js` - Prints the entire configuration for the project.
+* `pythonenv.sh` - Bash script to set up the python environment
+* `rebuildES.js` - Empties Elasticsearch index and rebuilds it from scratch. Optional --csv argument can be used to specify the name of a TMS export CSV file to rebuild from (eg `node src/scripts/rebuildES.js --csv csv_1493737217168)
+* `saveImageKeysToEs.js` - Restores `imageSecret` and `imageOriginalSecret` keys from S3 if they are deleted from Elasticsearch
+* `startEs.sh` - Starts Elastcisearch on the local machine if it is not running
+* `updateMappings.js` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
+
+
+## Live crontab
+SHELL=/bin/bash
+PATH=$PATH:/home/ubuntu/.nvm/versions/node/v9.2.1/bin
+00 00 * * * cd /usr/local/barnes/projects/barnes-tms-extract && /bin/bash src/scripts/update_collection_data.sh
+
+## Example crontab
+Here's an example of a crontab that might work with this repo
+
+```
+SHELL=/bin/bash
+PATH=$PATH:/home/ubuntu/.nvm/versions/node/v9.2.1/bin
+00 00 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyRun.js
+00 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyValidate.js
+15 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyColorProcess.js
+20 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/saveImageKeysToEs.js
+```
+
 ## Data Pipeline
 
 On a nightly basis, the scripts in [scripts/update][] run on the admin server to:

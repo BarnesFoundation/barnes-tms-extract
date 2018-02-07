@@ -58,7 +58,6 @@
     "images-pin": "node src/image-processing/src/service/images-pin-service.js",
     "lint": "eslint src",
     "lint-fix": "eslint src --fix",
-    "postinstall": "git submodule update --remote --recursive && bash src/scripts/pythonenv.sh",
     "serve": "npm-run-all -p -r csv-pin tmstocsv-pin dashboard es-pin images-pin",
     "tmstocsv-pin": "node src/tms_csv/src/service/tmstocsv-pin-service.js",
     "tms-export": "node src/tms_csv/src/script/index.js"
