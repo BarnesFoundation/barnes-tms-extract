@@ -7,6 +7,3 @@ node src/scripts/updates/03_addImageSecretsToES.js &&
 node src/scripts/updates/04_addColorDataToES.js &&
 node src/scripts/updates/05_importDataCSVsToES.js &&
 node src/scripts/updates/06_addTagsToES.js
-
-
-
