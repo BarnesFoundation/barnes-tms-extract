@@ -9,7 +9,6 @@ Most of the scripts are in `src/scripts`, `src/scripts/updates`, and can be run 
 - `collectHighlights.js` - Creates a directory in the root of this repository called `highlights` with all images that are tagged as highlights
 - `compilePug.js` - Compiles all pug templates into one file to be used in the dashboard. *It is necessary to run this any time the templates are changed*.
 - `nightlyColorProcess.js` - Run to perform Cooper-Hewitt color processing on all TMS images. Intended to be run as part of a nightly cron
-- `nightlyValidate.js` - Validates latest CSV and syncs it with Elasticsearch. Intended to be run as part of a nightly cron.
 - `oldCSVClean.js` - Removes CSV's older than 15 days
 - `printConfig.js` - Prints the entire configuration for the project.
 - `pythonenv.sh` - Bash script to set up the python environment
