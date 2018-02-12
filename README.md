@@ -69,6 +69,7 @@ You may see errors while running, but thats okay, as long as there are around 22
 - upload original images to s3 bucket (src/image-processing/src/script/imageUploader.js)
 - create tiles from images in bucket
 - upload tiles to s3 bucket (src/image-processing/src/script/tileUploader.js)
+- NOTE: do we need ot esCollection._updateESWithColorData ? whats the difference between `writeDataToES` and the csvs we create?
 
 **03_addImageSecretsToES.js** add image secrets from s3 images bucket
 
