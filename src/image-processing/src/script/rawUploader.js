@@ -15,11 +15,11 @@ const credentials = config.Credentials.aws;
 /**
  * Uploads raw images (tifs) to Amazon s3 from TMS
  * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
- * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
+ * @param {string} csvRootDirectory - Path to the directory containing csv_* directories exported from TMS
  *  The script will tile and upload images using the most recent complete export in the directory
  */
 class RawUploader extends UpdateEmitter {
-	constructor(csvDir) {
+	constructor(csvRootDirectory) {
 		super();
 		this._s3Client = s3.createClient({
 			s3Options: {
@@ -28,7 +28,7 @@ class RawUploader extends UpdateEmitter {
 				region: credentials.awsRegion
 			}
 		});
-		this._csvDir = csvDir;
+		this._csvRootDirectory = csvRootDirectory;
 		this._rawImages = null;
 		this._numImagesToUpload = 0;
 		this._currentStep = 'Not started';
@@ -58,7 +58,7 @@ class RawUploader extends UpdateEmitter {
 	 * @property {string} currentStep - Current step in the tiling process
 	 * @property {number} numImagesUploaded - Number of images tiled and uploaded
 	 * @property {number} totalImagesToUpload - Number of images to tile and upload
-	*/ 
+	*/
 
 	/**
 	 * @memberof TileUploader
@@ -83,8 +83,8 @@ class RawUploader extends UpdateEmitter {
 		return new Promise((resolve) => {
 			this._currentStep = "Determining which images need to be uploaded to S3.";
 			this.progress();
-			const lastCSV = getLastCompletedCSV(this._csvDir);
-			const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
+			const lastCSV = getLastCompletedCSV(this._csvRootDirectory);
+			const csvPath = path.join(this._csvRootDirectory, lastCSV, 'objects.csv');
 			const imagesToUpload = [];
 			csvForEach(csvPath, (row) => {
 				const rawImg = this._rawImageNeedsUpload(`${row.invno}.tif`);

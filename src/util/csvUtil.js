@@ -69,12 +69,12 @@ module.exports.csvForEach = function (csvPath, cb, completedCb) {
 
 /**
  * Whether or not the csv export contained in the given directory ran to completion or not
- * @param {string} csvDirPath - Path to the folder containing the files exported by the
+ * @param {string} csvRootDirectory - Path to the folder containing the files exported by the
  *  CSV export script
  * @return {bool} True if the CSV export script ran to completion, false otherwise
  */
-module.exports.csvCompleted = function (csvDirPath) {
-	const metapath = path.join(csvDirPath, 'meta.json');
+module.exports.csvCompleted = function (csvRootDirectory) {
+	const metapath = path.join(csvRootDirectory, 'meta.json');
 	try {
 		const status = JSON.parse(fs.readFileSync(metapath, 'utf8')).status;
 		return status.toLowerCase() === 'completed';
@@ -106,14 +106,14 @@ module.exports.doCSVKeysMatch = function (csvFilePathA, csvFilePathB, delim = ',
 
 /**
  * Name of the most recent CSV directory, given the directory containing CSV directories
- * @param {string} csvRootDir - Path to the directory containing csv_* directories,
+ * @param {string} csvRootDirectory - Path to the directory containing csv_* directories,
  *  as output by the CSV export script
  * @return {string} Name of the most recent CSV directory
  */
-module.exports.getLastCompletedCSV = function (csvRootDir) {
-	let dirs = fs.readdirSync(csvRootDir);
+module.exports.getLastCompletedCSV = function (csvRootDirectory) {
+	let dirs = fs.readdirSync(csvRootDirectory);
 	dirs = _.filter(dirs, d => d.startsWith('csv_')).sort();
-	dirs = _.filter(dirs, d => module.exports.csvCompleted(path.join(csvRootDir, d)));
+	dirs = _.filter(dirs, d => module.exports.csvCompleted(path.join(csvRootDirectory, d)));
 	if (dirs.length > 0) return dirs.pop();
 	return null;
 };

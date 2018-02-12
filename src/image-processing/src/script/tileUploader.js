@@ -16,11 +16,11 @@ const credentials = config.Credentials.aws;
 /**
  * Uploads tiled images, by IIIF spec to Amazon s3 from TMS
  * @param {string} pathToAvailableImages - Path to the JSON file containing all available images on TMS
- * @param {string} csvDir - Path to the directory containing csv_* directories exported from TMS
+ * @param {string} csvRootDirectory - Path to the directory containing csv_* directories exported from TMS
  *  The script will tile and upload images using the most recent complete export in the directory
  */
 class TileUploader extends UpdateEmitter {
-  constructor(csvDir) {
+  constructor(csvRootDirectory) {
     super();
     this._s3Client = s3.createClient({
       s3Options: {
@@ -29,7 +29,7 @@ class TileUploader extends UpdateEmitter {
         region: credentials.awsRegion
       }
     });
-    this._csvDir = csvDir;
+    this._csvRootDirectory = csvRootDirectory;
     this._tiledImages = null;
     this._numImagesToTile = 0;
     this._currentStep = 'Not started';
@@ -62,7 +62,7 @@ class TileUploader extends UpdateEmitter {
    * @property {number} numImagesUploaded - Number of images tiled and uploaded
    * @property {number} totalImagesToUpload - Number of images to tile and upload
    * @property {number} uploadIndex - Number of images uploaded by the current task
-  */ 
+  */
 
   /**
    * @memberof TileUploader
@@ -86,8 +86,8 @@ class TileUploader extends UpdateEmitter {
     return new Promise((resolve) => {
       this._currentStep = "Determining which images need to be tiled and uploaded to S3.";
       this.progress();
-      const lastCSV = getLastCompletedCSV(this._csvDir);
-      const csvPath = path.join(this._csvDir, lastCSV, 'objects.csv');
+      const lastCSV = getLastCompletedCSV(this._csvRootDirectory);
+      const csvPath = path.join(this._csvRootDirectory, lastCSV, 'objects.csv');
       const imagesToTile = [];
       csvForEach(csvPath, (row) => {
         const img = this._imageNeedsUpload(row.invno, row.id, row.objRightsTypeId);

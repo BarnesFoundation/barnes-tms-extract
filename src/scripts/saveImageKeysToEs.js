@@ -6,7 +6,7 @@ const eachSeries = require('async/eachSeries');
 const { getLastCompletedCSV, csvForEach } = require('../util/csvUtil.js');
 const ESCollection = require('../csv_es/src/script/esCollection.js');
 const credentials = config.Credentials.aws;
-const csvDir = config.CSV.path;
+const csvRootDirectory = config.CSV.rootDirectory;
 const { makeElasticsearchOptions } = require('../util/elasticOptions.js');
 
 function getAvailableImages() {
@@ -42,10 +42,10 @@ function getAvailableImages() {
   }
 });
 
-const esClient = new ESCollection(makeElasticsearchOptions(), csvDir);
+const esClient = new ESCollection(makeElasticsearchOptions(), csvRootDirectory);
 
-const lastCSV = getLastCompletedCSV(csvDir);
-const csvPath = path.join(csvDir, lastCSV, 'objects.csv');
+const lastCSV = getLastCompletedCSV(csvRootDirectory);
+const csvPath = path.join(csvRootDirectory, lastCSV, 'objects.csv');
 
 const imagesToUpdate = [];
 getAvailableImages().then(availableImages => {
@@ -67,7 +67,7 @@ getAvailableImages().then(availableImages => {
     esClient._updateDocumentWithData(image.id, {
       imageSecret: image.imageSecret,
       imageOriginalSecret: image.imageOriginalSecret
-    }).then(() => { 
+    }).then(() => {
       cb(null);
     });
   }, (err) => {

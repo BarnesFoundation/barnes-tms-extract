@@ -12,14 +12,14 @@ const port = config.Server.port;
  * Seneca plugin for coordinating with the Elasticsearch importer
  * @see {@link ESCollection}
  * @param {string} options.host - Hostname for the Elasticsearch server
- * @param {string} options.csvDir - Path to the root CSV export directory
+ * @param {string} options.csvRootDirectory - Path to the root CSV export directory
  */
 class ESPluginAPI extends SenecaPluginAPI {
 	constructor(seneca, options) {
 		super(seneca, options);
 		this._esOptions = options.esOptions;
-		this._csvDir = options.csvDir;
-		this._esCollection = new ESCollection(this._esOptions, this._csvDir);
+		this._csvRootDirectory = options.csvRootDirectory;
+		this._esCollection = new ESCollection(this._esOptions, this._csvRootDirectory);
 		this._websocketUpdater = new WebsocketUpdater('es', port, this._esCollection);
 	}
 

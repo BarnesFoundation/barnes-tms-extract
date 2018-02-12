@@ -1,12 +1,12 @@
 const fs = require('fs-extra');
 const moment = require('moment');
 const path = require('path');
-const source = require('config').CSV.path;
+const csvRootDirectory = require('config').CSV.rootDirectory;
 
 const cutoff = moment().subtract(15, 'days');
 
 // Remove every directory older than 15 days
-const dirs = fs.readdirSync(source);
+const dirs = fs.readdirSync(csvRootDirectory);
 
 const dirsToDelete = [];
 

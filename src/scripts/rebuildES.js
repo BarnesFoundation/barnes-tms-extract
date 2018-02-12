@@ -6,7 +6,7 @@ const argv = require('minimist')(process.argv.slice(2));
 
 let rebuildCSVTarget = argv.csv || null;
 
-const esCollection = new ESCollection( makeElasticsearchOptions(), config.CSV.path);
+const esCollection = new ESCollection( makeElasticsearchOptions(), config.CSV.rootDirectory);
 esCollection.description().then((desc) => {
 	if (rebuildCSVTarget || desc.lastImportedCSV !== null) {
 		rebuildCSVTarget = rebuildCSVTarget || desc.lastImportedCSV;

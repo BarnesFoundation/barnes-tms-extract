@@ -5,7 +5,7 @@ const eachSeries = require('async/eachSeries');
 
 const { getLastCompletedCSV, csvForEach } = require('../util/csvUtil.js');
 const ESCollection = require('../csv_es/src/script/esCollection.js');
-const csvDir = config.CSV.path;
+const csvRootDirectory = config.CSV.rootDirectory;
 const { makeElasticsearchOptions } = require('../util/elasticOptions.js');
 
 const credentials = config.Credentials.aws;
@@ -17,9 +17,9 @@ const s3Client = s3.createClient({
   }
 });
 
-const esClient = new ESCollection(makeElasticsearchOptions(), csvDir);
-const lastCSV = getLastCompletedCSV(csvDir);
-const csvPath = path.join(csvDir, lastCSV, 'objects.csv');
+const esClient = new ESCollection(makeElasticsearchOptions(), csvRootDirectory);
+const lastCSV = getLastCompletedCSV(csvRootDirectory);
+const csvPath = path.join(csvRootDirectory, lastCSV, 'objects.csv');
 
 function getAvailableImages() {
   return new Promise((resolve) => {

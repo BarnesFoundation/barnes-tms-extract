@@ -4,7 +4,7 @@ const config = require('config');
 const fs = require('fs');
 const path = require('path');
 
-const csvDir = config.CSV.path;
+const csvRootDirectory = config.CSV.rootDirectory;
 
 /**
  * Seneca plugin for listing the exported CSV files
@@ -32,12 +32,12 @@ class CSVPluginAPI extends SenecaPluginAPI {
 	 * @return {CSVPluginAPI~CSVExportDescription[]}
 	 */
 	list() {
-		const files = fs.readdirSync(csvDir);
+		const files = fs.readdirSync(csvRootDirectory);
 		const data = { files: [] };
 		files.forEach((file) => {
 			if (path.basename(file).startsWith('csv_')) {
 				try {
-					const metaPath = path.join(csvDir, file, 'meta.json');
+					const metaPath = path.join(csvRootDirectory, file, 'meta.json');
 					const metaString = fs.readFileSync(metaPath);
 					const metadata = JSON.parse(metaString);
 					metadata.name = file;

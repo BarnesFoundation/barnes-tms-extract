@@ -9,7 +9,7 @@ const { makeElasticsearchOptions } = require('../../../util/elasticOptions.js');
 const config = require('config');
 const path = require('path');
 
-const csvDir = config.CSV.path;
+const csvRootDirectory = config.CSV.rootDirectory;
 const port = config.Server.port;
 
 /**
@@ -47,7 +47,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	 */
 	tile() {
 		let websocketUpdater;
-		this._tileUploader = new TileUploader(csvDir);
+		this._tileUploader = new TileUploader(csvRootDirectory);
 		websocketUpdater = new WebsocketUpdater('images', port, this._tileUploader);
 		this._tileUploader.init().then(() => {
 			return this._tileUploader.process();
@@ -58,7 +58,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	raw() {
-		this._rawUploader = new RawUploader(csvDir);
+		this._rawUploader = new RawUploader(csvRootDirectory);
 		const websocketUpdater = new WebsocketUpdater('images', port, this._rawUploader);
 		this._rawUploader.init().then(() => {
 			return this._rawUploader.process();
@@ -69,7 +69,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	upload() {
-		this._imageUploader = new ImageUploader(csvDir);
+		this._imageUploader = new ImageUploader(csvRootDirectory);
 		const websocketUpdater = new WebsocketUpdater('images', port, this._imageUploader);
 		this._imageUploader.init().then(() => {
 			return this._imageUploader.process();
@@ -80,7 +80,7 @@ class ImagesPluginAPI extends SenecaPluginAPI {
 	}
 
 	resize() {
-		this._imageResizer = new ImageResizer(csvDir, makeElasticsearchOptions());
+		this._imageResizer = new ImageResizer(csvRootDirectory, makeElasticsearchOptions());
 		const websocketUpdater = new WebsocketUpdater('images', port, this._imageResizer);
 		this._imageResizer.init().then(() => {
 			return this._imageResizer.process();

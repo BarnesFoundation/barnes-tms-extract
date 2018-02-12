@@ -7,7 +7,7 @@ const logger = require('../util/logger.js')(path.join(__dirname, "logs/cron_logs
 
 const { makeElasticsearchOptions } = require('../util/elasticOptions.js');
 const ESCollection = require('../csv_es/src/script/esCollection.js');
-const esCollection = new ESCollection( makeElasticsearchOptions(), config.CSV.path );
+const esCollection = new ESCollection( makeElasticsearchOptions(), config.CSV.rootDirectory );
 
 if (argv.all) {
   esCollection.description().then((desc) => {
