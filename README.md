@@ -91,16 +91,6 @@ When this is done, objects should have blobbed `color` data attached
 
 These scripts rely on the existence of a series of CSV files to add image secrets, computer vision data, etc. Those files must be stored in the directory referenced in [`config/base.json`](./config/base.json) in `CSV.dataPath`. If these files are missing, the update scripts will not finish running, and the collection index will be considered incomplete and ignored by the front-end.
 
-### Old
-
-If at any time the Elasticsearch index becomes corrupted and needs to be rebuild, it can be reconstructed from a TMS export and by running a few analysis scripts.
-
-- run `src/scripts/rebuildES.js --csv csv_***`, replacing csv_*** with the name of the CSV to rebuild from
-- run `pm2 start ecosystem.config.js` if the COLOR_PROCESSING microservice is not running
-- run `src/scripts/nightlyColorProcess.js` to run Cooper-Hewitt color processing on all of the images
-- run `src/scripts/saveImageKeysToEs.js` to store all of the image keys in Elasticsearch
-
-
 
 ## Deployment
 
@@ -113,16 +103,6 @@ SHELL=/bin/bash
 PATH=$PATH:/home/ubuntu/.nvm/versions/node/v9.2.1/bin
 00 00 * * * cd /usr/local/barnes/projects/barnes-tms-extract && /bin/bash src/scripts/update_collection_data.sh
 ```
-
-### Example crontab
-```
-00 00 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyRun.js
-00 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyValidate.js
-15 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/nightlyColorProcess.js
-20 01 * * * cd /usr/local/barnes/projects/CollectionWebsite/ && node src/scripts/saveImageKeysToEs.js
-```
-
-
 
 ## Data Model
 
