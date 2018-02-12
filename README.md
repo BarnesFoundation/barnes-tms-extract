@@ -12,8 +12,6 @@ Most of the scripts are in `src/scripts`, `src/scripts/updates`, and can be run 
 - `oldCSVClean.js` - Removes CSV's older than 15 days
 - `printConfig.js` - Prints the entire configuration for the project.
 - `pythonenv.sh` - Bash script to set up the python environment
-- `rebuildES.js` - Empties Elasticsearch index and rebuilds it from scratch. Optional --csv argument can be used to specify the name of a TMS export CSV file to rebuild from (eg `node src/scripts/rebuildES.js --csv csv_1493737217168)
-- `saveImageKeysToEs.js` - Restores `imageSecret` and `imageOriginalSecret` keys from S3 if they are deleted from Elasticsearch
 - `startEs.sh` - Starts Elastcisearch on the local machine if it is not running
 - `updateMappings.js` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
 
@@ -70,11 +68,15 @@ This will take a while. When it's done, you can check to see that there's a new 
 
 You may see errors while running, but thats okay, as long as there are around 2200 hits in the index
 
-**03_addImageSecretsToES.js** add image secrets so we can access the files on s3
+**02.5_PLEASEMAKEME**
 
-About 1873 objects should have `imageSecret` and `imageOriginalSecret`
+- upload original images to s3 bucket (src/image-processing/src/script/imageUploader.js)
+- create tiles from images in bucket
+- upload tiles to s3 bucket (src/image-processing/src/script/tileUploader.js)
 
-// _NOTE_: this needs to be fixed from 
+**03_addImageSecretsToES.js** add image secrets from s3 images bucket
+
+About 1873 objects should have `imageSecret` and `imageOriginalSecret`, grabbed from s3
 
 **04_addColorDataToES.js** grab color data
 
