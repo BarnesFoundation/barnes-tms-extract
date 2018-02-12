@@ -10,7 +10,6 @@ Most of the scripts are in `src/scripts`, `src/scripts/updates`, and can be run 
 - `compilePug.js` - Compiles all pug templates into one file to be used in the dashboard. *It is necessary to run this any time the templates are changed*.
 - `nightlyColorProcess.js` - Run to perform Cooper-Hewitt color processing on all TMS images. Intended to be run as part of a nightly cron
 - `oldCSVClean.js` - Removes CSV's older than 15 days
-- `printConfig.js` - Prints the entire configuration for the project.
 - `pythonenv.sh` - Bash script to set up the python environment
 - `startEs.sh` - Starts Elastcisearch on the local machine if it is not running
 - `updateMappings.js` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
