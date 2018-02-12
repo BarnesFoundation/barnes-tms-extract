@@ -7,7 +7,6 @@ const ImageResizer = require('../script/imageResizer.js');
 const { makeElasticsearchOptions } = require('../../../util/elasticOptions.js');
 
 const config = require('config');
-const path = require('path');
 
 const csvRootDirectory = config.CSV.rootDirectory;
 const port = config.Server.port;
