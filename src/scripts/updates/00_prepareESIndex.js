@@ -5,6 +5,7 @@ const { makeElasticsearchOptions } = require('../../util/elasticOptions.js')
 const logger = require('../../csv_es/src/script/esLogger.js')
 
 const esOptions = makeElasticsearchOptions()
+const config = require('config')
 const csvRootDirectory = config.CSV.rootDirectory || `src/dashboard/public/output/`
 const esCollection = new ESCollection(esOptions, csvRootDirectory)
 

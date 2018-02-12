@@ -16,5 +16,5 @@ rawUploader.init().then(() => rawUploader.process())
 const tileUploader = new TileUploader(csvRootDirectory)
 tileUploader.init().then(() => tileUploader.process())
 
-const imageResizer = new ImageResizer(csvRootDirectory, makeElasticSearchOptions())
+const imageResizer = new ImageResizer(csvRootDirectory, makeElasticsearchOptions())
 imageResizer.init().then(() => imageResizer.process())
