@@ -4,6 +4,7 @@ const config = require('config')
 const path = require('path')
 const ESCollection = require('../../csv_es/src/script/esCollection.js')
 const { makeElasticsearchOptions } = require('../../util/elasticOptions.js')
+let esIndex = null
 
 const aws4 = require('aws4')
 const s3 = require('s3')
@@ -134,31 +135,67 @@ function handleImageJSONData (d, image, esClient) {
   }
 }
 
-// TODO: use latest index here...
-function writeDataToES (tmsId, flattenedData, esClient) {
-  return esClient.exists({
-    // index: 'collection',
-    index: config.Elasticsearch.index,
-    type: 'object',
-    id: tmsId
-  }).then((res) => {
-    if (res) {
-      return esClient.update({
-        // index: 'collection',
-        index: config.Elasticsearch.index,
-        type: 'object',
-        id: tmsId,
-        body: {
-          doc: {
-            color: flattenedData
-          }
-        }
-      }).then(() => {
-        logger.info('Successfully updated CH color data for ' + tmsId)
+const getIndex = function (callback) {
+  if (esIndex !== null && typeof esIndex === 'string' && esIndex.length > 0) { return callback(null, esIndex) }
+
+  async function hasTags (client, index) {
+    return client
+      .search({index, body: {query: {exists: {field: 'tags.*.*'}}}, size: 0})
+      .then(result => {
+        return result.hits.total > 0
       })
-    } else {
-      logger.info('Skipping stroring CH color data for ' + tmsId + ': no tms data for this image')
+  }
+
+  async function find (client, indices, predicate) {
+    let check = false
+    let result = null
+    for (let index of indices) {
+      check = await predicate(client, index)
+      if (check) {
+        result = index
+        break
+      }
     }
+    return result
+  }
+
+  async function getFirstIndexWithTags (indices) {
+    const latestIndexWithTags = await find(esClient, indices.split('\n'), hasTags)
+    return latestIndexWithTags
+  }
+
+  return esClient.cat
+    .indices({index: 'collection_*', s: 'creation.date:desc', h: ['i']})
+    .then(getFirstIndexWithTags)
+    .then(idx => { esIndex = idx; return callback(null, idx) })
+}
+
+function writeDataToES (tmsId, flattenedData, esClient) {
+  getIndex((err, index) => {
+    if (err) throw err
+    return esClient.exists({
+      index: index,
+      type: 'object',
+      id: tmsId
+    }).then((res) => {
+      if (res) {
+        return esClient.update({
+          // index: 'collection',
+          index: config.Elasticsearch.index,
+          type: 'object',
+          id: tmsId,
+          body: {
+            doc: {
+              color: flattenedData
+            }
+          }
+        }).then(() => {
+          logger.info('Successfully updated CH color data for ' + tmsId)
+        })
+      } else {
+        logger.info('Skipping stroring CH color data for ' + tmsId + ': no tms data for this image')
+      }
+    })
   })
 }
 
