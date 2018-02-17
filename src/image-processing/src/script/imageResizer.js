@@ -67,6 +67,7 @@ class ImageResizer extends UpdateEmitter {
 					imagesToResize.push(Object.assign({}, row, availableImage));
 					return;
 				}
+				// check for originalImage here wtf...
 				const imageSecret = resizedImage.key.split('_')[1];
 				const imageOriginalSecret = originalImage.key.split('_')[1];
 				if (new Date(resizedImage.lastModified) - new Date(availableImage.lastModified) < 0) {
