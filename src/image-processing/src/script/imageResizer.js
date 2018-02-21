@@ -40,10 +40,15 @@ class ImageResizer extends UpdateEmitter {
 		this._currentStep = 'Initializing image resizer.';
 		this._isRunning = true;
 		this.started();
-		return this._getAvailableImages().then(() => {
-			logger.info('Fetching listing of all images already resized.');
-			return this._getResizedImages();
-		});
+		return this._getAvailableImages()
+      .then(() => {
+        logger.info('Fetching listing of all images already resized.');
+        return this._getResizedImages();
+      })
+      .catch(e => {
+        logger.error(e);
+        process.exit(-1)
+      });
 	}
 
 	process() {
