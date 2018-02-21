@@ -1,11 +1,11 @@
 const path = require('path');
 const config = require('config');
-const eachSeries = require('async/eachSeries');
 const s3 = require('s3');
 const csv = require('fast-csv');
 const fs = require('fs');
 const tmp = require('tmp');
 const { exec, execSync } = require('child_process');
+const eachSeries = require('async/eachSeries');
 
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const logger = require('../script/imageLogger.js');
@@ -22,6 +22,7 @@ const credentials = config.Credentials.aws;
 class TileUploader extends UpdateEmitter {
   constructor(csvRootDirectory) {
     super();
+    this._csvRootDirectory = csvRootDirectory;
     this._s3Client = s3.createClient({
       s3Options: {
         accessKeyId: credentials.awsAccessKeyId,
@@ -29,7 +30,6 @@ class TileUploader extends UpdateEmitter {
         region: credentials.awsRegion
       }
     });
-    this._csvRootDirectory = csvRootDirectory;
     this._tiledImages = null;
     this._numImagesToTile = 0;
     this._currentStep = 'Not started';
@@ -46,8 +46,11 @@ class TileUploader extends UpdateEmitter {
     this._isRunning = true;
     this._currentStep = "Fetching available image listing from S3.";
     this.started();
-    return this._getAvailableImages().then(() => {
+    return this._getAvailableImages().then((outputPath) => {
+      const resolvedPath = path.resolve(outputPath);
+      this._availableImages = require(resolvedPath).images;
       this._currentStep = "Fetching tiled image listing on S3.";
+      this.progress();
       return this._fetchTiledImages();
     });
   }
@@ -167,7 +170,7 @@ class TileUploader extends UpdateEmitter {
         }
       })
       .on('end', () => {
-        logger.info('tiles.csv has been downloaded--loading into memory.');
+        logger.info('tiled.csv has been downloaded--loading into memory.');
         csvForEach(path.resolve(__dirname, '../../tiled.csv'), (data) => {
           this._tiledImages.push({ name: data.name, lastModified: data.lastModified });
         }, () => {
