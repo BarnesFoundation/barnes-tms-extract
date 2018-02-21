@@ -1,10 +1,10 @@
 const path = require('path');
 const config = require('config');
-const eachSeries = require('async/eachSeries');
 const s3 = require('s3');
 const csv = require('fast-csv');
 const fs = require('fs');
 const https = require('https');
+const eachSeries = require('async/eachSeries');
 
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const logger = require('../script/imageLogger.js');
@@ -21,6 +21,7 @@ const credentials = config.Credentials.aws;
 class RawUploader extends UpdateEmitter {
 	constructor(csvRootDirectory) {
 		super();
+		this._csvRootDirectory = csvRootDirectory;
 		this._s3Client = s3.createClient({
 			s3Options: {
 				accessKeyId: credentials.awsAccessKeyId,
@@ -28,7 +29,6 @@ class RawUploader extends UpdateEmitter {
 				region: credentials.awsRegion
 			}
 		});
-		this._csvRootDirectory = csvRootDirectory;
 		this._rawImages = null;
 		this._numImagesToUpload = 0;
 		this._currentStep = 'Not started';
@@ -108,8 +108,8 @@ class RawUploader extends UpdateEmitter {
 						return this._updateRawList(image);
 					}).then(cb);
 				}, () => {
-					logger.info('Finished uploading all images.');
-					this._currentStep = `Finished uploading all images.`;
+					logger.info('Finished uploading all raw images.');
+					this._currentStep = `Finished uploading all raw images.`;
 					this._isRunning = false;
 					this.completed();
 					resolve();
@@ -132,7 +132,6 @@ class RawUploader extends UpdateEmitter {
 			.on('error', (err) => {
 				if (err.message.includes('404')) {
 					logger.info('Can\'t fetch list of raw images--hasn\'t been created yet.');
-					this._rawImages = [];
 					resolve();
 				} else {
 					throw err;
@@ -143,6 +142,7 @@ class RawUploader extends UpdateEmitter {
 				csvForEach(path.resolve(__dirname, '../../raw.csv'), (data) => {
 					this._rawImages.push({ name: data.name, size: data.size, modified: data.modified });
 				}, () => {
+				  this.progress();
 					resolve();
 				});
 			});
