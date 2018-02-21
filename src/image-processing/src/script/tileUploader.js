@@ -46,9 +46,8 @@ class TileUploader extends UpdateEmitter {
     this._isRunning = true;
     this._currentStep = "Fetching available image listing from S3.";
     this.started();
-    return this._getAvailableImages().then((outputPath) => {
-      const resolvedPath = path.resolve(outputPath);
-      this._availableImages = require(resolvedPath).images;
+    return this._getAvailableImages().then(() => {
+      console.log(this._availableImages);
       this._currentStep = "Fetching tiled image listing on S3.";
       this.progress();
       return this._fetchTiledImages();
