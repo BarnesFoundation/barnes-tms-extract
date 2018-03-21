@@ -47,7 +47,8 @@ class TileUploader extends UpdateEmitter {
     this._currentStep = "Fetching available image listing from S3.";
     this.started();
     return this._getAvailableImages().then(() => {
-      console.log(this._availableImages);
+      const resolvedPath = path.resolve(outputPath);
+      this._availableImages = require(resolvedPath).images;
       this._currentStep = "Fetching tiled image listing on S3.";
       this.progress();
       return this._fetchTiledImages();
@@ -231,9 +232,7 @@ class TileUploader extends UpdateEmitter {
       const configPath = this._tempConfigPath();
       const goPath = path.relative(process.cwd(), path.resolve(__dirname, '../../go-iiif/bin/iiif-tile-seed'));
       logger.info(`Tiling image: ${image.key}`);
-      resolve();
 
-      // TODO: fix this command
       const cmd = `AWS_ACCESS_KEY=${credentials.awsAccessKeyId} AWS_SECRET_KEY=${credentials.awsSecretAccessKey} ${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -scale-factors 8,4,2,1 -refresh -verbose -loglevel debug ${image.key},${image.invno}`;
       exec(cmd, null, (error, stdout, stderr) => {
         if (error) {
