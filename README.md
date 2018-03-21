@@ -11,7 +11,6 @@ Most of the scripts are in `src/scripts`, `src/scripts/updates`, and can be run 
 - `pythonenv.sh` - Bash script to set up the python environment
 - `updateMappings.js` - Updates Elasticsearch mappings if they change, from file `config/mapping.json`
 
-
 ## Setup
 
 Usernames and passwords are encrypted and stored in [**config/**](./config). They can be decrypted and viewed using [git-crypt](https://github.com/agwa/git-crypt) via `git-crypt unlock /path/to/key`, and include:
@@ -58,20 +57,20 @@ This builds a new index with the given name in Elasticsearch, adds our mapping, 
 
 **01_exportTMSToCSV.js** extracts object csv files from tms emuseum api
 
-This will take a while. When it's done, you can check to see that there's a new set of CSVs in `dashboard/src/public/output`. 
+This will take a while. When it's done, you can check to see that there's a new set of CSVs in `dashboard/src/public/output`.
 
 **02_importTMSDataToES.js** parses object csvs and adds them to elasticsearch
 
 You may see errors while running, but thats okay, as long as there are around 2200 hits in the index
 
-**02.5_PLEASEMAKEME**
+**03_processAndUploadImagesToS3.js**
 
 - upload original images to s3 bucket (src/image-processing/src/script/imageUploader.js)
 - create tiles from images in bucket
 - upload tiles to s3 bucket (src/image-processing/src/script/tileUploader.js)
-- NOTE: do we need ot esCollection._updateESWithColorData ? whats the difference between `writeDataToES` and the csvs we create?
+- NOTE: do we need to esCollection._updateESWithColorData ? whats the difference between `writeDataToES` and the csvs we create?
 
-**03_addImageSecretsToES.js** add image secrets from s3 images bucket
+**04_addImageSecretsToES.js** add image secrets from s3 images bucket
 
 About 1873 objects should have `imageSecret` and `imageOriginalSecret`, grabbed from s3
 
@@ -106,7 +105,7 @@ PATH=$PATH:/home/ubuntu/.nvm/versions/node/v9.2.1/bin
 
 ## Data Model
 
-The file located at [`config/mapping.json`](./config/mapping.json) details the structure of the Elasticsearch index. The index is named `collection` and contains two object types, `meta` and `object`. 
+The file located at [`config/mapping.json`](./config/mapping.json) details the structure of the Elasticsearch index. The index is named `collection` and contains two object types, `meta` and `object`.
 
 #### `meta` is a singleton
 

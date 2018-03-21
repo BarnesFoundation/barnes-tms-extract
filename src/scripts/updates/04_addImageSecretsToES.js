@@ -3,10 +3,10 @@ const s3 = require('s3');
 const path = require('path');
 const eachSeries = require('async/eachSeries');
 
-const { getLastCompletedCSV, csvForEach } = require('../util/csvUtil.js');
-const ESCollection = require('../csv_es/src/script/esCollection.js');
+const { getLastCompletedCSV, csvForEach } = require('../../util/csvUtil.js');
+const ESCollection = require('../../csv_es/src/script/esCollection.js');
 const csvRootDirectory = config.CSV.rootDirectory;
-const { makeElasticsearchOptions } = require('../util/elasticOptions.js');
+const { makeElasticsearchOptions } = require('../../util/elasticOptions.js');
 
 const credentials = config.Credentials.aws;
 const s3Client = s3.createClient({
@@ -32,7 +32,7 @@ function getAvailableImages() {
     });
     getAllImages.on('data', (data) => {
       const objects = data['Contents'];
-      availableImages = availableImages.concat(objects.map((image) => {
+      availableImages = availableImages.concat(objects.map(image => {
         return {
           key: image['Key'].split('/')[1],
           lastModified: image['LastModified']

@@ -231,6 +231,9 @@ class TileUploader extends UpdateEmitter {
       const configPath = this._tempConfigPath();
       const goPath = path.relative(process.cwd(), path.resolve(__dirname, '../../go-iiif/bin/iiif-tile-seed'));
       logger.info(`Tiling image: ${image.key}`);
+      resolve();
+
+      // TODO: fix this command
       const cmd = `AWS_ACCESS_KEY=${credentials.awsAccessKeyId} AWS_SECRET_KEY=${credentials.awsSecretAccessKey} ${goPath} -config ${configPath} -endpoint http://barnes-image-repository.s3-website-us-east-1.amazonaws.com/tiles -scale-factors 8,4,2,1 -refresh -verbose -loglevel debug ${image.key},${image.invno}`;
       exec(cmd, null, (error, stdout, stderr) => {
         if (error) {
