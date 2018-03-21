@@ -20,8 +20,9 @@ const colorProcessingPath = credentials.path
 const bucketName = credentials.awsBucket
 const awsFolderPath = credentials.awsFolderPath
 
-const esClient = new ESCollection(makeElasticsearchOptions(), config.CSV.dataPath)
-Promise.promisifyAll(esClient)
+const esOptions = makeElasticsearchOptions()
+const csvRootDirectory = config.CSV.dataPath
+const esClient = new ESCollection(esOptions, csvRootDirectory)
 
 const s3Client = s3.createClient({
   s3Options: {
@@ -138,35 +139,8 @@ function handleImageJSONData (d, image, esClient) {
 const getIndex = function (callback) {
   if (esIndex !== null && typeof esIndex === 'string' && esIndex.length > 0) { return callback(null, esIndex) }
 
-  async function hasTags (client, index) {
-    return client
-      .search({index, body: {query: {exists: {field: 'tags.*.*'}}}, size: 0})
-      .then(result => {
-        return result.hits.total > 0
-      })
-  }
-
-  async function find (client, indices, predicate) {
-    let check = false
-    let result = null
-    for (let index of indices) {
-      check = await predicate(client, index)
-      if (check) {
-        result = index
-        break
-      }
-    }
-    return result
-  }
-
-  async function getFirstIndexWithTags (indices) {
-    const latestIndexWithTags = await find(esClient, indices.split('\n'), hasTags)
-    return latestIndexWithTags
-  }
-
   return esClient.cat
     .indices({index: 'collection_*', s: 'creation.date:desc', h: ['i']})
-    .then(getFirstIndexWithTags)
     .then(idx => { esIndex = idx; return callback(null, idx) })
 }
 

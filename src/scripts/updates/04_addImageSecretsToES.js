@@ -52,7 +52,7 @@ getAvailableImages().then(availableImages => {
     csvForEach(csvPath, (row) => {
       const resizedImage = availableImages.find((image) => image.key.startsWith(row.id) && !image.key.includes('_o'));
       const originalImage = availableImages.find((image) => image.key.startsWith(row.id) && image.key.includes('_o'));
-      if (resizedImage) {
+      if (resizedImage && originalImage) {
         const imageSecret = resizedImage.key.split('_')[1];
         const imageOriginalSecret = originalImage.key.split('_')[1];
         imagesToUpdate.push({id: row.id, imageSecret, imageOriginalSecret});
