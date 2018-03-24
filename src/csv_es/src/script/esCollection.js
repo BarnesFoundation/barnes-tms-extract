@@ -223,6 +223,8 @@ class ESCollection extends UpdateEmitter {
 	_updateDocumentWithData(docId, data) {
 		const dataCopy = this._analyzedData(data);
     return this._latestCollection().then(index => {
+      index = 'collection_1521660642305'
+      console.log(`for index ${index}`)
       this._client.updateAsync({
         index: index,
         type: 'object',

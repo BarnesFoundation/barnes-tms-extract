@@ -46,13 +46,17 @@ function getAvailableImages() {
   });
 }
 
+// TODO: REMOVE
+const idsToUpdate = [6697]
 const imagesToUpdate = [];
 getAvailableImages().then(availableImages => {
   return new Promise(resolve => {
     csvForEach(csvPath, (row) => {
-      const resizedImage = availableImages.find((image) => image.key.startsWith(row.id) && !image.key.includes('_o'));
-      const originalImage = availableImages.find((image) => image.key.startsWith(row.id) && image.key.includes('_o'));
-      if (resizedImage && originalImage) {
+      // WARNING: super fragile, we should be explicit about what _o, _x, _n, _b mean
+      const resizedImage = availableImages.find((image) => image.key.startsWith(row.id) && !(image.key.includes('_o') || image.key.includes('_x')) );
+      const originalImage = availableImages.find((image) => image.key.startsWith(row.id) && (image.key.includes('_o') || image.key.includes('_x')) );
+      // TODO: remove idsToUpdate when working
+      if (resizedImage && originalImage && (idsToUpdate.indexOf(parseInt(row.id))!=-1)) {
         const imageSecret = resizedImage.key.split('_')[1];
         const imageOriginalSecret = originalImage.key.split('_')[1];
         imagesToUpdate.push({id: row.id, imageSecret, imageOriginalSecret});
@@ -61,8 +65,14 @@ getAvailableImages().then(availableImages => {
   });
 }).then(() => {
   console.log(imagesToUpdate.length);
+  // TODO: REMOVE
+  if (imagesToUpdate.length > 5) {
+    console.log('too many updates, bailing')
+    return cb(null)
+  }
   eachSeries(imagesToUpdate, (image, cb) => {
     console.log('updating image ' + image.id);
+    console.log(image)
     esClient._updateDocumentWithData(image.id, {
       imageSecret: image.imageSecret,
       imageOriginalSecret: image.imageOriginalSecret
