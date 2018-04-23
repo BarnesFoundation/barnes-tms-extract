@@ -582,10 +582,14 @@ class ESCollection extends UpdateEmitter {
 					})
 					.on('end', () => {
 						eachLimit(objectTags, rateLimit, (object, cb) => {
-							this._updateDocumentWithPartialDoc(object.id, object).then(() => {
-								logger.info(`${++processed} objects tagged`);
-								cb();
-							});
+							this._updateDocumentWithPartialDoc(object.id, object)
+							  .then(() => {
+  								logger.info(`${++processed} objects tagged`);
+  								cb();
+  							})
+  							.catch(e => {
+  							  reject(e)
+  							})
 						}, () => {
 							logger.info('imported tags');
 							resolve();
