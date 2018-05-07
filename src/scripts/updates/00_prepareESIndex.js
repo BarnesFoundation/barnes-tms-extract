@@ -10,5 +10,7 @@ const csvRootDirectory = config.CSV.rootDirectory || `src/dashboard/public/outpu
 const esCollection = new ESCollection(esOptions, csvRootDirectory)
 
 esCollection._prepareIndexForSync().then((res) => {
-  esCollection.description().then((res) => { logger.info(res) })
+  esCollection.description().then(res => {
+    logger.info(res)
+  })
 });

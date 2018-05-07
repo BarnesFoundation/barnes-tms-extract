@@ -205,13 +205,20 @@ class ESCollection extends UpdateEmitter {
             })
             .on('end', () => {
               eachLimit(todos, rateLimit, (data, cb) => {
-                this._createDocumentWithData(data, this._client).then(() => {
-                  this.progress(`Synchronizing with ${csvExport}, ${++processed} documents uploaded`);
-                  cb();
-                })
-                .catch(reject)
+                this._createDocumentWithData(data, this._client)
+                  .then(() => {
+		    console.log('added ' + data.id);
+                    cb();
+                  })
+                  .catch(e => {
+                    console.error('problem with' + data.id)
+                    console.error(e)
+                    reject(e)
+		});
+              }, (err) => {
+		if (err) return reject(err)
                 logger.info('Finished export');
-                resolve();
+                resolve()
               })
             });
         } catch (e) {
@@ -462,7 +469,8 @@ class ESCollection extends UpdateEmitter {
 							this._updateDocumentWithPartialDoc(docId, formattedDoc).then(() => {
 								logger.info(`Synchronizing with ${csvFilePath}, ${++processed} documents uploaded`);
 								cb();
-							});
+							})
+							.catch(reject);
 						}, () => {
 							logger.info('imported');
 							resolve();
@@ -504,7 +512,8 @@ class ESCollection extends UpdateEmitter {
             this._updateDocumentWithPartialDoc(image.id, formattedDoc).then(() => {
               logger.info(`Image secrets added to ${++processed} objects`);
               cb();
-            });
+            })
+	    .catch(reject)
           }, () => {
             logger.info('Imported image secrets!');
             resolve();
@@ -543,7 +552,8 @@ class ESCollection extends UpdateEmitter {
 						this._updateDocumentWithPartialDoc(object.id, object).then(() => {
 							logger.info(`Added color data to ${++processed} objects`);
 							cb();
-						});
+						})
+						.catch(reject);
 					}, () => {
 						logger.info('imported color data');
 						resolve();
@@ -588,9 +598,7 @@ class ESCollection extends UpdateEmitter {
   								logger.info(`${++processed} objects tagged`);
   								cb();
   							})
-  							.catch(e => {
-  							  reject(e)
-  							})
+  							.catch(reject);
 						}, () => {
 							logger.info('imported tags');
 							resolve();
