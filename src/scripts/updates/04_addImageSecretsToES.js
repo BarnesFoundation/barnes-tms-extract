@@ -50,17 +50,17 @@ const imagesToUpdate = [];
 getAvailableImages().then(availableImages => {
   return new Promise(resolve => {
     csvForEach(csvPath, (row) => {
-      const resizedImage = availableImages.find((image) => image.key.startsWith(row.id) && !image.key.includes('_o'));
-      const originalImage = availableImages.find((image) => image.key.startsWith(row.id) && image.key.includes('_o'));
-      if (resizedImage && originalImage) {
-        const imageSecret = resizedImage.key.split('_')[1];
-        const imageOriginalSecret = originalImage.key.split('_')[1];
+      const resizedImage = availableImages.find((image) => image.key.startsWith(row.id) && !(image.key.includes('_o') || image.key.includes('_x')));
+      const originalImage = availableImages.find((image) => image.key.startsWith(row.id) && (image.key.includes('_o') || image.key.includes('_x')));
+      if (resizedImage || originalImage) {
+        const imageSecret = resizedImage && resizedImage.key.split('_')[1];
+        const imageOriginalSecret = originalImage && originalImage.key.split('_')[1];
         imagesToUpdate.push({id: row.id, imageSecret, imageOriginalSecret});
       }
     }, resolve);
   });
 }).then(() => {
-  console.log(imagesToUpdate.length);
+  console.log(`Updating ${imagesToUpdate.length} images`);
   eachSeries(imagesToUpdate, (image, cb) => {
     console.log('updating image ' + image.id);
     esClient._updateDocumentWithData(image.id, {
@@ -68,6 +68,8 @@ getAvailableImages().then(availableImages => {
       imageOriginalSecret: image.imageOriginalSecret
     }).then(() => {
       cb(null);
+    }).catch(e => {
+	console.error(e);
     });
   }, (err) => {
     if (err) {

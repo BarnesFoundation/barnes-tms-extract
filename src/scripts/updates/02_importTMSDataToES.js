@@ -12,6 +12,7 @@ const argv = require('minimist')(process.argv.slice(2));
 
 const importLastCSV = () => {
   fs.readdir(csvRootDirectory, (err, files) => {
+    files.sort()
     const csv = csvRootDirectory + files.pop() + '/objects.csv';
     importDataFromCSV(csv);
   });
@@ -19,7 +20,6 @@ const importLastCSV = () => {
 
 const importDataFromCSV = (csv) => {
   const csvPath = path.basename(path.dirname(csv));
-  logger.info(csvPath);
   logger.info('Beginning import of', csvPath, '...');
 
   const esOptions = makeElasticsearchOptions();
