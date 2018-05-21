@@ -48,7 +48,7 @@ function getAvailableImages() {
 
 const imagesToUpdate = [];
 getAvailableImages().then(availableImages => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     csvForEach(csvPath, (row) => {
       const resizedImage = availableImages.find((image) => image.key.startsWith(row.id) && !image.key.includes('_o'));
       const originalImage = availableImages.find((image) => image.key.startsWith(row.id) && image.key.includes('_o'));
@@ -68,7 +68,8 @@ getAvailableImages().then(availableImages => {
       imageOriginalSecret: image.imageOriginalSecret
     }).then(() => {
       cb(null);
-    });
+    })
+    .catch(reject)
   }, (err) => {
     if (err) {
       console.log(err);
