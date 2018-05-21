@@ -66,15 +66,21 @@ class ImageResizer extends UpdateEmitter {
 				logger.info(`Checking if ${row.invno}.jpg needs to be resized.`);
 				const availableImage = this._availableImages.find((image) => image.key === `${row.invno}.jpg`);
 				if (!availableImage) return;
-				const resizedImage = this._resizedImages.find((image) => image.key.startsWith(row.id) && !image.key.includes('_o'));
-				const originalImage = this._resizedImages.find((image) => image.key.startsWith(row.id) && image.key.includes('_o'));
+
+			        const resizedImage = this._resizedImages.find((image) => image.key.startsWith(row.id) && !(image.key.includes('_o') || image.key.includes('_x')) );
+				const originalImage = this._resizedImages.find((image) => image.key.startsWith(row.id) && (image.key.includes('_o') || image.key.includes('_x')) );
+
 				if (!resizedImage) {
 					imagesToResize.push(Object.assign({}, row, availableImage));
 					return;
 				}
-				// check for originalImage here wtf...
+				if (!(resizedImage && originalImage)) {
+					console.error(`something wrong with images`)
+					return;
+				}
 				const imageSecret = resizedImage.key.split('_')[1];
 				const imageOriginalSecret = originalImage.key.split('_')[1];
+
 				if (new Date(resizedImage.lastModified) - new Date(availableImage.lastModified) < 0) {
 					//get secret key from S3
 					imagesToResize.push(Object.assign({}, row, availableImage, { imageSecret, imageOriginalSecret }));
