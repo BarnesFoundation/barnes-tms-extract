@@ -20,3 +20,7 @@ const importCSVs = (csvs) => {
 }
 
 importCSVs(dataCSVs);
+
+const csvPath = path.join(config.CSV.dataPath, config.CSV.tagsFilename);
+
+esClient._updateESWithColorData(csvPath);
