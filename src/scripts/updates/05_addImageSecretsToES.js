@@ -57,8 +57,8 @@ getAvailableImages().then(availableImages => {
         const imageOriginalSecret = originalImage && originalImage.key.split('_')[1];
         imagesToUpdate.push({id: row.id, imageSecret, imageOriginalSecret});
       }
-    }, resolve);
-  });
+    }, resolve)
+  })
 }).then(() => {
   console.log(`Updating ${imagesToUpdate.length} images`);
   eachSeries(imagesToUpdate, (image, cb) => {
@@ -68,9 +68,7 @@ getAvailableImages().then(availableImages => {
       imageOriginalSecret: image.imageOriginalSecret
     }).then(() => {
       cb(null);
-    }).catch(e => {
-	console.error(e);
-    });
+    })
   }, (err) => {
     if (err) {
       console.log(err);
