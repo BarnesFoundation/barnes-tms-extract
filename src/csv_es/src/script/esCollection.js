@@ -208,7 +208,8 @@ class ESCollection extends UpdateEmitter {
                 this._createDocumentWithData(data, this._client).then(() => {
                   this.progress(`Synchronizing with ${csvExport}, ${++processed} documents uploaded`);
                   cb();
-                });
+                })
+                .catch(reject)
                 logger.info('Finished export');
                 resolve();
               })
