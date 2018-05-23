@@ -186,7 +186,7 @@ class ImageUploader extends UpdateEmitter {
 					this._s3Client.uploadFile({
 						s3Params: {
 							Bucket: credentials.awsBucket,
-							Key: `assets/${image.name.toUpperCase()}`,
+							Key: `assets/${image.name}`,
 							ACL: 'authenticated-read'
 						},
 						localFile: localImagePath,
@@ -207,7 +207,6 @@ class ImageUploader extends UpdateEmitter {
 		logger.info('Uploading uploaded.csv to S3 bucket.');
 		const csvStream = csv.createWriteStream({ headers: true });
 		const writableStream = fs.createWriteStream(path.resolve(__dirname, '../../uploaded.csv'));
-		image.name = image.name.toUpperCase();
 
 		return new Promise((resolve) => {
 			writableStream.on('finish', () => {
