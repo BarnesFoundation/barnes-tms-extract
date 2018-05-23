@@ -10,7 +10,6 @@ const eachSeries = require('async/eachSeries');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
 const logger = require('../script/imageLogger.js');
 const { getLastCompletedCSV, csvForEach } = require('../../../util/csvUtil.js');
-const fetchAvailableImages = require('./tmsImageFetch.js');
 const credentials = config.Credentials.aws;
 
 /**
@@ -47,8 +46,6 @@ class TileUploader extends UpdateEmitter {
     this._currentStep = "Fetching available image listing from S3.";
     this.started();
     return this._getAvailableImages().then(() => {
-      const resolvedPath = path.resolve(outputPath);
-      this._availableImages = require(resolvedPath).images;
       this._currentStep = "Fetching tiled image listing on S3.";
       this.progress();
       return this._fetchTiledImages();
@@ -184,8 +181,8 @@ class TileUploader extends UpdateEmitter {
   _imageNeedsUpload(invno, id, objRightsTypeId) {
     logger.info(`Checking if image ${invno} needs upload.`);
     const tiledFound = this._tiledImages.find(element => element.name === `${invno}.jpg`);
-    const s3Found = this._availableImages.find(element => element.key.startsWith(id) && (element.key.includes('_b') || elementkey.includes('_n')) );
-    const originalFound = this._availableImages.find(element => element.key.startsWith(id) && (element.key.includes('_o') || image.key.includes('_x')) );
+    const s3Found = this._availableImages.find(element => element.key.startsWith(id) && (element.key.includes('_b') || element.key.includes('_n')) );
+    const originalFound = this._availableImages.find(element => element.key.startsWith(id) && (element.key.includes('_o') || element.key.includes('_x')) );
 
     if (tiledFound) {
       if (s3Found && new Date(s3Found.lastModified) - new Date(tiledFound.lastModified) > 0) {
