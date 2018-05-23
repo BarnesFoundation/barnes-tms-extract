@@ -164,10 +164,6 @@ class TMSExporter extends UpdateEmitter {
 
 		const description = artObject.descriptionWithFields(exportConfig.fields);
 
-		if (id === 5189) {
-			debugger;
-		}
-
 		_.forOwn(description, (value, key) => {
 			description[key] = decodeUTF8InterpretedAsWin(value);
 		});

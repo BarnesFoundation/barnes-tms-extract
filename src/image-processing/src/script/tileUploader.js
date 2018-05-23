@@ -183,9 +183,9 @@ class TileUploader extends UpdateEmitter {
 
   _imageNeedsUpload(invno, id, objRightsTypeId) {
     logger.info(`Checking if image ${invno} needs upload.`);
-    const tiledFound = this._tiledImages.find(element => element.name.toLowerCase() === `${invno}.jpg`.toLowerCase());
-    const s3Found = this._availableImages.find(element => element.key.startsWith(id) && element.key.includes('_b'));
-    const originalFound = this._availableImages.find(element => element.key.startsWith(id) && element.key.includes('_o'));
+    const tiledFound = this._tiledImages.find(element => element.name === `${invno}.jpg`);
+    const s3Found = this._availableImages.find(element => element.key.startsWith(id) && (element.key.includes('_b') || elementkey.includes('_n')) );
+    const originalFound = this._availableImages.find(element => element.key.startsWith(id) && (element.key.includes('_o') || image.key.includes('_x')) );
 
     if (tiledFound) {
       if (s3Found && new Date(s3Found.lastModified) - new Date(tiledFound.lastModified) > 0) {
