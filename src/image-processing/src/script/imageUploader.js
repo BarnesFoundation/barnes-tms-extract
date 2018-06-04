@@ -5,6 +5,8 @@ const csv = require('fast-csv');
 const fs = require('fs');
 const https = require('https');
 const eachSeries = require('async/eachSeries');
+const { Magic, MAGIC_MIME_TYPE } = require('mmmagic');
+const magic = new Magic(MAGIC_MIME_TYPE);
 
 const logger = require('../script/imageLogger.js');
 const UpdateEmitter = require('../../../util/updateEmitter.js');
@@ -183,21 +185,28 @@ class ImageUploader extends UpdateEmitter {
 				response.pipe(file);
 				file.on('finish', () => {
 					logger.info(`Uploading image ${image.name}`);
-					this._s3Client.uploadFile({
-						s3Params: {
-							Bucket: credentials.awsBucket,
-							Key: `assets/${image.name}`,
-							ACL: 'authenticated-read'
-						},
-						localFile: localImagePath,
-					})
-					.on('err', (err) => {
-						resolve(err);
-					})
-					.on('end', () => {
-						fs.unlink(localImagePath);
-						resolve();
-					});
+				        magic.detectFile(localImagePath, (err, result) => {
+						if (err) resolve(err)
+						const type = result.includes('/') && result.split('/')[0];
+						if (type !== 'image') {
+							resolve(new Error(`'${localImagePath}' has mime of '${result}', expected 'image/*'`));
+						}
+						this._s3Client.uploadFile({
+							s3Params: {
+								Bucket: credentials.awsBucket,
+								Key: `assets/${image.name}`,
+								ACL: 'authenticated-read'
+							},
+							localFile: localImagePath,
+						})
+						.on('err', (err) => {
+							resolve(err);
+						})
+						.on('end', () => {
+							fs.unlink(localImagePath);
+							resolve();
+						});
+					})	
 				});
 			});
 		});
