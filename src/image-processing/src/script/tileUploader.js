@@ -132,7 +132,12 @@ class TileUploader extends UpdateEmitter {
       });
       getAllImages.on('data', (data) => {
         const objects = data['Contents'];
-        this._availableImages = this._availableImages.concat(objects.map((image) => {
+        this._availableImages = this._availableImages.concat(objects
+          .filter(image => image.Size > 0)
+          .filter(image => ! image.Key.includes('ensembles'))
+          .filter(image => ! image.Key.includes('process'))
+          .map((image) => {
+
           return {
             key: image['Key'].split('/')[1],
             lastModified: image['LastModified']
