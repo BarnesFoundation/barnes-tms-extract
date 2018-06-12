@@ -21,6 +21,6 @@ const importCSVs = (csvs) => {
 
 importCSVs(dataCSVs);
 
-const csvPath = path.join(config.CSV.dataPath, config.CSV.tagsFilename);
+const csvPath = path.join(config.CSV.dataPath, config.CSV.colorsFilename);
 
 esClient._updateESWithColorData(csvPath);
