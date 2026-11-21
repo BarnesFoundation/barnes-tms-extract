@@ -4,7 +4,7 @@ cryptography==1.7.1
 csvdiff==0.3.1
 enum34==1.1.6
 functools32==3.2.3.post2
-idna==2.2
+idna==3.15
 ipaddress==1.0.18
 jsonschema==2.6.0
 pyasn1==0.1.9
