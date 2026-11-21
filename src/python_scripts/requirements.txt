@@ -7,7 +7,7 @@ functools32==3.2.3.post2
 idna==2.2
 ipaddress==1.0.18
 jsonschema==2.6.0
-pyasn1==0.1.9
+pyasn1==0.6.5
 pycosat==0.6.1
 pycparser==2.17
 pyOpenSSL==16.2.0
