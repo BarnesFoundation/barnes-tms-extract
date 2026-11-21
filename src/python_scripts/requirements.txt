@@ -1,6 +1,6 @@
 cffi==1.9.1
 click==6.7
-cryptography==1.7.1
+cryptography==50.0.0
 csvdiff==0.3.1
 enum34==1.1.6
 functools32==3.2.3.post2
